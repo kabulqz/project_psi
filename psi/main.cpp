@@ -1,6 +1,6 @@
-#include    <iostream>
-#include    <SFML/Graphics.hpp>
-#include    <sqlite3.h>
+#include <iostream>
+#include <SFML/Graphics.hpp>
+#include <sqlite3.h>
 
 using namespace std;
 
