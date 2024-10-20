@@ -39,7 +39,7 @@ int main()
 	sf::Image cursorImage;
 	if (cursorImage.loadFromFile("src/cursor.png"))
 	{
-		if(cursor.loadFromPixels(cursorImage.getPixelsPtr(), sf::Vector2u(16, 16), sf::Vector2u(0, 0)))
+		if(cursor.loadFromPixels(cursorImage.getPixelsPtr(), sf::Vector2u(32, 32), sf::Vector2u(0, 0)))
 		{
 			window.setMouseCursor(cursor);
 		}
