@@ -137,6 +137,14 @@
     <ClCompile Include="src\SQLite\include\sqlite3.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="libraries\AbilityTreeState.hpp" />
+    <ClInclude Include="libraries\Game.hpp" />
+    <ClInclude Include="libraries\GameBoardState.hpp" />
+    <ClInclude Include="libraries\GameCardState.hpp" />
+    <ClInclude Include="libraries\libraries.hpp" />
+    <ClInclude Include="libraries\MainMenuState.hpp" />
+    <ClInclude Include="libraries\PauseState.hpp" />
+    <ClInclude Include="libraries\State.hpp" />
     <ClInclude Include="src\SQLite\include\sqlite3.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
