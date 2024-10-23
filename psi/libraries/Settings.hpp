@@ -15,5 +15,4 @@ inline void initializeSettings()
 {//this function is meant to load database, general volume level etc.
 	//img database for skills and cards generally
 	//https://chatgpt.com/share/6718f803-c458-8002-b648-1b4b630eaf9a
-
 }

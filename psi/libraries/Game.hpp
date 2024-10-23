@@ -17,7 +17,7 @@ private:
 public:
 	Game() : window(sf::VideoMode(800, 600), "Project_PSI", sf::Style::Close)
 	{
-		currentState = std::make_unique<MainMenuState>();
+		currentState = std::make_unique<MainMenuState>(this);
 	}
 
 	//function to change between states
@@ -46,7 +46,7 @@ public:
 
 		//SFML window icon
 		sf::Image icon;
-		if (!icon.loadFromFile("src/icon.png"))
+		if (!icon.loadFromFile("src/img/icon.png"))
 		{
 			return -1;
 		}
@@ -56,7 +56,7 @@ public:
 		//SFML cursor & cursor style
 		sf::Cursor cursor;
 		sf::Image cursorImage;
-		if (cursorImage.loadFromFile("src/cursor.png"))
+		if (cursorImage.loadFromFile("src/img/cursor.png"))
 		{
 			if (cursor.loadFromPixels(cursorImage.getPixelsPtr(), sf::Vector2u(32, 32), sf::Vector2u(0, 0)))
 			{
@@ -66,7 +66,7 @@ public:
 
 		//SFML audio buffer
 		sf::SoundBuffer buffer;
-		if (!buffer.loadFromFile("src/click3.ogg"))
+		if (!buffer.loadFromFile("src/audio/click3.ogg"))
 		{
 			//error handling
 			return -1;

@@ -133,6 +133,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="libraries\AbilityTreeState.cpp" />
+    <ClCompile Include="libraries\GameBoardState.cpp" />
+    <ClCompile Include="libraries\GameCardState.cpp" />
+    <ClCompile Include="libraries\MainMenuState.cpp" />
+    <ClCompile Include="libraries\PauseState.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\SQLite\include\sqlite3.c" />
   </ItemGroup>

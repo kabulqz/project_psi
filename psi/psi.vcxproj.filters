@@ -21,6 +21,21 @@
     <ClCompile Include="src\SQLite\include\sqlite3.c">
       <Filter>Pliki nagłówkowe</Filter>
     </ClCompile>
+    <ClCompile Include="libraries\AbilityTreeState.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\GameBoardState.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\GameCardState.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\MainMenuState.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\PauseState.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\SQLite\include\sqlite3.h">
