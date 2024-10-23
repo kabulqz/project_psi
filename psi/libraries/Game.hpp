@@ -29,6 +29,8 @@ public:
 	//main function
 	int run()
 	{
+		initializeSettings();
+
 		//database
 		int exit = sqlite3_open("test.db", &database);
 

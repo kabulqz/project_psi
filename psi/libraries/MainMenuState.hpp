@@ -4,6 +4,8 @@
 
 class MainMenuState : public State
 {
+private:
+	Game* game;
 public:
 	//handler for specific windows to appear in the main frame 
 	void handleInput(sf::RenderWindow& window) override
@@ -20,4 +22,6 @@ public:
 		//draw main menu elements
 		window.display();
 	}
+
+	MainMenuState(Game* game);
 };

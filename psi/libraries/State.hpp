@@ -1,12 +1,6 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Audio.hpp>
-#include <sqlite3.h>
-#include <iostream>
-#include <memory>
-#include "Game.hpp"
+#include "Settings.hpp"
 
 class State
 {
