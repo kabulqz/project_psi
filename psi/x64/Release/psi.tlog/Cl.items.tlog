@@ -1,1 +1,6 @@
-C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\psi\main.cpp;C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\psi\x64\Release\main.obj
+C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\libraries\AbilityTreeState.cpp;C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\x64\Release\AbilityTreeState.obj
+C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\libraries\GameBoardState.cpp;C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\x64\Release\GameBoardState.obj
+C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\libraries\GameCardState.cpp;C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\x64\Release\GameCardState.obj
+C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\libraries\MainMenuState.cpp;C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\x64\Release\MainMenuState.obj
+C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\main.cpp;C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\x64\Release\main.obj
+C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\src\SQLite\include\sqlite3.c;C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\x64\Release\sqlite3.obj

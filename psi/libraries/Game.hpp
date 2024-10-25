@@ -4,7 +4,6 @@
 #include "AbilityTreeState.hpp"
 #include "GameBoardState.hpp"
 #include "GameCardState.hpp"
-#include "PauseState.hpp"
 
 class Game
 {
@@ -15,7 +14,7 @@ private:
 	//database
 	sqlite3* database;
 public:
-	Game() : window(sf::VideoMode(800, 600), "Project_PSI", sf::Style::Close)
+	Game() : window(sf::VideoMode(1280, 720), "Project_PSI", sf::Style::Close)
 	{
 		currentState = std::make_unique<MainMenuState>(this);
 	}
@@ -84,6 +83,7 @@ public:
 			sf::Event event;
 			while (window.pollEvent(event))
 			{
+				//events that are not unique to game states
 				if (event.type == sf::Event::Closed)
 				{
 					std::cout << "The window has been closed\n";

@@ -137,18 +137,17 @@
     <ClCompile Include="libraries\GameBoardState.cpp" />
     <ClCompile Include="libraries\GameCardState.cpp" />
     <ClCompile Include="libraries\MainMenuState.cpp" />
-    <ClCompile Include="libraries\PauseState.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\SQLite\include\sqlite3.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libraries\AbilityTreeState.hpp" />
+    <ClInclude Include="libraries\Card.hpp" />
     <ClInclude Include="libraries\Game.hpp" />
     <ClInclude Include="libraries\GameBoardState.hpp" />
     <ClInclude Include="libraries\GameCardState.hpp" />
     <ClInclude Include="libraries\libraries.hpp" />
     <ClInclude Include="libraries\MainMenuState.hpp" />
-    <ClInclude Include="libraries\PauseState.hpp" />
     <ClInclude Include="libraries\Settings.hpp" />
     <ClInclude Include="libraries\State.hpp" />
     <ClInclude Include="src\SQLite\include\sqlite3.h" />

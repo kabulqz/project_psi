@@ -5,6 +5,7 @@
 #include <SFML/Audio.hpp>
 #include <sqlite3.h>
 #include <iostream>
+#include <string.h>
 #include <memory>
 
 //this class is defined here for Game States to menage it in .cpp files
