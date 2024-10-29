@@ -134,9 +134,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="libraries\AbilityTreeState.cpp" />
+    <ClCompile Include="libraries\Game.cpp" />
     <ClCompile Include="libraries\GameBoardState.cpp" />
     <ClCompile Include="libraries\GameCardState.cpp" />
     <ClCompile Include="libraries\MainMenuState.cpp" />
+    <ClCompile Include="libraries\Settings.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\SQLite\include\sqlite3.c" />
   </ItemGroup>
@@ -151,6 +153,9 @@
     <ClInclude Include="libraries\Settings.hpp" />
     <ClInclude Include="libraries\State.hpp" />
     <ClInclude Include="src\SQLite\include\sqlite3.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="error_codes.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

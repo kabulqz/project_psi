@@ -1,0 +1,5 @@
+0	- no errors
+-1	- 
+-2  - sprite not loading
+-3  - audio not loading
+	- 

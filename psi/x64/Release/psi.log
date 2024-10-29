@@ -1,7 +1,13 @@
-﻿  main.cpp
+﻿  AbilityTreeState.cpp
+  Game.cpp
+  GameBoardState.cpp
+  GameCardState.cpp
+  MainMenuState.cpp
+  Settings.cpp
+  main.cpp
   Trwa generowanie kodu
-  0 of 2655 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+  82 of 2655 functions ( 3.1%) were compiled, the rest were copied from previous compilation.
+    1 functions were new in current compilation
+    87 functions had inline decision re-evaluated but remain unchanged
   Zakończono generowanie kodu
   psi.vcxproj -> C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\x64\Release\psi.exe

@@ -1,2 +1,7 @@
-﻿  main.cpp
+﻿  AbilityTreeState.cpp
+  GameBoardState.cpp
+  GameCardState.cpp
+  MainMenuState.cpp
+  main.cpp
+  Generowanie kodu...
   psi.vcxproj -> C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\x64\Debug\psi.exe
