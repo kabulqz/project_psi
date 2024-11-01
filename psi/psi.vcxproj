@@ -139,6 +139,7 @@
     <ClCompile Include="libraries\GameCardState.cpp" />
     <ClCompile Include="libraries\MainMenuState.cpp" />
     <ClCompile Include="libraries\Settings.cpp" />
+    <ClCompile Include="libraries\State.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\SQLite\include\sqlite3.c" />
   </ItemGroup>
