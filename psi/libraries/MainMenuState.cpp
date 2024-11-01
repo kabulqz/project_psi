@@ -1,15 +1,18 @@
 #include "MainMenuState.hpp"
 #include "Game.hpp"
 
-MainMenuState::MainMenuState(Game* game) : game(game)
-{
-	
-}
+const std::string PATH_TO_BORDERS_FOLDER = "src/img/borders/";
+
+MainMenuState::MainMenuState(Game* game) : game(game),
+buttonNext(300, 100, PATH_TO_BORDERS_FOLDER + "panel-border-016.png", 200, 300)
+{}
 
 //handler for specific windows to appear in the main frame 
 void MainMenuState::handleInput(sf::RenderWindow& window)
 {
 	sf::Event event;
+
+	
 
 	while(window.pollEvent(event))
 	{
@@ -28,5 +31,7 @@ void MainMenuState::render(sf::RenderWindow& window)
 {
 	window.clear();
 	//draw main menu elements
+	buttonNext.display(window);
+
 	window.display();
 }

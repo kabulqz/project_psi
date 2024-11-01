@@ -79,8 +79,6 @@ int Game::run()
 			}
 		}
 
-		//window.clear();
-		//window.display();
 		currentState->handleInput(window);
 		currentState->update();
 		currentState->render(window);

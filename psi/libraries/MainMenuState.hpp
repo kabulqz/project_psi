@@ -6,6 +6,7 @@ class MainMenuState : public State
 {
 private:
 	Game* game;
+	Button buttonNext;
 public:
 	//handler for specific windows to appear in the main frame 
 	void handleInput(sf::RenderWindow& window) override;

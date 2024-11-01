@@ -11,6 +11,27 @@
 //this class is defined here for Game States to menage it in .cpp files
 //all functions from "State" family should be written in .cpp
 class Game;
+class Button
+{
+private:
+	sf::Texture buttonTexture;
+	//size values
+	int width;
+	int height;
+	//sprites corners
+	sf::Sprite topLeft;
+	sf::Sprite topRight;
+	sf::Sprite bottomLeft;
+	sf::Sprite bottomRight;
+	//sprites borders
+	sf::Sprite topBorder;
+	sf::Sprite bottomBorder;
+	sf::Sprite leftBorder;
+	sf::Sprite rightBorder;
+public:
+	Button(int buttonWidth, int buttonHeight, const std::string& path_to_file, const int& pos_x, const int& pos_y);
+	void display(sf::RenderWindow& window);
+};
 
 class Settings {
 public:
