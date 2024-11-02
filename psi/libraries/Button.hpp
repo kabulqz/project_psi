@@ -29,14 +29,16 @@ private:
 		int y;
 	};
 	Position position;
+	bool hovered;
 	//duration to change color
 	float hoverDuration = 0.22f;
 	void applyColorToSprites(const sf::Color& color);
 public:
-	bool hovered;
 	sf::Clock hoverClock;
 	Button(const int& pos_x, const int& pos_y, int buttonWidth, int buttonHeight, const std::string& path_to_file);
 	void display(sf::RenderWindow& window) const;
 	bool isHovered(const sf::Vector2i& mousePos) const;
-	void updateAppearance(bool hovered, int R, int G, int B);
+	void updateAppearance(bool isHovered, int R, int G, int B);
+	void setHovered(bool isHovered);
+	bool getHovered() const { return hovered; }
 };

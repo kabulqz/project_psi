@@ -86,13 +86,45 @@ bool Button::isHovered(const sf::Vector2i& mousePos) const
 	return (mousePos.x >= position.x && mousePos.x <= position.x + width && mousePos.y >= position.y && mousePos.y <= position.y + height);
 }
 
-void Button::updateAppearance(bool hovered, int R, int G, int B)
+void Button::setHovered(bool isHovered)
 {
+	if (hovered != isHovered)
+	{
+		hovered = isHovered;
+		hoverClock.restart();
+	}
+}
+
+void Button::updateAppearance(bool isHovered, int R, int G, int B)
+{
+	if(hovered != isHovered)
+	{
+		setHovered(isHovered);
+	}
+
 	float elapsed = hoverClock.getElapsedTime().asSeconds();
 	float alpha = std::min(elapsed / hoverDuration, 1.0f);
 
 	//determine color to use
-	sf::Color newColor = hovered ? sf::Color(R, G, B, static_cast<sf::Uint8>(255 * alpha)) : sf::Color::White;
+	sf::Color newColor;
+	if(this->hovered)
+	{
+		newColor = sf::Color(
+			static_cast<sf::Uint8>(255 + (R - 255) * alpha),
+			static_cast<sf::Uint8>(255 + (G - 255) * alpha),
+			static_cast<sf::Uint8>(255 + (B - 255) * alpha),
+			255
+		);
+	}
+	else
+	{
+		newColor = sf::Color(
+			static_cast<sf::Uint8>(R + (255 - R) * alpha),
+			static_cast<sf::Uint8>(G + (255 - G) * alpha),
+			static_cast<sf::Uint8>(B + (255 - B) * alpha),
+			255
+		);
+	}
 
 	//apply color to all sprites
 	applyColorToSprites(newColor);

@@ -14,8 +14,10 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 
 	//check if the button is hovered
 	bool isCurrentlyHovered = buttonNext.isHovered(mousePos);
+	//use the function to handle hover state
 	handleHoverState(buttonNext, isCurrentlyHovered);
 
+	//process events from the event manager
 	while(eventManager.hasEvents())
 	{
 		sf::Event event = eventManager.popEvent();
@@ -33,7 +35,7 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 void MainMenuState::update()
 {
 	//update appearance on the hover state
-	buttonNext.updateAppearance(buttonNext.hovered, 255, 0, 100);
+	buttonNext.updateAppearance(buttonNext.getHovered(), 255, 0, 100);
 }
 
 //function rendering screen
