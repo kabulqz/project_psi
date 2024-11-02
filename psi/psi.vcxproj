@@ -134,6 +134,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="libraries\AbilityTreeState.cpp" />
+    <ClCompile Include="libraries\Button.cpp" />
+    <ClCompile Include="libraries\EventManager.cpp" />
     <ClCompile Include="libraries\Game.cpp" />
     <ClCompile Include="libraries\GameBoardState.cpp" />
     <ClCompile Include="libraries\GameCardState.cpp" />
@@ -145,7 +147,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libraries\AbilityTreeState.hpp" />
+    <ClInclude Include="libraries\Button.hpp" />
     <ClInclude Include="libraries\Card.hpp" />
+    <ClInclude Include="libraries\EventManager.hpp" />
     <ClInclude Include="libraries\Game.hpp" />
     <ClInclude Include="libraries\GameBoardState.hpp" />
     <ClInclude Include="libraries\GameCardState.hpp" />

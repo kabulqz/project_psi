@@ -6,9 +6,10 @@
 #include <sqlite3.h>
 #include <iostream>
 #include <string.h>
+#include <queue>
 #include <memory>
 
-//this class is defined here for Game States to menage it in .cpp files
+//this class is defined here for Game States to manage it in .cpp files
 //all functions from "State" family should be written in .cpp
 class Game;
 

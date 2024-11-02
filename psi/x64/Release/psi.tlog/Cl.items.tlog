@@ -1,8 +1,11 @@
 C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\libraries\AbilityTreeState.cpp;C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\x64\Release\AbilityTreeState.obj
+C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\libraries\Button.cpp;C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\x64\Release\Button.obj
+C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\libraries\EventManager.cpp;C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\x64\Release\EventManager.obj
 C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\libraries\Game.cpp;C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\x64\Release\Game.obj
 C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\libraries\GameBoardState.cpp;C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\x64\Release\GameBoardState.obj
 C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\libraries\GameCardState.cpp;C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\x64\Release\GameCardState.obj
 C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\libraries\MainMenuState.cpp;C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\x64\Release\MainMenuState.obj
 C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\libraries\Settings.cpp;C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\x64\Release\Settings.obj
+C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\libraries\State.cpp;C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\x64\Release\State.obj
 C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\main.cpp;C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\x64\Release\main.obj
 C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\src\SQLite\include\sqlite3.c;C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\x64\Release\sqlite3.obj

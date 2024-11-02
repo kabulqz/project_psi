@@ -7,13 +7,13 @@ AbilityTreeState::AbilityTreeState(Game* game) : game(game)
 }
 
 //handler for specific windows to appear in the main frame 
-void AbilityTreeState::handleInput(sf::RenderWindow& window)
+void AbilityTreeState::handleInput(sf::RenderWindow& window, EventManager& eventManager)
 {
-	sf::Event event;
-
-	while (window.pollEvent(event))
+	while (eventManager.hasEvents())
 	{
-		//if event.type == something => game.changeState(std::make_unique<State>())
+		sf::Event event = eventManager.popEvent();
+		// Handle other events, such as changing the state or closing the window
+		// Example: if (event.type == sf::Event::MouseButtonPressed) { ... }
 	}
 }
 

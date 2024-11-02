@@ -9,7 +9,7 @@ private:
 	Button buttonNext;
 public:
 	//handler for specific windows to appear in the main frame 
-	void handleInput(sf::RenderWindow& window) override;
+	void handleInput(sf::RenderWindow& window, EventManager& eventManager) override;
 	//updater for elements corresponding to specific screen
 	void update() override;
 	//function rendering screen

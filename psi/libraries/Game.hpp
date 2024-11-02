@@ -11,18 +11,13 @@ class Game
 {
 private:
 	std::unique_ptr<State> currentState;
-	//window
 	sf::RenderWindow window;
 	Settings settings;
+	EventManager eventManager;
 public:
-	Game() : window(sf::VideoMode(1280, 720), "Project_PSI", sf::Style::Close)
-	{
-		currentState = std::make_unique<MainMenuState>(this);
-	}
-
+	Game();
 	//function to change between states
 	void changeState(std::unique_ptr<State> newState);
-
 	//main function
 	int run();
 };

@@ -4,35 +4,36 @@
 const std::string PATH_TO_BORDERS_FOLDER = "src/img/borders/";
 
 MainMenuState::MainMenuState(Game* game) : game(game),
-buttonNext(300, 100, PATH_TO_BORDERS_FOLDER + "panel-border-022.png", 200, 300)
+buttonNext(300, 100, 200, 100, PATH_TO_BORDERS_FOLDER + "panel-border-019.png")
 {}
 
 //handler for specific windows to appear in the main frame 
-void MainMenuState::handleInput(sf::RenderWindow& window)
+void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventManager)
 {
-	sf::Event event;
-
-	while(window.pollEvent(event))
-	{
-		//if event.type == something => game.changeState(std::make_unique<State>())
-	}
-
 	sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-	bool hovered = buttonNext.isHovered(mousePos);
 
-	if(hovered && !buttonNext.hovered)
+	//check if the button is hovered
+	bool isCurrentlyHovered = buttonNext.isHovered(mousePos);
+	handleHoverState(buttonNext, isCurrentlyHovered);
+
+	while(eventManager.hasEvents())
 	{
-		buttonNext.hoverClock.restart();
+		sf::Event event = eventManager.popEvent();
+		// Handle other events, such as changing the state or closing the window
+		// Example: if (event.type == sf::Event::MouseButtonPressed) { ... }
+		if(event.type == sf::Event::MouseButtonPressed && buttonNext.isHovered(mousePos))
+		{
+			game->changeState(std::make_unique<GameBoardState>(game));
+			std::cout << "changed state\n";
+		}
 	}
-	buttonNext.hovered = hovered;
-
-	buttonNext.updateAppearance(hovered, 255, 0, 100);
 }
 
 //updater for elements corresponding to specific screen
 void MainMenuState::update()
 {
-	
+	//update appearance on the hover state
+	buttonNext.updateAppearance(buttonNext.hovered, 255, 0, 100);
 }
 
 //function rendering screen
@@ -41,6 +42,5 @@ void MainMenuState::render(sf::RenderWindow& window)
 	window.clear();
 	//draw main menu elements
 	buttonNext.display(window);
-
 	window.display();
 }

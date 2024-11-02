@@ -1,5 +1,10 @@
 #include "Game.hpp"
 
+Game::Game() : window(sf::VideoMode(1280, 720), "Project_PSI", sf::Style::Close)
+{
+	currentState = std::make_unique<MainMenuState>(this);
+}
+
 //function to change between states
 void Game::changeState(std::unique_ptr<State> newState)
 {
@@ -64,6 +69,7 @@ int Game::run()
 	while (window.isOpen())
 	{
 		sf::Event event;
+		eventManager.clear();
 		while (window.pollEvent(event))
 		{
 			//events that are not unique to game states
@@ -74,12 +80,14 @@ int Game::run()
 			}
 			else if (event.type == sf::Event::MouseButtonPressed)
 			{
+				std::cout << "mouse button clicked\n";
 				//click3.ogg
 				mouseClick.play();
 			}
-		}
 
-		currentState->handleInput(window);
+			eventManager.pushEvent(event);
+		}
+		currentState->handleInput(window, eventManager);
 		currentState->update();
 		currentState->render(window);
 	}

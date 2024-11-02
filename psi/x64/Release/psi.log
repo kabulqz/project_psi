@@ -1,29 +1,7 @@
-﻿  AbilityTreeState.cpp
-  Game.cpp
-  GameBoardState.cpp
-  GameCardState.cpp
-  MainMenuState.cpp
-  Settings.cpp
-C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\libraries\Settings.cpp(36,29): warning C4244: "argument": konwersja z "const int" do "float", możliwa utrata danych
-C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\libraries\Settings.cpp(36,22): warning C4244: "argument": konwersja z "const int" do "float", możliwa utrata danych
-C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\libraries\Settings.cpp(37,43): warning C4244: "argument": konwersja z "const int" do "float", możliwa utrata danych
-C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\libraries\Settings.cpp(37,37): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\libraries\Settings.cpp(38,47): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\libraries\Settings.cpp(38,25): warning C4244: "argument": konwersja z "const int" do "float", możliwa utrata danych
-C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\libraries\Settings.cpp(39,61): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\libraries\Settings.cpp(39,40): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\libraries\Settings.cpp(54,36): warning C4244: "argument": konwersja z "const int" do "float", możliwa utrata danych
-C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\libraries\Settings.cpp(54,30): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\libraries\Settings.cpp(56,54): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\libraries\Settings.cpp(56,33): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\libraries\Settings.cpp(58,38): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\libraries\Settings.cpp(58,25): warning C4244: "argument": konwersja z "const int" do "float", możliwa utrata danych
-C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\libraries\Settings.cpp(60,52): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\psi\libraries\Settings.cpp(60,40): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-  main.cpp
+﻿  Button.cpp
   Trwa generowanie kodu
-  32 of 2673 functions ( 1.2%) were compiled, the rest were copied from previous compilation.
-    11 functions were new in current compilation
-    86 functions had inline decision re-evaluated but remain unchanged
+  0 of 2807 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
   Zakończono generowanie kodu
   psi.vcxproj -> C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\x64\Release\psi.exe

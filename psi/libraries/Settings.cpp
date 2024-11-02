@@ -1,13 +1,10 @@
 #include "Settings.hpp"
 
-#include <functional>
-
 //default values
 //values from 0 - 1
 float Settings::general_audio = 1;
 //values from 0 - 100
 float Settings::ui_audio = 20;
-
 
 void Settings::initialize()
 {//this function is meant to load database, general volume level etc.
