@@ -35,7 +35,12 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 void MainMenuState::update()
 {
 	//update appearance on the hover state
-	buttonNext.updateAppearance(buttonNext.getHovered(), 255, 0, 100);
+	//zielony - 00F0B5
+	//roz / czerwien - F61067
+	//zolty - F4D35E
+	//niebieski - 3993DD
+	//buttonNext.updateAppearance(buttonNext.getHovered(), "00F0B5");
+	buttonNext.updateAppearanceWithBaseColor(buttonNext.getHovered(), "F61067", "00F0B5");
 }
 
 //function rendering screen

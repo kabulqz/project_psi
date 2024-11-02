@@ -95,7 +95,7 @@ void Button::setHovered(bool isHovered)
 	}
 }
 
-void Button::updateAppearance(bool isHovered, int R, int G, int B)
+void Button::updateAppearance(bool isHovered, const std::string& hexColor)
 {
 	if(hovered != isHovered)
 	{
@@ -104,6 +104,10 @@ void Button::updateAppearance(bool isHovered, int R, int G, int B)
 
 	float elapsed = hoverClock.getElapsedTime().asSeconds();
 	float alpha = std::min(elapsed / hoverDuration, 1.0f);
+
+	int R = std::stoi(hexColor.substr(0, 2), nullptr, 16);
+	int G = std::stoi(hexColor.substr(2, 2), nullptr, 16);
+	int B = std::stoi(hexColor.substr(4, 2), nullptr, 16);
 
 	//determine color to use
 	sf::Color newColor;
@@ -127,6 +131,53 @@ void Button::updateAppearance(bool isHovered, int R, int G, int B)
 	}
 
 	//apply color to all sprites
+	applyColorToSprites(newColor);
+}
+
+void Button::updateAppearanceWithBaseColor(bool isHovered, const std::string& baseHexColor, const std::string& targetHexColor)
+{
+	if (hovered != isHovered)
+	{
+		setHovered(isHovered);
+	}
+
+	float elapsed = hoverClock.getElapsedTime().asSeconds();
+	float alpha = std::min(elapsed / hoverDuration, 1.0f);
+
+	// Parse base color from baseHexColor (starting from white)
+	int baseR = std::stoi(baseHexColor.substr(0, 2), nullptr, 16);
+	int baseG = std::stoi(baseHexColor.substr(2, 2), nullptr, 16);
+	int baseB = std::stoi(baseHexColor.substr(4, 2), nullptr, 16);
+
+	// Parse target color from targetHexColor
+	int targetR = std::stoi(targetHexColor.substr(0, 2), nullptr, 16);
+	int targetG = std::stoi(targetHexColor.substr(2, 2), nullptr, 16);
+	int targetB = std::stoi(targetHexColor.substr(4, 2), nullptr, 16);
+
+	// Determine color to use
+	sf::Color newColor;
+	if (this->hovered)
+	{
+		// Transition from the base color to the target color when hovered
+		newColor = sf::Color(
+			static_cast<sf::Uint8>(baseR + (targetR - baseR) * alpha),
+			static_cast<sf::Uint8>(baseG + (targetG - baseG) * alpha),
+			static_cast<sf::Uint8>(baseB + (targetB - baseB) * alpha),
+			255
+		);
+	}
+	else
+	{
+		// Transition from the target color back to the base color
+		newColor = sf::Color(
+			static_cast<sf::Uint8>(targetR + (baseR - targetR) * alpha),
+			static_cast<sf::Uint8>(targetG + (baseG - targetG) * alpha),
+			static_cast<sf::Uint8>(targetB + (baseB - targetB) * alpha),
+			255
+		);
+	}
+
+	// Apply color to all sprites
 	applyColorToSprites(newColor);
 }
 
