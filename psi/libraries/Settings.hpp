@@ -16,11 +16,12 @@ class Game;
 class Settings {
 public:
 	//values from 0 -1
-	static float general_audio;
+	float general_audio;
 	//values from 0 - 100
-	static float ui_audio;
+	float ui_audio;
 	//database
 	sqlite3* database;
 
-	static void initialize();
+	//this function is meant to load database, general volume level etc.
+	void initialize();
 };

@@ -32,14 +32,23 @@ private:
 	bool hovered;
 	//duration to change color
 	float hoverDuration = 0.22f;
-	void applyColorToSprites(const sf::Color& color);
+	//font and text holders
+	sf::Text buttonText;
+	sf::Font buttonFont;
+	//indicates if the button is clickable
+	bool enabled;
 public:
 	sf::Clock hoverClock;
 	Button(const int& pos_x, const int& pos_y, int buttonWidth, int buttonHeight, const std::string& path_to_file);
-	void display(sf::RenderWindow& window) const;
+	void setEnabled(bool isEnabled);
+	bool isEnabled() const;
+	void setText(const std::string& text, const std::string& fontPath, unsigned int characterSize);
+	void setHovered(bool isHovered);
 	bool isHovered(const sf::Vector2i& mousePos) const;
+	bool getHovered() const { return hovered; }
 	void updateAppearance(bool isHovered, const std::string& hexColor);
 	void updateAppearanceWithBaseColor(bool isHovered, const std::string& baseHexColor, const std::string& targetHexColor);
-	void setHovered(bool isHovered);
-	bool getHovered() const { return hovered; }
+	void display(sf::RenderWindow& window) const;
+	void setColor(const sf::Color& color);
+	void setColor(const std::string& hexColor);
 };

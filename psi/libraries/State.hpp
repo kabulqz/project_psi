@@ -13,6 +13,6 @@ public:
 	virtual void update() = 0;
 	//function rendering screen
 	virtual void render(sf::RenderWindow& window) = 0;
-	void handleHoverState(Button& button, bool isCurrentlyHovered);
+	static void handleHoverState(Button& button, bool isCurrentlyHovered);
 	virtual ~State() = default;
 };
