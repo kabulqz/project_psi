@@ -6,8 +6,10 @@
 #include <sqlite3.h>
 #include <iostream>
 #include <string.h>
-#include <queue>
 #include <memory>
+#include <thread>
+#include <queue>
+#include <map>
 
 //this class is defined here for Game States to manage it in .cpp files
 //all functions from "State" family should be written in .cpp
@@ -19,6 +21,9 @@ public:
 	float general_audio;
 	//values from 0 - 100
 	float ui_audio;
+	float alert_audio;
+	float environment_audio;
+	float music_audio;
 	//database
 	sqlite3* database;
 

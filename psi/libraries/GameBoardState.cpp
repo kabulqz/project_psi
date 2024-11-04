@@ -7,7 +7,7 @@ GameBoardState::GameBoardState(Game* game) : game(game)
 }
 
 //handler for specific windows to appear in the main frame 
-void GameBoardState::handleInput(sf::RenderWindow& window, EventManager& eventManager)
+void GameBoardState::handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager)
 {
 	while (eventManager.hasEvents())
 	{

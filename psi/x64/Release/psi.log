@@ -1,7 +1,7 @@
-﻿  Button.cpp
+﻿  SoundManager.cpp
   Trwa generowanie kodu
-  0 of 2807 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+  2 of 3045 functions (<0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    82 functions had inline decision re-evaluated but remain unchanged
   Zakończono generowanie kodu
   psi.vcxproj -> C:\Users\Maciej\Desktop\VS - my projects\github\project_psi\x64\Release\psi.exe

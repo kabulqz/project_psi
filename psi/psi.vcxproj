@@ -141,6 +141,7 @@
     <ClCompile Include="libraries\GameCardState.cpp" />
     <ClCompile Include="libraries\MainMenuState.cpp" />
     <ClCompile Include="libraries\Settings.cpp" />
+    <ClCompile Include="libraries\SoundManager.cpp" />
     <ClCompile Include="libraries\State.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\SQLite\include\sqlite3.c" />
@@ -156,6 +157,7 @@
     <ClInclude Include="libraries\libraries.hpp" />
     <ClInclude Include="libraries\MainMenuState.hpp" />
     <ClInclude Include="libraries\Settings.hpp" />
+    <ClInclude Include="libraries\SoundManager.hpp" />
     <ClInclude Include="libraries\State.hpp" />
     <ClInclude Include="src\SQLite\include\sqlite3.h" />
   </ItemGroup>

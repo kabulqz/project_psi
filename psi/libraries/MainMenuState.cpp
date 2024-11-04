@@ -13,7 +13,7 @@ loadWindow(500, 20, 760, 680, PATH_TO_BORDERS_FOLDER + "panel-border-025.png")
 {
 	this->options = Options::LOGO;
 	continueButton.setText("Continue", "src/img/antiquity-print.ttf", 20);
-	continueButton.setEnabled(false);
+	continueButton.setEnabled(true);
 	newGameButton.setText("New Game", "src/img/antiquity-print.ttf", 20);
 	newGameButton.setEnabled(true);
 	loadGameButton.setText("Load Game", "src/img/antiquity-print.ttf", 20);
@@ -26,7 +26,7 @@ loadWindow(500, 20, 760, 680, PATH_TO_BORDERS_FOLDER + "panel-border-025.png")
 }
 
 //Handler for specific windows to appear in the main frame 
-void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventManager)
+void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager)
 {
 	this->mousePos = sf::Mouse::getPosition(window);
 
@@ -41,6 +41,7 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 			if(continueButton.isHovered(mousePos) && continueButton.isClickable())
 			{
 				game->changeState(std::make_unique<GameBoardState>(game));
+				soundManager.playSound("Continue");
 				std::cout << "changed state to Board Game\n";
 			}
 			else if(exitToDesktopButton.isHovered(mousePos) && exitToDesktopButton.isClickable())

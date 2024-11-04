@@ -14,6 +14,7 @@ private:
 	sf::RenderWindow window;
 	Settings settings;
 	EventManager eventManager;
+	SoundManager soundManager;
 public:
 	Game();
 	//function to change between states

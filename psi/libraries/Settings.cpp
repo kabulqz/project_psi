@@ -5,9 +5,12 @@ void Settings::initialize()
 {
 	//default values
 	//values from 0 - 1
-	this->general_audio = 1;
+	general_audio = 1;
 	//values from 0 - 100
-	this->ui_audio = 20;
+	ui_audio = 20;
+	alert_audio = 20;
+	environment_audio = 30;
+	music_audio = 50;
 
 	//img database for skills and cards generally
 	//https://chatgpt.com/share/6718f803-c458-8002-b648-1b4b630eaf9a
