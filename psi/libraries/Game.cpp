@@ -80,7 +80,8 @@ int Game::run()
 			}
 			else if (event.type == sf::Event::MouseButtonPressed)
 			{
-				std::cout << "mouse button clicked\n";
+				sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+				std::cout << "mouse button clicked at x: "<<mousePos.x <<", y: "<<mousePos.y<<"\n";
 				//click3.ogg
 				mouseClick.play();
 			}

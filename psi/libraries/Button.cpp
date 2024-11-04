@@ -1,7 +1,7 @@
 #include "Button.hpp"
 
 //Constructor for initializing the Button object
-Button::Button(const int& pos_x, const int& pos_y, int buttonWidth, int buttonHeight, const std::string& path_to_file) : width(buttonWidth), height(buttonHeight), position{ pos_x, pos_y }, hovered(false), enabled(true)
+Button::Button(const int& pos_x, const int& pos_y, int buttonWidth, int buttonHeight, const std::string& path_to_file) : width(buttonWidth), height(buttonHeight), position{ pos_x, pos_y }, hovered(false), enabled(true), visible(true)
 {
 	//loading .png file
 	if (!buttonTexture.loadFromFile(path_to_file))
@@ -46,30 +46,30 @@ void Button::setUpCornerSprites(int pos_x, int pos_y)
 void Button::setUpBorderSprites(int pos_x, int pos_y)
 {
 	//Calculate scaling factors for the top/bottom and left/right borders
-	float verticalScale = (height - 48) / 16.0f;
-	float horizontalScale = (width - 48) / 16.0f;
+	float verticalScale = (height - 48) / 8.0f;
+	float horizontalScale = (width - 48) / 8.0f;
 
 	//Top border sprite
 	topBorder.setTexture(buttonTexture);
-	topBorder.setTextureRect(sf::IntRect(16, 0, 16, 24));
+	topBorder.setTextureRect(sf::IntRect(20, 0, 8, 24));
 	topBorder.setPosition(static_cast<float>(pos_x + 24), static_cast<float>(pos_y));
 	topBorder.setScale(horizontalScale, 1);
 
 	//Bottom border sprite
 	bottomBorder.setTexture(buttonTexture);
-	bottomBorder.setTextureRect(sf::IntRect(16, 24, 16, 24));
+	bottomBorder.setTextureRect(sf::IntRect(20, 24, 8, 24));
 	bottomBorder.setPosition(static_cast<float>(pos_x + 24), static_cast<float>(pos_y + height - 24));
 	bottomBorder.setScale(horizontalScale, 1);
 
 	//Left border sprite
 	leftBorder.setTexture(buttonTexture);
-	leftBorder.setTextureRect(sf::IntRect(0, 16, 24, 16));
+	leftBorder.setTextureRect(sf::IntRect(0, 20, 24, 8));
 	leftBorder.setPosition(static_cast<float>(pos_x), static_cast<float>(pos_y + 24));
 	leftBorder.setScale(1, verticalScale);
 
 	//Right border sprite
 	rightBorder.setTexture(buttonTexture);
-	rightBorder.setTextureRect(sf::IntRect(24, 16, 24, 16));
+	rightBorder.setTextureRect(sf::IntRect(24, 20, 24, 8));
 	rightBorder.setPosition(static_cast<float>(pos_x + width - 24), static_cast<float>(pos_y + 24));
 	rightBorder.setScale(1, verticalScale);
 }
@@ -83,6 +83,16 @@ void Button::setEnabled(bool isEnabled)
 bool Button::isEnabled() const
 {
 	return enabled;
+}
+
+void Button::setVisible(bool isVisible)
+{
+	visible = isVisible;
+}
+
+bool Button::isVisible() const
+{
+	return visible;
 }
 
 //Method to set the text on the button
@@ -125,7 +135,7 @@ bool Button::isHovered(const sf::Vector2i& mousePos) const
 }
 
 //Method to update the button's appearance when hovered or not
-void Button::updateAppearance(bool isHovered, const std::string& hexColor)
+void Button::updateAppearance(const std::string& hexColor)
 {
 	//Check if the button is enabled
 	if (!enabled)
@@ -134,12 +144,6 @@ void Button::updateAppearance(bool isHovered, const std::string& hexColor)
 		sf::Color disabledColor(52, 58, 64);
 		setColor(disabledColor);
 		return;
-	}
-
-	//Check if the hovered state has changed
-	if(hovered != isHovered)
-	{
-		setHovered(isHovered);
 	}
 
 	//Calculate the transition alpha based on hover duration
@@ -179,7 +183,7 @@ void Button::updateAppearance(bool isHovered, const std::string& hexColor)
 }
 
 //Method to update the appearance of the button using a base and target color
-void Button::updateAppearanceWithBaseColor(bool isHovered, const std::string& baseHexColor, const std::string& targetHexColor)
+void Button::updateAppearanceWithBaseColor(const std::string& baseHexColor, const std::string& targetHexColor)
 {
 	//Check if the button is enabled
 	if (!enabled)
@@ -188,12 +192,6 @@ void Button::updateAppearanceWithBaseColor(bool isHovered, const std::string& ba
 		sf::Color disabledColor(52, 58, 64);
 		setColor(disabledColor);
 		return;
-	}
-
-	//Check if the hovered state has changed
-	if (hovered != isHovered)
-	{
-		setHovered(isHovered);
 	}
 
 	//Calculate the transition alpha based on hover duration
@@ -237,22 +235,31 @@ void Button::updateAppearanceWithBaseColor(bool isHovered, const std::string& ba
 }
 
 //Method to draw the button on the window
-void Button::display(sf::RenderWindow& window) const
+void Button::display(sf::RenderWindow& window)
 {
-	//Draw corner sprites
-	window.draw(topLeft);
-	window.draw(topRight);
-	window.draw(bottomLeft);
-	window.draw(bottomRight);
+	if (visible)
+	{
+		if(!enabled)
+		{
+			//Set the color to dark gray if the button is disabled
+			sf::Color disabledColor(52, 58, 64);
+			setColor(disabledColor);
+		}
+		//Draw corner sprites
+		window.draw(topLeft);
+		window.draw(topRight);
+		window.draw(bottomLeft);
+		window.draw(bottomRight);
 
-	//Draw border sprites
-	window.draw(topBorder);
-	window.draw(bottomBorder);
-	window.draw(leftBorder);
-	window.draw(rightBorder);
+		//Draw border sprites
+		window.draw(topBorder);
+		window.draw(bottomBorder);
+		window.draw(leftBorder);
+		window.draw(rightBorder);
 
-	//Draw the button text
-	window.draw(buttonText);
+		//Draw the button text
+		window.draw(buttonText);
+	}
 }
 
 //Method to apply a given color to all button sprites
@@ -289,4 +296,31 @@ void Button::setColor(const std::string& hexColor)
 	rightBorder.setColor(color);
 
 	buttonText.setFillColor(color);
+}
+
+//Method to handle mouse on screen and hover states
+void Button::handleHoverState(sf::Vector2i mousePosition)
+{
+	if (this->isHovered(mousePosition))
+	{
+		if (!this->getHovered())
+		{
+			this->hoverClock.restart();
+			this->setHovered(true);
+		}
+	}
+	else
+	{
+		if (this->getHovered())
+		{
+			this->hoverClock.restart();
+			this->setHovered(false);
+		}
+	}
+}
+
+sf::FloatRect Button::getBounds() const
+{
+	return {static_cast<float>(position.x), static_cast<float>(position.y), static_cast<float>(width), static_cast<float>(height)
+	};
 }

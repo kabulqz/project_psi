@@ -31,24 +31,30 @@ private:
 	Position position;
 	bool hovered;
 	//duration to change color
+	sf::Clock hoverClock;
 	float hoverDuration = 0.22f;
 	//font and text holders
 	sf::Text buttonText;
 	sf::Font buttonFont;
-	//indicates if the button is clickable
+	//indicates if the button is clickable or if it is visible
 	bool enabled;
+	bool visible;
 public:
-	sf::Clock hoverClock;
 	Button(const int& pos_x, const int& pos_y, int buttonWidth, int buttonHeight, const std::string& path_to_file);
 	void setEnabled(bool isEnabled);
 	bool isEnabled() const;
+	void setVisible(bool isVisible);
+	bool isVisible() const;
 	void setText(const std::string& text, const std::string& fontPath, unsigned int characterSize);
 	void setHovered(bool isHovered);
 	bool isHovered(const sf::Vector2i& mousePos) const;
 	bool getHovered() const { return hovered; }
-	void updateAppearance(bool isHovered, const std::string& hexColor);
-	void updateAppearanceWithBaseColor(bool isHovered, const std::string& baseHexColor, const std::string& targetHexColor);
-	void display(sf::RenderWindow& window) const;
+	bool isClickable() const { return (enabled && visible); }
+	void updateAppearance(const std::string& hexColor);
+	void updateAppearanceWithBaseColor(const std::string& baseHexColor, const std::string& targetHexColor);
+	void display(sf::RenderWindow& window);
 	void setColor(const sf::Color& color);
 	void setColor(const std::string& hexColor);
+	void handleHoverState(sf::Vector2i mousePosition);
+	sf::FloatRect getBounds() const;
 };
