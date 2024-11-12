@@ -5,6 +5,7 @@
 class SoundManager
 {
 private:
+	//Enum to categorize sound effects
 	enum sfxType
 	{
 		UI,
@@ -13,10 +14,10 @@ private:
 		MUSIC
 	};
 	std::map<std::string, sf::SoundBuffer> soundBuffers;
+	std::map<std::string, std::unique_ptr<sf::Music>> musicTracks;
 	std::map<std::string, sfxType> soundTypes;
 	void playSoundInternal(const std::string& soundName);
 	void loadSound(const std::string& name, const std::string& filePath, sfxType type);
-	//Enum to categorize sound effects
 	//values from 0 -1
 	float& generalVolume;
 	//values from 0 - 100

@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Audio.hpp>
+#include <windows.h>
 #include <sqlite3.h>
 #include <iostream>
 #include <string.h>
@@ -10,6 +11,16 @@
 #include <thread>
 #include <queue>
 #include <map>
+
+inline std::string color(const std::string& hex_color, const std::string& data)
+{
+	int r = std::stoi(hex_color.substr(0, 2), nullptr, 16);
+	int g = std::stoi(hex_color.substr(2, 2), nullptr, 16);
+	int b = std::stoi(hex_color.substr(4, 2), nullptr, 16);
+	std::string out = "\033[38;2;" + std::to_string(r) + ";" + std::to_string(g) + ";" + std::to_string(b) + "m" + data
+		+ "\033[0m";
+	return out;
+}
 
 //this class is defined here for Game States to manage it in .cpp files
 //all functions from "State" family should be written in .cpp

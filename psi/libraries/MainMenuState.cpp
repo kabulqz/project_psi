@@ -17,7 +17,7 @@ loadWindow(500, 20, 760, 680, PATH_TO_BORDERS_FOLDER + "panel-border-025.png")
 	newGameButton.setText("New Game", "src/img/antiquity-print.ttf", 20);
 	newGameButton.setEnabled(true);
 	loadGameButton.setText("Load Game", "src/img/antiquity-print.ttf", 20);
-	loadGameButton.setEnabled(false);
+	loadGameButton.setEnabled(true);
 	settingsButton.setText("Settings", "src/img/antiquity-print.ttf", 20);
 	settingsButton.setEnabled(true);
 	exitToDesktopButton.setText("Exit", "src/img/antiquity-print.ttf", 20);
@@ -34,20 +34,53 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 	while(eventManager.hasEvents())
 	{
 		sf::Event event = eventManager.popEvent();
-		// Handle other events, such as changing the state or closing the window
-		// Example: if (event.type == sf::Event::MouseButtonPressed) { ... }
 		if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
 		{
-			if(continueButton.isHovered(mousePos) && continueButton.isClickable())
+			if (continueButton.isHovered(mousePos) && continueButton.isClickable())
 			{
 				game->changeState(std::make_unique<GameBoardState>(game));
 				soundManager.playSound("Continue");
-				std::cout << "changed state to Board Game\n";
+				std::cout << color("00F0B5", "changed state to Board Game\n");
+				std::cout << color("3993DD", "continue last from the save\n");
 			}
-			else if(exitToDesktopButton.isHovered(mousePos) && exitToDesktopButton.isClickable())
+			else if (newGameButton.isHovered(mousePos) && newGameButton.isClickable())
+			{
+				game->changeState(std::make_unique<GameBoardState>(game));
+				soundManager.playSound("Continue");
+				soundManager.playSound("Continue");
+				std::cout << color("00F0B5", "changed state to Board Game\n");
+				std::cout << color("3993DD", "started new gameplay\n");
+			}
+			else if (loadGameButton.isHovered(mousePos) && loadGameButton.isClickable())
+			{
+				if (options != Options::SAVES) // Change loadingWindow to SAVES
+				{
+					std::cout << "changed loadingWindow screen to " << color("F4D35E", "SAVES\n");
+					options = Options::SAVES;
+				}
+				else //options==SAVES so go back to LOGO
+				{
+					std::cout << "changed loadingWindow screen to " << color("F4D35E", "LOGO\n");
+					options = Options::LOGO;
+				}
+			}
+			else if(settingsButton.isHovered(mousePos) && settingsButton.isClickable())
+			{
+				if (options != Options::SETTINGS) // Change loadingWindow to SETTINGS
+				{
+					std::cout << "changed loadingWindow screen to " << color("F4D35E", "SETTINGS\n");
+					options = Options::SETTINGS;
+				}
+				else //options==SETTINGS so go back to LOGO
+				{
+					std::cout << "changed loadingWindow screen to " << color("F4D35E", "LOGO\n");
+					options = Options::LOGO;
+				}
+			}
+			else if (exitToDesktopButton.isHovered(mousePos) && exitToDesktopButton.isClickable())
 			{
 				window.close();
-				std::cout << "closed window by exit to desktop button\n";
+				std::cout << color("F61067", "closed window by exit to desktop button\n");
 			}
 		}
 	}
