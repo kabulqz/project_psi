@@ -10,6 +10,8 @@
 #include <iostream>
 #include <string.h>
 #include <vector>
+#include <cctype>
+#include <random>
 #include <memory>
 #include <thread>
 #include <queue>

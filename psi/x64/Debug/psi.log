@@ -1,4 +1,878 @@
-﻿  Game.cpp
-  Settings.cpp
+﻿  AbilityTreeState.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\include\filesystem(12): warning STL4038: The contents of <filesystem> are available only with C++17 or later.
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,55): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,55): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,55): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,55): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,55): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/AbilityTreeState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,39): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,39): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,39): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,39): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,39): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/AbilityTreeState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,61): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,61): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,61): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,61): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,61): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/AbilityTreeState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,45): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,45): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,45): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,45): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,45): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/AbilityTreeState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,67): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,67): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,67): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,67): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,67): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/AbilityTreeState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,45): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,45): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,45): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,45): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,45): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/AbilityTreeState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,61): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,61): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,61): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,61): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,61): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/AbilityTreeState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,39): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,39): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,39): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,39): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,39): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/AbilityTreeState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/AbilityTreeState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/AbilityTreeState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/AbilityTreeState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/AbilityTreeState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/AbilityTreeState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/AbilityTreeState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/AbilityTreeState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/AbilityTreeState.cpp”)
+  
+  Game.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\include\filesystem(12): warning STL4038: The contents of <filesystem> are available only with C++17 or later.
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,55): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,55): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,55): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,55): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,55): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/Game.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,39): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,39): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,39): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,39): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,39): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/Game.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,61): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,61): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,61): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,61): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,61): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/Game.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,45): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,45): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,45): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,45): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,45): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/Game.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,67): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,67): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,67): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,67): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,67): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/Game.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,45): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,45): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,45): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,45): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,45): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/Game.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,61): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,61): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,61): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,61): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,61): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/Game.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,39): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,39): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,39): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,39): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,39): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/Game.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/Game.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/Game.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/Game.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/Game.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/Game.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/Game.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/Game.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/Game.cpp”)
+  
+  GameBoardState.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\include\filesystem(12): warning STL4038: The contents of <filesystem> are available only with C++17 or later.
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,55): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,55): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,55): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,55): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,55): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameBoardState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,39): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,39): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,39): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,39): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,39): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameBoardState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,61): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,61): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,61): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,61): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,61): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameBoardState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,45): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,45): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,45): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,45): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,45): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameBoardState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,67): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,67): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,67): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,67): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,67): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameBoardState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,45): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,45): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,45): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,45): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,45): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameBoardState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,61): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,61): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,61): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,61): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,61): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameBoardState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,39): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,39): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,39): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,39): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,39): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameBoardState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameBoardState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameBoardState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameBoardState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameBoardState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameBoardState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameBoardState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameBoardState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameBoardState.cpp”)
+  
+  GameCardState.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\include\filesystem(12): warning STL4038: The contents of <filesystem> are available only with C++17 or later.
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,55): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,55): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,55): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,55): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,55): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameCardState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,39): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,39): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,39): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,39): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,39): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameCardState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,61): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,61): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,61): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,61): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,61): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameCardState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,45): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,45): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,45): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,45): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,45): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameCardState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,67): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,67): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,67): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,67): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,67): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameCardState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,45): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,45): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,45): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,45): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,45): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameCardState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,61): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,61): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,61): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,61): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,61): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameCardState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,39): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,39): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,39): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,39): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,39): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameCardState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameCardState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameCardState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameCardState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameCardState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameCardState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameCardState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameCardState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/GameCardState.cpp”)
+  
+  MainMenuState.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\include\filesystem(12): warning STL4038: The contents of <filesystem> are available only with C++17 or later.
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,55): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,55): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,55): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,55): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,55): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/MainMenuState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,39): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,39): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,39): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,39): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,39): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/MainMenuState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,61): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,61): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,61): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,61): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,61): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/MainMenuState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,45): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,45): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,45): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,45): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,45): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/MainMenuState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,67): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,67): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,67): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,67): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,67): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/MainMenuState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,45): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,45): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,45): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,45): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,45): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/MainMenuState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,61): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,61): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,61): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,61): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,61): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/MainMenuState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,39): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,39): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,39): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,39): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,39): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/MainMenuState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/MainMenuState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/MainMenuState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/MainMenuState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/MainMenuState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/MainMenuState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/MainMenuState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/MainMenuState.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         ]
+  (kompilowanie pliku źródłowego „libraries/MainMenuState.cpp”)
+  
+  main.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\include\filesystem(12): warning STL4038: The contents of <filesystem> are available only with C++17 or later.
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,55): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,55): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,55): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,55): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,55): warning C4244:         ]
+  (kompilowanie pliku źródłowego „main.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,39): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,39): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,39): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,39): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(43,39): warning C4244:         ]
+  (kompilowanie pliku źródłowego „main.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,61): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,61): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,61): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,61): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,61): warning C4244:         ]
+  (kompilowanie pliku źródłowego „main.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,45): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,45): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,45): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,45): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(44,45): warning C4244:         ]
+  (kompilowanie pliku źródłowego „main.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,67): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,67): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,67): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,67): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,67): warning C4244:         ]
+  (kompilowanie pliku źródłowego „main.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,45): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,45): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,45): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,45): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(45,45): warning C4244:         ]
+  (kompilowanie pliku źródłowego „main.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,61): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,61): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,61): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,61): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,61): warning C4244:         ]
+  (kompilowanie pliku źródłowego „main.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,39): warning C4244: "argument": konwersja z "unsigned int" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,39): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,39): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,39): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(46,39): warning C4244:         ]
+  (kompilowanie pliku źródłowego „main.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,58): warning C4244:         ]
+  (kompilowanie pliku źródłowego „main.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(49,41): warning C4244:         ]
+  (kompilowanie pliku źródłowego „main.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,64): warning C4244:         ]
+  (kompilowanie pliku źródłowego „main.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(50,47): warning C4244:         ]
+  (kompilowanie pliku źródłowego „main.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,70): warning C4244:         ]
+  (kompilowanie pliku źródłowego „main.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(51,47): warning C4244:         ]
+  (kompilowanie pliku źródłowego „main.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,64): warning C4244:         ]
+  (kompilowanie pliku źródłowego „main.cpp”)
+  
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         with
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:             T=unsigned int
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         ]
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         and
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         [
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:             T=float
+D:\Project_PSI\psi\psi\libraries\TileMap.hpp(52,41): warning C4244:         ]
+  (kompilowanie pliku źródłowego „main.cpp”)
+  
   Generowanie kodu...
-  psi.vcxproj -> C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\x64\Debug\psi.exe
+  psi.vcxproj -> D:\Project_PSI\psi\x64\Debug\psi.exe

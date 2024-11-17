@@ -158,6 +158,7 @@
     <ClInclude Include="libraries\Settings.hpp" />
     <ClInclude Include="libraries\SoundManager.hpp" />
     <ClInclude Include="libraries\State.hpp" />
+    <ClInclude Include="libraries\TileMap.hpp" />
     <ClInclude Include="src\SQLite\include\sqlite3.h" />
   </ItemGroup>
   <ItemGroup>
