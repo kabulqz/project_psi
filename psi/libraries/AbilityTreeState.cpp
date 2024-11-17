@@ -7,7 +7,7 @@ AbilityTreeState::AbilityTreeState(Game* game) : game(game)
 }
 
 //handler for specific windows to appear in the main frame 
-void AbilityTreeState::handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager)
+void AbilityTreeState::handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager, sqlite3*& database)
 {
 	while (eventManager.hasEvents())
 	{

@@ -5,8 +5,11 @@
 #include <SFML/Audio.hpp>
 #include <windows.h>
 #include <sqlite3.h>
+
+#include <filesystem>
 #include <iostream>
 #include <string.h>
+#include <vector>
 #include <memory>
 #include <thread>
 #include <queue>

@@ -7,7 +7,7 @@ GameCardState::GameCardState(Game* game) : game(game)
 }
 
 //handler for specific windows to appear in the main frame 
-void GameCardState::handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager)
+void GameCardState::handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager, sqlite3*& database)
 {
 	while (eventManager.hasEvents())
 	{

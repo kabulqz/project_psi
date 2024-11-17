@@ -17,7 +17,7 @@ sf::Event EventManager::popEvent()
 {
 	if (events.empty())
 	{
-		return sf::Event();
+		return {};
 	}
 
 	sf::Event event = events.front();

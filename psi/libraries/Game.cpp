@@ -13,6 +13,18 @@ soundManager(settings.general_audio, settings.ui_audio, settings.environment_aud
 		exit(-1);
 	}
 	window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+	//SFML cursor & cursor style
+	sf::Image cursorImage;
+	if (!cursorImage.loadFromFile("src/img/cursor.png"))
+	{
+		exit(-1);
+	}
+	sf::Cursor cursor;
+	if (!cursor.loadFromPixels(cursorImage.getPixelsPtr(), sf::Vector2u(32, 32), sf::Vector2u(0, 0)))
+	{
+		exit(-1);
+	}
+	window.setMouseCursor(cursor);
 }
 
 //function to change between states
@@ -31,28 +43,6 @@ int Game::run()
 	settings.initialize();
 	soundManager.loadSounds();
 
-	//database
-	int exit = sqlite3_open("test.db", &settings.database);
-
-	if (exit)
-	{
-		std::cerr << "Error opening SQLite database\n" << sqlite3_errmsg(settings.database);
-		return exit;
-	}
-
-	std::cout << "Opened SQLite database successfully\n";
-	sqlite3_close(settings.database);
-
-	//SFML cursor & cursor style
-	sf::Image cursorImage;
-	if (cursorImage.loadFromFile("src/img/cursor.png"))
-	{
-		sf::Cursor cursor;
-		if (cursor.loadFromPixels(cursorImage.getPixelsPtr(), sf::Vector2u(32, 32), sf::Vector2u(0, 0)))
-		{
-			window.setMouseCursor(cursor);
-		}
-	}
 
 	//SFML window main loop
 	while (window.isOpen())
@@ -77,10 +67,10 @@ int Game::run()
 
 			eventManager.pushEvent(event);
 		}
-		currentState->handleInput(window, eventManager, soundManager);
+		currentState->handleInput(window, eventManager, soundManager, settings.database);
 		currentState->update();
 		currentState->render(window);
 	}
-
+	
 	return 0;
 }

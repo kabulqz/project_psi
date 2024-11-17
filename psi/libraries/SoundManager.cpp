@@ -9,11 +9,9 @@ void SoundManager::playSoundInternal(const std::string& soundName)
 {
 	//Set the volume level depending on the sound type
 	sfxType type = soundTypes[soundName];
-	float volumeLevel = 100.0f; //Default value
 	if (type == MUSIC)
 	{
 		std::unique_ptr<sf::Music>& music = musicTracks[soundName];
-		volumeLevel = musicVolume;
 		music->setVolume(generalVolume * musicVolume);
 
 		music->play();
@@ -26,6 +24,7 @@ void SoundManager::playSoundInternal(const std::string& soundName)
 	}
 	else
 	{
+		float volumeLevel = 100.0f;
 		sf::Sound sound;
 		sound.setBuffer(soundBuffers[soundName]);
 

@@ -9,7 +9,7 @@ class State
 {
 public:
 	//handler for specific windows to appear in the main frame 
-	virtual void handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager) = 0;
+	virtual void handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager, sqlite3*& database) = 0;
 	//updater for elements corresponding to specific screen
 	virtual void update() = 0;
 	//function rendering screen

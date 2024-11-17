@@ -26,10 +26,10 @@ loadWindow(500, 20, 760, 680, PATH_TO_BORDERS_FOLDER + "panel-border-025.png")
 }
 
 //Handler for specific windows to appear in the main frame 
-void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager)
+void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager, sqlite3*& database)
 {
 	this->mousePos = sf::Mouse::getPosition(window);
-
+	
 	//Process events from the event manager
 	while(eventManager.hasEvents())
 	{
