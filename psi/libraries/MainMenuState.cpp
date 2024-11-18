@@ -19,11 +19,16 @@ bool MainMenuState::hasSaves()
 
 	for (int i = 0; i < MAX_NUMBER_OF_SAVES; i++)
 	{
-		if (saveArr[i] == 1) saveIsExisting = true;
+		if (saveArr[i] == 1) {
+			saveIsExisting = true; 
+		}
 	}
 
 	return saveIsExisting;
 }
+
+
+
 
 const std::string PATH_TO_BORDERS_FOLDER = "src/img/borders/";
 
@@ -33,7 +38,15 @@ newGameButton(20, 140, 250, 100, PATH_TO_BORDERS_FOLDER + "panel-border-019.png"
 loadGameButton(20, 260, 250, 100, PATH_TO_BORDERS_FOLDER + "panel-border-019.png"),
 settingsButton(20, 380, 250, 100, PATH_TO_BORDERS_FOLDER + "panel-border-019.png"),
 exitToDesktopButton(20, 600, 250, 100, PATH_TO_BORDERS_FOLDER + "panel-border-019.png"),
-loadWindow(500, 20, 760, 680, PATH_TO_BORDERS_FOLDER + "panel-border-025.png")
+loadWindow(500, 20, 760, 680, PATH_TO_BORDERS_FOLDER + "panel-border-025.png"),
+sav1Button(545,85,330,130,PATH_TO_BORDERS_FOLDER + "panel-border-019.png"),
+sav2Button(545, 225, 330, 130, PATH_TO_BORDERS_FOLDER + "panel-border-019.png"),
+sav3Button(545, 365, 330, 130, PATH_TO_BORDERS_FOLDER + "panel-border-019.png"),
+sav4Button(545, 505, 330, 130, PATH_TO_BORDERS_FOLDER + "panel-border-019.png"),
+sav5Button(895, 85, 330, 130, PATH_TO_BORDERS_FOLDER + "panel-border-019.png"),
+sav6Button(895, 225, 330, 130, PATH_TO_BORDERS_FOLDER + "panel-border-019.png"),
+sav7Button(895, 365, 330, 130, PATH_TO_BORDERS_FOLDER + "panel-border-019.png"),
+sav8Button(895, 505, 330, 130, PATH_TO_BORDERS_FOLDER + "panel-border-019.png")
 {
 	this->options = Options::LOGO;
 	continueButton.setText("Continue", "src/img/antiquity-print.ttf", 20);
@@ -46,8 +59,28 @@ loadWindow(500, 20, 760, 680, PATH_TO_BORDERS_FOLDER + "panel-border-025.png")
 	settingsButton.setEnabled(true);
 	exitToDesktopButton.setText("Exit", "src/img/antiquity-print.ttf", 20);
 	exitToDesktopButton.setEnabled(true);
-	loadWindow.setEnabled(false);
+
+	sav1Button.setText("save1", "src/img/antiquity-print.ttf", 20);
+	sav2Button.setText("save2", "src/img/antiquity-print.ttf", 20);
+	sav3Button.setText("save3", "src/img/antiquity-print.ttf", 20);
+	sav4Button.setText("save4", "src/img/antiquity-print.ttf", 20);
+	sav5Button.setText("save5", "src/img/antiquity-print.ttf", 20);
+	sav6Button.setText("save6", "src/img/antiquity-print.ttf", 20);
+	sav7Button.setText("save7", "src/img/antiquity-print.ttf", 20);
+	sav8Button.setText("save8", "src/img/antiquity-print.ttf", 20);
+	
+	for (int i = 0; i < 8; i++) {
+		if (saveArr[i] == 1) {
+			saveButtons[i]->setEnabled(true);
+		}
+		else {
+			saveButtons[i]->setEnabled(false);
+		}
+	}
+
 }
+
+
 
 //Handler for specific windows to appear in the main frame 
 void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager, sqlite3*& database)
@@ -69,18 +102,25 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 			}
 			else if (newGameButton.isHovered(mousePos) && newGameButton.isClickable())
 			{
-				game->changeState(std::make_unique<GameBoardState>(game));
-				soundManager.playSound("Continue");
-				soundManager.playSound("Continue");
-				std::cout << color("00F0B5", "changed state to Board Game\n");
-				std::cout << color("3993DD", "started new gameplay\n");
+				if (options != Options::SAVES_WRITE) // Change loadingWindow to SAVES
+				{
+					std::cout << "changed loadingWindow screen to " << color("F4D35E", "SAVES\n");
+					options = Options::SAVES_WRITE;
+
+				}
+				else //options==SAVES so go back to LOGO
+				{
+					std::cout << "changed loadingWindow screen to " << color("F4D35E", "LOGO\n");
+					options = Options::LOGO;
+//////////////////////////
+				}
 			}
 			else if (loadGameButton.isHovered(mousePos) && loadGameButton.isClickable())
 			{
-				if (options != Options::SAVES) // Change loadingWindow to SAVES
+				if (options != Options::SAVES_LOAD) // Change loadingWindow to SAVES
 				{
 					std::cout << "changed loadingWindow screen to " << color("F4D35E", "SAVES\n");
-					options = Options::SAVES;
+					options = Options::SAVES_LOAD;
 				}
 				else //options==SAVES so go back to LOGO
 				{
@@ -106,6 +146,39 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 				window.close();
 				std::cout << color("F61067", "closed window by exit to desktop button\n");
 			}
+			else {
+				for (int i = 0; i < 8; i++) {
+					if (options == Options::SAVES_WRITE) {
+						if (saveButtons[i]->isHovered(mousePos) && !saveButtons[i]->isEnabled() && saveButtons[i]->isVisible()) {
+							Save save;
+							save.write(i + 1);
+							game->setSave(save);
+							game->changeState(std::make_unique<GameBoardState>(game));
+							soundManager.playSound("Continue");
+							std::cout << color("00F0B5", "changed state to Board Game\n");
+							std::cout << color("3993DD", "continue last from the save\n");
+						}
+
+					}
+					else if (options == Options::SAVES_LOAD)
+					{
+						if (saveArr[i] == 1) {
+							if (saveButtons[i]->isHovered(mousePos) && saveButtons[i]->isClickable()) {
+								Save save;
+								this->game->setSave(save.load(i + 1));
+								game->changeState(std::make_unique<GameBoardState>(game));
+								soundManager.playSound("Continue");
+								std::cout << color("00F0B5", "changed state to Board Game\n");
+								std::cout << color("3993DD", "continue last from the save\n");
+
+							}
+						}
+					}
+				}
+			}
+			
+			
+
 		}
 	}
 }
@@ -176,10 +249,19 @@ void MainMenuState::render(sf::RenderWindow& window)
 			//Draw the logo sprite
 			window.draw(logoSp);
 		}
-		else if(options == Options::SAVES)
+		else if(options == Options::SAVES_LOAD || options == Options::SAVES_WRITE)
 		{
-			
+			sav1Button.display(window);
+			sav2Button.display(window);
+			sav3Button.display(window);
+			sav4Button.display(window);
+			sav5Button.display(window);
+			sav6Button.display(window);
+			sav7Button.display(window);
+			sav8Button.display(window);
+
 		}
+
 		else if(options == Options::SETTINGS)
 		{
 			

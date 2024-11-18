@@ -14,11 +14,9 @@ void Settings::initialize()
 	std::cout << "Opened SQLite database successfully\n";
 
 
-	//database .sav management
-	//https://chatgpt.com/share/6739e40d-b30c-8002-a601-ddb60dfd0bb1
+
 
 	//initializing volume settings from save - if not on save then standard
-
 	//default values
 	//values from 0 - 1
 	general_audio = 0.5f;

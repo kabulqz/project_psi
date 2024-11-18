@@ -15,12 +15,31 @@ private:
 	Button settingsButton;
 	Button exitToDesktopButton;
 	Button loadWindow;
+	
+	Button sav1Button;
+	Button sav2Button;
+	Button sav3Button;
+	Button sav4Button;
+	Button sav5Button;
+	Button sav6Button;
+	Button sav7Button;
+	Button sav8Button;
+	
+	std::array<Button*, 8> saveButtons = {
+		&sav1Button, &sav2Button,
+		&sav3Button, &sav4Button,
+		&sav5Button, &sav6Button,
+		&sav7Button, &sav8Button
+	};
+
 	enum class Options
 	{
 		LOGO,
-		SAVES,
+		SAVES_WRITE,
+		SAVES_LOAD,
 		SETTINGS
 	};
+
 	Options options;
 
 	bool saveArr[MAX_NUMBER_OF_SAVES] = { 0 };
@@ -32,6 +51,7 @@ public:
 	void update() override;
 	//function rendering screen
 	void render(sf::RenderWindow& window) override;
+
 
 	MainMenuState(Game* game);
 };

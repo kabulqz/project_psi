@@ -15,6 +15,7 @@
 #include <random>
 #include <thread>
 #include <queue>
+#include <array>
 #include <map>
 
 inline std::string color(const std::string& hex_color, const std::string& data)
