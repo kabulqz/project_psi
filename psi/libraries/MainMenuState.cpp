@@ -1,6 +1,30 @@
 #include "MainMenuState.hpp"
 #include "Game.hpp"
 
+bool MainMenuState::hasSaves()
+{
+	bool saveIsExisting = false;
+
+	const std::string save_path = "src/saves/";
+
+	for (int i = 0; i < MAX_NUMBER_OF_SAVES; i++)
+	{
+		std::string filename = "save" + std::to_string(i + 1) + ".sav";
+		if (std::filesystem::exists(save_path + filename))
+		{
+			std::cout << "file \"" + color("AEC5EB", filename) + "\" is existing\n";
+			saveArr[i] = 1;
+		}
+	}
+
+	for (int i = 0; i < MAX_NUMBER_OF_SAVES; i++)
+	{
+		if (saveArr[i] == 1) saveIsExisting = true;
+	}
+
+	return saveIsExisting;
+}
+
 const std::string PATH_TO_BORDERS_FOLDER = "src/img/borders/";
 
 MainMenuState::MainMenuState(Game* game) : game(game),
@@ -13,11 +37,11 @@ loadWindow(500, 20, 760, 680, PATH_TO_BORDERS_FOLDER + "panel-border-025.png")
 {
 	this->options = Options::LOGO;
 	continueButton.setText("Continue", "src/img/antiquity-print.ttf", 20);
-	continueButton.setEnabled(true);
+	continueButton.setEnabled(this->hasSaves());
 	newGameButton.setText("New Game", "src/img/antiquity-print.ttf", 20);
 	newGameButton.setEnabled(true);
 	loadGameButton.setText("Load Game", "src/img/antiquity-print.ttf", 20);
-	loadGameButton.setEnabled(true);
+	loadGameButton.setEnabled(this->hasSaves());
 	settingsButton.setText("Settings", "src/img/antiquity-print.ttf", 20);
 	settingsButton.setEnabled(true);
 	exitToDesktopButton.setText("Exit", "src/img/antiquity-print.ttf", 20);
@@ -28,8 +52,8 @@ loadWindow(500, 20, 760, 680, PATH_TO_BORDERS_FOLDER + "panel-border-025.png")
 //Handler for specific windows to appear in the main frame 
 void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager, sqlite3*& database)
 {
-	this->mousePos = sf::Mouse::getPosition(window);
-	
+	mousePos = sf::Mouse::getPosition(window);
+
 	//Process events from the event manager
 	while(eventManager.hasEvents())
 	{

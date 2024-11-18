@@ -35,19 +35,3 @@ void Settings::closeDB()
 	sqlite3_close(database);
 	std::cout << "Closed SQLite database successfully\n";
 }
-
-bool Settings::hasSaves() {
-	sqlite3_stmt* stmt;
-	const char* query = "SELECT COUNT(*) FROM saves";
-	sqlite3_prepare_v2(database, query, -1, &stmt, nullptr);
-	bool result = false;
-	if (sqlite3_step(stmt) == SQLITE_ROW) {
-		result = sqlite3_column_int(stmt, 0) > 0;
-	}
-	sqlite3_finalize(stmt);
-	return result;
-}
-
-sqlite3* Settings::getDatabase() {
-	return database;
-}

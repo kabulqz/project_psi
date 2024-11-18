@@ -1,3 +1,5 @@
+#pragma warning(disable : 4244)
+
 #include "Settings.hpp"
 
 //To, co tu widzisz nie jest moj¹ prac¹. Nie jestem nawet do koñca pewny jak to dzia³a.

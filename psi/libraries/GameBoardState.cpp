@@ -42,12 +42,12 @@ GameBoardState::GameBoardState(Game* game) : game(game)
 	using u32 = uint_least32_t;
 	using engine = std::mt19937;
 
-	std::random_device os_seed;
+	//std::random_device os_seed;
 	//const u32 seed = os_seed();
-	game->setSeed(os_seed());
+	Save save = game->getSave();
 
-	engine generator(game->getSeed());
-	std::cout << "Level seed: " << game->getSeed() << std::endl;
+	engine generator(save.getSeed());
+	std::cout << "Level seed: " << save.getSeed() << std::endl;
 	std::uniform_int_distribution< u32 > startpoint(startX, startY);
 	std::uniform_int_distribution< u32 > dimentions(rectMin, rectMax);
 
