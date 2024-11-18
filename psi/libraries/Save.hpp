@@ -2,7 +2,6 @@
 
 #include "Settings.hpp"
 #include "Card.hpp"
-#include <fstream>;
 
 class Save {
 private:
@@ -17,11 +16,7 @@ public:
         this->seed = seed;
     }
 
-    void write(int slot);
+    void write(int slot) const;
     Save& load(int slot);
-
-    
-
-
+    static std::optional<std::filesystem::file_time_type>  getLastWriteTime(int slot);
 };
-

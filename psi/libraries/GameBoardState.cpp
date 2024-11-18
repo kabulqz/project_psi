@@ -47,7 +47,7 @@ GameBoardState::GameBoardState(Game* game) : game(game)
 	Save save = game->getSave();
 
 	engine generator(save.getSeed());
-	std::cout << "Level seed: " << save.getSeed() << std::endl;
+	std::cout << "Level seed: " << save.getSeed() << "\n";
 	std::uniform_int_distribution< u32 > startpoint(startX, startY);
 	std::uniform_int_distribution< u32 > dimentions(rectMin, rectMax);
 
@@ -125,6 +125,10 @@ void GameBoardState::handleInput(sf::RenderWindow& window, EventManager& eventMa
 		sf::Event event = eventManager.popEvent();
 		// Handle other events, such as changing the state or closing the window
 		// Example: if (event.type == sf::Event::MouseButtonPressed) { ... }
+		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+		{
+			game->changeState(std::make_unique<MainMenuState>(game));
+		}
 	}
 }
 
