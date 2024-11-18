@@ -5,6 +5,7 @@
 #include "AbilityTreeState.hpp"
 #include "GameBoardState.hpp"
 #include "GameCardState.hpp"
+#include "Save.hpp"
 
 
 class Game
@@ -15,10 +16,20 @@ private:
 	Settings settings;
 	EventManager eventManager;
 	SoundManager soundManager;
+	uint_least32_t  seed;
+	
 public:
+	uint_least32_t getSeed() {
+		return seed;
+	}
+	void setSeed(uint_least32_t seed) {
+		this->seed = seed;
+	}
+	
 	Game();
 	//function to change between states
 	void changeState(std::unique_ptr<State> newState);
 	//main function
 	int run();
+	
 };

@@ -140,6 +140,7 @@
     <ClCompile Include="libraries\GameBoardState.cpp" />
     <ClCompile Include="libraries\GameCardState.cpp" />
     <ClCompile Include="libraries\MainMenuState.cpp" />
+    <ClCompile Include="libraries\Save.cpp" />
     <ClCompile Include="libraries\Settings.cpp" />
     <ClCompile Include="libraries\SoundManager.cpp" />
     <ClCompile Include="libraries\State.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="libraries\GameBoardState.hpp" />
     <ClInclude Include="libraries\GameCardState.hpp" />
     <ClInclude Include="libraries\MainMenuState.hpp" />
+    <ClInclude Include="libraries\Save.hpp" />
     <ClInclude Include="libraries\Settings.hpp" />
     <ClInclude Include="libraries\SoundManager.hpp" />
     <ClInclude Include="libraries\State.hpp" />

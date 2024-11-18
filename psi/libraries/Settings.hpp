@@ -5,12 +5,13 @@
 #include <SFML/Audio.hpp>
 #include <windows.h>
 #include <sqlite3.h>
-
 #include <filesystem>
 #include <iostream>
 #include <string.h>
 #include <vector>
 #include <memory>
+#include<cctype>
+#include<random>
 #include <thread>
 #include <queue>
 #include <map>
@@ -40,7 +41,9 @@ public:
 	float music_audio;
 	//database
 	sqlite3* database;
-
 	//this function is meant to load database, general volume level etc.
 	void initialize();
+	void closeDB();
+	bool hasSaves();
+	sqlite3* getDatabase();
 };

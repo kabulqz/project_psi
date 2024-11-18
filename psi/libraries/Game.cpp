@@ -42,6 +42,7 @@ int Game::run()
 	//loading sounds
 	settings.initialize();
 	soundManager.loadSounds();
+	
 
 
 	//SFML window main loop
@@ -71,6 +72,7 @@ int Game::run()
 		currentState->update();
 		currentState->render(window);
 	}
-	
+
+	settings.closeDB();
 	return 0;
 }
