@@ -69,25 +69,26 @@ sav8Button(895, 505, 330, 130, PATH_TO_BORDERS_FOLDER + "panel-border-019.png")
 {
 	bool hasSaves = this->hasSaves();
 	this->options = Options::LOGO;
-	continueButton.setText("Continue", "src/img/antiquity-print.ttf", 20);
+	continueButton.setText("Continue", "src/img/antiquity-print.ttf", 21);
 	continueButton.setEnabled(hasSaves);
-	newGameButton.setText("New Game", "src/img/antiquity-print.ttf", 20);
+	newGameButton.setText("New Game", "src/img/antiquity-print.ttf", 21);
 	newGameButton.setEnabled(true);
-	loadGameButton.setText("Load Game", "src/img/antiquity-print.ttf", 20);
+	loadGameButton.setText("Load Game", "src/img/antiquity-print.ttf", 21);
 	loadGameButton.setEnabled(hasSaves);
-	settingsButton.setText("Settings", "src/img/antiquity-print.ttf", 20);
+	settingsButton.setText("Settings", "src/img/antiquity-print.ttf", 21);
 	settingsButton.setEnabled(true);
-	exitToDesktopButton.setText("Exit", "src/img/antiquity-print.ttf", 20);
+	exitToDesktopButton.setText("Exit", "src/img/antiquity-print.ttf", 21);
 	exitToDesktopButton.setEnabled(true);
 
-	sav1Button.setText("save 1", "src/img/antiquity-print.ttf", 20);
-	sav2Button.setText("save 2", "src/img/antiquity-print.ttf", 20);
-	sav3Button.setText("save 3", "src/img/antiquity-print.ttf", 20);
-	sav4Button.setText("save 4", "src/img/antiquity-print.ttf", 20);
-	sav5Button.setText("save 5", "src/img/antiquity-print.ttf", 20);
-	sav6Button.setText("save 6", "src/img/antiquity-print.ttf", 20);
-	sav7Button.setText("save 7", "src/img/antiquity-print.ttf", 20);
-	sav8Button.setText("save 8", "src/img/antiquity-print.ttf", 20);
+	sav1Button.setText("save 1", "src/img/antiquity-print.ttf", 23);
+	sav2Button.setText("save 2", "src/img/antiquity-print.ttf", 23);
+	sav3Button.setText("save 3", "src/img/antiquity-print.ttf", 23);
+	sav4Button.setText("save 4", "src/img/antiquity-print.ttf", 23);
+	sav5Button.setText("save 5", "src/img/antiquity-print.ttf", 23);
+	sav6Button.setText("save 6", "src/img/antiquity-print.ttf", 23);
+	sav7Button.setText("save 7", "src/img/antiquity-print.ttf", 23);
+	sav8Button.setText("save 8", "src/img/antiquity-print.ttf", 23);
+
 	for (int i = 0; i < 8; i++) {
 		if (saveArr[i] == 1) {
 			saveButtons[i]->setEnabled(true);
@@ -111,7 +112,7 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 		{
 			if (continueButton.isHovered(mousePos) && continueButton.isClickable())
 			{
-				int mostRecentSave = this->getMostRecentSaveSlot();
+				int mostRecentSave = MainMenuState::getMostRecentSaveSlot();
 				if (mostRecentSave != -1)
 				{
 					Save save;
@@ -133,11 +134,26 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 					std::cout << "changed loadingWindow screen to " << color("F4D35E", "SAVES\n");
 					options = Options::SAVES_WRITE;
 
+					for (int i=0;i<MAX_NUMBER_OF_SAVES;i++)
+					{
+						if (saveArr[i] == 0 && !saveButtons[i]->isEnabled())
+						{
+							saveButtons[i]->setEnabled(true);
+						}
+					}
 				}
 				else //options==SAVES so go back to LOGO
 				{
 					std::cout << "changed loadingWindow screen to " << color("F4D35E", "LOGO\n");
 					options = Options::LOGO;
+
+					for (int i = 0; i < MAX_NUMBER_OF_SAVES; i++)
+					{
+						if (saveArr[i] == 0 && saveButtons[i]->isEnabled())
+						{
+							saveButtons[i]->setEnabled(false);
+						}
+					}
 				}
 			}
 			else if (loadGameButton.isHovered(mousePos) && loadGameButton.isClickable())
@@ -146,6 +162,14 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 				{
 					std::cout << "changed loadingWindow screen to " << color("F4D35E", "SAVES\n");
 					options = Options::SAVES_LOAD;
+
+					for (int i = 0; i < MAX_NUMBER_OF_SAVES; i++)
+					{
+						if (saveArr[i] == 0 && saveButtons[i]->isEnabled())
+						{
+							saveButtons[i]->setEnabled(false);
+						}
+					}
 				}
 				else //options==SAVES so go back to LOGO
 				{
@@ -159,6 +183,14 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 				{
 					std::cout << "changed loadingWindow screen to " << color("F4D35E", "SETTINGS\n");
 					options = Options::SETTINGS;
+
+					for (int i = 0; i < MAX_NUMBER_OF_SAVES; i++)
+					{
+						if (saveArr[i] == 0 && saveButtons[i]->isEnabled())
+						{
+							saveButtons[i]->setEnabled(false);
+						}
+					}
 				}
 				else //options==SETTINGS so go back to LOGO
 				{
@@ -168,13 +200,13 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 			}
 			else if (exitToDesktopButton.isHovered(mousePos) && exitToDesktopButton.isClickable())
 			{
-				window.close();
 				std::cout << color("F61067", "closed window by exit to desktop button\n");
+				window.close();
 			}
 			else {
 				for (int i = 0; i < MAX_NUMBER_OF_SAVES; i++) {
 					if (options == Options::SAVES_WRITE) {
-						if (saveButtons[i]->isHovered(mousePos) && (!saveButtons[i]->isEnabled() && saveButtons[i]->isVisible()))
+						if (saveButtons[i]->isHovered(mousePos) && saveButtons[i]->isClickable())
 						{//new save
 							Save save;
 							save.write(i + 1);
@@ -183,7 +215,6 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 							soundManager.playSound("Continue");
 							std::cout << color("00F0B5", "changed state to Board Game\n");
 							std::cout << color("3993DD", "created new save on slot " + std::to_string(i + 1) + "\n");
-
 						}
 						else if (saveButtons[i]->isHovered(mousePos) && saveButtons[i]->isClickable())
 						{//overwrite
@@ -206,7 +237,6 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 								soundManager.playSound("Continue");
 								std::cout << color("00F0B5", "changed state to Board Game\n");
 								std::cout << color("3993DD", "continue last from the save\n");
-
 							}
 						}
 					}
@@ -235,7 +265,6 @@ void MainMenuState::update()
 	newGameButton.updateAppearance("3993DD");
 	loadGameButton.updateAppearance("3993DD");
 	settingsButton.updateAppearance("F4D35E");
-	//testButton.updateAppearanceWithBaseColor("F61067", "00F0B5");
 	exitToDesktopButton.updateAppearance("F61067");
 
 	for (int i = 0; i < MAX_NUMBER_OF_SAVES; i++)
@@ -247,7 +276,14 @@ void MainMenuState::update()
 		}
 		else if (options == Options::SAVES_WRITE)
 		{
-			saveButtons[i]->updateAppearanceWithBaseColor("00F0B5", "F61067");
+			if (saveArr[i] == true && saveButtons[i]->isEnabled())
+			{
+				saveButtons[i]->updateAppearanceWithBaseColor("F4D35E", "F61067");
+			}
+			else
+			{
+				saveButtons[i]->updateAppearanceWithBaseColor("343A40", "00F0B5");
+			}
 		}
 	}
 }
@@ -304,7 +340,6 @@ void MainMenuState::render(sf::RenderWindow& window)
 			sav6Button.display(window);
 			sav7Button.display(window);
 			sav8Button.display(window);
-
 		}
 		else if(options == Options::SETTINGS)
 		{

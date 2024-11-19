@@ -127,7 +127,7 @@
               "RelativeDocumentMoniker": "psi\\libraries\\MainMenuState.hpp",
               "ToolTip": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\MainMenuState.hpp",
               "RelativeToolTip": "psi\\libraries\\MainMenuState.hpp",
-              "ViewState": "AgIAABoAAAAAAAAAAAAIwC4AAAAaAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACQAAAAHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-10-22T15:41:11.856Z",
               "IsPinned": true,
@@ -183,8 +183,7 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-11-18T15:20:05.294Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
@@ -251,7 +250,7 @@
               "RelativeDocumentMoniker": "psi\\libraries\\MainMenuState.cpp",
               "ToolTip": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\MainMenuState.cpp",
               "RelativeToolTip": "psi\\libraries\\MainMenuState.cpp",
-              "ViewState": "AgIAAJ4AAAAAAAAAAAAIwLMAAAAZAAAAAAAAAA==",
+              "ViewState": "AgIAACUBAAAAAAAAAAAmwFUBAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-10-23T17:21:45.661Z",
               "EditorCaption": ""
@@ -302,8 +301,7 @@
               "RelativeToolTip": "psi\\libraries\\Save.cpp",
               "ViewState": "AgIAACsAAAAAAAAAAAAgwEUAAABUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-11-18T15:19:43.987Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-18T15:19:43.987Z"
             }
           ]
         }
