@@ -10,19 +10,19 @@ soundManager(settings.general_audio, settings.ui_audio, settings.environment_aud
 	sf::Image icon;
 	if (!icon.loadFromFile("src/img/icon.png"))
 	{
-		exit(-1);
+		return;
 	}
 	window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 	//SFML cursor & cursor style
 	sf::Image cursorImage;
 	if (!cursorImage.loadFromFile("src/img/cursor.png"))
 	{
-		exit(-1);
+		return;
 	}
 	sf::Cursor cursor;
 	if (!cursor.loadFromPixels(cursorImage.getPixelsPtr(), sf::Vector2u(32, 32), sf::Vector2u(0, 0)))
 	{
-		exit(-1);
+		return;
 	}
 	window.setMouseCursor(cursor);
 }

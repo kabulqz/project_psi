@@ -1,24 +1,54 @@
 #include "MainMenuState.hpp"
 #include "Game.hpp"
 
+std::string MainMenuState::formatFileTime(const std::filesystem::file_time_type& fileTime)
+{
+	auto sctp = std::chrono::time_point_cast<std::chrono::system_clock::duration>(
+		fileTime - std::filesystem::file_time_type::clock::now() + std::chrono::system_clock::now());
+	std::time_t timeT = std::chrono::system_clock::to_time_t(sctp);
+
+	std::tm tm;
+	if (localtime_s(&tm, &timeT) != 0)
+	{
+		throw std::runtime_error("Failed to convert time");
+	}
+
+	std::ostringstream oss;
+	oss << std::put_time(&tm, "%Y-%m-%d %H:%M:%S");
+	return oss.str();
+}
+
 bool MainMenuState::hasSaves()
 {
 	bool saveIsExisting = false;
-	const std::string save_path = "src/saves/";
+	const std::string save_path = std::filesystem::absolute("src/saves/").string();
 
 	for (int i = 0; i < MAX_NUMBER_OF_SAVES; i++)
 	{
 		std::string filename = "save" + std::to_string(i + 1) + ".sav";
-		if (std::filesystem::exists(save_path + filename))
+		std::filesystem::path filepath = save_path + filename;
+		if (std::filesystem::exists(filepath))
 		{
-			std::cout << "file \"" + color("AEC5EB", filename) + "\" is existing\n";
-			saveArr[i] = 1;
+			std::cout << "file \"" + color("AEC5EB", filename) + "\" exists\n";
+			try
+			{
+				auto lastWriteTime = std::filesystem::last_write_time(filepath);
+				std::string formattedTime = formatFileTime(lastWriteTime);
+				std::cout << "Last modified: " + color("F4D35E", formattedTime) << "\n";
+			}
+			catch (const std::exception& e)
+			{
+				std::cerr << "Error retrieving  file time for " << filename << ": " << e.what() << "\n";
+			}
+
+			saveArr[i] = true;
 		}
 	}
 
-	for (int i = 0; i < MAX_NUMBER_OF_SAVES; i++)
+	for (const bool i : saveArr)
 	{
-		if (saveArr[i] == 1) {
+		if (i == 1) 
+		{
 			saveIsExisting = true; 
 		}
 	}
@@ -310,7 +340,7 @@ void MainMenuState::render(sf::RenderWindow& window)
 			if (!logoTx.loadFromFile("src/img/icon.png"))
 			{
 				std::cerr << "Cannot load logo img\n";
-				exit(-1);
+				return;
 			}
 			//Create the sprite for the logo and set the texture
 			sf::Sprite logoSp;

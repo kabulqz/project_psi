@@ -6,13 +6,11 @@ Save::Save()
 	using engine = std::mt19937;
 	std::random_device os_seed;
 	const u32 seed = os_seed();
-	engine generator(seed);
 	this->seed = seed;
 }
 
 void Save::write(int slot) const
 {
-
 	std::filesystem::path filepath = "src/saves/save" + std::to_string(slot) + ".sav";
 
 	std::ofstream file(filepath);

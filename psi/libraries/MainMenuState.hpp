@@ -43,6 +43,7 @@ private:
 	Options options;
 
 	bool saveArr[MAX_NUMBER_OF_SAVES] = { 0 };
+	static std::string formatFileTime(const std::filesystem::file_time_type& fileTime);
 	bool hasSaves();
 	static int getMostRecentSaveSlot();
 public:

@@ -99,9 +99,4 @@
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="error_codes.txt">
-      <Filter>Pliki zasobów</Filter>
-    </Text>
-  </ItemGroup>
 </Project>

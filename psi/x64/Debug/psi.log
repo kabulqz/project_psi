@@ -1,2 +1,5 @@
-﻿  MainMenuState.cpp
+﻿  Game.cpp
+  MainMenuState.cpp
+  SoundManager.cpp
+  Generowanie kodu...
   psi.vcxproj -> C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\x64\Debug\psi.exe

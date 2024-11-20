@@ -56,7 +56,7 @@ void SoundManager::loadSound(const std::string& name, const std::string& filePat
 		if (!music->openFromFile(filePath))
 		{
 			std::cerr << "Error loading music file " << filePath << "\n";
-			exit(-3);
+			return;
 		}
 		musicTracks[name] = std::move(music); // Store the unique_ptr in the map
 	}
@@ -66,7 +66,7 @@ void SoundManager::loadSound(const std::string& name, const std::string& filePat
 		if (!buffer.loadFromFile(filePath))
 		{
 			std::cerr << "Error loading sound file " << filePath << "\n";
-			exit(-3);
+			return;
 		}
 		soundBuffers[name] = buffer;
 	}
@@ -80,7 +80,7 @@ void SoundManager::playSound(const std::string& soundName)
 	if (soundBuffers.find(soundName) == soundBuffers.end())
 	{
 		std::cerr << "Sound not found: " << soundName << "\n";
-		exit(-3);
+		return;
 	}
 
 	//Use thread to play the sound
