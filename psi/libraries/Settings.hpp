@@ -6,6 +6,8 @@
 #include <windows.h>
 #include <sqlite3.h>
 
+#include <unordered_set>
+#include <functional>
 #include <filesystem>
 #include <iostream>
 #include <string.h>

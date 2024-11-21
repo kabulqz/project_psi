@@ -26,12 +26,9 @@ public:
 	//main function
 	int run();
 
-	Save getSave() { return save; }
+	Save getSave() { return this->save; }
 	void setSave(Save& save)
 	{
 		this->save = save;
 	}
 };
-
-
-

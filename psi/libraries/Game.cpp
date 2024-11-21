@@ -42,8 +42,6 @@ int Game::run()
 	//loading sounds
 	settings.initialize();
 	soundManager.loadSounds();
-	
-
 
 	//SFML window main loop
 	while (window.isOpen())

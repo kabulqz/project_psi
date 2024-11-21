@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Settings.hpp"
-#include "Card.hpp"
+
+class Card;
 
 enum class TypeOfGeneration
 {
@@ -19,7 +20,7 @@ class Save {
 private:
 	uint_least32_t  seed;
 	TypeOfGeneration mapGenerationType;
-	std::vector<Card> deck;
+	std::vector<Card*> deck;
 public:
 	Save();//default constructor, so new save
 	//Save(save data type from saves array in main menu state);
