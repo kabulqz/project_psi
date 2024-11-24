@@ -1,85 +1,39 @@
 #pragma once
 
 #include "Settings.hpp"
-#include "Game.hpp"
-#include "GameEvent.hpp"
+#include "EffectBehaviors.hpp"
 
-enum class EffectCategory
-{
-	HEAL,		   // Restores health
-	DAMAGE,		   // Deals damage
-	BUFF,          // Increases stats or provides bonuses
-	DEBUFF,        // Reduces stats or applies penalties
-	DRAW,          // Draws cards
-	DISCARD,       // Forces discard
-	SUMMON,        // Summons units or items
-	STATUS_APPLY,  // Applies a specific status (e.g. bleeding, poison)
-	STATUS_REMOVE, // Removes a specific status
-	MANA_MODIFY,   // Adjusts mana (e.g., add or drain mana)
-	KEYWORD_ADD,   // Adds a keyword to a card
-	SILENCE,       // Disables card effects, buffs, statuses, keywords
-	SPECIAL        // Any unique or custom effect
-};
-
-enum class Stat
-{
-	HEALTH,
-	ATTACK,
-	MANA
-};
-
-enum class EffectType
-{
-	GLOBAL,
-	TARGETED
-};
-
-enum class TargetType
-{
-	NONE,
-	SELF,
-	SINGLE,
-	MULTIPLE,
-	RANDOM_SINGLE,
-	RANDOM_MULTIPLE,
-};
-
-class Card;
-
-// Base effect class
 class Effect
 {
-protected:
-	std::string description;
-	int value;
-	EffectCategory effectCategory;
-	EffectType effectType;
-	TargetType targetType;
-	bool isPermanent;
-	int duration;
-	GameEvent triggersOn;
-	Stat statistic;
+private:
+	EffectTrigger trigger;						// When the effect is triggered
+	EffectCategory category;					// Category of the effect
+	TargetMode targetMode;						// Mode of the target
+	TargetGroup targetGroup;					// Group of the target
+	TargetZone targetZone;						// Zone of the target
+	int value;									// Numerical value of the effect
+	EffectDuration durationType;				// Effect duration type
+	int numberOfTurns;							// Number of turns left (for TURN_BASED)
+	bool isActive;								// Whether the effect is still active
+	std::unique_ptr<IEffectBehavior> behavior;	// Behavior of the effect
+	void setBehavior(EffectCategory category);	// Sets the behavior of the effect
+
+	std::string description;					// Description of the effect
+
+	//If chosen ON_GAME_EVENT, the following attribute is needed
+	GameEvent gameEvent;						// Game event that triggers the effect, only with ON_GAME_EVENT trigger
+
+	// If chosen BUFF or DEBUFF, the following attributes are needed
+	StatType statType;							// Type of stat to buff/debuff
+
 public:
-	Effect(Game* game, int val, EffectCategory category, EffectType type, TargetType target, bool permanent = false, int duration = 1, GameEvent trigger = GameEvent::PLAYER_PLAY);
+	// Default constructor, generates new effect
+	Effect();
+	// Constructor with parameters, generates effect based on parameters (reading from save)
+	Effect(EffectTrigger trigger, EffectCategory category, TargetMode targetMode, TargetGroup targetGroup, TargetZone targetZone, int value, EffectDuration durationType, int numberOfTurns, bool isActive);
 	~Effect() = default;
 
-	// Apply effect to target
-	virtual void apply(Card& target) = 0;
-
-	// Check if effect applies under certain conditions
-	bool isTriggered(const GameEvent& gameEvent) const;
-
-	// Accessors
-	int getValue() const;
-	EffectCategory getCategory() const;
-	EffectType getType() const;
-	TargetType getTargetType() const;
-	bool isPermanentEffect() const;
-	int getDuration() const;
-
-	// Effect description for debugging or display purposes
-	std::string getDescription() const;
-
-	// Decrease duration of temporary effect
-	void decreaseDuration();
+	void applyEffect(Target& target);			// Applies the effect to the target
+	EffectTrigger getTrigger() const;			// Returns the trigger of the effect
+	GameEvent getGameEventTrigger() const;		// Returns the game event of the effect
 };

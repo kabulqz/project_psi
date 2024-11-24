@@ -1,10 +1,10 @@
 #pragma once
 
 #include "Settings.hpp"
+#include "Card.hpp"
+#include "Hero.hpp"
 
-class Card;
-
-enum class TypeOfGeneration
+enum class TypeOfMapGeneration
 {
 	FUTURE,
 	CLASS,
@@ -19,8 +19,8 @@ enum class TypeOfGeneration
 class Save {
 private:
 	uint_least32_t  seed;
-	TypeOfGeneration mapGenerationType;
-	std::vector<Card*> deck;
+	TypeOfMapGeneration mapGenerationType;
+	Hero player;
 public:
 	Save();//default constructor, so new save
 	//Save(save data type from saves array in main menu state);

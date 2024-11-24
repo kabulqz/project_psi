@@ -11,3 +11,4 @@ copilot-chat.log
 **/copilot-chat/
 **/*.copilot
 **/copilot-chat.log
+/.vs/psi/CopilotIndices

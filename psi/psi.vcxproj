@@ -141,6 +141,7 @@
     <ClCompile Include="libraries\Button.cpp" />
     <ClCompile Include="libraries\Card.cpp" />
     <ClCompile Include="libraries\Effect.cpp" />
+    <ClCompile Include="libraries\EffectBehaviors.cpp" />
     <ClCompile Include="libraries\EventManager.cpp" />
     <ClCompile Include="libraries\Game.cpp" />
     <ClCompile Include="libraries\GameBoardState.cpp" />
@@ -158,11 +159,13 @@
     <ClInclude Include="libraries\Button.hpp" />
     <ClInclude Include="libraries\Card.hpp" />
     <ClInclude Include="libraries\Effect.hpp" />
+    <ClInclude Include="libraries\EffectBehaviors.hpp" />
     <ClInclude Include="libraries\EventManager.hpp" />
     <ClInclude Include="libraries\Game.hpp" />
     <ClInclude Include="libraries\GameBoardState.hpp" />
     <ClInclude Include="libraries\GameCardState.hpp" />
-    <ClInclude Include="libraries\GameEvent.hpp" />
+    <ClInclude Include="libraries\Definitions.hpp" />
+    <ClInclude Include="libraries\Hero.hpp" />
     <ClInclude Include="libraries\MainMenuState.hpp" />
     <ClInclude Include="libraries\Save.hpp" />
     <ClInclude Include="libraries\Settings.hpp" />

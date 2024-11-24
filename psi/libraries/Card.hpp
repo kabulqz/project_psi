@@ -3,32 +3,67 @@
 #include "Settings.hpp"
 #include "Effect.hpp"
 
-class Card
+class Card : public Target
 {
-	// Common attributes
+	//Visual elements of the card
 	std::string back;
 	std::string background;
 	std::string portrait;
 	std::string cardface;
-	// List of keywords
-	std::unordered_set<std::string> keywords;
-	// Specific to Unit cards
-	// List of statuses
-	std::map<std::string, int> statuses;
-	// List of effects
-	std::vector<std::shared_ptr<Effect*>> effects;
-	bool isOnBoard = false;
+
+	// Common attributes of the card
+	TargetZone zone;									// Where the card is located
+	int energyCost = 0;									// Mana cost of the card
+
+	std::unordered_set<Keyword> keywords;				// List of keywords
+	std::map<Status, int> statuses;						// List of statuses
+	std::vector<std::shared_ptr<Effect>> effects;		// List of effects
+	bool isOnBoard = false;								// Flag	to track if the card is on the board
 public:
 	Card() = default;
 	~Card() = default;
+	void triggerEffects(const GameEvent& gameEvent, const EffectTrigger& effectTrigger) const;
+	bool isEventTriggered(const GameEvent& gameEvent) const;
+	TargetZone getZone() const;
+	void reduceEnergyCost(int value);
+	void increaseEnergyCost(int value);
+};
 
-	// Methods to manage statuses
-	void addStatus(const std::string& status);
-	void removeStatus(const std::string& status);
-	bool hasStatus(const std::string& status) const;
-	void decrementStatuses();
-	void addEffect(Effect* effect);
-	void removeEffect(Effect* effect);
+class UnitCard : public Card // If 0 health, card is destroyed
+{
+	int baseHealth;
+	int currentHealth;
+	int extraHealth = 0;
+	int baseAttack;
+	int currentAttack;
+	int extraAttack = 0;
+public:
+	void restoreHealth(int value);
+	void increaseHealth(int value);
+	void dealDamage(int value);
+	void decreaseHealth(int value);
+	void increaseAttack(int value);
+	void decreaseAttack(int value);
 
-	void play();
+};
+
+class ItemCard : public Card 
+{
+	int baseDamage;
+	int currentDamage;
+	int extraDamage = 0;
+	int baseDefense;
+	int currentDefense;
+	int extraDefense = 0;
+public:
+	void increaseDamage(int value);
+	void decreaseDamage(int value);
+	void increaseDefense(int value);
+	void decreaseDefense(int value);
+};
+
+class SpellCard : public Card
+{
+public:
+
 };
