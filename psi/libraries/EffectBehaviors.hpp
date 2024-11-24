@@ -111,7 +111,7 @@ public:
 	void Execute(Target& target) override;
 };
 
-// Deck and hand
+// Battlefield and hand cards
 class ShuffleBehavior : public IEffectBehavior
 {
 public:

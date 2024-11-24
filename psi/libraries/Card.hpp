@@ -2,6 +2,7 @@
 
 #include "Settings.hpp"
 #include "Effect.hpp"
+#include "Hero.hpp"
 
 class Card : public Target
 {
@@ -19,12 +20,17 @@ class Card : public Target
 	std::map<Status, int> statuses;						// List of statuses
 	std::vector<std::shared_ptr<Effect>> effects;		// List of effects
 	bool isOnBoard = false;								// Flag	to track if the card is on the board
+	Hero& owner;											// Owner of the card
 public:
 	Card() = default;
 	~Card() = default;
 	void triggerEffects(const GameEvent& gameEvent, const EffectTrigger& effectTrigger) const;
 	bool isEventTriggered(const GameEvent& gameEvent) const;
 	TargetZone getZone() const;
+	void setZone(const TargetZone& zone);
+	bool getIsOnBoard() const;
+	void setIsOnBoard(bool value);
+	Hero* getOwner() const;
 	void reduceEnergyCost(int value);
 	void increaseEnergyCost(int value);
 };

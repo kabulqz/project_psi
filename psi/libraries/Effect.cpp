@@ -55,7 +55,7 @@ void Effect::setBehavior(EffectCategory category)
 Effect::Effect()
 {
 
-	setBehavior(this->category);
+	setBehavior(category);
 }
 
 Effect::Effect(EffectTrigger trigger, EffectCategory category, TargetMode targetMode, TargetGroup targetGroup, TargetZone targetZone, int value, EffectDuration durationType, int numberOfTurns, bool isActive)

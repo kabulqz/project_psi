@@ -146,6 +146,7 @@
     <ClCompile Include="libraries\Game.cpp" />
     <ClCompile Include="libraries\GameBoardState.cpp" />
     <ClCompile Include="libraries\GameCardState.cpp" />
+    <ClCompile Include="libraries\Hero.cpp" />
     <ClCompile Include="libraries\MainMenuState.cpp" />
     <ClCompile Include="libraries\Save.cpp" />
     <ClCompile Include="libraries\Settings.cpp" />

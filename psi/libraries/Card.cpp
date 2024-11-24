@@ -1,7 +1,5 @@
 #include "Card.hpp"
 
-#include <algorithm>
-
 void Card::triggerEffects(const GameEvent& gameEvent, const EffectTrigger& effectTrigger) const
 {
 	for (const auto& effect : effects)
@@ -46,6 +44,26 @@ bool Card::isEventTriggered(const GameEvent& gameEvent) const
 TargetZone Card::getZone() const
 {
 	return zone;
+}
+
+void Card::setZone(const TargetZone& zone)
+{
+	this->zone = zone;
+}
+
+bool Card::getIsOnBoard() const
+{
+	return isOnBoard;
+}
+
+void Card::setIsOnBoard(bool value)
+{
+	isOnBoard = value;
+}
+
+Hero* Card::getOwner() const
+{
+	return &owner;
 }
 
 void Card::reduceEnergyCost(int value)

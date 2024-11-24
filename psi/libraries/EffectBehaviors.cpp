@@ -140,6 +140,45 @@ void SilenceBehavior::Execute(Target& target)
 
 void ShuffleBehavior::Execute(Target& target)
 {
+	if (Card* card = dynamic_cast<Card*>(&target))
+	{
+		Hero* hero = nullptr;
+		// Determine which player's deck to shuffle into
+
+		if (card->getZone() == TargetZone::HAND || card->getZone() == TargetZone::BATTLEFIELD)
+		{
+			// If the cardis from your hand or battlefield, use the hero associated with the card
+			if (Hero* cardOwner = dynamic_cast<Hero*>(card->getOwner()))
+			{
+				hero = cardOwner; // Get the owner of the card
+			}
+		}
+
+		if (hero)
+		{
+			// Remove the card from its current zone (hand or battlefield)
+			if (card->getZone() == TargetZone::HAND)
+			{
+				auto it = std::find(hero->getHand().begin(), hero->getHand().end(), card);
+				if (it != hero->getHand().end())
+				{
+					hero->getHand().erase(it);
+				}
+			}
+			else if (card->getZone() == TargetZone::BATTLEFIELD)
+			{
+				auto it = std::find(hero->getBattlefield().begin(), hero->getBattlefield().end(), card);
+				if (it != hero->getBattlefield().end() && card->getIsOnBoard() == true)
+				{
+					hero->getBattlefield().erase(it);
+				}
+			}
+		}
+
+		hero->shuffleCardIntoTheDeck(card);
+		card->setZone(TargetZone::DECK);
+		card->setIsOnBoard(false);
+	}
 }
 
 void StealBehavior::Execute(Target& target)

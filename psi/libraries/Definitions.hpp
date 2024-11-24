@@ -23,7 +23,6 @@ enum class GameEvent
 	UNIT_KEYWORD_ADD,   // Unit has a keyword added
 	CARD_SHUFFLED,      // Card is shuffled into the deck
 	CARD_STOLEN,        // Card is stolen
-
 };
 
 enum class Keyword

@@ -63,6 +63,9 @@
     <ClCompile Include="libraries\EffectBehaviors.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
+    <ClCompile Include="libraries\Hero.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\SQLite\include\sqlite3.h">
