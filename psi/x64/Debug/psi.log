@@ -1,8 +1,7 @@
 ﻿  AbilityTreeState.cpp
-  Game.cpp
-  GameBoardState.cpp
-  GameCardState.cpp
-  MainMenuState.cpp
-  main.cpp
-  Generowanie kodu...
+C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\psi\libraries\AbilityTreeState.hpp(13,13): warning C4240: użyto niestandardowego rozszerzenia: dostęp do „Ability::unlockStatus” teraz zdefiniowany jako „public”, poprzednio został zdefiniowany jako „private”
+  (kompilowanie pliku źródłowego „libraries/AbilityTreeState.cpp”)
+      C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\psi\libraries\AbilityTreeState.hpp(7,13):
+      zobacz deklarację „Ability::unlockStatus”
+  
   psi.vcxproj -> C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\x64\Debug\psi.exe

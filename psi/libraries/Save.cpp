@@ -16,8 +16,10 @@ Save::Save(const Save& save)
 	this->player = save.player;
 }
 
-void Save::write(int slot) const
+void Save::write(const int slot)
 {
+	this->slot = slot;
+
 	std::filesystem::path filepath = "src/saves/save" + std::to_string(slot) + ".sav";
 
 	std::ofstream file(filepath);
@@ -35,7 +37,7 @@ void Save::write(int slot) const
 
 Save& Save::load(int slot)
 {
-	std::filesystem::path filepath = "src/saves/save" + std::to_string(slot) + ".sav";;
+	std::filesystem::path filepath = "src/saves/save" + std::to_string(slot) + ".sav";
 	std::ifstream file(filepath);
 	if (file.is_open()) {
 		std::string line;
@@ -61,6 +63,40 @@ Save& Save::load(int slot)
 		file.close();
 	}
 	else 
+	{
+		std::cerr << "Save file not found: " << filepath << "\n";
+	}
+	return *this;
+}
+
+Save& Save::load()
+{
+	std::filesystem::path filepath = "src/saves/save" + std::to_string(slot) + ".sav";
+	std::ifstream file(filepath);
+	if (file.is_open()) {
+		std::string line;
+		while (std::getline(file, line))
+		{
+			if (line.starts_with("Seed: "))
+			{
+				std::string fileSeed = line.substr(6); // Extract the seed after "Seed: "
+				try
+				{
+					seed = static_cast<uint_least32_t>(std::stoul(fileSeed));
+				}
+				catch (const std::invalid_argument& e)
+				{
+					std::cerr << "Invalid seed value in save file: " << e.what() << "\n";
+				}
+				catch (const std::out_of_range& e)
+				{
+					std::cerr << "Seed value out of range: " << e.what() << "\n";
+				}
+			}
+		}
+		file.close();
+	}
+	else
 	{
 		std::cerr << "Save file not found: " << filepath << "\n";
 	}

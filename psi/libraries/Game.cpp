@@ -17,7 +17,7 @@ soundManager(settings.general_audio, settings.ui_audio, settings.environment_aud
 	window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 	//SFML cursor & cursor style
 	sf::Image cursorImage;
-	if (!cursorImage.loadFromFile("src/img/cursor.png"))
+	if (!cursorImage.loadFromFile("src/img/cursor_default.png"))
 	{
 		return;
 	}
