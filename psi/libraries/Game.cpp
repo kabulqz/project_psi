@@ -1,10 +1,12 @@
 #include "Game.hpp"
+#include <gl/GL.h>
 
 Game::Game() : window(sf::VideoMode(1280, 720), "Project_PSI", sf::Style::Close),
 soundManager(settings.general_audio, settings.ui_audio, settings.environment_audio, settings.alert_audio, settings.music_audio)
 {
+	window.setActive(true);
 	//Open Game in MainMenuState
-	currentState = std::make_unique<MainMenuState>(this);
+	currentState = std::make_unique<AbilityTreeState>(this);
 	window.setFramerateLimit(60);
 	//SFML window icon
 	sf::Image icon;
@@ -25,6 +27,9 @@ soundManager(settings.general_audio, settings.ui_audio, settings.environment_aud
 		return;
 	}
 	window.setMouseCursor(cursor);
+
+	const char* version = (const char*)glGetString(GL_VERSION);
+	std::cout << "OpenGL version: " << version << "\n";
 }
 
 //function to change between states

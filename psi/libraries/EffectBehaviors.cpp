@@ -122,6 +122,14 @@ void SummonBehavior::Execute(Target& target)
 {
 }
 
+void CastBehavior::Execute(Target& target)
+{
+}
+
+void EquipBehavior::Execute(Target& target)
+{
+}
+
 void DrawBehavior::Execute(Target& target)
 {
 }

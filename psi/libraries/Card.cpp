@@ -14,10 +14,6 @@ void Card::triggerEffects(const GameEvent& gameEvent, const EffectTrigger& effec
 			{
 				
 			}
-			else if (effect->getTrigger() == EffectTrigger::RECURRING)
-			{
-
-			}
 			else if (effect->getTrigger() == EffectTrigger::ON_GAME_EVENT)
 			{
 				if (isEventTriggered(gameEvent))
@@ -69,6 +65,7 @@ Hero* Card::getOwner() const
 void Card::reduceEnergyCost(int value)
 {
 	energyCost -= value;
+	energyCost = std::max(0, energyCost);
 }
 
 void Card::increaseEnergyCost(int value)

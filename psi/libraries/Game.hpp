@@ -27,7 +27,7 @@ public:
 	int run();
 
 	Save getSave() { return this->save; }
-	void setSave(Save& save)
+	void setSave(const Save& save)
 	{
 		this->save = save;
 	}

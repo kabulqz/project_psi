@@ -1,24 +1,51 @@
 #include "Hero.hpp"
 #include "Card.hpp"
 
-Hero::Hero() : deck(), hand(), battlefield()
+Hero::Hero()
 {
 	// Write checks for the deck, hand and battlefield
 	hand.reserve(10);
 	battlefield.reserve(5);
 }
 
-std::stack<Card*>& Hero::getDeck() const
+Hero::Hero(const Hero& hero)
+{
+	maxHealth = hero.maxHealth;
+	currentHealth = hero.currentHealth;
+	maxEnergy = hero.maxEnergy;
+	currentEnergy = hero.currentEnergy;
+	fatigue = hero.fatigue;
+	deck = hero.deck;
+	hand = hero.hand;
+	battlefield = hero.battlefield;
+}
+
+Hero& Hero::operator=(const Hero& hero)
+{
+	if (this == &hero) return *this;
+
+	maxHealth = hero.maxHealth;
+	currentHealth = hero.currentHealth;
+	maxEnergy = hero.maxEnergy;
+	currentEnergy = hero.currentEnergy;
+	fatigue = hero.fatigue;
+	deck = hero.deck;
+	hand = hero.hand;
+	battlefield = hero.battlefield;
+	return *this;
+}
+
+std::stack<Card*> Hero::getDeck() const
 {
 	return deck;
 }
 
-std::vector<Card*>& Hero::getHand() const
+std::vector<Card*> Hero::getHand() const
 {
 	return hand;
 }
 
-std::vector<Card*>& Hero::getBattlefield() const
+std::vector<Card*> Hero::getBattlefield() const
 {
 	return battlefield;
 }
@@ -56,7 +83,7 @@ void Hero::drawCard()
 	}
 }
 
-void Hero::shuffleCardIntoTheDeck(Card* card) const
+void Hero::shuffleCardIntoTheDeck(Card* card)
 {
 	if (!card) return; // For safety
 

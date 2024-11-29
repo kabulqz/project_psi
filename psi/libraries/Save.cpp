@@ -9,6 +9,13 @@ Save::Save()
 	this->seed = seed;
 }
 
+Save::Save(const Save& save)
+{
+	this->seed = save.seed;
+	this->mapGenerationType = save.mapGenerationType;
+	this->player = save.player;
+}
+
 void Save::write(int slot) const
 {
 	std::filesystem::path filepath = "src/saves/save" + std::to_string(slot) + ".sav";
@@ -77,4 +84,14 @@ std::optional<std::filesystem::file_time_type>  Save::getLastWriteTime(int slot)
 	}
 
 	return std::nullopt;
+}
+
+Save& Save::operator=(const Save& save)
+{
+	if (this == &save) return *this;
+
+	this->seed = save.seed;
+	this->mapGenerationType = save.mapGenerationType;
+	this->player = save.player;
+	return *this;
 }

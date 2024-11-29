@@ -10,17 +10,15 @@ class Card : public Target
 	std::string back;
 	std::string background;
 	std::string portrait;
-	std::string cardface;
+	std::string frame;
 
 	// Common attributes of the card
 	TargetZone zone;									// Where the card is located
 	int energyCost = 0;									// Mana cost of the card
 
-	std::unordered_set<Keyword> keywords;				// List of keywords
-	std::map<Status, int> statuses;						// List of statuses
 	std::vector<std::shared_ptr<Effect>> effects;		// List of effects
 	bool isOnBoard = false;								// Flag	to track if the card is on the board
-	Hero& owner;											// Owner of the card
+	Hero& owner;										// Owner of the card
 public:
 	Card() = default;
 	~Card() = default;
@@ -43,6 +41,9 @@ class UnitCard : public Card // If 0 health, card is destroyed
 	int baseAttack;
 	int currentAttack;
 	int extraAttack = 0;
+
+	std::unordered_set<Keyword> keywords;				// List of keywords
+	std::map<Status, int> statuses;						// List of statuses
 public:
 	void restoreHealth(int value);
 	void increaseHealth(int value);

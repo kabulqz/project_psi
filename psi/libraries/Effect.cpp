@@ -31,6 +31,12 @@ void Effect::setBehavior(EffectCategory category)
 	case EffectCategory::SUMMON:
 		behavior = std::make_unique<SummonBehavior>();
 		break;
+	case EffectCategory::CAST:
+		behavior = std::make_unique<CastBehavior>();
+		break;
+	case EffectCategory::EQUIP:
+		behavior = std::make_unique<EquipBehavior>();
+		break;
 	case EffectCategory::DRAW:
 		behavior = std::make_unique<DrawBehavior>();
 		break;

@@ -39,8 +39,9 @@ private:
 	//indicates if the button is clickable or if it is visible
 	bool enabled;
 	bool visible;
+	//background sprite
 public:
-	Button(const int& pos_x, const int& pos_y, int buttonWidth, int buttonHeight, const std::string& path_to_file);
+	Button(const int& pos_x, const int& pos_y, int buttonWidth, int buttonHeight, const std::string& borderPath);
 	void setEnabled(bool isEnabled);
 	bool isEnabled() const;
 	void setVisible(bool isVisible);
@@ -57,4 +58,6 @@ public:
 	void setColor(const std::string& hexColor);
 	void handleHoverState(sf::Vector2i mousePosition);
 	sf::FloatRect getBounds() const;
+	int getWidth() const { return width; }
+	int getHeight() const { return height; }
 };

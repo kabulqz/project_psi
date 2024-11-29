@@ -1,12 +1,12 @@
 #include "Button.hpp"
 
-//Constructor for initializing the Button object
-Button::Button(const int& pos_x, const int& pos_y, int buttonWidth, int buttonHeight, const std::string& path_to_file) : width(buttonWidth), height(buttonHeight), position{ pos_x, pos_y }, hovered(false), enabled(true), visible(true)
+//Constructor for initializing the Button object without a background image
+Button::Button(const int& pos_x, const int& pos_y, int buttonWidth, int buttonHeight, const std::string& borderPath) : width(buttonWidth), height(buttonHeight), position{ pos_x, pos_y }, hovered(false), enabled(true), visible(true)
 {
 	//loading .png file
-	if (!buttonTexture.loadFromFile(path_to_file))
+	if (!buttonTexture.loadFromFile(borderPath))
 	{
-		std::cerr << "Cannot load button from "<<path_to_file<<"\n";
+		std::cerr << "Cannot load button from "<< borderPath <<"\n";
 		return;
 	}
 

@@ -6,14 +6,15 @@
 class Effect
 {
 private:
-	EffectTrigger trigger;						// When the effect is triggered
-	EffectCategory category;					// Category of the effect
-	TargetMode targetMode;						// Mode of the target
-	TargetGroup targetGroup;					// Group of the target
-	TargetZone targetZone;						// Zone of the target
 	int value;									// Numerical value of the effect
+	EffectCategory category;					// Category of the effect
+	EffectTrigger trigger;						// When the effect is triggered
 	EffectDuration durationType;				// Effect duration type
 	int numberOfTurns;							// Number of turns left (for TURN_BASED)
+
+	TargetMode targetMode;						// Mode of the target
+	TargetZone targetZone;						// Zone of the target
+	TargetGroup targetGroup;					// Group of the target
 	bool isActive;								// Whether the effect is still active
 	std::unique_ptr<IEffectBehavior> behavior;	// Behavior of the effect
 	void setBehavior(EffectCategory category);	// Sets the behavior of the effect

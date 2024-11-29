@@ -79,6 +79,20 @@ public:
 	void Execute(Target& target) override;
 };
 
+class CastBehavior : public IEffectBehavior
+{
+public:
+	CastBehavior() {}
+	void Execute(Target& target) override;
+};
+
+class EquipBehavior : public IEffectBehavior
+{
+public:
+	EquipBehavior() {}
+	void Execute(Target& target) override;
+};
+
 // Cards from deck
 class DrawBehavior : public IEffectBehavior
 {

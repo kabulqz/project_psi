@@ -23,6 +23,7 @@ private:
 	Hero player;
 public:
 	Save();//default constructor, so new save
+	Save(const Save& save);
 	//Save(save data type from saves array in main menu state);
 	uint_least32_t getSeed() { return seed; }
 	void setSeed(uint_least32_t seed)
@@ -33,4 +34,5 @@ public:
 	void write(int slot) const;
 	Save& load(int slot);
 	static std::optional<std::filesystem::file_time_type>  getLastWriteTime(int slot);
+	Save& operator=(const Save& save);
 };
