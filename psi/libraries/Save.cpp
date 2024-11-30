@@ -136,10 +136,14 @@ bool Save::loadKeyFromFile(const std::string& keyFilePath)
 	return true;
 }
 
+#ifdef _DEBUG
+	const std::string keyFilePath = "x64/Debug/encryption.key";
+#else
+	const std::string keyFilePath = "x64/Release/encryption.key";
+#endif
+
 Save::Save()
 {
-	const std::string keyFilePath = "x64/Debug/encryption.key";
-
 	// Load the key from file if it exist, otherwise generate a new key and save it to file
 	if (!std::filesystem::exists(keyFilePath))
 	{
