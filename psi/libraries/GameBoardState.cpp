@@ -126,7 +126,7 @@ void GameBoardState::handleInput(sf::RenderWindow& window, EventManager& eventMa
 		// Example: if (event.type == sf::Event::MouseButtonPressed) { ... }
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
 		{
-			game->changeState(std::make_unique<MainMenuState>(game));
+			game->changeState(std::make_unique<AbilityTreeState>(game));
 		}
 	}
 }

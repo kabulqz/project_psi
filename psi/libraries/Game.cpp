@@ -6,7 +6,7 @@ soundManager(settings.general_audio, settings.ui_audio, settings.environment_aud
 {
 	window.setActive(true);
 	//Open Game in MainMenuState
-	currentState = std::make_unique<AbilityTreeState>(this);
+	currentState = std::make_unique<MainMenuState>(this);
 	window.setFramerateLimit(60);
 	//SFML window icon
 	sf::Image icon;
@@ -28,7 +28,7 @@ soundManager(settings.general_audio, settings.ui_audio, settings.environment_aud
 	}
 	window.setMouseCursor(cursor);
 
-	const char* version = (const char*)glGetString(GL_VERSION);
+	const char* version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
 	std::cout << "OpenGL version: " << version << "\n";
 }
 
