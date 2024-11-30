@@ -74,32 +74,39 @@ bool Save::decryptData(const std::vector<unsigned char>& cipherText, const std::
 	std::string& plainText) const
 {
 	EVP_CIPHER_CTX* ctx = EVP_CIPHER_CTX_new();
-	if (!ctx) return false;
+	if (!ctx) {
+		std::cerr << "Failed to create cipher context.\n";
+		return false;
+	}
 
 	if (!EVP_DecryptInit_ex(ctx, EVP_aes_256_cbc(), nullptr, key.data(), iv.data()))
 	{
+		std::cerr << "Failed to initialize decryption.\n";
 		EVP_CIPHER_CTX_free(ctx);
 		return false;
 	}
 
-	std::vector<unsigned char> plainTextBuf(cipherText.size());
+	std::vector<unsigned char> plainTextBuf(cipherText.size() + EVP_MAX_BLOCK_LENGTH);
 	int len = 0;
 	if (!EVP_DecryptUpdate(ctx, plainTextBuf.data(), &len, cipherText.data(), cipherText.size()))
 	{
+		std::cerr << "Failed during decryption update.\n";
 		EVP_CIPHER_CTX_free(ctx);
 		return false;
 	}
+	//
 	int plainTextLen = len;
-
 	if (!EVP_DecryptFinal_ex(ctx, plainTextBuf.data() + len, &len))
 	{
+		std::cerr << "Failed during decryption finalization.\n";
 		EVP_CIPHER_CTX_free(ctx);
 		return false;
 	}
+	//
 	plainTextLen += len;
 	plainTextBuf.resize(plainTextLen);
-
 	plainText.assign(plainTextBuf.begin(), plainTextBuf.end());
+
 	EVP_CIPHER_CTX_free(ctx);
 	return true;
 }
@@ -125,7 +132,8 @@ bool Save::loadKeyFromFile(const std::string& keyFilePath)
 		std::cerr << "Failed to open key for reading.\n";
 		return false;
 	}
-	key.resize(KEY_SIZE);
+
+	key.resize(KEY_SIZE);  // Ensure this size matches the size used during saving
 	keyFile.read(reinterpret_cast<char*>(key.data()), KEY_SIZE);
 	if (keyFile.gcount() != KEY_SIZE)
 	{
@@ -133,17 +141,25 @@ bool Save::loadKeyFromFile(const std::string& keyFilePath)
 		return false;
 	}
 	keyFile.close();
+
+	// Debugging: Check if key is correctly loaded
+	std::cout << "Loaded key: ";
+	for (unsigned char byte : key) {
+		std::cout << std::hex << static_cast<int>(byte) << " ";
+	}
+	std::cout << std::endl;
+
 	return true;
 }
 
-#ifdef _DEBUG
+Save::Save()
+{
+#ifdef DEBUG
 	const std::string keyFilePath = "x64/Debug/encryption.key";
 #else
 	const std::string keyFilePath = "x64/Release/encryption.key";
-#endif
+#endif // DEBUG
 
-Save::Save()
-{
 	// Load the key from file if it exist, otherwise generate a new key and save it to file
 	if (!std::filesystem::exists(keyFilePath))
 	{
@@ -210,7 +226,11 @@ Save::Save()
 
 Save::Save(const Save& save)
 {
+#ifdef DEBUG
 	const std::string keyFilePath = "x64/Debug/encryption.key";
+	#else
+	const std::string keyFilePath = "x64/Release/encryption.key";
+#endif // DEBUG
 
 	// Load the key from file if it exist, otherwise generate a new key and save it to file
 	if (!std::filesystem::exists(keyFilePath))
@@ -290,6 +310,7 @@ Save& Save::load(int slot)
 
 Save& Save::load()
 {
+	std::cout << std::dec;
 	std::filesystem::path filepath = "src/saves/save" + std::to_string(slot) + ".sav";
 	std::ifstream file(filepath, std::ios::binary);
 	if (!file.is_open())
@@ -298,34 +319,40 @@ Save& Save::load()
 		return *this;
 	}
 
+	// Read IV from the file
 	std::vector<unsigned char> iv(IV_SIZE);
 	file.read(reinterpret_cast<char*>(iv.data()), iv.size());
 
+	// Read the rest of the file into cipherText
 	std::vector<unsigned char> cipherText((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
 	file.close();
 
+	// Decrypt the data
 	std::string plainText;
 	if (!decryptData(cipherText, iv, plainText))
 	{
 		std::cerr << "Decryption failed.\n";
 		return *this;
 	}
-
+	std::cout << "Decrypted text: " << plainText << "\n";
+	// Process the decrypted plainText
 	std::istringstream iss(plainText);
 	std::string line;
-	while (std::getline(file, line))
+	while (std::getline(iss, line))  // Process lines from plainText
 	{
 		if (line.starts_with("Seed: "))
 		{
 			// Extract the seed after "Seed: "
 			seed = static_cast<uint_least32_t>(std::stoul(line.substr(6)));
+			std::cout << "Seed: " << seed << "\n";
 		}
-		else if (line.starts_with("Abilites: "))
+		else if (line.starts_with("Abilities: "))
 		{
 			// Extract the abilities after "Abilities: "
 			abilityTree = AbilityTree::deserialize(line.substr(10));
 		}
 	}
+
 	return *this;
 }
 

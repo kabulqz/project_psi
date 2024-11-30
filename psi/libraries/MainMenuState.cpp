@@ -259,7 +259,8 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 					}
 					else if (options == Options::SAVES_LOAD)
 					{
-						if (saveArr[i] == 1) {
+						if (saveArr[i] == 1) 
+						{
 							if (saveButtons[i]->isHovered(mousePos) && saveButtons[i]->isClickable()) {
 								Save save;
 								this->game->setSave(save.load(i + 1));

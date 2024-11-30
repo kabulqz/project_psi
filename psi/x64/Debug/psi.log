@@ -1,2 +1,4 @@
-﻿  AbilityTreeState.cpp
+﻿  Save.cpp
+C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\psi\libraries\Save.cpp(54,127): warning C4267: "argument": konwersja z "size_t" do "int", możliwa utrata danych
+C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\psi\libraries\Save.cpp(91,91): warning C4267: "argument": konwersja z "size_t" do "int", możliwa utrata danych
   psi.vcxproj -> C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\x64\Debug\psi.exe
