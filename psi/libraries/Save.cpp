@@ -1,8 +1,158 @@
 #include "Save.hpp"
 #include "AbilityTree.hpp"
 
+bool Save::generateKey()
+{
+	try
+	{
+		key.resize(KEY_SIZE);
+		if (!RAND_bytes(key.data(), KEY_SIZE))
+		{
+			std::cerr << "Error: RAND_bytes failed to generate key.\n";
+			return false;
+		}
+		/*
+		std::cout << "Generated key: ";
+		for (const auto& byte : key)
+		{
+			std::cout << std::hex << static_cast<int>(byte) << " ";
+		}
+
+		std::cout << std::dec << "\n";
+		*/
+		return true;
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << "Exception in generateKey: " << e.what() << "\n";
+		return false;
+	}
+}
+
+bool Save::encryptData(const std::string& plainText, std::vector<unsigned char>& cipherText,
+	std::vector<unsigned char>& iv) const
+{
+	EVP_CIPHER_CTX* ctx = EVP_CIPHER_CTX_new();
+	if (!ctx) return false;
+
+	iv.resize(IV_SIZE);
+	if (!RAND_bytes(iv.data(), IV_SIZE))
+	{
+		std::cerr << "Failed to generate IV.\n";
+		EVP_CIPHER_CTX_free(ctx);
+		return false;
+	}
+
+	if (!EVP_EncryptInit_ex(ctx, EVP_aes_256_cbc(), nullptr, key.data(), iv.data()))
+	{
+		EVP_CIPHER_CTX_free(ctx);
+		return false;
+	}
+
+	int len = 0;
+	cipherText.resize(plainText.size() + EVP_CIPHER_block_size(EVP_aes_256_cbc()));
+	if (!EVP_EncryptUpdate(ctx, cipherText.data(), &len, reinterpret_cast<const unsigned char*>(plainText.data()), plainText.size()))
+	{
+		EVP_CIPHER_CTX_free(ctx);
+		return false;
+	}
+	int cipherTextLen = len;
+
+	if (!EVP_EncryptFinal_ex(ctx, cipherText.data() + len, &len))
+	{
+		EVP_CIPHER_CTX_free(ctx);
+		return false;
+	}
+	cipherTextLen += len;
+	cipherText.resize(cipherTextLen);
+
+	EVP_CIPHER_CTX_free(ctx);
+	return true;
+}
+
+bool Save::decryptData(const std::vector<unsigned char>& cipherText, const std::vector<unsigned char>& iv,
+	std::string& plainText) const
+{
+	EVP_CIPHER_CTX* ctx = EVP_CIPHER_CTX_new();
+	if (!ctx) return false;
+
+	if (!EVP_DecryptInit_ex(ctx, EVP_aes_256_cbc(), nullptr, key.data(), iv.data()))
+	{
+		EVP_CIPHER_CTX_free(ctx);
+		return false;
+	}
+
+	std::vector<unsigned char> plainTextBuf(cipherText.size());
+	int len = 0;
+	if (!EVP_DecryptUpdate(ctx, plainTextBuf.data(), &len, cipherText.data(), cipherText.size()))
+	{
+		EVP_CIPHER_CTX_free(ctx);
+		return false;
+	}
+	int plainTextLen = len;
+
+	if (!EVP_DecryptFinal_ex(ctx, plainTextBuf.data() + len, &len))
+	{
+		EVP_CIPHER_CTX_free(ctx);
+		return false;
+	}
+	plainTextLen += len;
+	plainTextBuf.resize(plainTextLen);
+
+	plainText.assign(plainTextBuf.begin(), plainTextBuf.end());
+	EVP_CIPHER_CTX_free(ctx);
+	return true;
+}
+
+bool Save::saveKeyToFile(const std::string& keyFilePath) const
+{
+	std::ofstream keyFile(keyFilePath, std::ios::binary);
+	if (!keyFile.is_open())
+	{
+		std::cerr << "Failed to open key for writing.\n";
+		return false;
+	}
+	keyFile.write(reinterpret_cast<const char*>(key.data()), key.size());
+	keyFile.close();
+	return true;
+}
+
+bool Save::loadKeyFromFile(const std::string& keyFilePath)
+{
+	std::ifstream keyFile(keyFilePath, std::ios::binary);
+	if (!keyFile.is_open())
+	{
+		std::cerr << "Failed to open key for reading.\n";
+		return false;
+	}
+	key.resize(KEY_SIZE);
+	keyFile.read(reinterpret_cast<char*>(key.data()), KEY_SIZE);
+	if (keyFile.gcount() != KEY_SIZE)
+	{
+		std::cerr << "Invalid key file size.\n";
+		return false;
+	}
+	keyFile.close();
+	return true;
+}
+
 Save::Save()
 {
+	const std::string keyFilePath = "x64/Debug/encryption.key";
+
+	// Load the key from file if it exist, otherwise generate a new key and save it to file
+	if (!std::filesystem::exists(keyFilePath))
+	{
+		if (!generateKey() || !saveKeyToFile(keyFilePath))
+		{
+			throw std::runtime_error("Failed to initialize encryption key.");
+		}
+	}
+	else if (!loadKeyFromFile(keyFilePath))
+	{
+		throw std::runtime_error("Failed to load encryption key.");
+	}
+
 	using u32 = uint_least32_t;
 	using engine = std::mt19937;
 	std::random_device os_seed;
@@ -56,6 +206,21 @@ Save::Save()
 
 Save::Save(const Save& save)
 {
+	const std::string keyFilePath = "x64/Debug/encryption.key";
+
+	// Load the key from file if it exist, otherwise generate a new key and save it to file
+	if (!std::filesystem::exists(keyFilePath))
+	{
+		if (!generateKey() || !saveKeyToFile(keyFilePath))
+		{
+			throw std::runtime_error("Failed to initialize encryption key.");
+		}
+	}
+	else if (!loadKeyFromFile(keyFilePath))
+	{
+		throw std::runtime_error("Failed to load encryption key.");
+	}
+
 	this->slot = save.slot;
 	this->seed = save.seed;
 	this->abilityTree = save.abilityTree;
@@ -74,15 +239,41 @@ void Save::write() const
 {
 	std::filesystem::path filepath = "src/saves/save" + std::to_string(slot) + ".sav";
 
-	std::ofstream file(filepath);
+	std::ostringstream oss;
 
+	oss << "Seed: " << seed << "\n";
+	oss << "Abiliies: " << abilityTree->serialize() << "\n";
+
+	std::string plainText = oss.str();
+	std::vector<unsigned char> cipherText;
+	std::vector<unsigned char> iv;
+
+	if (key.empty())
+	{
+		std::cerr << "Error: Encryption key is not initialized.\n";
+	}
+	/*
+	std::cout << "Key size: " << key.size() << "\n"; 
+	for (const auto& byte : key) {
+		std::cout << std::hex << static_cast<int>(byte) << " ";
+	}
+	std::cout << std::dec << "\n";
+	*/
+	if (!encryptData(plainText, cipherText, iv))
+	{
+		std::cerr << "Encryption failed.\n";
+		return;
+	}
+
+	std::ofstream file(filepath, std::ios::binary);
 	if (!file.is_open())
 	{
 		std::cerr << "Failed to open save file for writing: " << filepath << "\n";
+		return;
 	}
-	file << "Seed: " << seed << "\n";
-	file << "Abiliies: " << abilityTree->serialize() << "\n";
 
+	file.write(reinterpret_cast<const char*>(iv.data()), iv.size());
+	file.write(reinterpret_cast<const char*>(cipherText.data()), cipherText.size());
 	file.close();
 }
 
@@ -96,13 +287,27 @@ Save& Save::load(int slot)
 Save& Save::load()
 {
 	std::filesystem::path filepath = "src/saves/save" + std::to_string(slot) + ".sav";
-	std::ifstream file(filepath);
+	std::ifstream file(filepath, std::ios::binary);
 	if (!file.is_open())
 	{
 		std::cerr << "Save file not found: " << filepath << "\n";
 		return *this;
 	}
 
+	std::vector<unsigned char> iv(IV_SIZE);
+	file.read(reinterpret_cast<char*>(iv.data()), iv.size());
+
+	std::vector<unsigned char> cipherText((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+	file.close();
+
+	std::string plainText;
+	if (!decryptData(cipherText, iv, plainText))
+	{
+		std::cerr << "Decryption failed.\n";
+		return *this;
+	}
+
+	std::istringstream iss(plainText);
 	std::string line;
 	while (std::getline(file, line))
 	{
@@ -117,7 +322,6 @@ Save& Save::load()
 			abilityTree = AbilityTree::deserialize(line.substr(10));
 		}
 	}
-	file.close();
 	return *this;
 }
 
@@ -144,6 +348,7 @@ Save& Save::operator=(const Save& save)
 {
 	if (this == &save) return *this;
 
+	this->key = save.key;
 	this->slot = save.slot;
 	this->seed = save.seed;
 	this->abilityTree = save.abilityTree;

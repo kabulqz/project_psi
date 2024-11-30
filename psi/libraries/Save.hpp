@@ -4,6 +4,10 @@
 #include "Card.hpp"
 #include "Hero.hpp"
 
+// OpenSSL
+#include <openssl/evp.h>
+#include <openssl/rand.h>
+
 enum class TypeOfMapGeneration
 {
 	FUTURE,
@@ -20,6 +24,17 @@ class Ability;
 class AbilityTree;
 
 class Save {
+private:	// OpenSSL
+	static constexpr size_t KEY_SIZE = 32;	// AES-256
+	static constexpr size_t IV_SIZE = 16;	// Block size for AES
+	std::vector<unsigned char> key;
+
+	bool generateKey();
+	bool encryptData(const std::string& plainText, std::vector<unsigned char>& cipherText, std::vector<unsigned char>& iv) const;
+	bool decryptData(const std::vector<unsigned char>& cipherText, const std::vector<unsigned char>& iv, std::string& plainText) const;
+
+	bool saveKeyToFile(const std::string& keyFilePath) const;
+	bool loadKeyFromFile(const std::string& keyFilePath);
 private:
 	int slot;
 

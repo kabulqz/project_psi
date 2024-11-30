@@ -16,3 +16,4 @@ copilot-chat.log
 .vs/psi/CopilotIndices/17.12.31.40377/CodeChunks.db
 .vs/psi/CopilotIndices/17.12.31.40377/SemanticSymbols.db-shm
 .vs/psi/CopilotIndices/17.12.31.40377/SemanticSymbols.db-wal
+psi/x64/Debug/encryption.key
