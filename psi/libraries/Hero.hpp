@@ -30,3 +30,30 @@ public:
 	void drawCard();
 	void shuffleCardIntoTheDeck(Card* card);
 };
+
+class boardGameMovable
+{
+private:
+	sf::Vector2i mapPosition;
+public:
+	sf::Vector2i getMapPosition() const;
+	void setMapPosition(const sf::Vector2i& position);
+};
+
+class Player : public Hero, public boardGameMovable
+{
+private:
+	int experience;
+public:
+	Player() = default;
+	int getExperience() const;
+	void addExperience(const int value);
+};
+
+class Enemy : public Hero
+{
+private:
+
+public:
+	Enemy() = default;
+};

@@ -1,4 +1,6 @@
 #include "Hero.hpp"
+
+#include <ranges>
 #include "Card.hpp"
 
 Hero::Hero()
@@ -105,8 +107,28 @@ void Hero::shuffleCardIntoTheDeck(Card* card)
 	tempDeck.insert(tempDeck.begin() + randomIndex, card);
 
 	// Step 3: Convert the deck back to a stack
-	for (auto it = tempDeck.rbegin(); it != tempDeck.rend(); ++it)
+	for (auto& it : std::ranges::reverse_view(tempDeck))
 	{
-		deck.push(*it);
+		deck.push(it);
 	}
+}
+
+sf::Vector2i boardGameMovable::getMapPosition() const
+{
+	return mapPosition;
+}
+
+void boardGameMovable::setMapPosition(const sf::Vector2i& position)
+{
+	mapPosition = position;
+}
+
+int Player::getExperience() const
+{
+	return experience;
+}
+
+void Player::addExperience(const int value)
+{
+	experience += value;
 }

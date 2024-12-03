@@ -40,8 +40,8 @@ private:
 
 	uint_least32_t  seed;
 	std::shared_ptr<AbilityTree> abilityTree;
+	//Player player;
 	//TypeOfMapGeneration mapGenerationType;
-	//Hero player;
 public:
 	Save();//default constructor, so new save
 	Save(const Save& save);
