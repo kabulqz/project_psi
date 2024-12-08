@@ -19,6 +19,8 @@ AbilityTreeState::AbilityTreeState(Game* game) : game(game)
 		return;
 	}
 
+	game->changeViev(1.f);
+
 	int verticalMargin = 10;
 	abilityTreeSprite.setTexture(abilityTreeTexture);
 	float scaleFactor = (720.0f - 2 * verticalMargin)/ abilityTreeTexture.getSize().y;
@@ -138,6 +140,7 @@ void AbilityTreeState::render(sf::RenderWindow& window)
 	{
 		window.setMouseCursor(defaultCursor);
 	}
-
+	
+	window.setView(game->getView());
 	window.display();
 }

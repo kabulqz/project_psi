@@ -2,12 +2,15 @@
 
 #include "State.hpp"
 #include "TileMap.hpp"
+#include "Game.hpp"
 
 class GameBoardState : public State
 {
 private:
 	Game* game;
 	TileMap map;
+	Save save;
+	std::vector<sf::Vector2i> path;
 public:
 	//handler for specific windows to appear in the main frame 
 	void handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager, sqlite3*& database) override;

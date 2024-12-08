@@ -8,6 +8,7 @@ soundManager(settings.general_audio, settings.ui_audio, settings.environment_aud
 	//Open Game in MainMenuState
 	currentState = std::make_unique<MainMenuState>(this);
 	window.setFramerateLimit(60);
+	view.reset(sf::FloatRect(0.f, 0.f, 1280.f, 720.f));
 	//SFML window icon
 	sf::Image icon;
 	if (!icon.loadFromFile("src/img/icon.png"))

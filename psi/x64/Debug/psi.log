@@ -1,101 +1,82 @@
-﻿  AbilityTree.cpp
-  AbilityTreeState.cpp
-  Card.cpp
-  Effect.cpp
-  EffectBehaviors.cpp
-  Game.cpp
-  GameBoardState.cpp
-  GameCardState.cpp
-  Hero.cpp
-C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\psi\libraries\Hero.cpp(94,62): warning C4267: "argument": konwersja z "size_t" do "_Ty", możliwa utrata danych
-C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\psi\libraries\Hero.cpp(94,62): warning C4267:         with
-C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\psi\libraries\Hero.cpp(94,62): warning C4267:         [
-C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\psi\libraries\Hero.cpp(94,62): warning C4267:             _Ty=int
-C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\psi\libraries\Hero.cpp(94,62): warning C4267:         ]
-  MainMenuState.cpp
-  Save.cpp
-C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\psi\libraries\Save.cpp(54,127): warning C4267: "argument": konwersja z "size_t" do "int", możliwa utrata danych
-C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\psi\libraries\Save.cpp(91,91): warning C4267: "argument": konwersja z "size_t" do "int", możliwa utrata danych
-  main.cpp
-  Generowanie kodu...
-sfml-graphics-s-d.lib(RenderStates.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-graphics-s-d.lib(RenderStates.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-graphics-s-d.lib(Transformable.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-graphics-s-d.lib(Transformable.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-graphics-s-d.lib(Texture.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-graphics-s-d.lib(Texture.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-graphics-s-d.lib(Font.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-graphics-s-d.lib(Font.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-graphics-s-d.lib(RenderTarget.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-graphics-s-d.lib(RenderTarget.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-graphics-s-d.lib(Shader.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-graphics-s-d.lib(Shader.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-graphics-s-d.lib(Sprite.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-graphics-s-d.lib(Sprite.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-graphics-s-d.lib(Color.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-graphics-s-d.lib(Color.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-graphics-s-d.lib(Image.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-graphics-s-d.lib(Image.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-graphics-s-d.lib(Text.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-graphics-s-d.lib(Text.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-graphics-s-d.lib(RenderWindow.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-graphics-s-d.lib(RenderWindow.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-graphics-s-d.lib(Transform.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-graphics-s-d.lib(Transform.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-graphics-s-d.lib(VertexArray.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-graphics-s-d.lib(VertexArray.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-graphics-s-d.lib(BlendMode.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-graphics-s-d.lib(BlendMode.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-graphics-s-d.lib(GLExtensions.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-graphics-s-d.lib(GLExtensions.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-graphics-s-d.lib(GLCheck.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-graphics-s-d.lib(GLCheck.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-graphics-s-d.lib(TextureSaver.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-graphics-s-d.lib(TextureSaver.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-graphics-s-d.lib(View.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-graphics-s-d.lib(View.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-graphics-s-d.lib(Vertex.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-graphics-s-d.lib(Vertex.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-graphics-s-d.lib(VertexBuffer.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-graphics-s-d.lib(VertexBuffer.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-graphics-s-d.lib(Glsl.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-graphics-s-d.lib(Glsl.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-graphics-s-d.lib(ImageLoader.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-graphics-s-d.lib(ImageLoader.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-graphics-s-d.lib(RenderTextureImplFBO.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-graphics-s-d.lib(RenderTextureImplFBO.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-graphics-s-d.lib(RenderTextureImpl.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-graphics-s-d.lib(RenderTextureImpl.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-audio-s-d.lib(SoundBuffer.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-audio-s-d.lib(SoundBuffer.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-audio-s-d.lib(SoundSource.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-audio-s-d.lib(SoundSource.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-audio-s-d.lib(Music.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-audio-s-d.lib(Music.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-audio-s-d.lib(Sound.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-audio-s-d.lib(Sound.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-audio-s-d.lib(AlResource.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-audio-s-d.lib(AlResource.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-audio-s-d.lib(InputSoundFile.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-audio-s-d.lib(InputSoundFile.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-audio-s-d.lib(OutputSoundFile.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-audio-s-d.lib(OutputSoundFile.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-audio-s-d.lib(AudioDevice.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-audio-s-d.lib(AudioDevice.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-audio-s-d.lib(ALCheck.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-audio-s-d.lib(ALCheck.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-audio-s-d.lib(SoundStream.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-audio-s-d.lib(SoundStream.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-audio-s-d.lib(SoundFileFactory.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-audio-s-d.lib(SoundFileFactory.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-audio-s-d.lib(SoundFileReaderFlac.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-audio-s-d.lib(SoundFileReaderFlac.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-audio-s-d.lib(SoundFileWriterFlac.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-audio-s-d.lib(SoundFileWriterFlac.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-audio-s-d.lib(SoundFileReaderMp3.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-audio-s-d.lib(SoundFileReaderMp3.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-audio-s-d.lib(SoundFileReaderOgg.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-audio-s-d.lib(SoundFileReaderOgg.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-audio-s-d.lib(SoundFileWriterOgg.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-audio-s-d.lib(SoundFileWriterOgg.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-audio-s-d.lib(SoundFileReaderWav.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-audio-s-d.lib(SoundFileReaderWav.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-audio-s-d.lib(SoundFileWriterWav.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-audio-s-d.lib(SoundFileWriterWav.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-window-s-d.lib(Cursor.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-window-s-d.lib(Cursor.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-window-s-d.lib(Mouse.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-window-s-d.lib(Mouse.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-window-s-d.lib(WindowBase.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-window-s-d.lib(WindowBase.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-window-s-d.lib(Window.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-window-s-d.lib(Window.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-window-s-d.lib(VideoMode.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-window-s-d.lib(VideoMode.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-window-s-d.lib(GlResource.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-window-s-d.lib(GlResource.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-window-s-d.lib(Context.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-window-s-d.lib(Context.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-window-s-d.lib(CursorImpl.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-window-s-d.lib(CursorImpl.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-window-s-d.lib(InputImpl.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-window-s-d.lib(InputImpl.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-window-s-d.lib(WindowImpl.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-window-s-d.lib(WindowImpl.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-window-s-d.lib(GlContext.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-window-s-d.lib(GlContext.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-window-s-d.lib(VideoModeImpl.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-window-s-d.lib(VideoModeImpl.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-window-s-d.lib(JoystickManager.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-window-s-d.lib(JoystickManager.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-window-s-d.lib(SensorManager.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-window-s-d.lib(SensorManager.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-window-s-d.lib(WindowImplWin32.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-window-s-d.lib(WindowImplWin32.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-window-s-d.lib(VulkanImplWin32.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-window-s-d.lib(VulkanImplWin32.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-window-s-d.lib(WglContext.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-window-s-d.lib(WglContext.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-window-s-d.lib(Joystick.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-window-s-d.lib(Joystick.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-window-s-d.lib(JoystickImpl.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-window-s-d.lib(JoystickImpl.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-window-s-d.lib(SensorImpl.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-window-s-d.lib(SensorImpl.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-system-s-d.lib(Time.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-system-s-d.lib(Time.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-system-s-d.lib(Clock.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-system-s-d.lib(Clock.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-system-s-d.lib(String.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-system-s-d.lib(String.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-system-s-d.lib(Sleep.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-system-s-d.lib(Sleep.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-system-s-d.lib(Mutex.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-system-s-d.lib(Mutex.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-system-s-d.lib(Lock.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-system-s-d.lib(Lock.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-system-s-d.lib(Err.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-system-s-d.lib(Err.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-system-s-d.lib(FileInputStream.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-system-s-d.lib(FileInputStream.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-system-s-d.lib(MemoryInputStream.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-system-s-d.lib(MemoryInputStream.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-system-s-d.lib(Thread.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-system-s-d.lib(Thread.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-system-s-d.lib(ThreadLocal.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-system-s-d.lib(ThreadLocal.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-system-s-d.lib(ClockImpl.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-system-s-d.lib(ClockImpl.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-system-s-d.lib(SleepImpl.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-system-s-d.lib(SleepImpl.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-system-s-d.lib(MutexImpl.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-system-s-d.lib(MutexImpl.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-system-s-d.lib(ThreadImpl.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-system-s-d.lib(ThreadImpl.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-sfml-system-s-d.lib(ThreadLocalImpl.obj) : warning LNK4099: nie znaleziono pliku PDB "" z elementem "sfml-system-s-d.lib(ThreadLocalImpl.obj)" lub w pozycji ""; obiekt zostanie skonsolidowany bez informacji debugowania
-  psi.vcxproj -> C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\x64\Debug\psi.exe
-  C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\psi\src\OpenSSL\libcrypto-3-x64.dll
+﻿  MapGeneration.cpp
+sfml-graphics-s-d.lib(RenderStates.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-graphics-s-d.lib(RenderStates.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-graphics-s-d.lib(Transformable.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-graphics-s-d.lib(Transformable.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-graphics-s-d.lib(Texture.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-graphics-s-d.lib(Texture.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-graphics-s-d.lib(Font.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-graphics-s-d.lib(Font.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-graphics-s-d.lib(RenderTarget.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-graphics-s-d.lib(RenderTarget.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-graphics-s-d.lib(Shader.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-graphics-s-d.lib(Shader.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-graphics-s-d.lib(Sprite.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-graphics-s-d.lib(Sprite.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-graphics-s-d.lib(Color.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-graphics-s-d.lib(Color.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-graphics-s-d.lib(Image.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-graphics-s-d.lib(Image.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-graphics-s-d.lib(View.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-graphics-s-d.lib(View.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-graphics-s-d.lib(Text.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-graphics-s-d.lib(Text.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-graphics-s-d.lib(RenderWindow.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-graphics-s-d.lib(RenderWindow.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-graphics-s-d.lib(Transform.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-graphics-s-d.lib(Transform.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-graphics-s-d.lib(VertexArray.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-graphics-s-d.lib(VertexArray.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-graphics-s-d.lib(BlendMode.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-graphics-s-d.lib(BlendMode.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-graphics-s-d.lib(GLExtensions.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-graphics-s-d.lib(GLExtensions.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-graphics-s-d.lib(GLCheck.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-graphics-s-d.lib(GLCheck.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-graphics-s-d.lib(TextureSaver.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-graphics-s-d.lib(TextureSaver.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-graphics-s-d.lib(Vertex.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-graphics-s-d.lib(Vertex.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-graphics-s-d.lib(VertexBuffer.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-graphics-s-d.lib(VertexBuffer.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-graphics-s-d.lib(Glsl.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-graphics-s-d.lib(Glsl.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-graphics-s-d.lib(ImageLoader.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-graphics-s-d.lib(ImageLoader.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-graphics-s-d.lib(RenderTextureImplFBO.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-graphics-s-d.lib(RenderTextureImplFBO.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-graphics-s-d.lib(RenderTextureImpl.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-graphics-s-d.lib(RenderTextureImpl.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-audio-s-d.lib(SoundBuffer.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-audio-s-d.lib(SoundBuffer.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-audio-s-d.lib(SoundSource.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-audio-s-d.lib(SoundSource.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-audio-s-d.lib(Music.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-audio-s-d.lib(Music.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-audio-s-d.lib(Sound.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-audio-s-d.lib(Sound.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-audio-s-d.lib(AlResource.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-audio-s-d.lib(AlResource.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-audio-s-d.lib(InputSoundFile.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-audio-s-d.lib(InputSoundFile.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-audio-s-d.lib(OutputSoundFile.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-audio-s-d.lib(OutputSoundFile.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-audio-s-d.lib(AudioDevice.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-audio-s-d.lib(AudioDevice.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-audio-s-d.lib(ALCheck.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-audio-s-d.lib(ALCheck.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-audio-s-d.lib(SoundStream.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-audio-s-d.lib(SoundStream.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-audio-s-d.lib(SoundFileFactory.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-audio-s-d.lib(SoundFileFactory.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-audio-s-d.lib(SoundFileReaderFlac.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-audio-s-d.lib(SoundFileReaderFlac.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-audio-s-d.lib(SoundFileWriterFlac.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-audio-s-d.lib(SoundFileWriterFlac.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-audio-s-d.lib(SoundFileReaderMp3.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-audio-s-d.lib(SoundFileReaderMp3.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-audio-s-d.lib(SoundFileReaderOgg.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-audio-s-d.lib(SoundFileReaderOgg.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-audio-s-d.lib(SoundFileWriterOgg.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-audio-s-d.lib(SoundFileWriterOgg.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-audio-s-d.lib(SoundFileReaderWav.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-audio-s-d.lib(SoundFileReaderWav.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-audio-s-d.lib(SoundFileWriterWav.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-audio-s-d.lib(SoundFileWriterWav.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-window-s-d.lib(Cursor.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-window-s-d.lib(Cursor.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-window-s-d.lib(Mouse.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-window-s-d.lib(Mouse.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-window-s-d.lib(WindowBase.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-window-s-d.lib(WindowBase.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-window-s-d.lib(Window.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-window-s-d.lib(Window.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-window-s-d.lib(VideoMode.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-window-s-d.lib(VideoMode.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-window-s-d.lib(GlResource.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-window-s-d.lib(GlResource.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-window-s-d.lib(Context.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-window-s-d.lib(Context.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-window-s-d.lib(CursorImpl.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-window-s-d.lib(CursorImpl.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-window-s-d.lib(InputImpl.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-window-s-d.lib(InputImpl.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-window-s-d.lib(WindowImpl.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-window-s-d.lib(WindowImpl.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-window-s-d.lib(GlContext.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-window-s-d.lib(GlContext.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-window-s-d.lib(VideoModeImpl.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-window-s-d.lib(VideoModeImpl.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-window-s-d.lib(JoystickManager.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-window-s-d.lib(JoystickManager.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-window-s-d.lib(SensorManager.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-window-s-d.lib(SensorManager.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-window-s-d.lib(WindowImplWin32.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-window-s-d.lib(WindowImplWin32.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-window-s-d.lib(VulkanImplWin32.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-window-s-d.lib(VulkanImplWin32.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-window-s-d.lib(WglContext.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-window-s-d.lib(WglContext.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-window-s-d.lib(Joystick.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-window-s-d.lib(Joystick.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-window-s-d.lib(JoystickImpl.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-window-s-d.lib(JoystickImpl.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-window-s-d.lib(SensorImpl.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-window-s-d.lib(SensorImpl.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-system-s-d.lib(Time.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-system-s-d.lib(Time.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-system-s-d.lib(Clock.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-system-s-d.lib(Clock.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-system-s-d.lib(String.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-system-s-d.lib(String.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-system-s-d.lib(Sleep.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-system-s-d.lib(Sleep.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-system-s-d.lib(Mutex.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-system-s-d.lib(Mutex.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-system-s-d.lib(Lock.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-system-s-d.lib(Lock.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-system-s-d.lib(Err.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-system-s-d.lib(Err.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-system-s-d.lib(FileInputStream.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-system-s-d.lib(FileInputStream.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-system-s-d.lib(MemoryInputStream.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-system-s-d.lib(MemoryInputStream.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-system-s-d.lib(Thread.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-system-s-d.lib(Thread.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-system-s-d.lib(ThreadLocal.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-system-s-d.lib(ThreadLocal.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-system-s-d.lib(ClockImpl.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-system-s-d.lib(ClockImpl.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-system-s-d.lib(SleepImpl.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-system-s-d.lib(SleepImpl.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-system-s-d.lib(MutexImpl.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-system-s-d.lib(MutexImpl.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-system-s-d.lib(ThreadImpl.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-system-s-d.lib(ThreadImpl.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-system-s-d.lib(ThreadLocalImpl.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-system-s-d.lib(ThreadLocalImpl.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+  psi.vcxproj -> D:\Project_PSI\psi\x64\Debug\psi.exe
+  D:\Project_PSI\psi\psi\src\OpenSSL\libcrypto-3-x64.dll
   1 File(s) copied
