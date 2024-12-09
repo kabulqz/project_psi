@@ -28,15 +28,6 @@ Ability::Ability(const int& id, const int& buyCost, const unlockStatus& status, 
 	backgroundSprite.setTextureRect(textureRect); // Crop the texture
 	backgroundSprite.setPosition(static_cast<float>(pos_x), static_cast<float>(pos_y));
 	backgroundSprite.setScale(static_cast<float>(getWidth()) / 48, static_cast<float>(getHeight()) / 48);
-
-	if (!shader.loadFromFile("libraries/shader.frag", sf::Shader::Fragment))
-	{
-		std::cerr << "Cannot load shader from libraries/grayscale.frag\n";
-	}
-	else
-	{
-		std::cout << "Shader loaded successfully\n";
-	}
 }
 
 void Ability::addChild(std::shared_ptr<Ability> child)
@@ -46,7 +37,7 @@ void Ability::addChild(std::shared_ptr<Ability> child)
 	child->parent = shared_from_this();
 }
 
-void Ability::display(sf::RenderWindow& window)
+void Ability::display(sf::RenderWindow& window, const sf::Shader* shader)
 {
 	switch (status)
 	{
@@ -56,11 +47,11 @@ void Ability::display(sf::RenderWindow& window)
 		break;
 	case unlockStatus::BUYABLE: // 1
 		Button::setColor("F3CA40");
-		window.draw(backgroundSprite, &shader);
+		window.draw(backgroundSprite, shader);
 		break;
 	case unlockStatus::LOCKED: // 2
 		Button::setColor("D90429");
-		window.draw(backgroundSprite, &shader);
+		window.draw(backgroundSprite, shader);
 		break;
 	}
 
@@ -151,32 +142,44 @@ std::shared_ptr<Ability> Ability::deserialize(const std::string& serializedData)
 	return ability;
 }
 
-void AbilityTree::displayNode(std::shared_ptr<Ability> node, sf::RenderWindow& window, int depth)
+AbilityTree::AbilityTree(const std::shared_ptr<Ability>& root) : root(root)
+{
+	if (!shader.loadFromFile("libraries/shader.frag", sf::Shader::Fragment))
+	{
+		std::cerr << "Cannot load shader from libraries/grayscale.frag\n";
+	}
+	else
+	{
+		std::cout << "Shader loaded successfully\n";
+	}
+}
+
+void AbilityTree::displayNode(const std::shared_ptr<Ability>& node, sf::RenderWindow& window, const sf::Shader* shader, const int depth)
 {
 	if (!node) return;
 
-	node->display(window);
+	node->display(window, shader);
 
 	for (const auto& child : node->getChildren())
 	{
-		displayNode(child, window, depth + 1);
+		displayNode(child, window, shader, depth + 1);
 	}
 }
 
 void AbilityTree::display(sf::RenderWindow& window) const
 {
-	displayNode(root, window, 0);
+	displayNode(root, window, &shader, 0);
 }
 
-void AbilityTree::serializeNode(std::shared_ptr<Ability> node, std::ostringstream& oss)
+void AbilityTree::serializeNode(const std::shared_ptr<Ability>& node, std::ostringstream& ss)
 {
 	if (!node) return;
 
-	oss << node->serialize() << ";";
+	ss << node->serialize() << ";";
 	// Recursively serialize the children of this node
 	for (const auto& child : node->getChildren())
 	{
-		serializeNode(child, oss);
+		serializeNode(child, ss);
 	}
 }
 

@@ -1,5 +1,5 @@
-#pragma warning(disable : 4244)
 #pragma once
+#pragma warning(disable : 4244)
 
 #include "Settings.hpp"
 

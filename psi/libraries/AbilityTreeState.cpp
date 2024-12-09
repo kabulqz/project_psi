@@ -75,15 +75,15 @@ void AbilityTreeState::update()
 	
 }
 
-void AbilityTreeState::renderAbilities(sf::RenderWindow& window, const std::shared_ptr<Ability>& ability, bool& isHoveredOverAnyAbility, CursorState& currentCursorState)
+void AbilityTreeState::renderAbilities(sf::RenderWindow& window, const std::shared_ptr<Ability>& ability, bool& isHoveredOverAnyAbility, CursorState& currentCursorState, const sf::Shader* shader)
 {
-	ability->display(window);
+	ability->display(window, shader);
 
 	if (ability->isHovered(mousePos))
 	{
 		isHoveredOverAnyAbility = true;
 
-		CursorState newCursorState;
+		CursorState newCursorState = {};
 		switch (ability->getUnlockStatus())
 		{
 		case Ability::unlockStatus::UNLOCKED:
@@ -117,7 +117,7 @@ void AbilityTreeState::renderAbilities(sf::RenderWindow& window, const std::shar
 
 	for (auto& child : ability->getChildren())
 	{
-		renderAbilities(window, child, isHoveredOverAnyAbility, currentCursorState);
+		renderAbilities(window, child, isHoveredOverAnyAbility, currentCursorState, abilityTree->getShader());
 	}
 }
 
@@ -133,7 +133,7 @@ void AbilityTreeState::render(sf::RenderWindow& window)
 
 	if (abilityTree->getRoot())
 	{
-		renderAbilities(window, abilityTree->getRoot(), isHoveredOverAnyAbility, currentCursorState);
+		renderAbilities(window, abilityTree->getRoot(), isHoveredOverAnyAbility, currentCursorState, abilityTree->getShader());
 	}
 
 	if (!isHoveredOverAnyAbility)

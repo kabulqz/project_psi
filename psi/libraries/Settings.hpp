@@ -20,6 +20,7 @@
 #include <cctype>
 #include <random>
 #include <thread>
+#include <future>
 #include <vector>
 #include <stack>
 #include <queue>

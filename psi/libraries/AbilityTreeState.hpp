@@ -2,6 +2,7 @@
 
 #include "State.hpp"
 #include "AbilityTree.hpp"
+#include "TileMap.hpp"
 
 class AbilityTreeState : public State
 {
@@ -22,7 +23,7 @@ private:
 		Buyable,
 		Locked
 	};
-	void renderAbilities(sf::RenderWindow& window, const std::shared_ptr<Ability>& ability,bool& isHoveredOverAnyAbility, CursorState& currentCursorState);
+	void renderAbilities(sf::RenderWindow& window, const std::shared_ptr<Ability>& ability,bool& isHoveredOverAnyAbility, CursorState& currentCursorState, const sf::Shader* shader);
 public:
 	//handler for specific windows to appear in the main frame 
 	void handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager, sqlite3*& databasez) override;
@@ -32,5 +33,4 @@ public:
 	void render(sf::RenderWindow& window) override;
 
 	AbilityTreeState(Game* game);
-
 };

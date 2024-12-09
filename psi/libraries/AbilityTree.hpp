@@ -20,7 +20,6 @@ private:
 	// Graphics properties
 	sf::Texture backgroundTexture;
 	sf::Sprite backgroundSprite;
-	sf::Shader shader;
 	int posX;
 	int posY;
 	sf::Vector2i gridPosition;
@@ -38,7 +37,7 @@ public:
 	void setBuyCost(int buyCost) { this->buyCost = buyCost; }
 	int getId() const { return id; }
 	// Display the ability on the screen
-	void display(sf::RenderWindow& window);
+	void display(sf::RenderWindow& window, const sf::Shader* shader = nullptr);
 	void setChildrenIds(const std::vector<int>& ids) { childrenIds = ids; }
 	std::vector<int>& getChildrenIds() { return childrenIds; }
 
@@ -52,12 +51,14 @@ class AbilityTree
 {
 private:
 	std::shared_ptr<Ability> root;
-	static void displayNode(std::shared_ptr<Ability> node, sf::RenderWindow& window, int depth);
-	static void serializeNode(std::shared_ptr<Ability> node, std::ostringstream& ss);
+	static void displayNode(const std::shared_ptr<Ability>& node, sf::RenderWindow& window, const sf::Shader* shader, int depth);
+	static void serializeNode(const std::shared_ptr<Ability>& node, std::ostringstream& ss);
+	sf::Shader shader;
 public:
-	AbilityTree(std::shared_ptr<Ability> root) : root(root) {}
+	AbilityTree(const std::shared_ptr<Ability>& root);
 
 	std::shared_ptr<Ability> getRoot() { return root; }
+	sf::Shader* getShader() { return &shader; }
 	void display(sf::RenderWindow& window) const;
 
 	std::string serialize() const;

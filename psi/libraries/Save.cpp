@@ -11,15 +11,6 @@ bool Save::generateKey()
 			std::cerr << "Error: RAND_bytes failed to generate key.\n";
 			return false;
 		}
-		/*
-		std::cout << "Generated key: ";
-		for (const auto& byte : key)
-		{
-			std::cout << std::hex << static_cast<int>(byte) << " ";
-		}
-
-		std::cout << std::dec << "\n";
-		*/
 		return true;
 	}
 	catch (const std::exception& e)
@@ -147,7 +138,7 @@ bool Save::loadKeyFromFile(const std::string& keyFilePath)
 	for (unsigned char byte : key) {
 		std::cout << std::hex << static_cast<int>(byte) << " ";
 	}
-	std::cout << std::endl;
+	std::cout << '\n';
 
 	return true;
 }
@@ -276,13 +267,7 @@ void Save::write() const
 	{
 		std::cerr << "Error: Encryption key is not initialized.\n";
 	}
-	/*
-	std::cout << "Key size: " << key.size() << "\n"; 
-	for (const auto& byte : key) {
-		std::cout << std::hex << static_cast<int>(byte) << " ";
-	}
-	std::cout << std::dec << "\n";
-	*/
+
 	if (!encryptData(plainText, cipherText, iv))
 	{
 		std::cerr << "Encryption failed.\n";
