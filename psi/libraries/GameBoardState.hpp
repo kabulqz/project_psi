@@ -11,6 +11,7 @@ private:
 	TileMap map;
 	Save save;
 	std::vector<sf::Vector2i> path;
+	sf::CircleShape circle;
 	Player player;
 public:
 	//handler for specific windows to appear in the main frame 

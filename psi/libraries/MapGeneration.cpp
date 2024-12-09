@@ -4,19 +4,19 @@
 //Uwaga: Idiotootpornosc nie wprowadzona, zabawa dalej ryzykowna
 
 //Width and height of a map
-const int width = 60;
-const int height = 60;
+constexpr int width = 60;
+constexpr int height = 60;
 
 //Starting point for first rectangle
-const int startX = 3;
-const int startY = 5;
+constexpr int startX = 3;
+constexpr int startY = 5;
 
 //Min and max width/height of rectangles
-const int rectMin = 5;
-const int rectMax = 11;
+constexpr int rectMin = 5;
+constexpr int rectMax = 11;
 
 //Number of iterated rectangles
-const int numberOfRect = 5;
+constexpr int numberOfRect = 5;
 
 enum Direction
 {
@@ -60,7 +60,7 @@ void generate(uint_least32_t seed, int* level, std::vector<sf::Vector2i>& p)
 	int xx = dimentions(generator);
 	int yy = dimentions(generator);
 
-	p.push_back(sf::Vector2i(x, y - 1));
+	p.emplace_back(x, y - 1); 
 	level[p[0].x * width + p[0].y] = 2;
 
 	//Starting shape
@@ -131,7 +131,7 @@ void generate(uint_least32_t seed, int* level, std::vector<sf::Vector2i>& p)
 			if (level[(current.x - 1) * width + current.y] == 1)
 			{
 				level[(current.x) * width + current.y] = 2;
-				p.push_back(sf::Vector2i(current.x, current.y - 1));
+				p.emplace_back(current.x, current.y - 1);
 				dir = LEFT;
 				//std::cout << "DIR LEFT\n";
 			}
@@ -140,13 +140,13 @@ void generate(uint_least32_t seed, int* level, std::vector<sf::Vector2i>& p)
 				if (level[current.x * width + (current.y + 1)] == 1)
 				{
 					level[(current.x) * width + current.y] = 2;
-					p.push_back(sf::Vector2i(current.x - 1, current.y));
+					p.emplace_back(current.x - 1, current.y);
 					//std::cout << "DIR STRAIGHT\n";
 				}
 				else
 				{
 					level[(current.x) * width + current.y] = 2;
-					p.push_back(sf::Vector2i(current.x, current.y + 1));
+					p.emplace_back(current.x, current.y + 1);
 					dir = RIGHT;
 					//std::cout << "DIR RIGHT\n";
 				}
@@ -157,7 +157,7 @@ void generate(uint_least32_t seed, int* level, std::vector<sf::Vector2i>& p)
 			if (level[(current.x + 1) * width + current.y] == 1)
 			{
 				level[(current.x) * width + current.y] = 2;
-				p.push_back(sf::Vector2i(current.x, current.y + 1));
+				p.emplace_back(current.x, current.y + 1);
 				dir = RIGHT;
 				//std::cout << "DIR RIGHT\n";
 			}
@@ -166,13 +166,13 @@ void generate(uint_least32_t seed, int* level, std::vector<sf::Vector2i>& p)
 				if (level[current.x * width + (current.y - 1)] == 1)
 				{
 					level[(current.x) * width + current.y] = 2;
-					p.push_back(sf::Vector2i(current.x + 1, current.y));
+					p.emplace_back(current.x + 1, current.y);
 					//std::cout << "DIR STRAIGHT\n";
 				}
 				else
 				{
 					level[(current.x) * width + current.y] = 2;
-					p.push_back(sf::Vector2i(current.x, current.y - 1));
+					p.emplace_back(current.x, current.y - 1);
 					dir = LEFT;
 					//std::cout << "DIR LEFT\n";
 				}
@@ -183,7 +183,7 @@ void generate(uint_least32_t seed, int* level, std::vector<sf::Vector2i>& p)
 			if (level[current.x * width + (current.y - 1)] == 1)
 			{
 				level[(current.x) * width + current.y] = 2;
-				p.push_back(sf::Vector2i(current.x + 1, current.y));
+				p.emplace_back(current.x + 1, current.y);
 				dir = DOWN;
 				//std::cout << "DIR DOWN\n";
 			}
@@ -192,13 +192,13 @@ void generate(uint_least32_t seed, int* level, std::vector<sf::Vector2i>& p)
 				if (level[(current.x - 1) * width + current.y] == 1)
 				{
 					level[(current.x) * width + current.y] = 2;
-					p.push_back(sf::Vector2i(current.x, current.y - 1));
+					p.emplace_back(current.x, current.y - 1);
 					//std::cout << "DIR STRAIGHT\n";
 				}
 				else
 				{
 					level[(current.x) * width + current.y] = 2;
-					p.push_back(sf::Vector2i(current.x - 1, current.y));
+					p.emplace_back(current.x - 1, current.y);
 					dir = UP;
 					//std::cout << "DIR UP\n";
 				}
@@ -209,7 +209,7 @@ void generate(uint_least32_t seed, int* level, std::vector<sf::Vector2i>& p)
 			if (level[current.x * width + (current.y + 1)] == 1)
 			{
 				level[(current.x) * width + current.y] = 2;
-				p.push_back(sf::Vector2i(current.x - 1, current.y));
+				p.emplace_back(current.x - 1, current.y);
 				dir = UP;
 				//std::cout << "DIR UP\n";
 			}
@@ -219,13 +219,13 @@ void generate(uint_least32_t seed, int* level, std::vector<sf::Vector2i>& p)
 				if (level[(current.x + 1)* width + current.y] == 1)
 				{
 					level[(current.x) * width + current.y] = 2;
-					p.push_back(sf::Vector2i(current.x, current.y + 1));
+					p.emplace_back(current.x, current.y + 1);
 					//std::cout << "DIR STRAIGHT\n";
 				}
 				else
 				{
 					level[(current.x) * width + current.y] = 2;
-					p.push_back(sf::Vector2i(current.x + 1, current.y));
+					p.emplace_back(current.x + 1, current.y);
 					dir = DOWN;
 					//std::cout << "DIR DOWN\n";
 				}
@@ -237,4 +237,9 @@ void generate(uint_least32_t seed, int* level, std::vector<sf::Vector2i>& p)
 		current = p.back();
 		//jesli to czytasz, to pamietaj: jesli ktos zaproponuje zabawe na takich tablicach, pierdolnij mu w leb
 	} while (++i < max &&p.back() != p[0]);
+
+	for (auto& path : p)
+	{
+		std::swap(path.x, path.y);
+	}
 }

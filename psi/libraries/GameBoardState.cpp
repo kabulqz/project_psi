@@ -5,7 +5,7 @@
 const int width = 60;
 const int height = 60;
 
-GameBoardState::GameBoardState(Game* game) : game(game)
+GameBoardState::GameBoardState(Game* game) : game(game), circle(4)
 {
 	int level[width * height];
 
@@ -17,13 +17,15 @@ GameBoardState::GameBoardState(Game* game) : game(game)
 	game->changeView(1.f);
 
 	generate(save.getSeed(), level, path);
-	std::cout << path[0].x << " " << path[0].y;
+	std::cout << path[0].x << " " << path[0].y<<"\n";
 
 	//Loading map
 	if (!map.load("src/img/test_map_1.png", sf::Vector2u(16, 16), level, width, height))
 		return;
 	if(!player.load("src/img/walk.png",path[0]))
 		return;
+
+	circle.setFillColor(sf::Color::Red);
 }
 
 //handler for specific windows to appear in the main frame 
@@ -54,6 +56,14 @@ void GameBoardState::render(sf::RenderWindow& window)
 	window.setView(game->getView());
 	//draw elements
 	window.draw(map);
+
+	for (const auto& point : path)
+	{
+		circle.setPosition(static_cast<float>(point.x * 16 + 4), static_cast<float>(point.y * 16 + 4));
+		window.draw(circle);
+	}
+
+
 	window.draw(player);
 	window.display();
 }

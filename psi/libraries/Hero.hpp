@@ -67,8 +67,8 @@ public:
 
 		m_playerSprite.setTexture(m_playerTexture);
 		m_playerSprite.setTextureRect(sf::IntRect(32, 32, 16, 16));
-		//AAAAAAAAAAAAAAAAAAAAAAAAAAAA
-		m_playerSprite.setPosition((pathPos.x + 16) * pathPos.y, pathPos.y + 16);
+		
+		m_playerSprite.setPosition(pathPos.x * 16, pathPos.y * 16);
 
 		return true;
 	}
