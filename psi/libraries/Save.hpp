@@ -40,7 +40,7 @@ private:
 
 	uint_least32_t  seed;
 	std::shared_ptr<AbilityTree> abilityTree;
-	//Player player;
+	Player player;
 	//TypeOfMapGeneration mapGenerationType;
 public:
 	Save();//default constructor, so new save
@@ -51,6 +51,8 @@ public:
 	void setSeed(uint_least32_t seed) { this->seed = seed; }
 	std::shared_ptr<AbilityTree> getAbilityTree() { return abilityTree; }
 	void setAbilityTree(std::shared_ptr<AbilityTree> abilityTree) { this->abilityTree = abilityTree; }
+
+	Player getPlayer() { return this->player; }
 
 	Save& operator=(const Save& save);
 	void write(int slot);	// write to specific slot

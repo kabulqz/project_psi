@@ -9,17 +9,21 @@ GameBoardState::GameBoardState(Game* game) : game(game)
 {
 	int level[width * height];
 
+	player = save.getPlayer();
+
 	save = game->getSave();
 	std::cout << std::dec << "Level seed: " << save.getSeed() << "\n";
 
-	game->changeViev(0.4f);
+	game->changeView(1.f);
 
 	generate(save.getSeed(), level, path);
+	std::cout << path[0].x << " " << path[0].y;
 
 	//Loading map
 	if (!map.load("src/img/test_map_1.png", sf::Vector2u(16, 16), level, width, height))
 		return;
-
+	if(!player.load("src/img/walk.png",path[0]))
+		return;
 }
 
 //handler for specific windows to appear in the main frame 
@@ -50,5 +54,6 @@ void GameBoardState::render(sf::RenderWindow& window)
 	window.setView(game->getView());
 	//draw elements
 	window.draw(map);
+	window.draw(player);
 	window.display();
 }

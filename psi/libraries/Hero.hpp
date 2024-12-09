@@ -40,14 +40,38 @@ public:
 	void setMapPosition(const sf::Vector2i& position);
 };
 
-class Player : public Hero, public boardGameMovable
+class Player : public Hero, public boardGameMovable, public sf::Drawable, public sf::Transformable
 {
 private:
 	int experience;
+
+	sf::Sprite m_playerSprite;
+	sf::Texture m_playerTexture;
+
+	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
+	{
+		states.transform *= getTransform();
+		states.texture = &m_playerTexture;
+		target.draw(m_playerSprite, states);
+	}
 public:
 	Player() = default;
 	int getExperience() const;
 	void addExperience(const int value);
+
+	bool load(const std::string& tileset, sf::Vector2i pathPos)
+	{
+		// load the tileset texture
+		if (!m_playerTexture.loadFromFile(tileset))
+			return false;
+
+		m_playerSprite.setTexture(m_playerTexture);
+		m_playerSprite.setTextureRect(sf::IntRect(32, 32, 16, 16));
+		//AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+		m_playerSprite.setPosition((pathPos.x + 16) * pathPos.y, pathPos.y + 16);
+
+		return true;
+	}
 };
 
 class Enemy : public Hero

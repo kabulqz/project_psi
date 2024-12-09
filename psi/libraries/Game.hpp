@@ -33,7 +33,7 @@ public:
 		this->save = save;
 	}
 	sf::View getView() { return this->view; }
-	void changeViev(float scale)
+	void changeView(float scale)
 	{
 		view.reset(sf::FloatRect(0.f, 0.f, 1280.f * scale, 720.f * scale));
 		//std::cout << "View: " << view.getSize().x << " " << view.getSize().y << "\n";

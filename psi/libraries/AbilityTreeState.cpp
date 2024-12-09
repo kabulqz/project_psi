@@ -19,7 +19,7 @@ AbilityTreeState::AbilityTreeState(Game* game) : game(game)
 		return;
 	}
 
-	game->changeViev(1.f);
+	game->changeView(1.f);
 
 	int verticalMargin = 10;
 	abilityTreeSprite.setTexture(abilityTreeTexture);
