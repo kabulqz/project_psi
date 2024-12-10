@@ -32,7 +32,11 @@ public:
 	{
 		this->save = save;
 	}
-	sf::View getView() { return this->view; }
+	sf::View getView() const { return this->view; }
+	void setView(sf::View view)
+	{
+		this->view = view;
+	}
 	void changeView(float scale)
 	{
 		view.reset(sf::FloatRect(0.f, 0.f, 1280.f * scale, 720.f * scale));

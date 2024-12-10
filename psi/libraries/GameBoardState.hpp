@@ -11,7 +11,7 @@ private:
 	TileMap map;
 	Save save;
 	std::vector<sf::Vector2i> path;
-	Player player;
+	Player* player;
 
 	//sf::CircleShape circle;
 public:

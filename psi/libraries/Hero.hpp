@@ -44,32 +44,22 @@ class Player : public Hero, public boardGameMovable
 {
 private:
 	int experience;
+	int money;
 
 	sf::Sprite m_playerSprite;
 	sf::Texture m_playerTexture;
 public:
-	Player() = default;
+	Player();
 	int getExperience() const;
 	void addExperience(const int value);
+	int getMoney() const { return money; }
+	void addMoney(const int value) { money += value; }
 	sf::Sprite getSprite() { return this->m_playerSprite; }
-	void setSprite(const sf::Sprite sprite)
-	{
-		m_playerSprite = sprite;
-	}
+	void setSprite(const sf::Sprite sprite) { m_playerSprite = sprite; }
+	bool load(const std::string& tileset);
 
-	bool load(const std::string& tileset)
-	{
-		// load the tileset texture
-		if (!m_playerTexture.loadFromFile(tileset))
-			return false;
-
-		m_playerSprite.setTexture(m_playerTexture);
-		m_playerSprite.setTextureRect(sf::IntRect(32, 32, 16, 16));
-		
-		m_playerSprite.setPosition(getMapPosition().x * 16, getMapPosition().y * 16);
-
-		return true;
-	}
+	std::string serialize() const;
+	Player* deserialize(const std::string& data);
 };
 
 class Enemy : public Hero

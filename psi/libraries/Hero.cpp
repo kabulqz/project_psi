@@ -75,12 +75,16 @@ void Hero::drawCard()
 		// Fatigue
 		dealDamage(fatigue);
 		fatigue++;
+		return;
 	}
-	else
+
+	Card* card = deck.top();
+	deck.pop();
+
+	if (hand.size()<10)
 	{
-		Card* card = deck.top();
+
 		hand.push_back(card);
-		deck.pop();
 		card->setZone(TargetZone::HAND);
 	}
 }
@@ -115,12 +119,24 @@ void Hero::shuffleCardIntoTheDeck(Card* card)
 
 sf::Vector2i boardGameMovable::getMapPosition() const
 {
-	return mapPosition;
+	if (this == nullptr)
+	{
+		sf::Vector2i temp(-1, -1);
+		return temp;
+	}
+	return this->mapPosition;
 }
 
 void boardGameMovable::setMapPosition(const sf::Vector2i& position)
 {
-	mapPosition = position;
+	this->mapPosition = position;
+}
+
+Player::Player()
+{
+	experience = 0;
+	money = 0;
+	setMapPosition(sf::Vector2i(-1, -1));
 }
 
 int Player::getExperience() const
@@ -131,4 +147,47 @@ int Player::getExperience() const
 void Player::addExperience(const int value)
 {
 	experience += value;
+}
+
+bool Player::load(const std::string& tileset)
+{
+	// load the tileset texture
+	if (!m_playerTexture.loadFromFile(tileset))
+		return false;
+
+	m_playerSprite.setTexture(m_playerTexture);
+	m_playerSprite.setTextureRect(sf::IntRect(32, 32, 16, 16));
+
+	m_playerSprite.setPosition(getMapPosition().x * 16, getMapPosition().y * 16);
+
+	return true;
+}
+
+std::string Player::serialize() const
+{
+	std::ostringstream oss;
+	oss << getMapPosition().x << "," << getMapPosition().y << "," << experience << "," << money << ",";
+	//Add serialization for other atributes here
+	return oss.str();
+}
+
+Player* Player::deserialize(const std::string& data)
+{
+	Player* temp = new Player();
+	std::istringstream iss(data);
+	std::string token;
+
+	std::getline(iss, token, ',');
+	int x = std::stoi(token);
+	std::getline(iss, token, ',');
+	int y = std::stoi(token);
+	temp->setMapPosition(sf::Vector2i(x, y));
+
+	std::getline(iss, token, ',');
+	temp->addExperience(std::stoi(token));
+
+	std::getline(iss, token, ',');
+	temp->addMoney(std::stoi(token));
+
+	return temp;
 }

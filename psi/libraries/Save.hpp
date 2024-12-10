@@ -40,23 +40,25 @@ private:
 
 	uint_least32_t  seed;
 	std::shared_ptr<AbilityTree> abilityTree;
-	Player player;
+	Player* player;
 	//TypeOfMapGeneration mapGenerationType;
 public:
 	Save();//default constructor, so new save
 	Save(const Save& save);
 	~Save() = default;
+	void createPlayer(sf::Vector2i position);
 	//Save(save data type from saves array in main menu state);
 	uint_least32_t getSeed() { return seed; }
 	void setSeed(uint_least32_t seed) { this->seed = seed; }
 	std::shared_ptr<AbilityTree> getAbilityTree() { return abilityTree; }
 	void setAbilityTree(std::shared_ptr<AbilityTree> abilityTree) { this->abilityTree = abilityTree; }
 
-	Player getPlayer() { return this->player; }
+	Player* getPlayer() const { return this->player; }
+	void setPlayer(Player* player) { this->player = player; }
 
 	Save& operator=(const Save& save);
 	void write(int slot);	// write to specific slot
-	void write() const;		// write to current slot
+	void write() const;			// write to current slot
 	Save& load(int slot);	// load from specific slot
 	Save& load();			// load from current slot
 	static std::optional<std::filesystem::file_time_type>  getLastWriteTime(int slot);

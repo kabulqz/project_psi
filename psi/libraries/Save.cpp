@@ -143,7 +143,7 @@ bool Save::loadKeyFromFile(const std::string& keyFilePath)
 	return true;
 }
 
-Save::Save()
+Save::Save() : player(nullptr)
 {
 #ifdef DEBUG
 	const std::string keyFilePath = "x64/Debug/encryption.key";
@@ -213,6 +213,8 @@ Save::Save()
 	heal3->addChild(heal4);
 	heal4->addChild(buffMeleeUnits3);
 	heal4->addChild(maxEnergy2);
+
+	createPlayer(sf::Vector2i(-1, -1));
 }
 
 Save::Save(const Save& save)
@@ -239,8 +241,14 @@ Save::Save(const Save& save)
 	this->slot = save.slot;
 	this->seed = save.seed;
 	this->abilityTree = save.abilityTree;
+	this->player = save.player;
 	//this->mapGenerationType = save.mapGenerationType;
-	//this->player = save.player;
+}
+
+void Save::createPlayer(sf::Vector2i position)
+{
+	player = new Player();
+	player->setMapPosition(position);
 }
 
 void Save::write(const int slot)
@@ -258,8 +266,17 @@ void Save::write() const
 
 	oss << "Seed: " << seed << "\n";
 	oss << "Abiliies: " << abilityTree->serialize() << "\n";
+	if (!player)
+	{
+		oss << "Player: " << -1 << "," << -1 << "," << 0 << "," << 0 << ",\n";
+	}
+	else
+	{
+		oss << "Player: " << player->serialize() << "\n";
+	}
 
 	std::string plainText = oss.str();
+	//std::cout << "Saved text: " << plainText << "\n";
 	std::vector<unsigned char> cipherText;
 	std::vector<unsigned char> iv;
 
@@ -336,6 +353,11 @@ Save& Save::load()
 			// Extract the abilities after "Abilities: "
 			abilityTree = AbilityTree::deserialize(line.substr(10));
 		}
+		else if (line.starts_with("Player: "))
+		{
+			// Extract the player after "Player: "
+			player = player->deserialize(line.substr(8));
+		}
 	}
 
 	return *this;
@@ -368,7 +390,7 @@ Save& Save::operator=(const Save& save)
 	this->slot = save.slot;
 	this->seed = save.seed;
 	this->abilityTree = save.abilityTree;
+	this->player = save.player;
 	//this->mapGenerationType = save.mapGenerationType;
-	//this->player = save.player;
 	return *this;
 }

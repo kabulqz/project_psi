@@ -135,10 +135,10 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 	mousePos = sf::Mouse::getPosition(window);
 
 	//Process events from the event manager
-	while(eventManager.hasEvents())
+	while (eventManager.hasEvents())
 	{
 		sf::Event event = eventManager.popEvent();
-		if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
+		if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
 		{
 			if (continueButton.isHovered(mousePos) && continueButton.isClickable())
 			{
@@ -164,7 +164,7 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 					std::cout << "changed loadingWindow screen to " << color("F4D35E", "SAVES\n");
 					options = Options::SAVES_WRITE;
 
-					for (int i=0;i<MAX_NUMBER_OF_SAVES;i++)
+					for (int i = 0; i < MAX_NUMBER_OF_SAVES; i++)
 					{
 						if (saveArr[i] == 0 && !saveButtons[i]->isEnabled())
 						{
@@ -207,7 +207,7 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 					options = Options::LOGO;
 				}
 			}
-			else if(settingsButton.isHovered(mousePos) && settingsButton.isClickable())
+			else if (settingsButton.isHovered(mousePos) && settingsButton.isClickable())
 			{
 				if (options != Options::SETTINGS) // Change loadingWindow to SETTINGS
 				{
@@ -233,11 +233,15 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 				std::cout << color("F61067", "closed window by exit to desktop button\n");
 				window.close();
 			}
-			else {
-				for (int i = 0; i < MAX_NUMBER_OF_SAVES; i++) {
-					if (options == Options::SAVES_WRITE) {
+			else
+			{
+				for (int i = 0; i < MAX_NUMBER_OF_SAVES; i++)
+				{
+					if (options == Options::SAVES_WRITE)
+					{
 						if (saveButtons[i]->isHovered(mousePos) && saveButtons[i]->isClickable())
-						{//new save
+						{
+							//new save
 							Save save;
 							save.write(i + 1);
 							game->setSave(save);
@@ -247,21 +251,23 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 							std::cout << color("3993DD", "created new save on slot " + std::to_string(i + 1) + "\n");
 						}
 						else if (saveButtons[i]->isHovered(mousePos) && saveButtons[i]->isClickable())
-						{//overwrite
+						{
+							//overwrite
 							Save save;
 							save.write(i + 1);
 							game->setSave(save);
 							game->changeState(std::make_unique<GameBoardState>(game));
 							soundManager.playSound("Continue");
 							std::cout << color("00F0B5", "changed state to Board Game\n");
-							std::cout << color("3993DD", "overwritten save nr " + std::to_string(i+1) + "\n");
+							std::cout << color("3993DD", "overwritten save nr " + std::to_string(i + 1) + "\n");
 						}
 					}
 					else if (options == Options::SAVES_LOAD)
 					{
-						if (saveArr[i] == 1) 
+						if (saveArr[i] == 1)
 						{
-							if (saveButtons[i]->isHovered(mousePos) && saveButtons[i]->isClickable()) {
+							if (saveButtons[i]->isHovered(mousePos) && saveButtons[i]->isClickable())
+							{
 								Save save;
 								this->game->setSave(save.load(i + 1));
 								game->changeState(std::make_unique<GameBoardState>(game));
