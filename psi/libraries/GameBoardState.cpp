@@ -5,11 +5,9 @@
 const int width = 60;
 const int height = 60;
 
-GameBoardState::GameBoardState(Game* game) : game(game), circle(4)
+GameBoardState::GameBoardState(Game* game) : game(game)//, circle(4)
 {
 	int level[width * height];
-
-	player = save.getPlayer();
 
 	save = game->getSave();
 	std::cout << std::dec << "Level seed: " << save.getSeed() << "\n";
@@ -22,10 +20,15 @@ GameBoardState::GameBoardState(Game* game) : game(game), circle(4)
 	//Loading map
 	if (!map.load("src/img/test_map_1.png", sf::Vector2u(16, 16), level, width, height))
 		return;
-	if(!player.load("src/img/walk.png",path[0]))
+
+	player = save.getPlayer();
+	player.setMapPosition(path[0]);
+
+	if(!player.load("src/img/walk.png"))
 		return;
 
-	circle.setFillColor(sf::Color::Red);
+
+	//circle.setFillColor(sf::Color::Red);
 }
 
 //handler for specific windows to appear in the main frame 
@@ -40,13 +43,31 @@ void GameBoardState::handleInput(sf::RenderWindow& window, EventManager& eventMa
 		{
 			game->changeState(std::make_unique<AbilityTreeState>(game));
 		}
+		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
+		{
+			srand(time(NULL));
+			int move = rand() % 6 + 1;
+			std::cout << "Spacebar was pressed! " << move << "\n";
+			auto temp = path;
+			int i = 0;
+			std::cout << "player position before " << player.getMapPosition().x << " " << player.getMapPosition().y << "\n";
+			while (temp[i] != player.getMapPosition())
+			{
+				i++;
+			}	
+			player.setMapPosition(path[i + move]);
+			
+			std::cout << "player position after " << player.getMapPosition().x << " " << player.getMapPosition().y << "\n";
+		}
 	}
 }
 
 //updater for elements corresponding to specific screen
 void GameBoardState::update()
 {
-
+	auto sprite = player.getSprite();
+	sprite.setPosition(player.getMapPosition().x * 16, player.getMapPosition().y * 16);
+	player.setSprite(sprite);
 }
 
 //function rendering screen
@@ -57,13 +78,14 @@ void GameBoardState::render(sf::RenderWindow& window)
 	//draw elements
 	window.draw(map);
 
+	/*
 	for (const auto& point : path)
 	{
 		circle.setPosition(static_cast<float>(point.x * 16 + 4), static_cast<float>(point.y * 16 + 4));
 		window.draw(circle);
 	}
+	*/
 
-
-	window.draw(player);
+	window.draw(player.getSprite());
 	window.display();
 }

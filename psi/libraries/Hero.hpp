@@ -40,26 +40,24 @@ public:
 	void setMapPosition(const sf::Vector2i& position);
 };
 
-class Player : public Hero, public boardGameMovable, public sf::Drawable, public sf::Transformable
+class Player : public Hero, public boardGameMovable
 {
 private:
 	int experience;
 
 	sf::Sprite m_playerSprite;
 	sf::Texture m_playerTexture;
-
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
-	{
-		states.transform *= getTransform();
-		states.texture = &m_playerTexture;
-		target.draw(m_playerSprite, states);
-	}
 public:
 	Player() = default;
 	int getExperience() const;
 	void addExperience(const int value);
+	sf::Sprite getSprite() { return this->m_playerSprite; }
+	void setSprite(const sf::Sprite sprite)
+	{
+		m_playerSprite = sprite;
+	}
 
-	bool load(const std::string& tileset, sf::Vector2i pathPos)
+	bool load(const std::string& tileset)
 	{
 		// load the tileset texture
 		if (!m_playerTexture.loadFromFile(tileset))
@@ -68,7 +66,7 @@ public:
 		m_playerSprite.setTexture(m_playerTexture);
 		m_playerSprite.setTextureRect(sf::IntRect(32, 32, 16, 16));
 		
-		m_playerSprite.setPosition(pathPos.x * 16, pathPos.y * 16);
+		m_playerSprite.setPosition(getMapPosition().x * 16, getMapPosition().y * 16);
 
 		return true;
 	}
