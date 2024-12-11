@@ -4,9 +4,9 @@
 #include "GameCardState.hpp"
 #include "AbilityTreeState.hpp"
 
-constexpr float TRANSITION_DURATION = 1.5f;
+constexpr float TRANSITION_DURATION = 1.15f;
 
-TransitionState::TransitionState(Game* game, State_enum targetState, std::unique_ptr<State> previusState) : game(game), targetState(targetState), previousState(std::move(previusState))
+TransitionState::TransitionState(Game* game, State_enum targetState, std::unique_ptr<State> previousState) : game(game), targetState(targetState), previousState(std::move(previousState))
 {
 	if (!shader.loadFromFile("libraries/vhs_transition.frag", sf::Shader::Fragment))
 	{
@@ -15,52 +15,23 @@ TransitionState::TransitionState(Game* game, State_enum targetState, std::unique
 
 	shader.setUniform("progress", 0.0f);
 	clock.restart();
-}
 
-void TransitionState::handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager,
-	sqlite3*& database)
-{
-	// Nothing to see here
-	// This state is only transition and providing animation between states
-	// No input is needed
-}
+	// Create the render texture for the "from" state
+	if (!fromTexture.create(game->getWindow().getSize().x, game->getWindow().getSize().y)) {
+		std::cerr << "Cannot create render texture for from state\n";
+		return;
+	}
+	this->previousState->renderToTexture(fromTexture);  // Render the previous state to texture
 
-void TransitionState::update()
-{
-	
-}
-
-void TransitionState::render(sf::RenderWindow& window)
-{
-	// Create the render texture for drawing the transition effects
-	if (!renderTexture.create(window.getSize().x, window.getSize().y))
-	{
-		std::cerr << "Cannot create render texture\n";
+	// Create the render texture for the "to" state
+	if (!toTexture.create(game->getWindow().getSize().x, game->getWindow().getSize().y)) {
+		std::cerr << "Cannot create render texture for to state\n";
 		return;
 	}
 
-	// Create render textures for the "from" and "to" states
-	sf::RenderTexture fromTexture;
-	if (!fromTexture.create(window.getSize().x, window.getSize().y))
-	{
-		std::cerr << "Cannot create render texture\n";
-		return;
-	}
-
-	// Render the previous state to the fromTexture
-	previousState->renderToTexture(fromTexture);
-
-	sf::RenderTexture toTexture;
-	if (!toTexture.create(window.getSize().x, window.getSize().y))
-	{
-		std::cerr << "Cannot create render texture\n";
-		return;
-	}
-
-	// Create a new state object based on the target state
+	// Render the target state to texture
 	std::unique_ptr<State> tempState;
-	switch (targetState)
-	{
+	switch (targetState) {
 	case MAIN_MENU:
 		tempState = std::make_unique<MainMenuState>(game);
 		break;
@@ -77,32 +48,52 @@ void TransitionState::render(sf::RenderWindow& window)
 		tempState = std::make_unique<MainMenuState>(game);
 		break;
 	}
+	tempState->renderToTexture(toTexture);  // Render the target state to texture
+}
 
-	// Render the "to" state to the toTexture
-	tempState->renderToTexture(toTexture);
+void TransitionState::handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager,
+	sqlite3*& database)
+{
+	// Nothing to see here
+	// This state is only transition and providing animation between states
+	// No input is needed
+}
 
-	// Set up shader uniforms
-	shader.setUniform("fromTexture", fromTexture.getTexture());
-	shader.setUniform("toTexture", toTexture.getTexture());
+void TransitionState::update()
+{
+	
+}
 
-	// Pass the resolution of the window (or texture size) to the shader
-	sf::Vector2u resolution = window.getSize();
-	shader.setUniform("resolution", sf::Glsl::Vec2(resolution.x, resolution.y));
-
-	// Calculate the progress of the transition
+void TransitionState::render(sf::RenderWindow& window) {
 	float progress = clock.getElapsedTime().asSeconds() / TRANSITION_DURATION;
 
-	if (progress > 1.0f)
-	{
+	if (progress > TRANSITION_DURATION) {
 		// Once the transition is complete, change the state to the target state
-		game->changeState(std::move(tempState));
+		switch (targetState) {
+		case MAIN_MENU:
+			game->changeState(std::make_unique<MainMenuState>(game));
+			break;
+		case GAME_BOARD:
+			game->changeState(std::make_unique<GameBoardState>(game));
+			break;
+		case GAME_CARD:
+			game->changeState(std::make_unique<GameCardState>(game));
+			break;
+		case ABILITY_TREE:
+			game->changeState(std::make_unique<AbilityTreeState>(game));
+			break;
+		}
 		return;  // End the transition rendering
 	}
 
-	// Update the shader with the current progress of the transition
+	// Smooth the progress with easing (for smooth transition effect)
+	progress = 3 * progress * progress - 2 * progress * progress * progress;  // cubic easing
 	shader.setUniform("progress", progress);
+	shader.setUniform("fromTexture", fromTexture.getTexture());
+	shader.setUniform("toTexture", toTexture.getTexture());
+	shader.setUniform("resolution", sf::Vector2f(window.getSize().x, window.getSize().y));
 
-	// Clear and draw the transition
+	// Clear the window and draw the transition effect
 	window.clear();
 	window.draw(sf::Sprite(fromTexture.getTexture()), &shader);  // Drawing the sprite with the shader applied
 	window.display();

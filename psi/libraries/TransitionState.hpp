@@ -17,7 +17,7 @@ class TransitionState : public State
 	State_enum targetState;
 	std::unique_ptr<State> previousState;
 
-	sf::RenderTexture renderTexture;
+	sf::RenderTexture renderTexture, fromTexture, toTexture;
 	sf::Shader shader;
 	sf::Clock clock;
 
