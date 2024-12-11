@@ -235,7 +235,7 @@ void Button::updateAppearanceWithBaseColor(const std::string& baseHexColor, cons
 }
 
 //Method to draw the button on the window
-void Button::display(sf::RenderWindow& window)
+void Button::display(sf::RenderTarget& window)
 {
 	if (visible)
 	{

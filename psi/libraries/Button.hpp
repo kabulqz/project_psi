@@ -53,7 +53,7 @@ public:
 	bool isClickable() const { return (enabled && visible); }
 	void updateAppearance(const std::string& hexColor);
 	void updateAppearanceWithBaseColor(const std::string& baseHexColor, const std::string& targetHexColor);
-	void display(sf::RenderWindow& window);
+	void display(sf::RenderTarget& window);
 	void setColor(const sf::Color& color);
 	void setColor(const std::string& hexColor);
 	void handleHoverState(sf::Vector2i mousePosition);

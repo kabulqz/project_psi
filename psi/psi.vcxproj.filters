@@ -136,7 +136,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="libraries\shader.frag">
+    <None Include="libraries\grayscale.frag">
+      <Filter>Pliki zasobów</Filter>
+    </None>
+    <None Include="libraries\vhs_effect.frag">
       <Filter>Pliki zasobów</Filter>
     </None>
   </ItemGroup>

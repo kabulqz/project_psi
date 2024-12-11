@@ -12,14 +12,13 @@ GameBoardState::GameBoardState(Game* game) : game(game)//, circle(4)
 	save = game->getSave();
 	std::cout << std::dec << "Level seed: " << save.getSeed() << "\n";
 
-	game->changeView(0.4f);
+	game->changeViewZoom(0.4f);
 
 	generate(save.getSeed(), level, path);
 	std::cout << path[0].x << " " << path[0].y<<"\n";
 
 	//Loading map
-	if (!map.load("src/img/test_map_1.png", sf::Vector2u(16, 16), level, width, height))
-		return;
+	if (!map.load("src/img/test_map_1.png", sf::Vector2u(16, 16), level, width, height)) return;
 
 	if (save.getPlayer()->getMapPosition() == sf::Vector2i(-1,-1))
 	{
@@ -28,8 +27,10 @@ GameBoardState::GameBoardState(Game* game) : game(game)//, circle(4)
 	}
 	player = save.getPlayer();
 
-	if(!save.getPlayer()->load("src/img/walk.png"))
-		return;
+	if(!save.getPlayer()->load("src/img/walk.png")) return;
+
+	if (!vhsShader.loadFromFile("libraries/vhs_effect.frag", sf::Shader::Fragment)) return;
+	shaderClock.restart();
 	//circle.setFillColor(sf::Color::Red);
 }
 
@@ -96,16 +97,26 @@ void GameBoardState::update()
 
 	cameraView.setCenter(clampedPosition);
 	game->setView(cameraView);
+
+	float elapsedTime = shaderClock.getElapsedTime().asSeconds();
+	vhsShader.setUniform("time", elapsedTime);
+	vhsShader.setUniform("resolution", sf::Vector2f(1280, 720));
 }
 
 //function rendering screen
 void GameBoardState::render(sf::RenderWindow& window)
 {
-	window.clear();
-	window.setView(game->getView());
-	//draw elements
-	window.draw(map);
+	sf::RenderTexture renderTexture;
+	if (!renderTexture.create(window.getSize().x, window.getSize().y))
+	{
+		std::cerr << "Cannot create render texture\n";
+		return;
+	}
 
+	renderTexture.clear();
+	renderTexture.setView(game->getView());
+	//draw elements
+	renderTexture.draw(map);
 	/*
 	for (const auto& point : path)
 	{
@@ -113,10 +124,14 @@ void GameBoardState::render(sf::RenderWindow& window)
 		window.draw(circle);
 	}
 	*/
-
 	if (save.getPlayer()->getMapPosition() != sf::Vector2i(-1, -1))
 	{
-		window.draw(save.getPlayer()->getSprite());
+		renderTexture.draw(player->getSprite());
 	}
+	renderTexture.display();
+
+	window.clear();
+	sf::Sprite screenSprite(renderTexture.getTexture());
+	window.draw(screenSprite, &vhsShader);
 	window.display();
 }

@@ -16,6 +16,9 @@ private:
 	sf::Texture abilityTreeTexture;
 	sf::Sprite abilityTreeSprite;
 
+	sf::Shader vhsShader;
+	sf::Clock shaderClock;
+
 	std::shared_ptr<AbilityTree> abilityTree;
 	enum class CursorState
 	{
@@ -23,7 +26,7 @@ private:
 		Buyable,
 		Locked
 	};
-	void renderAbilities(sf::RenderWindow& window, const std::shared_ptr<Ability>& ability,bool& isHoveredOverAnyAbility, CursorState& currentCursorState, const sf::Shader* shader);
+	void renderAbilities(sf::RenderTarget& renderTarget, sf::RenderWindow& window, const std::shared_ptr<Ability>& ability,bool& isHoveredOverAnyAbility, CursorState& currentCursorState, const sf::Shader* shader);
 public:
 	//handler for specific windows to appear in the main frame 
 	void handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager, sqlite3*& databasez) override;

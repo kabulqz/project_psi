@@ -186,7 +186,8 @@
     <ClInclude Include="src\SQLite\include\sqlite3.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="libraries\shader.frag" />
+    <None Include="libraries\grayscale.frag" />
+    <None Include="libraries\vhs_effect.frag" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

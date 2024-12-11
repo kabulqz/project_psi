@@ -10,6 +10,8 @@ private:
 	Game* game;
 	TileMap map;
 	Save save;
+	sf::Shader vhsShader;
+	sf::Clock shaderClock;
 	std::vector<sf::Vector2i> path;
 	Player* player;
 

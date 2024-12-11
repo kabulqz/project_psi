@@ -37,7 +37,7 @@ void Ability::addChild(std::shared_ptr<Ability> child)
 	child->parent = shared_from_this();
 }
 
-void Ability::display(sf::RenderWindow& window, const sf::Shader* shader)
+void Ability::display(sf::RenderTarget& window, const sf::Shader* shader)
 {
 	switch (status)
 	{
@@ -144,7 +144,7 @@ std::shared_ptr<Ability> Ability::deserialize(const std::string& serializedData)
 
 AbilityTree::AbilityTree(const std::shared_ptr<Ability>& root) : root(root)
 {
-	if (!shader.loadFromFile("libraries/shader.frag", sf::Shader::Fragment))
+	if (!shader.loadFromFile("libraries/grayscale.frag", sf::Shader::Fragment))
 	{
 		std::cerr << "Cannot load shader from libraries/grayscale.frag\n";
 	}
@@ -154,7 +154,7 @@ AbilityTree::AbilityTree(const std::shared_ptr<Ability>& root) : root(root)
 	}
 }
 
-void AbilityTree::displayNode(const std::shared_ptr<Ability>& node, sf::RenderWindow& window, const sf::Shader* shader, const int depth)
+void AbilityTree::displayNode(const std::shared_ptr<Ability>& node, sf::RenderTarget& window, const sf::Shader* shader, const int depth)
 {
 	if (!node) return;
 
@@ -166,7 +166,7 @@ void AbilityTree::displayNode(const std::shared_ptr<Ability>& node, sf::RenderWi
 	}
 }
 
-void AbilityTree::display(sf::RenderWindow& window) const
+void AbilityTree::display(sf::RenderTarget& window) const
 {
 	displayNode(root, window, &shader, 0);
 }

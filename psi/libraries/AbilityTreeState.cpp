@@ -19,7 +19,7 @@ AbilityTreeState::AbilityTreeState(Game* game) : game(game)
 		return;
 	}
 
-	game->changeView(1.f);
+	game->changeViewZoom(1.f);
 
 	int verticalMargin = 10;
 	abilityTreeSprite.setTexture(abilityTreeTexture);
@@ -45,6 +45,9 @@ AbilityTreeState::AbilityTreeState(Game* game) : game(game)
 	defaultCursor.loadFromPixels(cursorDefault.getPixelsPtr(), cursorDefault.getSize(), { 0, 0 });
 	buyableCursor.loadFromPixels(cursorBuyable.getPixelsPtr(), cursorBuyable.getSize(), { 16, 16 });
 	lockedCursor.loadFromPixels(cursorLocked.getPixelsPtr(), cursorLocked.getSize(), { 16, 16 });
+
+	if (!vhsShader.loadFromFile("libraries/vhs_effect.frag", sf::Shader::Fragment)) return;
+	shaderClock.restart();
 }
 
 //handler for specific windows to appear in the main frame 
@@ -72,12 +75,20 @@ void AbilityTreeState::handleInput(sf::RenderWindow& window, EventManager& event
 //updater for elements corresponding to specific screen
 void AbilityTreeState::update()
 {
-	
+	float elapsedTime = shaderClock.getElapsedTime().asSeconds();
+	vhsShader.setUniform("time", elapsedTime);
+	vhsShader.setUniform("resolution", sf::Vector2f(1280, 720));
 }
 
-void AbilityTreeState::renderAbilities(sf::RenderWindow& window, const std::shared_ptr<Ability>& ability, bool& isHoveredOverAnyAbility, CursorState& currentCursorState, const sf::Shader* shader)
+void AbilityTreeState::renderAbilities(
+	sf::RenderTarget& renderTarget,
+	sf::RenderWindow& window,
+	const std::shared_ptr<Ability>& ability,
+	bool& isHoveredOverAnyAbility,
+	CursorState& currentCursorState,
+	const sf::Shader* shader)
 {
-	ability->display(window, shader);
+	ability->display(renderTarget, shader);
 
 	if (ability->isHovered(mousePos))
 	{
@@ -117,30 +128,46 @@ void AbilityTreeState::renderAbilities(sf::RenderWindow& window, const std::shar
 
 	for (auto& child : ability->getChildren())
 	{
-		renderAbilities(window, child, isHoveredOverAnyAbility, currentCursorState, abilityTree->getShader());
+		renderAbilities(renderTarget, window, child, isHoveredOverAnyAbility, currentCursorState, abilityTree->getShader());
 	}
 }
+
 
 //function rendering screen
 void AbilityTreeState::render(sf::RenderWindow& window)
 {
-	window.clear();
-	//draw skills here
-	window.draw(abilityTreeSprite);
+	sf::RenderTexture renderTexture;
+	if (!renderTexture.create(window.getSize().x, window.getSize().y))
+	{
+		std::cerr << "Cannot create render texture\n";
+		return;
+	}
+
+	// Clear and draw the base sprite
+	renderTexture.clear();
+	renderTexture.draw(abilityTreeSprite);
 
 	bool isHoveredOverAnyAbility = false;
 	CursorState currentCursorState = CursorState::Default;
 
+	// Render abilities into the render texture
 	if (abilityTree->getRoot())
 	{
-		renderAbilities(window, abilityTree->getRoot(), isHoveredOverAnyAbility, currentCursorState, abilityTree->getShader());
+		renderAbilities(renderTexture, window, abilityTree->getRoot(), isHoveredOverAnyAbility, currentCursorState, abilityTree->getShader());
 	}
 
+	// Update the cursor if no ability is hovered
 	if (!isHoveredOverAnyAbility)
 	{
 		window.setMouseCursor(defaultCursor);
 	}
-	
-	window.setView(game->getView());
+
+	// Display the render texture onto the window
+	renderTexture.display();
+	sf::Sprite screenSprite(renderTexture.getTexture());
+
+	// Apply shader and draw to the main window
+	window.clear();
+	window.draw(screenSprite, &vhsShader);
 	window.display();
 }
