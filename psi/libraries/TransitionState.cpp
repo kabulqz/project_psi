@@ -1,10 +1,12 @@
 #include "TransitionState.hpp"
+
+#include <algorithm>
 #include "MainMenuState.hpp"
 #include "GameBoardState.hpp"
 #include "GameCardState.hpp"
 #include "AbilityTreeState.hpp"
 
-constexpr float TRANSITION_DURATION = 1.15f;
+constexpr float TRANSITION_DURATION = 2.0f;
 
 TransitionState::TransitionState(Game* game, State_enum targetState, std::unique_ptr<State> previousState) : game(game), targetState(targetState), previousState(std::move(previousState))
 {
@@ -14,6 +16,7 @@ TransitionState::TransitionState(Game* game, State_enum targetState, std::unique
 	}
 
 	shader.setUniform("progress", 0.0f);
+	shader.setUniform("duration", TRANSITION_DURATION);
 	clock.restart();
 
 	// Create the render texture for the "from" state
@@ -66,8 +69,9 @@ void TransitionState::update()
 
 void TransitionState::render(sf::RenderWindow& window) {
 	float progress = clock.getElapsedTime().asSeconds() / TRANSITION_DURATION;
+	progress = std::min(progress, 1.0f);
 
-	if (progress > TRANSITION_DURATION) {
+	if (progress >= 1.0f) {
 		// Once the transition is complete, change the state to the target state
 		switch (targetState) {
 		case MAIN_MENU:

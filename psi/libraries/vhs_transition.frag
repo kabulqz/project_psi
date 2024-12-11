@@ -2,32 +2,51 @@ uniform sampler2D fromTexture;   // The previous texture (the "from" texture)
 uniform sampler2D toTexture;     // The next texture (the "to" texture)
 uniform float progress;          // Progress of the transition (0.0 to 1.0)
 uniform vec2 resolution;         // Resolution of the screen/texture (width, height)
+uniform float duration;          // Duration of the transition
+
+// Helper function to fetch color from the "from" texture
+vec4 getFromColor(vec2 p) {
+    return texture2D(fromTexture, p);
+}
+
+// Helper function to fetch color from the "to" texture
+vec4 getToColor(vec2 p) {
+    return texture2D(toTexture, p);
+}
+
+// The transition effect function
+vec4 transition(vec2 p) {
+    // Create a "block" for the noise pattern
+    vec2 block = floor(p.xy / vec2(16));
+
+    // Generate noise UV coordinates based on progress
+    vec2 uv_noise = block / vec2(64);
+    uv_noise += floor(vec2(progress) * vec2(1200.0, 3500.0)) / vec2(64);
+
+    // Calculate the distortion effect based on progress
+    vec2 dist = progress > 0.0 ? (fract(uv_noise) - 0.5) * 0.3 * (1.0 - progress) : vec2(0.0);
+
+    // Apply distortion in different directions for red, green, and blue channels
+    vec2 red = p + dist * 0.2;
+    vec2 green = p + dist * 0.3;
+    vec2 blue = p + dist * 0.5;
+
+    // Mix colors from the "from" and "to" textures based on progress
+    return vec4(
+        mix(getFromColor(red), getToColor(red), progress).r,
+        mix(getFromColor(green), getToColor(green), progress).g,
+        mix(getFromColor(blue), getToColor(blue), progress).b,
+        1.0
+    );
+}
 
 void main() {
-    vec2 uv = gl_FragCoord.xy / resolution;  // Normalize coordinates based on resolution
+    // Normalize the fragment coordinates
+    vec2 uv = gl_FragCoord.xy / resolution;
 
-    // Calculate the effect of VHS channel change (horizontal tearing and noise)
-    float tearOffset = sin(uv.y * 100.0 + progress * 10.0) * 0.03;  // Horizontal noise based on progress
-    uv.x += tearOffset;  // Apply horizontal distortion based on "tear" effect
+    // Apply the transition effect
+    vec4 blendedColor = transition(uv);
 
-    // Fetch the colors from both textures
-    vec4 fromColor = texture2D(fromTexture, uv);
-    vec4 toColor = texture2D(toTexture, uv);
-
-    // Smooth transition with smoothstep to ease the progress
-    float smoothProgress = smoothstep(0.0, 1.0, progress);
-
-    // Blend between the two textures based on smoothed progress
-    vec4 blendedColor = mix(fromColor, toColor, smoothProgress);
-
-    // Add VHS-style static noise (color flicker and distortion)
-    float noise = (sin(uv.x * 20.0 + smoothProgress * 50.0) + cos(uv.y * 10.0 + smoothProgress * 30.0)) * 0.1;
-    blendedColor.rgb += noise;  // Apply the noise to the color channels
-
-    // Apply a slight color shift to simulate the VHS glitchy effect
-    vec3 colorShift = vec3(0.0, 0.0, 0.2) * sin(smoothProgress * 3.0);  // Color shift effect based on smooth progress
-    blendedColor.rgb += colorShift;
-
-    // Final output with VHS-like channel change effect
+    // Set the final color
     gl_FragColor = blendedColor;
 }
