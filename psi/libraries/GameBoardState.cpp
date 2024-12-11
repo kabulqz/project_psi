@@ -31,6 +31,22 @@ GameBoardState::GameBoardState(Game* game) : game(game)//, circle(4)
 
 	if (!vhsShader.loadFromFile("libraries/vhs_effect.frag", sf::Shader::Fragment)) return;
 	shaderClock.restart();
+
+	sf::Vector2f playerPosition(
+		static_cast<float>(player->getMapPosition().x * 16 + 8),
+		static_cast<float>(player->getMapPosition().y * 16 + 8));
+
+	sf::View cameraView = game->getView();
+	sf::Vector2f cameraViewSize = cameraView.getSize();
+
+	sf::Vector2f mapSize(static_cast<float>(width * 16), static_cast<float>(height * 16));
+
+	sf::Vector2f clampedPosition(
+		std::max(cameraViewSize.x / 2.f, std::min(playerPosition.x, mapSize.x - cameraViewSize.x / 2.f)),
+		std::max(cameraViewSize.y / 2.f, std::min(playerPosition.y, mapSize.y - cameraViewSize.y / 2.f)));
+
+	cameraView.setCenter(clampedPosition);
+	game->setView(cameraView);
 	//circle.setFillColor(sf::Color::Red);
 }
 
@@ -44,7 +60,7 @@ void GameBoardState::handleInput(sf::RenderWindow& window, EventManager& eventMa
 		// Example: if (event.type == sf::Event::MouseButtonPressed) { ... }
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
 		{
-			game->changeState(std::make_unique<AbilityTreeState>(game));
+			game->changeState(std::make_unique<TransitionState>(game, ABILITY_TREE, std::make_unique<GameBoardState>(game)));
 		}
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
 		{
@@ -134,4 +150,25 @@ void GameBoardState::render(sf::RenderWindow& window)
 	sf::Sprite screenSprite(renderTexture.getTexture());
 	window.draw(screenSprite, &vhsShader);
 	window.display();
+}
+
+void GameBoardState::renderToTexture(sf::RenderTexture& texture)
+{
+	// Clear the render texture
+	texture.clear(sf::Color::Black);
+
+	// Set the game view
+	texture.setView(game->getView());
+
+	// Draw the map
+	texture.draw(map);
+
+	// Draw the player sprite if their position is valid
+	if (save.getPlayer()->getMapPosition() != sf::Vector2i(-1, -1))
+	{
+		texture.draw(player->getSprite());
+	}
+
+	// Finalize rendering
+	texture.display();
 }

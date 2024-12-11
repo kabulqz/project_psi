@@ -30,3 +30,11 @@ void GameCardState::render(sf::RenderWindow& window)
 	//draw elements
 	window.display();
 }
+
+void GameCardState::renderToTexture(sf::RenderTexture& texture)
+{
+	// Clear the render texture
+	texture.clear();
+	// Draw the elements
+	texture.display();
+}

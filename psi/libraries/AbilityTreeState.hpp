@@ -34,6 +34,7 @@ public:
 	void update() override;
 	//function rendering screen
 	void render(sf::RenderWindow& window) override;
+	void renderToTexture(sf::RenderTexture& texture) override;
 
 	AbilityTreeState(Game* game);
 };

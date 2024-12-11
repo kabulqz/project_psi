@@ -160,6 +160,7 @@
     <ClCompile Include="libraries\Settings.cpp" />
     <ClCompile Include="libraries\SoundManager.cpp" />
     <ClCompile Include="libraries\State.cpp" />
+    <ClCompile Include="libraries\TransitionState.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\SQLite\include\sqlite3.c" />
   </ItemGroup>
@@ -183,11 +184,13 @@
     <ClInclude Include="libraries\SoundManager.hpp" />
     <ClInclude Include="libraries\State.hpp" />
     <ClInclude Include="libraries\TileMap.hpp" />
+    <ClInclude Include="libraries\TransitionState.hpp" />
     <ClInclude Include="src\SQLite\include\sqlite3.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libraries\grayscale.frag" />
     <None Include="libraries\vhs_effect.frag" />
+    <None Include="libraries\vhs_transition.frag" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

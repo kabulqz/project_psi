@@ -67,7 +67,7 @@ void AbilityTreeState::handleInput(sf::RenderWindow& window, EventManager& event
 			save.write();
 			game->setSave(save);
 			window.setMouseCursor(defaultCursor);
-			game->changeState(std::make_unique<GameBoardState>(game));
+			game->changeState(std::make_unique<TransitionState>(game, GAME_BOARD, std::make_unique<AbilityTreeState>(game)));
 		}
 	}
 }
@@ -170,4 +170,28 @@ void AbilityTreeState::render(sf::RenderWindow& window)
 	window.clear();
 	window.draw(screenSprite, &vhsShader);
 	window.display();
+}
+
+void AbilityTreeState::renderToTexture(sf::RenderTexture& texture)
+{
+	// Clear the render texture
+	texture.clear();
+
+	// Draw the background (ability tree sprite)
+	texture.draw(abilityTreeSprite);
+
+	// Handle rendering of abilities
+	CursorState currentCursorState = CursorState::Default;
+
+	// Use a dummy RenderWindow for compatibility
+	sf::RenderWindow dummyWindow(sf::VideoMode(1, 1), "Dummy Window", sf::Style::None);
+
+	if (abilityTree->getRoot())
+	{
+		bool isHoveredOverAnyAbility = false;
+		renderAbilities(texture, dummyWindow, abilityTree->getRoot(), isHoveredOverAnyAbility, currentCursorState, abilityTree->getShader());
+	}
+
+	// Finalize the render texture
+	texture.display();
 }

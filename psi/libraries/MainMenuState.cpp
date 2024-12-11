@@ -127,6 +127,9 @@ sav8Button(895, 505, 330, 130, PATH_TO_BORDERS_FOLDER + "panel-border-019.png")
 			saveButtons[i]->setEnabled(false);
 		}
 	}
+
+	if (!vhsShader.loadFromFile("libraries/vhs_effect.frag", sf::Shader::Fragment)) return;
+	shaderClock.restart();
 }
 
 //Handler for specific windows to appear in the main frame 
@@ -147,7 +150,7 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 				{
 					Save save;
 					this->game->setSave(save.load(mostRecentSave));
-					game->changeState(std::make_unique<GameBoardState>(game));
+					game->changeState(std::make_unique<TransitionState>(game, GAME_BOARD,std::make_unique<MainMenuState>(game)));
 					soundManager.playSound("Continue");
 					std::cout << color("00F0B5", "changed state to Board Game\n");
 					std::cout << color("3993DD", "continue from the last save\n");
@@ -245,7 +248,7 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 							Save save;
 							save.write(i + 1);
 							game->setSave(save);
-							game->changeState(std::make_unique<GameBoardState>(game));
+							game->changeState(std::make_unique<TransitionState>(game, GAME_BOARD, std::make_unique<MainMenuState>(game)));
 							soundManager.playSound("Continue");
 							std::cout << color("00F0B5", "changed state to Board Game\n");
 							std::cout << color("3993DD", "created new save on slot " + std::to_string(i + 1) + "\n");
@@ -256,7 +259,7 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 							Save save;
 							save.write(i + 1);
 							game->setSave(save);
-							game->changeState(std::make_unique<GameBoardState>(game));
+							game->changeState(std::make_unique<TransitionState>(game, GAME_BOARD, std::make_unique<MainMenuState>(game)));
 							soundManager.playSound("Continue");
 							std::cout << color("00F0B5", "changed state to Board Game\n");
 							std::cout << color("3993DD", "overwritten save nr " + std::to_string(i + 1) + "\n");
@@ -270,7 +273,7 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 							{
 								Save save;
 								this->game->setSave(save.load(i + 1));
-								game->changeState(std::make_unique<GameBoardState>(game));
+								game->changeState(std::make_unique<TransitionState>(game, GAME_BOARD, std::make_unique<MainMenuState>(game)));
 								soundManager.playSound("Continue");
 								std::cout << color("00F0B5", "changed state to Board Game\n");
 								std::cout << color("3993DD", "continue last from the save\n");
@@ -323,66 +326,144 @@ void MainMenuState::update()
 			}
 		}
 	}
+
+	float elapsedTime = shaderClock.getElapsedTime().asSeconds();
+	vhsShader.setUniform("time", elapsedTime);
+	vhsShader.setUniform("resolution", sf::Vector2f(1280, 720));
 }
 
 //Function rendering screen
 void MainMenuState::render(sf::RenderWindow& window)
 {
-	//Clear the window
-	window.clear();
-	//Add main menu elements
-	continueButton.display(window);
-	newGameButton.display(window);
-	loadGameButton.display(window);
-	settingsButton.display(window);
-	exitToDesktopButton.display(window);
-	loadWindow.display(window);
+	// Create a RenderTexture to draw all elements onto
+	sf::RenderTexture renderTexture;
+	if (!renderTexture.create(window.getSize().x, window.getSize().y))
+	{
+		std::cerr << "Failed to create render texture for shader application\n";
+		return;
+	}
+
+	// Clear the RenderTexture
+	renderTexture.clear();
+
+	// Draw UI elements onto the RenderTexture
+	continueButton.display(renderTexture);
+	newGameButton.display(renderTexture);
+	loadGameButton.display(renderTexture);
+	settingsButton.display(renderTexture);
+	exitToDesktopButton.display(renderTexture);
+	loadWindow.display(renderTexture);
 
 	if (loadWindow.isVisible())
 	{
-		if(options==Options::LOGO)
+		if (options == Options::LOGO)
 		{
-			//Load the logo texture
+			// Render logo
 			sf::Texture logoTx;
 			if (!logoTx.loadFromFile("src/img/icon.png"))
 			{
 				std::cerr << "Cannot load logo img\n";
 				return;
 			}
-			//Create the sprite for the logo and set the texture
+
 			sf::Sprite logoSp;
 			logoSp.setTexture(logoTx);
-			//Scale the logo
 			logoSp.setScale(2.0f, 2.0f);
-			//Calculate the center position within loadWindow
+
 			sf::FloatRect loadWindowBounds = loadWindow.getBounds();
 			sf::FloatRect logoBounds = logoSp.getLocalBounds();
 
 			float logoX = loadWindowBounds.left + (loadWindowBounds.width - logoBounds.width * logoSp.getScale().x) / 2.0f;
 			float logoY = loadWindowBounds.top + (loadWindowBounds.height - logoBounds.height * logoSp.getScale().y) / 2.0f;
 
-			//Set the position of the logo sprite
 			logoSp.setPosition(logoX, logoY);
-
-			//Draw the logo sprite
-			window.draw(logoSp);
+			renderTexture.draw(logoSp);
 		}
-		else if(options == Options::SAVES_LOAD || options == Options::SAVES_WRITE)
+		else if (options == Options::SAVES_LOAD || options == Options::SAVES_WRITE)
 		{
-			sav1Button.display(window);
-			sav2Button.display(window);
-			sav3Button.display(window);
-			sav4Button.display(window);
-			sav5Button.display(window);
-			sav6Button.display(window);
-			sav7Button.display(window);
-			sav8Button.display(window);
+			sav1Button.display(renderTexture);
+			sav2Button.display(renderTexture);
+			sav3Button.display(renderTexture);
+			sav4Button.display(renderTexture);
+			sav5Button.display(renderTexture);
+			sav6Button.display(renderTexture);
+			sav7Button.display(renderTexture);
+			sav8Button.display(renderTexture);
 		}
-		else if(options == Options::SETTINGS)
+		else if (options == Options::SETTINGS)
 		{
-			
+			// Add settings rendering logic here
 		}
 	}
-	//Draw window with elements
+
+	// Display everything on the RenderTexture
+	renderTexture.display();
+
+	// Get the RenderTexture as a sprite
+	sf::Sprite sceneSprite(renderTexture.getTexture());
+
+
+	// Apply the shader and draw it to the main window
+	window.clear();
+	window.draw(sceneSprite, &vhsShader);
 	window.display();
+}
+
+void MainMenuState::renderToTexture(sf::RenderTexture& texture)
+{
+	// Clear the render texture with a background color (if needed)
+	texture.clear(sf::Color::Black);
+
+	// Draw all UI elements onto the render texture
+	continueButton.display(texture);
+	newGameButton.display(texture);
+	loadGameButton.display(texture);
+	settingsButton.display(texture);
+	exitToDesktopButton.display(texture);
+	loadWindow.display(texture);
+
+	if (loadWindow.isVisible())
+	{
+		if (options == Options::LOGO)
+		{
+			// Render logo
+			sf::Texture logoTx;
+			if (!logoTx.loadFromFile("src/img/icon.png"))
+			{
+				std::cerr << "Cannot load logo image\n";
+				return;
+			}
+
+			sf::Sprite logoSp;
+			logoSp.setTexture(logoTx);
+			logoSp.setScale(2.0f, 2.0f);
+
+			sf::FloatRect loadWindowBounds = loadWindow.getBounds();
+			sf::FloatRect logoBounds = logoSp.getLocalBounds();
+
+			float logoX = loadWindowBounds.left + (loadWindowBounds.width - logoBounds.width * logoSp.getScale().x) / 2.0f;
+			float logoY = loadWindowBounds.top + (loadWindowBounds.height - logoBounds.height * logoSp.getScale().y) / 2.0f;
+
+			logoSp.setPosition(logoX, logoY);
+			texture.draw(logoSp);
+		}
+		else if (options == Options::SAVES_LOAD || options == Options::SAVES_WRITE)
+		{
+			sav1Button.display(texture);
+			sav2Button.display(texture);
+			sav3Button.display(texture);
+			sav4Button.display(texture);
+			sav5Button.display(texture);
+			sav6Button.display(texture);
+			sav7Button.display(texture);
+			sav8Button.display(texture);
+		}
+		else if (options == Options::SETTINGS)
+		{
+			// Add settings rendering logic here
+		}
+	}
+
+	// Finalize rendering
+	texture.display();
 }

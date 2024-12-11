@@ -8,6 +8,9 @@ class MainMenuState : public State
 {
 private:
 	Game* game;
+	sf::Shader vhsShader;
+	sf::Clock shaderClock;
+
 	sf::Vector2i mousePos;
 	Button continueButton;
 	Button newGameButton;
@@ -53,6 +56,7 @@ public:
 	void update() override;
 	//function rendering screen
 	void render(sf::RenderWindow& window) override;
+	void renderToTexture(sf::RenderTexture& texture) override;
 
 
 	MainMenuState(Game* game);

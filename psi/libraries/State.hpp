@@ -14,5 +14,6 @@ public:
 	virtual void update() = 0;
 	//function rendering screen
 	virtual void render(sf::RenderWindow& window) = 0;
+	virtual void renderToTexture(sf::RenderTexture& texture);
 	virtual ~State() = default;
 };

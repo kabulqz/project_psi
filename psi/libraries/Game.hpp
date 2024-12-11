@@ -5,6 +5,7 @@
 #include "AbilityTreeState.hpp"
 #include "GameBoardState.hpp"
 #include "GameCardState.hpp"
+#include "TransitionState.hpp"
 #include "Save.hpp"
 
 
@@ -42,4 +43,6 @@ public:
 		view.reset(sf::FloatRect(0.f, 0.f, 1280.f * scale, 720.f * scale));
 		//std::cout << "View: " << view.getSize().x << " " << view.getSize().y << "\n";
 	}
+
+	State* getCurrentState() const { return currentState.get(); }
 };
