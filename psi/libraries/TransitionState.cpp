@@ -10,6 +10,19 @@ constexpr float TRANSITION_DURATION = 2.0f;
 
 TransitionState::TransitionState(Game* game, State_enum targetState, std::unique_ptr<State> previousState) : game(game), targetState(targetState), previousState(std::move(previousState))
 {
+	sf::Image cursorDefault;
+	sf::Image cursorLoading;
+
+	if (!cursorDefault.loadFromFile("src/img/cursor_default.png") || !cursorLoading.loadFromFile("src/img/cursor_loading.png"))
+	{
+		std::cerr << "Cannot load cursors png files\n";
+	}
+
+	defaultCursor.loadFromPixels(cursorDefault.getPixelsPtr(), cursorDefault.getSize(), { 0, 0 });
+	loadingCursor.loadFromPixels(cursorLoading.getPixelsPtr(), cursorLoading.getSize(), { 16, 16 });
+
+	
+
 	if (!shader.loadFromFile("libraries/vhs_transition.frag", sf::Shader::Fragment))
 	{
 		std::cerr << "Cannot load shader\n";
@@ -67,12 +80,16 @@ void TransitionState::update()
 	
 }
 
-void TransitionState::render(sf::RenderWindow& window) {
+void TransitionState::render(sf::RenderWindow& window)
+{
+	window.setMouseCursor(loadingCursor);
+
 	float progress = clock.getElapsedTime().asSeconds() / TRANSITION_DURATION;
 	progress = std::min(progress, 1.0f);
 
 	if (progress >= 1.0f) {
 		// Once the transition is complete, change the state to the target state
+		window.setMouseCursor(defaultCursor);
 		switch (targetState) {
 		case MAIN_MENU:
 			game->changeState(std::make_unique<MainMenuState>(game));

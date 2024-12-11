@@ -17,6 +17,9 @@ class TransitionState : public State
 	State_enum targetState;
 	std::unique_ptr<State> previousState;
 
+	sf::Cursor defaultCursor;
+	sf::Cursor loadingCursor;
+
 	sf::RenderTexture renderTexture, fromTexture, toTexture;
 	sf::Shader shader;
 	sf::Clock clock;

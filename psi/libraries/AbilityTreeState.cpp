@@ -66,7 +66,6 @@ void AbilityTreeState::handleInput(sf::RenderWindow& window, EventManager& event
 			Save save = game->getSave();
 			save.write();
 			game->setSave(save);
-			window.setMouseCursor(defaultCursor);
 			game->changeState(std::make_unique<TransitionState>(game, GAME_BOARD, std::make_unique<AbilityTreeState>(game)));
 		}
 	}
