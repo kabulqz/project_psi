@@ -8,14 +8,16 @@ constexpr int height = 60;
 GameBoardState::GameBoardState(Game* game) : game(game)//, circle(4)
 {
 	int level[width * height];
-
 	save = game->getSave();
 	std::cout << std::dec << "Level seed: " << save.getSeed() << "\n";
 
-	game->changeViewZoom(0.4f);
+	std::thread generateThread([&]()
+		{
+			generate(save.getSeed(), level, path);
+		});
+	generateThread.join();
 
-	generate(save.getSeed(), level, path);
-	std::cout << path[0].x << " " << path[0].y<<"\n";
+	game->changeViewZoom(0.4f);
 
 	//Loading map
 	if (!map.load("src/img/test_map_1.png", sf::Vector2u(16, 16), level, width, height)) return;
@@ -61,6 +63,7 @@ void GameBoardState::handleInput(sf::RenderWindow& window, EventManager& eventMa
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
 		{
 			game->changeState(std::make_unique<TransitionState>(game, ABILITY_TREE, std::make_unique<GameBoardState>(game)));
+			soundManager.playSound("Transition");
 		}
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
 		{

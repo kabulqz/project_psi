@@ -42,7 +42,7 @@ bool Save::encryptData(const std::string& plainText, std::vector<unsigned char>&
 
 	int len = 0;
 	cipherText.resize(plainText.size() + EVP_CIPHER_block_size(EVP_aes_256_cbc()));
-	if (!EVP_EncryptUpdate(ctx, cipherText.data(), &len, reinterpret_cast<const unsigned char*>(plainText.data()), plainText.size()))
+	if (!EVP_EncryptUpdate(ctx, cipherText.data(), &len, reinterpret_cast<const unsigned char*>(plainText.data()), static_cast<int>(plainText.size())))
 	{
 		EVP_CIPHER_CTX_free(ctx);
 		return false;
@@ -79,7 +79,7 @@ bool Save::decryptData(const std::vector<unsigned char>& cipherText, const std::
 
 	std::vector<unsigned char> plainTextBuf(cipherText.size() + EVP_MAX_BLOCK_LENGTH);
 	int len = 0;
-	if (!EVP_DecryptUpdate(ctx, plainTextBuf.data(), &len, cipherText.data(), cipherText.size()))
+	if (!EVP_DecryptUpdate(ctx, plainTextBuf.data(), &len, cipherText.data(), static_cast<int>(cipherText.size())))
 	{
 		std::cerr << "Failed during decryption update.\n";
 		EVP_CIPHER_CTX_free(ctx);

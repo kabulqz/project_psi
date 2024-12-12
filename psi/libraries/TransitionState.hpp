@@ -20,10 +20,11 @@ class TransitionState : public State
 	sf::Cursor defaultCursor;
 	sf::Cursor loadingCursor;
 
+	sf::RenderTexture vhsTextureFrom, vhsTextureTo;
 	sf::RenderTexture renderTexture, fromTexture, toTexture;
-	sf::Shader shader;
-	sf::Clock clock;
-
+	sf::Shader vhsShader;
+	sf::Shader transitionShader;
+	sf::Clock transitionClock;
 public:
 	TransitionState(Game* game, State_enum targetState, std::unique_ptr<State> previousState);
 	void handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager, sqlite3*& database) override;

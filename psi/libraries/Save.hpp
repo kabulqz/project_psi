@@ -48,7 +48,7 @@ public:
 	~Save() = default;
 	void createPlayer(sf::Vector2i position);
 	//Save(save data type from saves array in main menu state);
-	uint_least32_t getSeed() { return seed; }
+	uint_least32_t getSeed() const { return seed; }
 	void setSeed(uint_least32_t seed) { this->seed = seed; }
 	std::shared_ptr<AbilityTree> getAbilityTree() { return abilityTree; }
 	void setAbilityTree(std::shared_ptr<AbilityTree> abilityTree) { this->abilityTree = abilityTree; }

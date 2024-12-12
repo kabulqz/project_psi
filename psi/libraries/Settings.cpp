@@ -14,21 +14,18 @@ void Settings::initialize()
 	std::cout << "Opened SQLite database successfully\n";
 
 
-
-
 	//initializing volume settings from save - if not on save then standard
 	//default values
 	//values from 0 - 1
-	general_audio = 0.5f;
+	general_audio = 0.1f;
 	//values from 0 - 100
-	ui_audio = 0.125f;
-	alert_audio = 20.0f;
-	environment_audio = 30.0f;
-	music_audio = 50.0f;
-
+	ui_audio = 100.f;
+	alert_audio = 100.f;
+	ambience_audio = 100.f;
+	music_audio = 100.f;
 }
 
-void Settings::closeDB()
+void Settings::closeDB() const
 {
 	sqlite3_close(database);
 	std::cout << "Closed SQLite database successfully\n";

@@ -1,53 +1,72 @@
 #include "SoundManager.hpp"
 
-SoundManager::SoundManager(float& generalAudio, float& environmentAudio, float& uiAudio, float& alertAudio, float& musicAudio) :
-generalVolume(generalAudio), uiVolume(uiAudio), environmentVolume(environmentAudio), alertVolume(alertAudio), musicVolume(musicAudio)
+SoundManager::SoundManager(float& generalAudio, float& uiAudio, float& ambienceAudio, float& alertAudio, float& musicAudio) :
+generalVolume(generalAudio), uiVolume(uiAudio), ambienceVolume(ambienceAudio), alertVolume(alertAudio), musicVolume(musicAudio)
 {}
 
-//Internal method to play sounds
 void SoundManager::playSoundInternal(const std::string& soundName)
 {
-	//Set the volume level depending on the sound type
+	std::lock_guard<std::mutex> lock(soundMutex); // Synchronize access to shared resources
 	sfxType type = soundTypes[soundName];
+
+	// Default to 1.0f volume for safety
+	float typeVolume = 1.0f;
+
+	// Determine the correct volume based on type
+	switch (type)
+	{
+	case UI:
+		typeVolume = uiVolume / 100.0f;  // Normalize UI volume (0-100 to 0-1)
+		break;
+	case AMBIENCE:
+		typeVolume = ambienceVolume / 100.0f;  // Normalize Ambience volume (0-100 to 0-1)
+		break;
+	case ALERT:
+		typeVolume = alertVolume / 100.0f;  // Normalize Alert volume (0-100 to 0-1)
+		break;
+	case MUSIC:
+		typeVolume = musicVolume / 100.0f;  // Normalize Music volume (0-100 to 0-1)
+		break;
+	}
+
+	// Apply the general volume after the type-specific volume calculation
+	float finalVolume = typeVolume * generalVolume;  // Apply general volume here
+
+	// Handle MUSIC separately (it's managed via sf::Music, not sf::Sound)
 	if (type == MUSIC)
 	{
-		std::unique_ptr<sf::Music>& music = musicTracks[soundName];
-		music->setVolume(generalVolume * musicVolume);
-
-		music->play();
-		std::cout << "Music \"" << soundName << "\" is playing\n";
-
-		while(music->getStatus() == sf::Music::Playing)
+		if (!musicTracks.contains(soundName))
 		{
-			sf::sleep(sf::milliseconds(100));
+			std::cerr << "Music not found: " << soundName << "\n";
+			return;
 		}
+
+		auto& music = musicTracks[soundName];
+		music->setVolume(finalVolume * 100.0f);  // sf::Music expects volume in the 0-100 range
+		music->play();
+
+		std::cout << "Music \"" << soundName << "\" is playing at volume: " << finalVolume * 100.0f << "\n";
 	}
 	else
 	{
-		float volumeLevel = 100.0f;
-		sf::Sound sound;
-		sound.setBuffer(soundBuffers[soundName]);
-
-		// Set volume based on sound type
-		switch (type)
+		if (!soundBuffers.contains(soundName))
 		{
-		case UI: volumeLevel = uiVolume; break;
-		case ENVIRONMENT: volumeLevel = environmentVolume; break;
-		case ALERT: volumeLevel = alertVolume; break;
-		default: break;
+			std::cerr << "Sound buffer not found: " << soundName << "\n";
+			return;
 		}
 
-		sound.setVolume(generalVolume * volumeLevel);
-		sound.play();
-		std::cout << "Sound \"" << soundName << "\" has been played\n";
+		// Create a new sound and store it in the activeSounds map
+		auto sound = std::make_unique<sf::Sound>();
+		sound->setBuffer(soundBuffers[soundName]);
+		sound->setVolume(finalVolume * 100.0f);  // sf::Sound expects volume in the 0-100 range
+		sound->play();
+		activeSounds[soundName] = std::move(sound); // Store the sound in the map
 
-		while (sound.getStatus() == sf::Sound::Playing)
-		{
-			sf::sleep(sf::milliseconds(100));
-		}
+		std::cout << "Sound \"" << soundName << "\" has been played at volume: " << finalVolume * 100.0f << "\n";
 	}
 }
 
+// Load a sound or music track
 void SoundManager::loadSound(const std::string& name, const std::string& filePath, sfxType type)
 {
 	if (type == MUSIC)
@@ -55,17 +74,17 @@ void SoundManager::loadSound(const std::string& name, const std::string& filePat
 		auto music = std::make_unique<sf::Music>();
 		if (!music->openFromFile(filePath))
 		{
-			std::cerr << "Error loading music file " << filePath << "\n";
+			std::cerr << "Error loading music file: " << filePath << "\n";
 			return;
 		}
-		musicTracks[name] = std::move(music); // Store the unique_ptr in the map
+		musicTracks[name] = std::move(music);
 	}
 	else
 	{
 		sf::SoundBuffer buffer;
 		if (!buffer.loadFromFile(filePath))
 		{
-			std::cerr << "Error loading sound file " << filePath << "\n";
+			std::cerr << "Error loading sound file: " << filePath << "\n";
 			return;
 		}
 		soundBuffers[name] = buffer;
@@ -74,25 +93,42 @@ void SoundManager::loadSound(const std::string& name, const std::string& filePat
 	soundTypes[name] = type;
 }
 
-//Play a sound concurrently
+// Play a sound or music track concurrently
 void SoundManager::playSound(const std::string& soundName)
 {
-	if (soundBuffers.find(soundName) == soundBuffers.end())
+	if (!soundTypes.contains(soundName))
 	{
 		std::cerr << "Sound not found: " << soundName << "\n";
 		return;
 	}
 
-	//Use thread to play the sound
-	std::thread soundThread(&SoundManager::playSoundInternal, this, soundName);
-	//Detach the thread to allow independent execution
-	soundThread.detach();
+	std::thread(&SoundManager::playSoundInternal, this, soundName).detach(); // Fire and forget
+}
+
+// Stop a currently playing sound
+void SoundManager::stopSound(const std::string& soundName)
+{
+	std::lock_guard<std::mutex> lock(soundMutex);
+
+	if (activeSounds.contains(soundName))
+	{
+		activeSounds[soundName]->stop();
+		activeSounds.erase(soundName);
+		std::cout << "Sound \"" << soundName << "\" has been stopped\n";
+	}
+	else
+	{
+		std::cerr << "Sound \"" << soundName << "\" is not currently playing\n";
+	}
 }
 
 //Load all sound buffers
 void SoundManager::loadSounds()
 {
 	std::string path = "src/audio/";
+	loadSound("Intro", path + "intro.ogg", UI);
 	loadSound("mouseClick", path + "click3.ogg", UI);
 	loadSound("Continue", path + "switch34.ogg", UI);
+	loadSound("Transition", path + "transition.ogg", ALERT);
+	loadSound("Ambience_crt", path + "ambience_crt.ogg", AMBIENCE);
 }

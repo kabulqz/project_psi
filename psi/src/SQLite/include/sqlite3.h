@@ -65,7 +65,7 @@ extern "C" {
 ** functions provided by the operating system.
 **
 ** Currently, the SQLITE_CDECL, SQLITE_APICALL, SQLITE_CALLBACK, and
-** SQLITE_SYSAPI macros are used only when building for environments
+** SQLITE_SYSAPI macros are used only when building for ambiences
 ** that require non-default calling conventions.
 */
 #ifndef SQLITE_EXTERN
@@ -1825,7 +1825,7 @@ struct sqlite3_mem_methods {
 ** The application is responsible for serializing access to
 ** [database connections] and [prepared statements].  But other mutexes
 ** are enabled so that SQLite will be safe to use in a multi-threaded
-** environment as long as no two threads attempt to use the same
+** ambience as long as no two threads attempt to use the same
 ** [database connection] at the same time.  ^If SQLite is compiled with
 ** the [SQLITE_THREADSAFE | SQLITE_THREADSAFE=0] compile-time option then
 ** it is not possible to set the Multi-thread [threading mode] and
@@ -5160,7 +5160,7 @@ SQLITE_API int sqlite3_data_count(sqlite3_stmt *pStmt);
 ** for the database.
 **
 ** <b>Warning:</b> ^The object returned by [sqlite3_column_value()] is an
-** [unprotected sqlite3_value] object.  In a multithreaded environment,
+** [unprotected sqlite3_value] object.  In a multithreaded ambience,
 ** an unprotected sqlite3_value object may only be used safely with
 ** [sqlite3_bind_value()] and [sqlite3_result_value()].
 ** If the [unprotected sqlite3_value] object returned by
@@ -12595,7 +12595,7 @@ SQLITE_API void sqlite3rebaser_delete(sqlite3_rebaser *p);
 ** Similarly, those that return a changeset or patchset do so by returning
 ** a pointer to a single large buffer allocated using sqlite3_malloc().
 ** Normally this is convenient. However, if an application running in a
-** low-memory environment is required to handle very large changesets, the
+** low-memory ambience is required to handle very large changesets, the
 ** large contiguous memory allocations required can become onerous.
 **
 ** In order to avoid this problem, instead of a single large buffer, input

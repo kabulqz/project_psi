@@ -48,11 +48,11 @@ public:
 	//values from 0 - 100
 	float ui_audio;
 	float alert_audio;
-	float environment_audio;
+	float ambience_audio;
 	float music_audio;
 	//database
 	sqlite3* database;
 	//this function is meant to load database, general volume level etc.
 	void initialize();
-	void closeDB();
+	void closeDB() const;
 };

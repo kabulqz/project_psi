@@ -67,6 +67,7 @@ void AbilityTreeState::handleInput(sf::RenderWindow& window, EventManager& event
 			save.write();
 			game->setSave(save);
 			game->changeState(std::make_unique<TransitionState>(game, GAME_BOARD, std::make_unique<AbilityTreeState>(game)));
+			soundManager.playSound("Transition");
 		}
 	}
 }

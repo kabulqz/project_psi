@@ -2,7 +2,6 @@ uniform sampler2D fromTexture;   // The previous texture (the "from" texture)
 uniform sampler2D toTexture;     // The next texture (the "to" texture)
 uniform float progress;          // Progress of the transition (0.0 to 1.0)
 uniform vec2 resolution;         // Resolution of the screen/texture (width, height)
-uniform float duration;          // Duration of the transition
 
 // Helper function to fetch color from the "from" texture
 vec4 getFromColor(vec2 p) {

@@ -132,6 +132,7 @@ sav8Button(895, 505, 330, 130, PATH_TO_BORDERS_FOLDER + "panel-border-019.png")
 	shaderClock.restart();
 }
 
+
 //Handler for specific windows to appear in the main frame 
 void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager, sqlite3*& database)
 {
@@ -152,6 +153,7 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 					this->game->setSave(save.load(mostRecentSave));
 					game->changeState(std::make_unique<TransitionState>(game, GAME_BOARD,std::make_unique<MainMenuState>(game)));
 					soundManager.playSound("Continue");
+					soundManager.playSound("Transition");
 					std::cout << color("00F0B5", "changed state to Board Game\n");
 					std::cout << color("3993DD", "continue from the last save\n");
 				}
@@ -250,6 +252,7 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 							game->setSave(save);
 							game->changeState(std::make_unique<TransitionState>(game, GAME_BOARD, std::make_unique<MainMenuState>(game)));
 							soundManager.playSound("Continue");
+							soundManager.playSound("Transition");
 							std::cout << color("00F0B5", "changed state to Board Game\n");
 							std::cout << color("3993DD", "created new save on slot " + std::to_string(i + 1) + "\n");
 						}
@@ -261,6 +264,7 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 							game->setSave(save);
 							game->changeState(std::make_unique<TransitionState>(game, GAME_BOARD, std::make_unique<MainMenuState>(game)));
 							soundManager.playSound("Continue");
+							soundManager.playSound("Transition");
 							std::cout << color("00F0B5", "changed state to Board Game\n");
 							std::cout << color("3993DD", "overwritten save nr " + std::to_string(i + 1) + "\n");
 						}
@@ -275,6 +279,7 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 								this->game->setSave(save.load(i + 1));
 								game->changeState(std::make_unique<TransitionState>(game, GAME_BOARD, std::make_unique<MainMenuState>(game)));
 								soundManager.playSound("Continue");
+								soundManager.playSound("Transition");
 								std::cout << color("00F0B5", "changed state to Board Game\n");
 								std::cout << color("3993DD", "continue last from the save\n");
 							}

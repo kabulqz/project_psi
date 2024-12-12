@@ -1,6 +1,5 @@
 #include "TransitionState.hpp"
 
-#include <algorithm>
 #include "MainMenuState.hpp"
 #include "GameBoardState.hpp"
 #include "GameCardState.hpp"
@@ -21,16 +20,18 @@ TransitionState::TransitionState(Game* game, State_enum targetState, std::unique
 	defaultCursor.loadFromPixels(cursorDefault.getPixelsPtr(), cursorDefault.getSize(), { 0, 0 });
 	loadingCursor.loadFromPixels(cursorLoading.getPixelsPtr(), cursorLoading.getSize(), { 16, 16 });
 
-	
-
-	if (!shader.loadFromFile("libraries/vhs_transition.frag", sf::Shader::Fragment))
+	if (!transitionShader.loadFromFile("libraries/vhs_transition.frag", sf::Shader::Fragment))
 	{
 		std::cerr << "Cannot load shader\n";
 	}
 
-	shader.setUniform("progress", 0.0f);
-	shader.setUniform("duration", TRANSITION_DURATION);
-	clock.restart();
+	transitionShader.setUniform("progress", 0.0f);
+	transitionClock.restart();
+
+	if (!vhsShader.loadFromFile("libraries/vhs_effect.frag", sf::Shader::Fragment))
+	{
+		std::cerr << "Cannot load shader\n";
+	}
 
 	// Create the render texture for the "from" state
 	if (!fromTexture.create(game->getWindow().getSize().x, game->getWindow().getSize().y)) {
@@ -38,6 +39,7 @@ TransitionState::TransitionState(Game* game, State_enum targetState, std::unique
 		return;
 	}
 	this->previousState->renderToTexture(fromTexture);  // Render the previous state to texture
+
 
 	// Create the render texture for the "to" state
 	if (!toTexture.create(game->getWindow().getSize().x, game->getWindow().getSize().y)) {
@@ -65,6 +67,29 @@ TransitionState::TransitionState(Game* game, State_enum targetState, std::unique
 		break;
 	}
 	tempState->renderToTexture(toTexture);  // Render the target state to texture
+
+	float progress = transitionClock.getElapsedTime().asSeconds();
+
+	vhsShader.setUniform("time", progress);
+	vhsShader.setUniform("resolution", sf::Vector2f(1280, 720));
+
+	if (!vhsTextureFrom.create(fromTexture.getSize().x, fromTexture.getSize().y))
+	{
+		std::cerr << "Cannot create render texture for vhs effect\n";
+		return;
+	}
+	vhsTextureFrom.clear();
+	vhsTextureFrom.draw(sf::Sprite(fromTexture.getTexture()), &vhsShader);
+	vhsTextureFrom.display();
+
+	if (!vhsTextureTo.create(toTexture.getSize().x, toTexture.getSize().y))
+	{
+		std::cerr << "Cannot create render texture for vhs effect\n";
+		return;
+	}
+	vhsTextureTo.clear();
+	vhsTextureTo.draw(sf::Sprite(toTexture.getTexture()), &vhsShader);
+	vhsTextureTo.display();
 }
 
 void TransitionState::handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager,
@@ -77,14 +102,16 @@ void TransitionState::handleInput(sf::RenderWindow& window, EventManager& eventM
 
 void TransitionState::update()
 {
-	
+	// Nothing to see here
+	// This state is only transition and providing animation between states
+	// No update is needed
 }
 
 void TransitionState::render(sf::RenderWindow& window)
 {
 	window.setMouseCursor(loadingCursor);
 
-	float progress = clock.getElapsedTime().asSeconds() / TRANSITION_DURATION;
+	float progress = transitionClock.getElapsedTime().asSeconds() / TRANSITION_DURATION;
 	progress = std::min(progress, 1.0f);
 
 	if (progress >= 1.0f) {
@@ -109,14 +136,14 @@ void TransitionState::render(sf::RenderWindow& window)
 
 	// Smooth the progress with easing (for smooth transition effect)
 	progress = 3 * progress * progress - 2 * progress * progress * progress;  // cubic easing
-	shader.setUniform("progress", progress);
-	shader.setUniform("fromTexture", fromTexture.getTexture());
-	shader.setUniform("toTexture", toTexture.getTexture());
-	shader.setUniform("resolution", sf::Vector2f(window.getSize().x, window.getSize().y));
+	transitionShader.setUniform("progress", progress);
+	transitionShader.setUniform("fromTexture", vhsTextureFrom.getTexture());
+	transitionShader.setUniform("toTexture", vhsTextureTo.getTexture());
+	transitionShader.setUniform("resolution", sf::Vector2f(window.getSize().x, window.getSize().y));
 
 	// Clear the window and draw the transition effect
 	window.clear();
-	window.draw(sf::Sprite(fromTexture.getTexture()), &shader);  // Drawing the sprite with the shader applied
+	window.draw(sf::Sprite(vhsTextureFrom.getTexture()), &transitionShader);  // Drawing the sprite with the shader applied
 	window.display();
 }
 

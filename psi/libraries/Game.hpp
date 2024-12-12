@@ -46,4 +46,5 @@ public:
 
 	State* getCurrentState() const { return currentState.get(); }
 	sf::RenderWindow& getWindow() { return window; }
+	SoundManager& getSoundManager() { return soundManager; }
 };
