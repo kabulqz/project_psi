@@ -5,7 +5,7 @@
 constexpr int width = 60;
 constexpr int height = 60;
 
-GameBoardState::GameBoardState(Game* game) : game(game)//, circle(4)
+GameBoardState::GameBoardState(Game* game) : game(game)
 {
 	int level[width * height];
 	save = game->getSave();
@@ -49,7 +49,6 @@ GameBoardState::GameBoardState(Game* game) : game(game)//, circle(4)
 
 	cameraView.setCenter(clampedPosition);
 	game->setView(cameraView);
-	//circle.setFillColor(sf::Color::Red);
 }
 
 //handler for specific windows to appear in the main frame 
@@ -67,7 +66,9 @@ void GameBoardState::handleInput(sf::RenderWindow& window, EventManager& eventMa
 		}
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
 		{
-			srand(time(nullptr));
+			soundManager.playSound("DiceThrow");
+
+			srand(static_cast<unsigned>(time(nullptr)));
 			int move = rand() % 6 + 1; // Random move between 1 and 6
 			std::cout << "Spacebar was pressed! " << move << "\n";
 
@@ -136,13 +137,7 @@ void GameBoardState::render(sf::RenderWindow& window)
 	renderTexture.setView(game->getView());
 	//draw elements
 	renderTexture.draw(map);
-	/*
-	for (const auto& point : path)
-	{
-		circle.setPosition(static_cast<float>(point.x * 16 + 4), static_cast<float>(point.y * 16 + 4));
-		window.draw(circle);
-	}
-	*/
+
 	if (save.getPlayer()->getMapPosition() != sf::Vector2i(-1, -1))
 	{
 		renderTexture.draw(player->getSprite());

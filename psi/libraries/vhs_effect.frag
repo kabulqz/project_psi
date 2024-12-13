@@ -30,6 +30,12 @@ void main()
     float distortion = sin(uv.y * 8.0 + time * 2.0) * 0.0005;
     uv.x += distortion;
 
+    // Introduce a rare CRT TV tear glitch effect
+    float glitchChance = 0.0000001; // Glitch probability (lower for rare)
+    if (fract(sin(time * 1000.0) * 43758.5453) < glitchChance) {
+        uv.y += sin(uv.x * 20.0 + time * 10.0) * 0.05; // Horizontal tear distortion
+    }
+
     // Chromatic aberration
     vec3 col;
     col.r = texture2D(texture, uv + vec2(0.0015, 0.0)).r; // Slight offset for red

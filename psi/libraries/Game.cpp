@@ -75,7 +75,7 @@ int Game::run()
 				sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 				std::cout << "mouse button clicked at x: "<<color("048A81", std::to_string(mousePos.x)) <<", y: "<<color("048A81", std::to_string(mousePos.y))<<"\n";
 				//click3.ogg
-				soundManager.playSound("mouseClick");
+				soundManager.playSound("MouseClick");
 			}
 
 			eventManager.pushEvent(event);

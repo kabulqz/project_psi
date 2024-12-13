@@ -122,13 +122,39 @@ void SoundManager::stopSound(const std::string& soundName)
 	}
 }
 
+bool SoundManager::isSoundPlaying(const std::string& soundName)
+{
+	std::lock_guard<std::mutex> lock(soundMutex);
+
+	// Check if it's a regular sound
+	if (activeSounds.contains(soundName))
+	{
+		if (activeSounds[soundName]->getStatus() == sf::Sound::Playing)
+		{
+			return true;
+		}
+	}
+
+	// Check if it's music
+	if (musicTracks.contains(soundName))
+	{
+		if (musicTracks[soundName]->getStatus() == sf::Music::Playing)
+		{
+			return true;
+		}
+	}
+
+	return false; // Not playing
+}
+
 //Load all sound buffers
 void SoundManager::loadSounds()
 {
 	std::string path = "src/audio/";
 	loadSound("Intro", path + "intro.ogg", UI);
-	loadSound("mouseClick", path + "click3.ogg", UI);
+	loadSound("MouseClick", path + "click3.ogg", UI);
 	loadSound("Continue", path + "switch34.ogg", UI);
-	loadSound("Transition", path + "transition.ogg", ALERT);
+	loadSound("Transition", path + "transition.ogg", UI);
 	loadSound("Ambience_crt", path + "ambience_crt.ogg", AMBIENCE);
+	loadSound("DiceThrow", path + "dice-throw-3.ogg", UI);
 }
