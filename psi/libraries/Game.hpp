@@ -18,8 +18,9 @@ private:
 	SoundManager soundManager;
 	Settings settings;
 	sf::View view;
-	
 	Save save;
+
+	sf::Clock gameClock;
 public:
 	
 	Game();

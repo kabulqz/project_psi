@@ -9,6 +9,11 @@ GameCardState::GameCardState(Game* game) : game(game)
 //handler for specific windows to appear in the main frame 
 void GameCardState::handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager, sqlite3*& database)
 {
+	if (!soundManager.isSoundPlaying("Ambience_crt"))
+	{
+		soundManager.playSound("Ambience_crt");
+	}
+
 	while (eventManager.hasEvents())
 	{
 		sf::Event event = eventManager.popEvent();
@@ -28,6 +33,11 @@ void GameCardState::render(sf::RenderWindow& window)
 {
 	window.clear();
 	//draw elements
+#ifdef _DEBUG
+
+#else
+
+#endif
 	window.display();
 }
 

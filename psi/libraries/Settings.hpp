@@ -37,6 +37,37 @@ inline std::string color(const std::string& hex_color, const std::string& data)
 	return out;
 }
 
+inline std::string gradient(const std::string& start_hex_color, const std::string& end_hex_color, const std::string& text)
+{
+	int r1 = std::stoi(start_hex_color.substr(0, 2), nullptr, 16);
+	int g1 = std::stoi(start_hex_color.substr(2, 2), nullptr, 16);
+	int b1 = std::stoi(start_hex_color.substr(4, 2), nullptr, 16);
+
+	int r2 = std::stoi(end_hex_color.substr(0, 2), nullptr, 16);
+	int g2 = std::stoi(end_hex_color.substr(2, 2), nullptr, 16);
+	int b2 = std::stoi(end_hex_color.substr(4, 2), nullptr, 16);
+
+	// Generate gradient
+	size_t length = text.size();
+	std::string result;
+	for (size_t i = 0; i < length; ++i)
+	{
+		// Interpolate RGB values
+		float t = static_cast<float>(i) / static_cast<float>(length - 1);
+		int r = static_cast<int>(r1 + t * (r2 - r1));
+		int g = static_cast<int>(g1 + t * (g2 - g1));
+		int b = static_cast<int>(b1 + t * (b2 - b1));
+
+		// Convert RBG back to hex
+		char hexColor[7];
+		snprintf(hexColor, sizeof(hexColor), "%02X%02X%02X", r, g, b);
+
+		// Apply color to the current character
+		result += color(hexColor, std::string(1, text[i]));
+	}
+	return result;
+}
+
 //this class is defined here for Game States to manage it in .cpp files
 //all functions from "State" family should be written in .cpp
 class Game;

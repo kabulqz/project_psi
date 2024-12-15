@@ -59,7 +59,7 @@ public:
 	bool load(const std::string& tileset);
 
 	std::string serialize() const;
-	Player* deserialize(const std::string& data);
+	static Player* deserialize(const std::string& data);
 };
 
 class Enemy : public Hero

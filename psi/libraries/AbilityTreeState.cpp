@@ -13,11 +13,7 @@ const std::string abilitiesFile = PATH_TO_ABILITIES_FOLDER + abilities;
 
 AbilityTreeState::AbilityTreeState(Game* game) : game(game)
 {
-	if (!abilityTreeTexture.loadFromFile("src/img/yggdrasil.png"))
-	{
-		std::cerr << "Cannot load yggdrasil texture\n";
-		return;
-	}
+	if (!abilityTreeTexture.loadFromFile("src/img/yggdrasil.png")) return;
 
 	game->changeViewZoom(1.f);
 
@@ -37,7 +33,9 @@ AbilityTreeState::AbilityTreeState(Game* game) : game(game)
 	sf::Image cursorBuyable;
 	sf::Image cursorLocked;
 
-	if (!cursorDefault.loadFromFile("src/img/cursor_default.png") || !cursorBuyable.loadFromFile("src/img/cursor_buyable_ability.png") || !cursorLocked.loadFromFile("src/img/cursor_locked_ability.png"))
+	const std::string cursorDefaultPath = "src/img/cursors/";
+
+	if (!cursorDefault.loadFromFile(cursorDefaultPath + "cursor_default.png") || !cursorBuyable.loadFromFile(cursorDefaultPath + "cursor_buyable_ability.png") || !cursorLocked.loadFromFile(cursorDefaultPath + "cursor_locked_ability.png"))
 	{
 		std::cerr << "Cannot load cursors png files\n";
 	}
@@ -53,8 +51,12 @@ AbilityTreeState::AbilityTreeState(Game* game) : game(game)
 //handler for specific windows to appear in the main frame 
 void AbilityTreeState::handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager, sqlite3*& database)
 {
+	if (!soundManager.isSoundPlaying("Ambience_crt"))
+	{
+		soundManager.playSound("Ambience_crt");
+	}
+
 	mousePos = sf::Mouse::getPosition(window);
-	
 
 	while (eventManager.hasEvents())
 	{
@@ -168,7 +170,11 @@ void AbilityTreeState::render(sf::RenderWindow& window)
 
 	// Apply shader and draw to the main window
 	window.clear();
+#ifdef _DEBUG
+	window.draw(screenSprite);
+#else
 	window.draw(screenSprite, &vhsShader);
+#endif
 	window.display();
 }
 

@@ -54,6 +54,11 @@ GameBoardState::GameBoardState(Game* game) : game(game)
 //handler for specific windows to appear in the main frame 
 void GameBoardState::handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager, sqlite3*& database)
 {
+	if (!soundManager.isSoundPlaying("Ambience_crt"))
+	{
+		soundManager.playSound("Ambience_crt");
+	}
+
 	while (eventManager.hasEvents())
 	{
 		sf::Event event = eventManager.popEvent();
@@ -146,7 +151,11 @@ void GameBoardState::render(sf::RenderWindow& window)
 
 	window.clear();
 	sf::Sprite screenSprite(renderTexture.getTexture());
+#ifdef _DEBUG
+	window.draw(screenSprite);
+#else
 	window.draw(screenSprite, &vhsShader);
+#endif
 	window.display();
 }
 

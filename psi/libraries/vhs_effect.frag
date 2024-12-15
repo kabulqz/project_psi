@@ -9,7 +9,7 @@ void main()
     uv = uv * 2.0 - 1.0;
 
     // Apply barrel distortion for CRT corner warping
-    float strength = 0.08; // Subtle distortion
+    float strength = 0.07; // Subtle distortion
     vec2 offset = uv * length(uv) * strength;
     uv += offset;
 
@@ -17,7 +17,7 @@ void main()
     uv = (uv + 1.0) * 0.5;
 
     // Scale the texture slightly up
-    float scale = 0.93; // Subtle scaling factor, closer to 1.0
+    float scale = 0.925; // Subtle scaling factor, closer to 1.0
     uv = (uv - 0.5) * scale + 0.5;
 
     // Ensure corners detach visibly by clamping UV outside bounds to black
@@ -31,16 +31,16 @@ void main()
     uv.x += distortion;
 
     // Introduce a rare CRT TV tear glitch effect
-    float glitchChance = 0.0000001; // Glitch probability (lower for rare)
-    if (fract(sin(time * 1000.0) * 43758.5453) < glitchChance) {
+    float glitchChance = 0.000000005; // Lower probability
+    if (fract(sin(time * 500.0) * 43758.5453) < glitchChance) { // Slower random generation
         uv.y += sin(uv.x * 20.0 + time * 10.0) * 0.05; // Horizontal tear distortion
     }
 
     // Chromatic aberration
     vec3 col;
-    col.r = texture2D(texture, uv + vec2(0.0015, 0.0)).r; // Slight offset for red
-    col.g = texture2D(texture, uv).g;                    // No offset for green
-    col.b = texture2D(texture, uv - vec2(0.0015, 0.0)).b; // Slight offset for blue
+    col.r = texture2D(texture, uv + vec2(0.0013, 0.0)).r; // Slight offset for red
+    col.g = texture2D(texture, uv).g;                     // No offset for green
+    col.b = texture2D(texture, uv - vec2(0.0013, 0.0)).b; // Slight offset for blue
 
     // Add scanlines (thin, subtle effect)
     float scanline = sin(uv.y * resolution.y * 1.2) * 0.05;

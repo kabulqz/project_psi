@@ -19,10 +19,10 @@ void Settings::initialize()
 	//values from 0 - 1
 	general_audio = 0.1f;
 	//values from 0 - 100
-	ui_audio = 100.f;
-	alert_audio = 100.f;
-	ambience_audio = 100.f;
-	music_audio = 100.f;
+	ui_audio = 50.f;
+	alert_audio = 50.f;
+	ambience_audio = 50.f;
+	music_audio = 50.f;
 }
 
 void Settings::closeDB() const

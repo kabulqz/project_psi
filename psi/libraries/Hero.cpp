@@ -95,7 +95,7 @@ void Hero::shuffleCardIntoTheDeck(Card* card)
 
 	std::random_device rd;
 	std::mt19937 generator(rd());
-	std::uniform_int_distribution<int> distribution(0, deck.size()); // Uniform distribution to get random position
+	std::uniform_int_distribution<int> distribution(0, static_cast<int>(deck.size())); // Uniform distribution to get random position
 
 	int randomIndex = distribution(generator); // Get a random index	within the deck size
 
@@ -158,7 +158,7 @@ bool Player::load(const std::string& tileset)
 	m_playerSprite.setTexture(m_playerTexture);
 	m_playerSprite.setTextureRect(sf::IntRect(32, 32, 16, 16));
 
-	m_playerSprite.setPosition(getMapPosition().x * 16, getMapPosition().y * 16);
+	m_playerSprite.setPosition(static_cast<float>(getMapPosition().x * 16), static_cast<float>(getMapPosition().y * 16));
 
 	return true;
 }

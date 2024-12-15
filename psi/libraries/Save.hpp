@@ -45,8 +45,9 @@ private:
 public:
 	Save();//default constructor, so new save
 	Save(const Save& save);
+	Save& operator=(const Save& save);
 	~Save() = default;
-	void createPlayer(sf::Vector2i position);
+
 	//Save(save data type from saves array in main menu state);
 	uint_least32_t getSeed() const { return seed; }
 	void setSeed(uint_least32_t seed) { this->seed = seed; }
@@ -56,7 +57,6 @@ public:
 	Player* getPlayer() const { return this->player; }
 	void setPlayer(Player* player) { this->player = player; }
 
-	Save& operator=(const Save& save);
 	void write(int slot);	// write to specific slot
 	void write() const;			// write to current slot
 	Save& load(int slot);	// load from specific slot

@@ -97,27 +97,38 @@ sav6Button(895, 225, 330, 130, PATH_TO_BORDERS_FOLDER + "panel-border-019.png"),
 sav7Button(895, 365, 330, 130, PATH_TO_BORDERS_FOLDER + "panel-border-019.png"),
 sav8Button(895, 505, 330, 130, PATH_TO_BORDERS_FOLDER + "panel-border-019.png")
 {
+	// font that we had before
+	const std::string font = "src/img/antiquity-print.ttf";
+	constexpr int fontSize = 21;
+
+	// probably better looking font or at least easier to read
+	//const std::string font = "src/img/easvhs.ttf";
+	//constexpr int fontSize = 24;
+
+	// This is the problem to be solved - when to use the new font and when to use the old one
+	// Settings is probably the best place to store the fonts and something like "readFriendly" bool
+
 	bool hasSaves = this->hasSaves();
 	this->options = Options::LOGO;
-	continueButton.setText("Continue", "src/img/antiquity-print.ttf", 21);
+	continueButton.setText("Continue", font, fontSize);
 	continueButton.setEnabled(hasSaves);
-	newGameButton.setText("New Game", "src/img/antiquity-print.ttf", 21);
+	newGameButton.setText("New Game", font, fontSize);
 	newGameButton.setEnabled(true);
-	loadGameButton.setText("Load Game", "src/img/antiquity-print.ttf", 21);
+	loadGameButton.setText("Load Game", font, fontSize);
 	loadGameButton.setEnabled(hasSaves);
-	settingsButton.setText("Settings", "src/img/antiquity-print.ttf", 21);
+	settingsButton.setText("Settings", font, fontSize);
 	settingsButton.setEnabled(true);
-	exitToDesktopButton.setText("Exit", "src/img/antiquity-print.ttf", 21);
+	exitToDesktopButton.setText("Exit", font, fontSize);
 	exitToDesktopButton.setEnabled(true);
 
-	sav1Button.setText("save 1", "src/img/antiquity-print.ttf", 23);
-	sav2Button.setText("save 2", "src/img/antiquity-print.ttf", 23);
-	sav3Button.setText("save 3", "src/img/antiquity-print.ttf", 23);
-	sav4Button.setText("save 4", "src/img/antiquity-print.ttf", 23);
-	sav5Button.setText("save 5", "src/img/antiquity-print.ttf", 23);
-	sav6Button.setText("save 6", "src/img/antiquity-print.ttf", 23);
-	sav7Button.setText("save 7", "src/img/antiquity-print.ttf", 23);
-	sav8Button.setText("save 8", "src/img/antiquity-print.ttf", 23);
+	sav1Button.setText("save 1", font, fontSize + 2);
+	sav2Button.setText("save 2", font, fontSize + 2);
+	sav3Button.setText("save 3", font, fontSize + 2);
+	sav4Button.setText("save 4", font, fontSize + 2);
+	sav5Button.setText("save 5", font, fontSize + 2);
+	sav6Button.setText("save 6", font, fontSize + 2);
+	sav7Button.setText("save 7", font, fontSize + 2);
+	sav8Button.setText("save 8", font, fontSize + 2);
 
 	for (int i = 0; i < 8; i++) {
 		if (saveArr[i] == 1) {
@@ -136,6 +147,11 @@ sav8Button(895, 505, 330, 130, PATH_TO_BORDERS_FOLDER + "panel-border-019.png")
 //Handler for specific windows to appear in the main frame 
 void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager, sqlite3*& database)
 {
+	if (!soundManager.isSoundPlaying("Ambience_crt"))
+	{
+		soundManager.playSound("Ambience_crt");
+	}
+
 	mousePos = sf::Mouse::getPosition(window);
 
 	//Process events from the event manager
@@ -154,8 +170,6 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 					game->changeState(std::make_unique<TransitionState>(game, GAME_BOARD,std::make_unique<MainMenuState>(game)));
 					soundManager.playSound("Continue");
 					soundManager.playSound("Transition");
-					std::cout << color("00F0B5", "changed state to Board Game\n");
-					std::cout << color("3993DD", "continue from the last save\n");
 				}
 				else
 				{
@@ -235,7 +249,7 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 			}
 			else if (exitToDesktopButton.isHovered(mousePos) && exitToDesktopButton.isClickable())
 			{
-				std::cout << color("F61067", "closed window by exit to desktop button\n");
+				std::cout << gradient("641220", "e01e37", "closed window by exit to desktop button\n");
 				window.close();
 			}
 			else
@@ -253,7 +267,6 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 							game->changeState(std::make_unique<TransitionState>(game, GAME_BOARD, std::make_unique<MainMenuState>(game)));
 							soundManager.playSound("Continue");
 							soundManager.playSound("Transition");
-							std::cout << color("00F0B5", "changed state to Board Game\n");
 							std::cout << color("3993DD", "created new save on slot " + std::to_string(i + 1) + "\n");
 						}
 						else if (saveButtons[i]->isHovered(mousePos) && saveButtons[i]->isClickable())
@@ -265,7 +278,6 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 							game->changeState(std::make_unique<TransitionState>(game, GAME_BOARD, std::make_unique<MainMenuState>(game)));
 							soundManager.playSound("Continue");
 							soundManager.playSound("Transition");
-							std::cout << color("00F0B5", "changed state to Board Game\n");
 							std::cout << color("3993DD", "overwritten save nr " + std::to_string(i + 1) + "\n");
 						}
 					}
@@ -280,8 +292,6 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 								game->changeState(std::make_unique<TransitionState>(game, GAME_BOARD, std::make_unique<MainMenuState>(game)));
 								soundManager.playSound("Continue");
 								soundManager.playSound("Transition");
-								std::cout << color("00F0B5", "changed state to Board Game\n");
-								std::cout << color("3993DD", "continue last from the save\n");
 							}
 						}
 					}
@@ -301,11 +311,8 @@ void MainMenuState::update()
 	loadGameButton.handleHoverState(mousePos);
 	settingsButton.handleHoverState(mousePos);
 	exitToDesktopButton.handleHoverState(mousePos);
+
 	//Update appearance on the hover state
-	//zielony - 00F0B5
-	//roz / czerwien - F61067
-	//zolty - F4D35E
-	//niebieski - 3993DD
 	continueButton.updateAppearance("00F0B5");
 	newGameButton.updateAppearance("3993DD");
 	loadGameButton.updateAppearance("3993DD");
@@ -405,12 +412,16 @@ void MainMenuState::render(sf::RenderWindow& window)
 	renderTexture.display();
 
 	// Get the RenderTexture as a sprite
-	sf::Sprite sceneSprite(renderTexture.getTexture());
+	sf::Sprite screenSprite(renderTexture.getTexture());
 
 
 	// Apply the shader and draw it to the main window
 	window.clear();
-	window.draw(sceneSprite, &vhsShader);
+#ifdef _DEBUG
+	window.draw(screenSprite);
+#else
+	window.draw(screenSprite, &vhsShader);
+#endif
 	window.display();
 }
 

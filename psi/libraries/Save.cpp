@@ -65,10 +65,7 @@ bool Save::decryptData(const std::vector<unsigned char>& cipherText, const std::
 	std::string& plainText) const
 {
 	EVP_CIPHER_CTX* ctx = EVP_CIPHER_CTX_new();
-	if (!ctx) {
-		std::cerr << "Failed to create cipher context.\n";
-		return false;
-	}
+	if (!ctx) return false;
 
 	if (!EVP_DecryptInit_ex(ctx, EVP_aes_256_cbc(), nullptr, key.data(), iv.data()))
 	{
@@ -105,11 +102,8 @@ bool Save::decryptData(const std::vector<unsigned char>& cipherText, const std::
 bool Save::saveKeyToFile(const std::string& keyFilePath) const
 {
 	std::ofstream keyFile(keyFilePath, std::ios::binary);
-	if (!keyFile.is_open())
-	{
-		std::cerr << "Failed to open key for writing.\n";
-		return false;
-	}
+	if (!keyFile.is_open()) return false;
+
 	keyFile.write(reinterpret_cast<const char*>(key.data()), key.size());
 	keyFile.close();
 	return true;
@@ -118,32 +112,17 @@ bool Save::saveKeyToFile(const std::string& keyFilePath) const
 bool Save::loadKeyFromFile(const std::string& keyFilePath)
 {
 	std::ifstream keyFile(keyFilePath, std::ios::binary);
-	if (!keyFile.is_open())
-	{
-		std::cerr << "Failed to open key for reading.\n";
-		return false;
-	}
+	if (!keyFile.is_open()) return false;
 
 	key.resize(KEY_SIZE);  // Ensure this size matches the size used during saving
 	keyFile.read(reinterpret_cast<char*>(key.data()), KEY_SIZE);
-	if (keyFile.gcount() != KEY_SIZE)
-	{
-		std::cerr << "Invalid key file size.\n";
-		return false;
-	}
+	if (keyFile.gcount() != KEY_SIZE) return false;
+
 	keyFile.close();
-
-	// Debugging: Check if key is correctly loaded
-	std::cout << "Loaded key: ";
-	for (unsigned char byte : key) {
-		std::cout << std::hex << static_cast<int>(byte) << " ";
-	}
-	std::cout << '\n';
-
 	return true;
 }
 
-Save::Save() : player(nullptr)
+Save::Save()
 {
 #ifdef DEBUG
 	const std::string keyFilePath = "x64/Debug/encryption.key";
@@ -214,7 +193,8 @@ Save::Save() : player(nullptr)
 	heal4->addChild(buffMeleeUnits3);
 	heal4->addChild(maxEnergy2);
 
-	createPlayer(sf::Vector2i(-1, -1));
+	// Create the player
+	player = new Player();
 }
 
 Save::Save(const Save& save)
@@ -245,11 +225,22 @@ Save::Save(const Save& save)
 	//this->mapGenerationType = save.mapGenerationType;
 }
 
-void Save::createPlayer(sf::Vector2i position)
+Save& Save::operator=(const Save& save)
 {
-	player = new Player();
-	player->setMapPosition(position);
+	if (this == &save) return *this;
+
+	this->key = save.key;
+	this->slot = save.slot;
+	this->seed = save.seed;
+	this->abilityTree = save.abilityTree;
+	this->player = save.player;
+	//this->mapGenerationType = save.mapGenerationType;
+	return *this;
 }
+
+const std::string seedLine = "Seed: ";
+const std::string abilitiesLine = "Abilities: ";
+const std::string playerLine = "Player: ";
 
 void Save::write(const int slot)
 {
@@ -264,16 +255,9 @@ void Save::write() const
 
 	std::ostringstream oss;
 
-	oss << "Seed: " << seed << "\n";
-	oss << "Abiliies: " << abilityTree->serialize() << "\n";
-	if (!player)
-	{
-		oss << "Player: " << -1 << "," << -1 << "," << 0 << "," << 0 << ",\n";
-	}
-	else
-	{
-		oss << "Player: " << player->serialize() << "\n";
-	}
+	oss << seedLine << seed << "\n";
+	oss << abilitiesLine << abilityTree->serialize() << "\n";
+	oss << playerLine << player->serialize() << "\n";
 
 	std::string plainText = oss.str();
 	//std::cout << "Saved text: " << plainText << "\n";
@@ -342,21 +326,20 @@ Save& Save::load()
 	std::string line;
 	while (std::getline(iss, line))  // Process lines from plainText
 	{
-		if (line.starts_with("Seed: "))
+		if (line.starts_with(seedLine))
 		{
 			// Extract the seed after "Seed: "
-			seed = static_cast<uint_least32_t>(std::stoul(line.substr(6)));
-			std::cout << "Seed: " << seed << "\n";
+			seed = static_cast<uint_least32_t>(std::stoul(line.substr(seedLine.size())));
 		}
-		else if (line.starts_with("Abilities: "))
+		else if (line.starts_with(abilitiesLine))
 		{
 			// Extract the abilities after "Abilities: "
-			abilityTree = AbilityTree::deserialize(line.substr(10));
+			abilityTree = AbilityTree::deserialize(line.substr(abilitiesLine.size()));
 		}
-		else if (line.starts_with("Player: "))
+		else if (line.starts_with(playerLine))
 		{
 			// Extract the player after "Player: "
-			player = player->deserialize(line.substr(8));
+			player = Player::deserialize(line.substr(playerLine.size()));
 		}
 	}
 
@@ -365,7 +348,6 @@ Save& Save::load()
 
 std::optional<std::filesystem::file_time_type>  Save::getLastWriteTime(int slot)
 {
-
 	try
 	{
 		std::filesystem::path filepath = "src/saves/save" + std::to_string(slot) + ".sav";
@@ -380,17 +362,4 @@ std::optional<std::filesystem::file_time_type>  Save::getLastWriteTime(int slot)
 	}
 
 	return std::nullopt;
-}
-
-Save& Save::operator=(const Save& save)
-{
-	if (this == &save) return *this;
-
-	this->key = save.key;
-	this->slot = save.slot;
-	this->seed = save.seed;
-	this->abilityTree = save.abilityTree;
-	this->player = save.player;
-	//this->mapGenerationType = save.mapGenerationType;
-	return *this;
 }

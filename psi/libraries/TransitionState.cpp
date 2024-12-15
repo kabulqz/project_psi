@@ -12,7 +12,9 @@ TransitionState::TransitionState(Game* game, State_enum targetState, std::unique
 	sf::Image cursorDefault;
 	sf::Image cursorLoading;
 
-	if (!cursorDefault.loadFromFile("src/img/cursor_default.png") || !cursorLoading.loadFromFile("src/img/cursor_loading.png"))
+	const std::string cursorDefaultPath = "src/img/cursors/";
+
+	if (!cursorDefault.loadFromFile(cursorDefaultPath + "cursor_default.png") || !cursorLoading.loadFromFile(cursorDefaultPath + "cursor_loading.png"))
 	{
 		std::cerr << "Cannot load cursors png files\n";
 	}
@@ -34,18 +36,12 @@ TransitionState::TransitionState(Game* game, State_enum targetState, std::unique
 	}
 
 	// Create the render texture for the "from" state
-	if (!fromTexture.create(game->getWindow().getSize().x, game->getWindow().getSize().y)) {
-		std::cerr << "Cannot create render texture for from state\n";
-		return;
-	}
+	if (!fromTexture.create(game->getWindow().getSize().x, game->getWindow().getSize().y)) return;
 	this->previousState->renderToTexture(fromTexture);  // Render the previous state to texture
 
 
 	// Create the render texture for the "to" state
-	if (!toTexture.create(game->getWindow().getSize().x, game->getWindow().getSize().y)) {
-		std::cerr << "Cannot create render texture for to state\n";
-		return;
-	}
+	if (!toTexture.create(game->getWindow().getSize().x, game->getWindow().getSize().y)) return;
 
 	// Render the target state to texture
 	std::unique_ptr<State> tempState;
@@ -95,6 +91,11 @@ TransitionState::TransitionState(Game* game, State_enum targetState, std::unique
 void TransitionState::handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager,
 	sqlite3*& database)
 {
+	if (!soundManager.isSoundPlaying("Ambience_crt"))
+	{
+		soundManager.playSound("Ambience_crt");
+	}
+
 	// Nothing to see here
 	// This state is only transition and providing animation between states
 	// No input is needed

@@ -24,28 +24,21 @@ Game::Game() : soundManager(settings.general_audio, settings.ui_audio, settings.
 
 	//SFML window icon
 	sf::Image icon;
-	if (!icon.loadFromFile("src/img/icon.png"))
-	{
-		return;
-	}
+	if (!icon.loadFromFile("src/img/icon.png")) return;
 	window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+
 	//SFML cursor & cursor style
 	sf::Image cursorImage;
-	if (!cursorImage.loadFromFile("src/img/cursor_default.png"))
-	{
-		return;
-	}
+	if (!cursorImage.loadFromFile("src/img/cursors/cursor_default.png")) return;
 	sf::Cursor cursor;
-	if (!cursor.loadFromPixels(cursorImage.getPixelsPtr(), sf::Vector2u(32, 32), sf::Vector2u(0, 0)))
-	{
-		return;
-	}
+	if (!cursor.loadFromPixels(cursorImage.getPixelsPtr(), sf::Vector2u(32, 32), sf::Vector2u(0, 0))) return;
 	window.setMouseCursor(cursor);
 
 	const char* version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
 	std::cout << "OpenGL version: " << version << "\n";
 
 	soundManager.playSound("Ambience_crt");
+	gameClock.restart();
 }
 
 //function to change between states
@@ -86,5 +79,51 @@ int Game::run()
 	}
 
 	settings.closeDB();
+#ifdef _DEBUG
+	sf::Time elapsed = gameClock.getElapsedTime();
+
+	// Convert to seconds, minutes, or hours
+	float seconds = elapsed.asSeconds();
+	float minutes = seconds / 60.0f;
+	float hours = minutes / 60.0f;
+
+	int finalHours = static_cast<int>(hours);
+	int finalMinutes = static_cast<int>(minutes) % 60;
+	int finalSeconds = static_cast<int>(seconds) % 60;
+
+	// Display elapsed time
+	std::cout << std::dec << "Game window was open for: ";
+
+	if (finalHours != 0)
+	{
+		std::cout << finalHours;
+		if (finalHours == 1) {
+			std::cout << " hour, ";
+		}
+		else {
+			std::cout << " hours, ";
+		}
+	}
+	if (finalMinutes != 0)
+	{
+		std::cout << finalMinutes;
+		if (finalMinutes == 1) {
+			std::cout << " minute, ";
+		}
+		else {
+			std::cout << " minutes, ";
+		}
+	}
+	if (finalSeconds != 0)
+	{
+		std::cout << finalSeconds;
+		if (finalSeconds == 1) {
+			std::cout << " second\n";
+		}
+		else {
+			std::cout << " seconds\n";
+		}
+	}
+#endif
 	return 0;
 }
