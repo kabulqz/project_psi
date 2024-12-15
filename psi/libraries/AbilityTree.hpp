@@ -52,7 +52,6 @@ class AbilityTree
 private:
 	std::shared_ptr<Ability> root;
 	static void displayNode(const std::shared_ptr<Ability>& node, sf::RenderTarget& window, const sf::Shader* shader, int depth);
-	static void serializeNode(const std::shared_ptr<Ability>& node, std::ostringstream& ss);
 	sf::Shader shader;
 public:
 	AbilityTree(const std::shared_ptr<Ability>& root);
@@ -63,4 +62,11 @@ public:
 
 	std::string serialize() const;
 	static std::shared_ptr<AbilityTree> deserialize(const std::string& data);
+};
+
+class AbilityFactory
+{
+
+public:
+
 };

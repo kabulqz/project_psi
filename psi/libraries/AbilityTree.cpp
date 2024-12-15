@@ -86,3 +86,69 @@ void AbilityTree::display(sf::RenderTarget& window) const
 {
 	displayNode(root, window, &shader, 0);
 }
+
+std::string Ability::serialize() const
+{
+	std::ostringstream oss;
+
+	oss << id << ","
+		<< buyCost << ","
+		<< (status == unlockStatus::UNLOCKED ? "UNLOCKED" : status == unlockStatus::BUYABLE ? "BUYABLE" : "LOCKED") << ","
+		<< posX << ","
+		<< posY << ","
+		<< gridPosition.x << ","
+		<< gridPosition.y;
+
+	oss << ",[";
+	for (size_t i =0; i<childrenIds.size(); ++i)
+	{
+		oss << childrenIds[i];
+		if (i < childrenIds.size() - 1)
+		{
+			oss << ",";
+		}
+	}
+	oss << "]";
+
+	return oss.str();
+}
+
+std::shared_ptr<Ability> Ability::deserialize(const std::string& data)
+{
+	std::istringstream iss(data);
+	std::string token;
+
+	int id, buyCost, posX, posY, gridX, gridY;
+	std::string statusStr;
+	std::vector<int> childrenIds;
+
+	std::getline(iss, token, ','); id = std::stoi(token);
+	std::getline(iss, token, ','); buyCost = std::stoi(token);
+	std::getline(iss, token, ','); statusStr = token;
+	std::getline(iss, token, ','); posX = std::stoi(token);
+	std::getline(iss, token, ','); posY = std::stoi(token);
+	std::getline(iss, token, ','); gridX = std::stoi(token);
+	std::getline(iss, token, ','); gridY = std::stoi(token);
+
+	unlockStatus status;
+	if (statusStr == "UNLOCKED") status = unlockStatus::UNLOCKED;
+	else if (statusStr == "BUYABLE") status = unlockStatus::BUYABLE;
+	else status = unlockStatus::LOCKED;
+
+	std::getline(iss, token); // [...]
+	if (token != "[]") // If there are children
+	{
+		token = token.substr(1, token.size() - 2); // Remove the brackets
+		std::istringstream childStream(token);
+
+		while (std::getline(childStream, token, ','))
+		{
+			childrenIds.push_back(std::stoi(token));
+		}
+	}
+
+	auto ability = std::make_shared<Ability>(id, buyCost, status, posX, posY, sf::Vector2i(gridX, gridY));
+	ability->setChildrenIds(childrenIds);
+
+	return ability;
+}
