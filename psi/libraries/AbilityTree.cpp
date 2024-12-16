@@ -67,10 +67,6 @@ AbilityTree::AbilityTree(const std::shared_ptr<Ability>& root) : root(root)
 	{
 		std::cerr << "Cannot load shader from libraries/grayscale.frag\n";
 	}
-	else
-	{
-		std::cout << "Shader loaded successfully\n";
-	}
 }
 
 void AbilityTree::displayNode(const std::shared_ptr<Ability>& node, sf::RenderTarget& window, const sf::Shader* shader, const int depth)
@@ -222,7 +218,7 @@ std::shared_ptr<AbilityTree> AbilityTree::deserialize(const std::string& data)
 	return std::make_shared<AbilityTree>(root);
 }
 
-std::shared_ptr<AbilityTree> AbilityTreeFactory::createAbilityTree()
+std::shared_ptr<AbilityTree> AbilityTree::createAbilityTree()
 {
 	// Create abilities
 	auto startAbility = std::make_shared<Ability>(0, 1, Ability::unlockStatus::UNLOCKED, 616, 605, sf::Vector2i(12, 2));
@@ -240,7 +236,7 @@ std::shared_ptr<AbilityTree> AbilityTreeFactory::createAbilityTree()
 	auto buffMeleeUnits2 = std::make_shared<Ability>(11, 1, Ability::unlockStatus::LOCKED, 815, 347, sf::Vector2i(6, 9));
 	auto buffMeleeUnits3 = std::make_shared<Ability>(19, 1, Ability::unlockStatus::LOCKED, 656, 101, sf::Vector2i(5, 9));
 	auto buffRangedUnits = std::make_shared<Ability>(16, 1, Ability::unlockStatus::LOCKED, 774, 192, sf::Vector2i(8, 9));
-	auto maxCardHand = std::make_shared<Ability>(9, 1, Ability::unlockStatus::LOCKED, 468, 269, sf::Vector2i(9, 9));
+	auto maxCardDeck = std::make_shared<Ability>(9, 1, Ability::unlockStatus::LOCKED, 468, 269, sf::Vector2i(9, 9));
 	auto maxHealth1 = std::make_shared<Ability>(10, 1, Ability::unlockStatus::LOCKED, 706, 331, sf::Vector2i(10, 9));
 	auto maxHealth2 = std::make_shared<Ability>(14, 1, Ability::unlockStatus::LOCKED, 538, 218, sf::Vector2i(11, 9));
 	auto maxEnergy1 = std::make_shared<Ability>(6, 1, Ability::unlockStatus::LOCKED, 755, 392, sf::Vector2i(3, 7));
@@ -254,7 +250,7 @@ std::shared_ptr<AbilityTree> AbilityTreeFactory::createAbilityTree()
 	heal2->addChild(fireball1);
 	heal2->addChild(maxEnergy1);
 	heal2->addChild(freeze1);
-	freeze1->addChild(maxCardHand);
+	freeze1->addChild(maxCardDeck);
 	freeze1->addChild(plusSpeed2);
 	heal2->addChild(maxHealth1);
 	maxHealth1->addChild(buffMeleeUnits2);

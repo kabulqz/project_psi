@@ -60,7 +60,7 @@ int Game::run()
 			//events that are not unique to game states
 			if (event.type == sf::Event::Closed)
 			{
-				std::cout << color("DE3C4B", "The window has been closed\n");
+				std::cout << gradient("641220", "e01e37", "closed window by exit to desktop button\n");
 				window.close();
 			}
 			else if (event.type == sf::Event::MouseButtonPressed)

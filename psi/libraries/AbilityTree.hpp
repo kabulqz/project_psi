@@ -62,10 +62,5 @@ public:
 
 	std::string serialize() const;
 	static std::shared_ptr<AbilityTree> deserialize(const std::string& data);
-};
-
-class AbilityTreeFactory
-{
-public:
 	static std::shared_ptr<AbilityTree> createAbilityTree();
 };

@@ -3,6 +3,104 @@
 #include <ranges>
 #include "Card.hpp"
 
+void BoardGamePlayer::onLevelUp()
+{
+	abilityPoints += 1;
+}
+
+int BoardGamePlayer::getRequiredXPForNextLevel() const
+{
+	// Level 1: 1000 XP
+	// Level 2: 1500 XP
+	// Level 3: 2000 XP ...
+	return 1000 + (level - 1) * 500;
+}
+
+int BoardGamePlayer::getTotalXPRequiredForNextLevel() const
+{ // UI method to show the total XP required for the next level
+	int total = 0;
+	for (int i = 1; i <= level; i++)
+	{
+		total += 1000 + (i - 1) * 500;
+	}
+	return total;
+}
+
+BoardGamePlayer::BoardGamePlayer()
+{
+	level = 1;
+	abilityPoints = 0;
+	experience = 0;
+	money = 0;
+
+	setMapPosition(sf::Vector2i(-1, -1));
+}
+
+void BoardGamePlayer::addExperience(const int value)
+{
+	experience += value;
+	while (experience >= getRequiredXPForNextLevel())
+	{
+		experience -= getRequiredXPForNextLevel();
+		level++;
+		onLevelUp();
+	}
+}
+
+bool BoardGamePlayer::load(const std::string& tileset)
+{
+	// load the tileset texture
+	if (!m_playerTexture.loadFromFile(tileset))
+		return false;
+
+	m_playerSprite.setTexture(m_playerTexture);
+	m_playerSprite.setTextureRect(sf::IntRect(32, 32, 16, 16));
+
+	m_playerSprite.setPosition(static_cast<float>(getMapPosition().x * 16), static_cast<float>(getMapPosition().y * 16));
+
+	return true;
+}
+
+std::string BoardGamePlayer::serialize() const
+{
+	std::ostringstream oss;
+	oss << getMapPosition().x << ","
+		<< getMapPosition().y << ","
+		<< level << ","
+		<< abilityPoints << ","
+		<< experience << ","
+		<< money << ",";
+	//Add serialization for other atributes here
+	return oss.str();
+}
+
+BoardGamePlayer* BoardGamePlayer::deserialize(const std::string& data)
+{
+	BoardGamePlayer* temp = new BoardGamePlayer();
+	std::istringstream iss(data);
+	std::string token;
+
+	std::getline(iss, token, ',');
+	int x = std::stoi(token);
+	std::getline(iss, token, ',');
+	int y = std::stoi(token);
+	temp->setMapPosition(sf::Vector2i(x, y));
+
+	std::getline(iss, token, ',');
+	temp->setLevel(std::stoi(token));
+
+	std::getline(iss, token, ',');
+	temp->setAbilityPoints(std::stoi(token));
+
+	std::getline(iss, token, ',');
+	temp->setExperience(std::stoi(token));
+
+	std::getline(iss, token, ',');
+	temp->setMoney(std::stoi(token));
+
+	return temp;
+}
+
 Hero::Hero()
 {
 	// Write checks for the deck, hand and battlefield
@@ -117,77 +215,8 @@ void Hero::shuffleCardIntoTheDeck(Card* card)
 	}
 }
 
-sf::Vector2i boardGameMovable::getMapPosition() const
-{
-	if (this == nullptr)
-	{
-		sf::Vector2i temp(-1, -1);
-		return temp;
-	}
-	return this->mapPosition;
-}
-
-void boardGameMovable::setMapPosition(const sf::Vector2i& position)
-{
-	this->mapPosition = position;
-}
-
 Player::Player()
 {
 	experience = 0;
 	money = 0;
-	setMapPosition(sf::Vector2i(-1, -1));
-}
-
-int Player::getExperience() const
-{
-	return experience;
-}
-
-void Player::addExperience(const int value)
-{
-	experience += value;
-}
-
-bool Player::load(const std::string& tileset)
-{
-	// load the tileset texture
-	if (!m_playerTexture.loadFromFile(tileset))
-		return false;
-
-	m_playerSprite.setTexture(m_playerTexture);
-	m_playerSprite.setTextureRect(sf::IntRect(32, 32, 16, 16));
-
-	m_playerSprite.setPosition(static_cast<float>(getMapPosition().x * 16), static_cast<float>(getMapPosition().y * 16));
-
-	return true;
-}
-
-std::string Player::serialize() const
-{
-	std::ostringstream oss;
-	oss << getMapPosition().x << "," << getMapPosition().y << "," << experience << "," << money << ",";
-	//Add serialization for other atributes here
-	return oss.str();
-}
-
-Player* Player::deserialize(const std::string& data)
-{
-	Player* temp = new Player();
-	std::istringstream iss(data);
-	std::string token;
-
-	std::getline(iss, token, ',');
-	int x = std::stoi(token);
-	std::getline(iss, token, ',');
-	int y = std::stoi(token);
-	temp->setMapPosition(sf::Vector2i(x, y));
-
-	std::getline(iss, token, ',');
-	temp->addExperience(std::stoi(token));
-
-	std::getline(iss, token, ',');
-	temp->addMoney(std::stoi(token));
-
-	return temp;
 }

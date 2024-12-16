@@ -40,7 +40,9 @@ private:
 
 	uint_least32_t  seed;
 	std::shared_ptr<AbilityTree> abilityTree;
-	Player* player;
+	BoardGamePlayer* player;
+	// saved card deck
+	// saved card collection we have
 	//TypeOfMapGeneration mapGenerationType;
 public:
 	Save();//default constructor, so new save
@@ -52,10 +54,10 @@ public:
 	uint_least32_t getSeed() const { return seed; }
 	void setSeed(uint_least32_t seed) { this->seed = seed; }
 	std::shared_ptr<AbilityTree> getAbilityTree() { return abilityTree; }
-	void setAbilityTree(std::shared_ptr<AbilityTree> abilityTree) { this->abilityTree = abilityTree; }
+	void setAbilityTree(const std::shared_ptr<AbilityTree>& abilityTree) { this->abilityTree = abilityTree; }
 
-	Player* getPlayer() const { return this->player; }
-	void setPlayer(Player* player) { this->player = player; }
+	BoardGamePlayer* getPlayer() const { return this->player; }
+	void setPlayer(BoardGamePlayer* player) { this->player = player; }
 
 	void write(int slot);	// write to specific slot
 	void write() const;			// write to current slot

@@ -13,7 +13,7 @@ private:
 	sf::Shader vhsShader;
 	sf::Clock shaderClock;
 	std::vector<sf::Vector2i> path;
-	Player* player;
+	BoardGamePlayer* player;
 
 public:
 	//handler for specific windows to appear in the main frame 

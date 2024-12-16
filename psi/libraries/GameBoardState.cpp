@@ -9,7 +9,7 @@ GameBoardState::GameBoardState(Game* game) : game(game)
 {
 	int level[width * height];
 	save = game->getSave();
-	std::cout << std::dec << "Level seed: " << save.getSeed() << "\n";
+	//std::cout << std::dec << "Level seed: " << save.getSeed() << "\n";
 
 	std::thread generateThread([&]()
 		{
@@ -75,7 +75,6 @@ void GameBoardState::handleInput(sf::RenderWindow& window, EventManager& eventMa
 
 			srand(static_cast<unsigned>(time(nullptr)));
 			int move = rand() % 6 + 1; // Random move between 1 and 6
-			std::cout << "Spacebar was pressed! " << move << "\n";
 
 			auto temp = path;
 			int i = 0;
@@ -94,8 +93,6 @@ void GameBoardState::handleInput(sf::RenderWindow& window, EventManager& eventMa
 
 			save.setPlayer(player);
 			save.write();
-
-			std::cout << "player position after " << player->getMapPosition().x << " " << player->getMapPosition().y << "\n";
 		}
 	}
 }

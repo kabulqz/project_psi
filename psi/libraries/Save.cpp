@@ -150,10 +150,10 @@ Save::Save()
 	this->seed = seed;
 
 	// Create the ability tree
-	abilityTree = AbilityTreeFactory::createAbilityTree();
+	abilityTree = AbilityTree::createAbilityTree();
 
 	// Create the player
-	player = new Player();
+	player = new BoardGamePlayer();
 }
 
 Save::Save(const Save& save)
@@ -219,7 +219,7 @@ void Save::write() const
 	oss << playerLine << player->serialize() << "\n";
 
 	std::string plainText = oss.str();
-	std::cout << "Saved text:\n" << color("48E5C2", plainText) << "\n";
+	//std::cout << "Saved text:\n" << color("48E5C2", plainText) << "\n";
 	std::vector<unsigned char> cipherText;
 	std::vector<unsigned char> iv;
 
@@ -298,7 +298,7 @@ Save& Save::load()
 		else if (line.starts_with(playerLine))
 		{
 			// Extract the player after "Player: "
-			player = Player::deserialize(line.substr(playerLine.size()));
+			player = BoardGamePlayer::deserialize(line.substr(playerLine.size()));
 		}
 	}
 
