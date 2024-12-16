@@ -149,49 +149,8 @@ Save::Save()
 	const u32 seed = os_seed();
 	this->seed = seed;
 
-	// Create abilities
-	auto startAbility = std::make_shared<Ability>(0, 1, Ability::unlockStatus::UNLOCKED, 616, 605, sf::Vector2i(12, 2));
-	auto heal1 = std::make_shared<Ability>(1, 1, Ability::unlockStatus::LOCKED, 617, 510, sf::Vector2i(9, 8));
-	auto heal2 = std::make_shared<Ability>(4, 1, Ability::unlockStatus::LOCKED, 621, 403, sf::Vector2i(10, 8));
-	auto heal3 = std::make_shared<Ability>(13, 1, Ability::unlockStatus::LOCKED, 620, 300, sf::Vector2i(11, 8));
-	auto heal4 = std::make_shared<Ability>(17, 1, Ability::unlockStatus::LOCKED, 620, 188, sf::Vector2i(12, 8));
-	auto fireball1 = std::make_shared<Ability>(5, 1, Ability::unlockStatus::LOCKED, 498, 392, sf::Vector2i(6, 0));
-	auto fireball2 = std::make_shared<Ability>(15, 1, Ability::unlockStatus::LOCKED, 703, 244, sf::Vector2i(5, 0));
-	auto freeze1 = std::make_shared<Ability>(7, 1, Ability::unlockStatus::LOCKED, 548, 337, sf::Vector2i(11, 6));
-	auto freeze2 = std::make_shared<Ability>(12, 1, Ability::unlockStatus::LOCKED, 805, 250, sf::Vector2i(12, 6));
-	auto plusSpeed1 = std::make_shared<Ability>(3, 1, Ability::unlockStatus::LOCKED, 694, 438, sf::Vector2i(14, 8));
-	auto plusSpeed2 = std::make_shared<Ability>(8, 1, Ability::unlockStatus::LOCKED, 434, 345, sf::Vector2i(0, 9));
-	auto buffMeleeUnits1 = std::make_shared<Ability>(2, 1, Ability::unlockStatus::LOCKED, 553, 443, sf::Vector2i(4, 9));
-	auto buffMeleeUnits2 = std::make_shared<Ability>(11, 1, Ability::unlockStatus::LOCKED, 815, 347, sf::Vector2i(6, 9));
-	auto buffMeleeUnits3 = std::make_shared<Ability>(19, 1, Ability::unlockStatus::LOCKED, 656, 101, sf::Vector2i(5, 9));
-	auto buffRangedUnits = std::make_shared<Ability>(16, 1, Ability::unlockStatus::LOCKED, 774, 192, sf::Vector2i(8, 9));
-	auto maxCardHand = std::make_shared<Ability>(9, 1, Ability::unlockStatus::LOCKED, 468, 269, sf::Vector2i(9, 9));
-	auto maxHealth1 = std::make_shared<Ability>(10, 1, Ability::unlockStatus::LOCKED, 706, 331, sf::Vector2i(10, 9));
-	auto maxHealth2 = std::make_shared<Ability>(14, 1, Ability::unlockStatus::LOCKED, 538, 218, sf::Vector2i(11, 9));
-	auto maxEnergy1 = std::make_shared<Ability>(6, 1, Ability::unlockStatus::LOCKED, 755, 392, sf::Vector2i(3, 7));
-	auto maxEnergy2 = std::make_shared<Ability>(18, 1, Ability::unlockStatus::LOCKED, 584, 101, sf::Vector2i(2, 7));
-
-	// Setting up the tree
-	abilityTree = std::make_shared<AbilityTree>(startAbility);
-	startAbility->addChild(heal1);
-	heal1->addChild(buffMeleeUnits1);
-	heal1->addChild(plusSpeed1);
-	heal1->addChild(heal2);
-	heal2->addChild(fireball1);
-	heal2->addChild(maxEnergy1);
-	heal2->addChild(freeze1);
-	freeze1->addChild(maxCardHand);
-	freeze1->addChild(plusSpeed2);
-	heal2->addChild(maxHealth1);
-	maxHealth1->addChild(buffMeleeUnits2);
-	maxHealth1->addChild(freeze2);
-	heal2->addChild(heal3);
-	heal3->addChild(maxHealth2);
-	heal3->addChild(fireball2);
-	fireball2->addChild(buffRangedUnits);
-	heal3->addChild(heal4);
-	heal4->addChild(buffMeleeUnits3);
-	heal4->addChild(maxEnergy2);
+	// Create the ability tree
+	abilityTree = AbilityTreeFactory::createAbilityTree();
 
 	// Create the player
 	player = new Player();
@@ -218,11 +177,11 @@ Save::Save(const Save& save)
 		throw std::runtime_error("Failed to load encryption key.");
 	}
 
+	this->key = save.key;
 	this->slot = save.slot;
 	this->seed = save.seed;
 	this->abilityTree = save.abilityTree;
 	this->player = save.player;
-	//this->mapGenerationType = save.mapGenerationType;
 }
 
 Save& Save::operator=(const Save& save)
@@ -234,7 +193,7 @@ Save& Save::operator=(const Save& save)
 	this->seed = save.seed;
 	this->abilityTree = save.abilityTree;
 	this->player = save.player;
-	//this->mapGenerationType = save.mapGenerationType;
+
 	return *this;
 }
 
@@ -260,7 +219,7 @@ void Save::write() const
 	oss << playerLine << player->serialize() << "\n";
 
 	std::string plainText = oss.str();
-	//std::cout << "Saved text: " << plainText << "\n";
+	std::cout << "Saved text:\n" << color("48E5C2", plainText) << "\n";
 	std::vector<unsigned char> cipherText;
 	std::vector<unsigned char> iv;
 
@@ -320,7 +279,7 @@ Save& Save::load()
 		std::cerr << "Decryption failed.\n";
 		return *this;
 	}
-	std::cout << "Decrypted text: " << plainText << "\n";
+	std::cout << "Decrypted text:\n" << color("34E4EA", plainText) << "\n";
 	// Process the decrypted plainText
 	std::istringstream iss(plainText);
 	std::string line;

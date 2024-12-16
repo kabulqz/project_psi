@@ -14,7 +14,7 @@ private:
 	unlockStatus status = unlockStatus::LOCKED;
 
 	std::vector<std::shared_ptr<Ability>> children;
-	std::shared_ptr<Ability> parent;
+	std::weak_ptr<Ability> parent;
 	std::vector<int> childrenIds;
 
 	// Graphics properties
@@ -28,8 +28,8 @@ public:
 	Ability(const int& id, const int& buyCost, const unlockStatus& status, const int& pos_x, const int& pos_y, const sf::Vector2i& gridPosition);
 
 	void addChild(std::shared_ptr<Ability> child);
-	void setParent(std::shared_ptr<Ability> parent) { this->parent = parent; }
-	std::shared_ptr<Ability> getParent() const { return parent; }
+	void setParent(const std::shared_ptr<Ability>& parent) { this->parent = parent; }
+	std::shared_ptr<Ability> getParent() const { return parent.lock(); }
 	const std::vector<std::shared_ptr<Ability>>& getChildren() const { return children; }
 	unlockStatus getUnlockStatus() const { return status; }
 	void setUnlockStatus(unlockStatus status) { this->status = status; }
@@ -39,7 +39,7 @@ public:
 	// Display the ability on the screen
 	void display(sf::RenderTarget& window, const sf::Shader* shader = nullptr);
 	void setChildrenIds(const std::vector<int>& ids) { childrenIds = ids; }
-	std::vector<int>& getChildrenIds() { return childrenIds; }
+	std::vector<int> getChildrenIds() const { return childrenIds; }
 
 
 	//Serialization and deserialization
@@ -64,9 +64,8 @@ public:
 	static std::shared_ptr<AbilityTree> deserialize(const std::string& data);
 };
 
-class AbilityFactory
+class AbilityTreeFactory
 {
-
 public:
-
+	static std::shared_ptr<AbilityTree> createAbilityTree();
 };
