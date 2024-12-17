@@ -27,6 +27,9 @@
 #include <array>
 #include <map>
 
+constexpr int WIDTH = 60;
+constexpr int HEIGHT = 60;
+
 inline std::string color(const std::string& hex_color, const std::string& data)
 {
 	int r = std::stoi(hex_color.substr(0, 2), nullptr, 16);

@@ -2,34 +2,24 @@
 #include "MapGeneration.hpp"
 
 //Width and height of a map
-constexpr int width = 60;
-constexpr int height = 60;
-
 GameBoardState::GameBoardState(Game* game) : game(game)
 {
-	int level[width * height];
 	save = game->getSave();
 	//std::cout << std::dec << "Level seed: " << save.getSeed() << "\n";
 
-	std::thread generateThread([&]()
-		{
-			generate(save.getSeed(), level, path);
-		});
-	generateThread.join();
-
 	game->changeViewZoom(0.4f);
 
+	save.getPlayer()->load("src/img/walk.png");
+
 	//Loading map
-	if (!map.load("src/img/test_map_1.png", sf::Vector2u(16, 16), level, width, height)) return;
+	if (!map.load("src/img/test_map_1.png", sf::Vector2u(16, 16), save.getLevel(), WIDTH, HEIGHT)) return;
 
 	if (save.getPlayer()->getMapPosition() == sf::Vector2i(-1,-1))
 	{
-		save.getPlayer()->setMapPosition(path[0]);
+		save.getPlayer()->setMapPosition(save.getPath()[0]);
 		save.write();
 	}
 	player = save.getPlayer();
-
-	if(!save.getPlayer()->load("src/img/walk.png")) return;
 
 	if (!vhsShader.loadFromFile("libraries/vhs_effect.frag", sf::Shader::Fragment)) return;
 	shaderClock.restart();
@@ -41,7 +31,7 @@ GameBoardState::GameBoardState(Game* game) : game(game)
 	sf::View cameraView = game->getView();
 	sf::Vector2f cameraViewSize = cameraView.getSize();
 
-	sf::Vector2f mapSize(static_cast<float>(width * 16), static_cast<float>(height * 16));
+	sf::Vector2f mapSize(static_cast<float>(WIDTH * 16), static_cast<float>(HEIGHT * 16));
 
 	sf::Vector2f clampedPosition(
 		std::max(cameraViewSize.x / 2.f, std::min(playerPosition.x, mapSize.x - cameraViewSize.x / 2.f)),
@@ -76,7 +66,7 @@ void GameBoardState::handleInput(sf::RenderWindow& window, EventManager& eventMa
 			srand(static_cast<unsigned>(time(nullptr)));
 			int move = rand() % 6 + 1; // Random move between 1 and 6
 
-			auto temp = path;
+			auto temp = save.getPath();
 			int i = 0;
 
 			// Find the player's current position in the path
@@ -89,7 +79,7 @@ void GameBoardState::handleInput(sf::RenderWindow& window, EventManager& eventMa
 			int newIndex = (i + move) % temp.size();
 
 			// Update the player's position
-			player->setMapPosition(path[newIndex]);
+			player->setMapPosition(save.getPath()[newIndex]);
 
 			save.setPlayer(player);
 			save.write();
@@ -111,7 +101,7 @@ void GameBoardState::update()
 	sf::View cameraView = game->getView();
 	sf::Vector2f cameraViewSize = cameraView.getSize();
 
-	sf::Vector2f mapSize(static_cast<float>(width * 16), static_cast<float>(height * 16));
+	sf::Vector2f mapSize(static_cast<float>(WIDTH * 16), static_cast<float>(HEIGHT * 16));
 
 	sf::Vector2f clampedPosition(
 		std::max(cameraViewSize.x / 2.f, std::min(playerPosition.x, mapSize.x - cameraViewSize.x / 2.f)),

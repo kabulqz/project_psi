@@ -36,6 +36,22 @@ BoardGamePlayer::BoardGamePlayer()
 	setMapPosition(sf::Vector2i(-1, -1));
 }
 
+BoardGamePlayer::BoardGamePlayer(const BoardGamePlayer& player) : BoardGameMovable(player)
+{
+	level = player.level;
+	abilityPoints = player.abilityPoints;
+	experience = player.experience;
+	money = player.money;
+
+	if (player.m_playerTexture.getSize().x > 0 && player.m_playerTexture.getSize().y > 0) 
+	{
+		m_playerTexture = player.m_playerTexture;
+		m_playerSprite.setTexture(m_playerTexture);
+		m_playerSprite.setTextureRect(player.m_playerSprite.getTextureRect());
+		m_playerSprite.setPosition(player.m_playerSprite.getPosition());
+	}
+}
+
 void BoardGamePlayer::addExperience(const int value)
 {
 	experience += value;

@@ -1,5 +1,22 @@
 #include "Save.hpp"
-#include "AbilityTree.hpp"
+
+std::optional<std::filesystem::file_time_type>  Save::getLastWriteTime(int slot)
+{
+	try
+	{
+		std::filesystem::path filepath = "src/saves/save" + std::to_string(slot) + ".sav";
+		if (std::filesystem::exists(filepath))
+		{
+			return std::filesystem::last_write_time(filepath);
+		}
+	}
+	catch (const std::filesystem::filesystem_error& e)
+	{
+		std::cerr << "Error: " << e.what() << "\n";
+	}
+
+	return std::nullopt;
+}
 
 bool Save::generateKey()
 {
@@ -122,6 +139,69 @@ bool Save::loadKeyFromFile(const std::string& keyFilePath)
 	return true;
 }
 
+std::string Save::serializePath() const
+{
+	std::ostringstream oss;
+
+	for (size_t i = 0; i < path.size(); ++i)
+	{
+		oss << path[i].x << "," << path[i].y << ";";
+	}
+
+	return oss.str();
+}
+
+std::string Save::serializeLevel() const
+{
+	std::ostringstream oss;
+
+	for (size_t i =0; i < WIDTH * HEIGHT; ++i)
+	{
+		oss << level[i];
+	}
+
+	return oss.str();
+}
+
+std::vector<sf::Vector2i> Save::deserializePath(const std::string& data)
+{
+	std::vector<sf::Vector2i> pathVector;
+	std::istringstream iss(data);
+	std::string token;
+
+	while (std::getline(iss, token, ';'))
+	{
+		size_t commaPos = token.find(',');
+		if (commaPos == std::string::npos)
+		{
+			throw std::runtime_error("Invalid path format: missing comma.");
+		}
+
+		int x = std::stoi(token.substr(0, commaPos));
+		int y = std::stoi(token.substr(commaPos + 1));
+		pathVector.emplace_back(x, y);
+	}
+
+	return pathVector;
+}
+
+int* Save::deserializeLevel(const std::string& data)
+{
+	if (data.size() != WIDTH * HEIGHT)
+	{
+		throw std::runtime_error("Invalid data size for level deserialization.");
+	}
+
+	const auto level = new int[WIDTH * HEIGHT];
+
+	for (size_t i = 0; i < WIDTH * HEIGHT; ++i)
+	{
+		level[i] = data[i] - '0';
+	}
+
+	return level;
+}
+
 Save::Save()
 {
 #ifdef DEBUG
@@ -149,6 +229,10 @@ Save::Save()
 	const u32 seed = os_seed();
 	this->seed = seed;
 
+	level = new int[WIDTH * HEIGHT];
+
+	generate(this->seed, level, path);
+
 	// Create the ability tree
 	abilityTree = AbilityTree::createAbilityTree();
 
@@ -158,46 +242,42 @@ Save::Save()
 
 Save::Save(const Save& save)
 {
-#ifdef DEBUG
-	const std::string keyFilePath = "x64/Debug/encryption.key";
-	#else
-	const std::string keyFilePath = "x64/Release/encryption.key";
-#endif // DEBUG
-
-	// Load the key from file if it exist, otherwise generate a new key and save it to file
-	if (!std::filesystem::exists(keyFilePath))
-	{
-		if (!generateKey() || !saveKeyToFile(keyFilePath))
-		{
-			throw std::runtime_error("Failed to initialize encryption key.");
-		}
-	}
-	else if (!loadKeyFromFile(keyFilePath))
-	{
-		throw std::runtime_error("Failed to load encryption key.");
-	}
+	level = new int[WIDTH * HEIGHT];
+	std::copy_n(save.level, WIDTH * HEIGHT, level);
 
 	this->key = save.key;
 	this->slot = save.slot;
 	this->seed = save.seed;
+	this->path = save.path;
 	this->abilityTree = save.abilityTree;
-	this->player = save.player;
+
+	this->player = save.player ? new BoardGamePlayer(*save.player) : new BoardGamePlayer();
 }
 
 Save& Save::operator=(const Save& save)
 {
 	if (this == &save) return *this;
 
-	this->key = save.key;
-	this->slot = save.slot;
-	this->seed = save.seed;
-	this->abilityTree = save.abilityTree;
-	this->player = save.player;
+	delete[] level;
+	delete player;
+
+	level = new int[WIDTH * HEIGHT];
+	std::copy_n(save.level, WIDTH * HEIGHT, level);
+
+	key = save.key;
+	slot = save.slot;
+	seed = save.seed;
+	path = save.path;
+	abilityTree = save.abilityTree;
+
+	player = save.player ? new BoardGamePlayer(*save.player) : new BoardGamePlayer();
 
 	return *this;
 }
 
 const std::string seedLine = "Seed: ";
+const std::string levelLine = "Level: ";
+const std::string pathLine = "Path: ";
 const std::string abilitiesLine = "Abilities: ";
 const std::string playerLine = "Player: ";
 
@@ -215,6 +295,8 @@ void Save::write() const
 	std::ostringstream oss;
 
 	oss << seedLine << seed << "\n";
+	oss << levelLine << serializeLevel() << "\n";
+	oss << pathLine << serializePath() << "\n";
 	oss << abilitiesLine << abilityTree->serialize() << "\n";
 	oss << playerLine << player->serialize() << "\n";
 
@@ -290,6 +372,14 @@ Save& Save::load()
 			// Extract the seed after "Seed: "
 			seed = static_cast<uint_least32_t>(std::stoul(line.substr(seedLine.size())));
 		}
+		else if (line.starts_with(levelLine))
+		{
+			level = deserializeLevel(line.substr(levelLine.size()));
+		}
+		else if (line.starts_with(pathLine))
+		{
+			path = deserializePath(line.substr(pathLine.size()));
+		}
 		else if (line.starts_with(abilitiesLine))
 		{
 			// Extract the abilities after "Abilities: "
@@ -303,22 +393,4 @@ Save& Save::load()
 	}
 
 	return *this;
-}
-
-std::optional<std::filesystem::file_time_type>  Save::getLastWriteTime(int slot)
-{
-	try
-	{
-		std::filesystem::path filepath = "src/saves/save" + std::to_string(slot) + ".sav";
-		if (std::filesystem::exists(filepath))
-		{
-			return std::filesystem::last_write_time(filepath);
-		}
-	}
-	catch (const std::filesystem::filesystem_error& e)
-	{
-		std::cerr << "Error: " << e.what() << "\n";
-	}
-
-	return std::nullopt;
 }

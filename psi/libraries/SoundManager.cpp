@@ -37,7 +37,7 @@ void SoundManager::playSoundInternal(const std::string& soundName)
 	{
 		if (!musicTracks.contains(soundName))
 		{
-			std::cerr << "Music not found: " << soundName << "\n";
+			std::cerr << "Music not found: " << color("ef233c", soundName) << "\n";
 			return;
 		}
 
@@ -45,13 +45,13 @@ void SoundManager::playSoundInternal(const std::string& soundName)
 		music->setVolume(finalVolume * 100.0f);  // sf::Music expects volume in the 0-100 range
 		music->play();
 
-		std::cout << "Music \"" << soundName << "\" is playing at volume: " << finalVolume * 100.0f << "\n";
+		std::cout << "Music " << gradient("ff4d6d", "ffccd5", soundName) << " is playing at volume: " << finalVolume * 100.0f << "\n";
 	}
 	else
 	{
 		if (!soundBuffers.contains(soundName))
 		{
-			std::cerr << "Sound buffer not found: " << soundName << "\n";
+			std::cerr << "Sound buffer not found: " << color("ef233c", soundName) << "\n";
 			return;
 		}
 
@@ -62,7 +62,7 @@ void SoundManager::playSoundInternal(const std::string& soundName)
 		sound->play();
 		activeSounds[soundName] = std::move(sound); // Store the sound in the map
 
-		std::cout << "Sound \"" << soundName << "\" has been played at volume: " << finalVolume * 100.0f << "\n";
+		std::cout << "Sound " << gradient("52b788", "d8f3dc", soundName) << " has been played at volume: " << finalVolume * 100.0f << "\n";
 	}
 }
 
@@ -74,7 +74,7 @@ void SoundManager::loadSound(const std::string& name, const std::string& filePat
 		auto music = std::make_unique<sf::Music>();
 		if (!music->openFromFile(filePath))
 		{
-			std::cerr << "Error loading music file: " << filePath << "\n";
+			std::cerr << "Error loading music file: " << color("ef233c", filePath) << "\n";
 			return;
 		}
 		musicTracks[name] = std::move(music);
@@ -84,7 +84,7 @@ void SoundManager::loadSound(const std::string& name, const std::string& filePat
 		sf::SoundBuffer buffer;
 		if (!buffer.loadFromFile(filePath))
 		{
-			std::cerr << "Error loading sound file: " << filePath << "\n";
+			std::cerr << "Error loading sound file: " << color("ef233c", filePath) << "\n";
 			return;
 		}
 		soundBuffers[name] = buffer;
@@ -98,7 +98,7 @@ void SoundManager::playSound(const std::string& soundName)
 {
 	if (!soundTypes.contains(soundName))
 	{
-		std::cerr << "Sound not found: " << soundName << "\n";
+		std::cerr << "Sound not found: " << color("ef233c", soundName) << "\n";
 		return;
 	}
 
@@ -114,11 +114,11 @@ void SoundManager::stopSound(const std::string& soundName)
 	{
 		activeSounds[soundName]->stop();
 		activeSounds.erase(soundName);
-		std::cout << "Sound \"" << soundName << "\" has been stopped\n";
+		std::cout << "Sound " << gradient("ffc300", "ffea00", soundName) << " has been stopped\n";
 	}
 	else
 	{
-		std::cerr << "Sound \"" << soundName << "\" is not currently playing\n";
+		std::cerr << "Sound " << gradient("ffc300", "ffea00", soundName) << " is not currently playing\n";
 	}
 }
 

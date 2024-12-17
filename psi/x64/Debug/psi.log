@@ -1,4 +1,12 @@
 ﻿  GameBoardState.cpp
+  Hero.cpp
+  Generowanie kodu...
+sfml-graphics-s-d.lib(Font.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-graphics-s-d.lib(Font.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-graphics-s-d.lib(Image.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-graphics-s-d.lib(Image.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-audio-s-d.lib(SoundFileFactory.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-audio-s-d.lib(SoundFileFactory.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-audio-s-d.lib(SoundFileReaderFlac.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-audio-s-d.lib(SoundFileReaderFlac.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-window-s-d.lib(JoystickImpl.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-window-s-d.lib(JoystickImpl.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-window-s-d.lib(VulkanImplWin32.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-window-s-d.lib(VulkanImplWin32.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
   psi.vcxproj -> C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\x64\Debug\psi.exe
   C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\psi\src\OpenSSL\libcrypto-3-x64.dll
   1 File(s) copied

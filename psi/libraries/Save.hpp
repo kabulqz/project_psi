@@ -3,6 +3,8 @@
 #include "Settings.hpp"
 #include "Card.hpp"
 #include "Hero.hpp"
+#include "AbilityTree.hpp"
+#include "MapGeneration.hpp"
 
 // OpenSSL
 #include <openssl/evp.h>
@@ -39,20 +41,29 @@ private:
 	int slot;
 
 	uint_least32_t  seed;
+	int* level;
+	std::vector<sf::Vector2i> path;
 	std::shared_ptr<AbilityTree> abilityTree;
 	BoardGamePlayer* player;
 	// saved card deck
 	// saved card collection we have
 	//TypeOfMapGeneration mapGenerationType;
+
+	std::string serializePath() const;
+	std::string serializeLevel() const;
+	static std::vector<sf::Vector2i> deserializePath(const std::string& data);
+	static int* deserializeLevel(const std::string& data);
 public:
 	Save();//default constructor, so new save
 	Save(const Save& save);
 	Save& operator=(const Save& save);
-	~Save() = default;
+	~Save();
 
 	//Save(save data type from saves array in main menu state);
 	uint_least32_t getSeed() const { return seed; }
 	void setSeed(uint_least32_t seed) { this->seed = seed; }
+	int* getLevel() const { return level; }
+	std::vector<sf::Vector2i> getPath() const { return path; }
 	std::shared_ptr<AbilityTree> getAbilityTree() { return abilityTree; }
 	void setAbilityTree(const std::shared_ptr<AbilityTree>& abilityTree) { this->abilityTree = abilityTree; }
 
@@ -65,3 +76,8 @@ public:
 	Save& load();			// load from current slot
 	static std::optional<std::filesystem::file_time_type>  getLastWriteTime(int slot);
 };
+
+inline Save::~Save()
+{
+	delete[] level;
+}

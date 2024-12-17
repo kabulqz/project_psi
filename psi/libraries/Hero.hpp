@@ -33,6 +33,7 @@ public:
 	int getTotalXPRequiredForNextLevel() const;
 
 	BoardGamePlayer();
+	BoardGamePlayer(const BoardGamePlayer& player);
 
 	void addExperience(int value);
 

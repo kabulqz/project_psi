@@ -3,10 +3,6 @@
 //Values for level generation
 //Uwaga: Idiotootpornosc nie wprowadzona, zabawa dalej ryzykowna
 
-//Width and height of a map
-constexpr int width = 60;
-constexpr int height = 60;
-
 //Starting point for first rectangle
 constexpr int startX = 3;
 constexpr int startY = 5;
@@ -36,11 +32,11 @@ enum Direction
 void generate(uint_least32_t seed, int* level, std::vector<sf::Vector2i>& p)
 {
 	//Map reset
-	for (int i = 0; i < width; i++)
+	for (int i = 0; i < WIDTH; i++)
 	{
-		for (int j = 0; j < height; j++)
+		for (int j = 0; j < HEIGHT; j++)
 		{
-			level[i * width + j] = 0;
+			level[i * WIDTH + j] = 0;
 		}
 	}
 
@@ -61,14 +57,14 @@ void generate(uint_least32_t seed, int* level, std::vector<sf::Vector2i>& p)
 	int yy = dimentions(generator);
 
 	p.emplace_back(x, y - 1); 
-	level[p[0].x * width + p[0].y] = 2;
+	level[p[0].x * WIDTH + p[0].y] = 2;
 
 	//Starting shape
 	for (int i = x; i < x + xx; i++)
 	{
 		for (int j = y; j < y + yy; j++)
 		{
-			level[i * width + j] = 1;
+			level[i * WIDTH + j] = 1;
 		}
 	}
 
@@ -88,26 +84,26 @@ void generate(uint_least32_t seed, int* level, std::vector<sf::Vector2i>& p)
 		{
 			for (int j = y; j < y + yy; j++)
 			{
-				level[i * width + j] = 1;
+				level[i * WIDTH + j] = 1;
 			}
 		}
 	}
 
 	//Checks for one tile gaps between shapes
 	//Needs some optimalization, but thats problem for future me
-	for (int i = 2; i < width; i++)
+	for (int i = 2; i < WIDTH; i++)
 	{
-		for (int j = 2; j < height; j++)
+		for (int j = 2; j < HEIGHT; j++)
 		{
-			if (level[i * width + j] == 0)
+			if (level[i * WIDTH + j] == 0)
 			{
-				if (level[(i - 1) * width + j] == 1 && level[(i + 1) * width + j] == 1)
+				if (level[(i - 1) * WIDTH + j] == 1 && level[(i + 1) * WIDTH + j] == 1)
 				{
-					level[i * width + j] = 1;
+					level[i * WIDTH + j] = 1;
 				}
-				if (level[i * width + (j - 1)] == 1 && level[i * width + (j + 1)] == 1)
+				if (level[i * WIDTH + (j - 1)] == 1 && level[i * WIDTH + (j + 1)] == 1)
 				{
-					level[i * width + j] = 1;
+					level[i * WIDTH + j] = 1;
 				}
 			}
 		}
@@ -128,24 +124,24 @@ void generate(uint_least32_t seed, int* level, std::vector<sf::Vector2i>& p)
 		{
 		case UP:
 			//std::cout << "Checking UP\n";
-			if (level[(current.x - 1) * width + current.y] == 1)
+			if (level[(current.x - 1) * WIDTH + current.y] == 1)
 			{
-				level[(current.x) * width + current.y] = 2;
+				level[(current.x) * WIDTH + current.y] = 2;
 				p.emplace_back(current.x, current.y - 1);
 				dir = LEFT;
 				//std::cout << "DIR LEFT\n";
 			}
 			else
 			{
-				if (level[current.x * width + (current.y + 1)] == 1)
+				if (level[current.x * WIDTH + (current.y + 1)] == 1)
 				{
-					level[(current.x) * width + current.y] = 2;
+					level[(current.x) * WIDTH + current.y] = 2;
 					p.emplace_back(current.x - 1, current.y);
 					//std::cout << "DIR STRAIGHT\n";
 				}
 				else
 				{
-					level[(current.x) * width + current.y] = 2;
+					level[(current.x) * WIDTH + current.y] = 2;
 					p.emplace_back(current.x, current.y + 1);
 					dir = RIGHT;
 					//std::cout << "DIR RIGHT\n";
@@ -154,24 +150,24 @@ void generate(uint_least32_t seed, int* level, std::vector<sf::Vector2i>& p)
 			break;
 		case DOWN:
 			//std::cout << "Checking DOWN\n";
-			if (level[(current.x + 1) * width + current.y] == 1)
+			if (level[(current.x + 1) * WIDTH + current.y] == 1)
 			{
-				level[(current.x) * width + current.y] = 2;
+				level[(current.x) * WIDTH + current.y] = 2;
 				p.emplace_back(current.x, current.y + 1);
 				dir = RIGHT;
 				//std::cout << "DIR RIGHT\n";
 			}
 			else
 			{
-				if (level[current.x * width + (current.y - 1)] == 1)
+				if (level[current.x * WIDTH + (current.y - 1)] == 1)
 				{
-					level[(current.x) * width + current.y] = 2;
+					level[(current.x) * WIDTH + current.y] = 2;
 					p.emplace_back(current.x + 1, current.y);
 					//std::cout << "DIR STRAIGHT\n";
 				}
 				else
 				{
-					level[(current.x) * width + current.y] = 2;
+					level[(current.x) * WIDTH + current.y] = 2;
 					p.emplace_back(current.x, current.y - 1);
 					dir = LEFT;
 					//std::cout << "DIR LEFT\n";
@@ -180,24 +176,24 @@ void generate(uint_least32_t seed, int* level, std::vector<sf::Vector2i>& p)
 			break;
 		case LEFT:
 			//std::cout << "Checking LEFT\n";
-			if (level[current.x * width + (current.y - 1)] == 1)
+			if (level[current.x * WIDTH + (current.y - 1)] == 1)
 			{
-				level[(current.x) * width + current.y] = 2;
+				level[(current.x) * WIDTH + current.y] = 2;
 				p.emplace_back(current.x + 1, current.y);
 				dir = DOWN;
 				//std::cout << "DIR DOWN\n";
 			}
 			else
 			{
-				if (level[(current.x - 1) * width + current.y] == 1)
+				if (level[(current.x - 1) * WIDTH + current.y] == 1)
 				{
-					level[(current.x) * width + current.y] = 2;
+					level[(current.x) * WIDTH + current.y] = 2;
 					p.emplace_back(current.x, current.y - 1);
 					//std::cout << "DIR STRAIGHT\n";
 				}
 				else
 				{
-					level[(current.x) * width + current.y] = 2;
+					level[(current.x) * WIDTH + current.y] = 2;
 					p.emplace_back(current.x - 1, current.y);
 					dir = UP;
 					//std::cout << "DIR UP\n";
@@ -206,9 +202,9 @@ void generate(uint_least32_t seed, int* level, std::vector<sf::Vector2i>& p)
 			break;
 		case RIGHT:
 			//std::cout << "Checking UP\n";
-			if (level[current.x * width + (current.y + 1)] == 1)
+			if (level[current.x * WIDTH + (current.y + 1)] == 1)
 			{
-				level[(current.x) * width + current.y] = 2;
+				level[(current.x) * WIDTH + current.y] = 2;
 				p.emplace_back(current.x - 1, current.y);
 				dir = UP;
 				//std::cout << "DIR UP\n";
@@ -216,15 +212,15 @@ void generate(uint_least32_t seed, int* level, std::vector<sf::Vector2i>& p)
 
 			else
 			{
-				if (level[(current.x + 1)* width + current.y] == 1)
+				if (level[(current.x + 1)* WIDTH + current.y] == 1)
 				{
-					level[(current.x) * width + current.y] = 2;
+					level[(current.x) * WIDTH + current.y] = 2;
 					p.emplace_back(current.x, current.y + 1);
 					//std::cout << "DIR STRAIGHT\n";
 				}
 				else
 				{
-					level[(current.x) * width + current.y] = 2;
+					level[(current.x) * WIDTH + current.y] = 2;
 					p.emplace_back(current.x + 1, current.y);
 					dir = DOWN;
 					//std::cout << "DIR DOWN\n";
