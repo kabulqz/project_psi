@@ -1,7 +1,7 @@
 #include "Game.hpp"
 #include <gl/GL.h>
 
-Game::Game() : soundManager(settings.general_audio, settings.ui_audio, settings.ambience_audio, settings.alert_audio, settings.music_audio)
+Game::Game() : soundManager(settings.general_audio, settings.ui_audio, settings.ambience_audio, settings.alert_audio, settings.music_audio), save(nullptr)
 {
 	// Check if we are in DEBUG or RELEASE configuration
 #ifdef _DEBUG
@@ -18,9 +18,11 @@ Game::Game() : soundManager(settings.general_audio, settings.ui_audio, settings.
 	window.setFramerateLimit(60);
 	view.reset(sf::FloatRect(0.f, 0.f, 1280.f, 720.f));
 
+	const char* version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
+	std::cout << "OpenGL version: " << version << "\n";
+
 	settings.initialize();
 	soundManager.loadSounds();
-	soundManager.playSound("Intro");
 
 	//SFML window icon
 	sf::Image icon;
@@ -34,9 +36,7 @@ Game::Game() : soundManager(settings.general_audio, settings.ui_audio, settings.
 	if (!cursor.loadFromPixels(cursorImage.getPixelsPtr(), sf::Vector2u(32, 32), sf::Vector2u(0, 0))) return;
 	window.setMouseCursor(cursor);
 
-	const char* version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
-	std::cout << "OpenGL version: " << version << "\n";
-
+	soundManager.playSound("Intro");
 	soundManager.playSound("Ambience_crt");
 	gameClock.restart();
 }

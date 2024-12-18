@@ -18,7 +18,7 @@ private:
 	SoundManager soundManager;
 	Settings settings;
 	sf::View view;
-	Save save;
+	Save* save;
 
 	sf::Clock gameClock;
 public:
@@ -29,8 +29,8 @@ public:
 	//main function
 	int run();
 
-	Save getSave() { return this->save; }
-	void setSave(const Save& save)
+	Save* getSave() { return this->save; }
+	void setSave(Save* save)
 	{
 		this->save = save;
 	}

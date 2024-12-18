@@ -3,7 +3,7 @@
 
 GameCardState::GameCardState(Game* game) : game(game)
 {
-
+	save = game->getSave();
 }
 
 //handler for specific windows to appear in the main frame 

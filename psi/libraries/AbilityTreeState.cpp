@@ -13,9 +13,11 @@ const std::string abilitiesFile = PATH_TO_ABILITIES_FOLDER + abilities;
 
 AbilityTreeState::AbilityTreeState(Game* game) : game(game)
 {
-	if (!abilityTreeTexture.loadFromFile("src/img/yggdrasil.png")) return;
+	save = game->getSave();
 
 	game->changeViewZoom(1.f);
+
+	if (!abilityTreeTexture.loadFromFile("src/img/yggdrasil.png")) return;
 
 	int verticalMargin = 10;
 	abilityTreeSprite.setTexture(abilityTreeTexture);
@@ -27,7 +29,7 @@ AbilityTreeState::AbilityTreeState(Game* game) : game(game)
 	abilityTreeSprite.setPosition(posX, posY + verticalMargin);
 
 	// Load the saved ability tree from the game's save
-	abilityTree = game->getSave().getAbilityTree();
+	abilityTree = game->getSave()->getAbilityTree();
 
 	sf::Image cursorDefault;
 	sf::Image cursorBuyable;
@@ -65,10 +67,9 @@ void AbilityTreeState::handleInput(sf::RenderWindow& window, EventManager& event
 		// Example: if (event.type == sf::Event::MouseButtonPressed) { ... }
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
 		{
-			Save save = game->getSave();
-			save.write();
+			save->write();
 			game->setSave(save);
-			game->changeState(std::make_unique<TransitionState>(game, GAME_BOARD, std::make_unique<AbilityTreeState>(game)));
+			game->changeState(std::make_unique<TransitionState>(game, ABILITY_TREE, GAME_BOARD));
 			soundManager.playSound("Transition");
 		}
 	}

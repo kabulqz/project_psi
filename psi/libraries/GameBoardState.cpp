@@ -11,14 +11,14 @@ GameBoardState::GameBoardState(Game* game) : game(game)
 	game->changeViewZoom(0.4f);
 
 	//Loading map
-	if (!map.load("src/img/test_map_1.png", sf::Vector2u(16, 16), save.getLevel(), WIDTH, HEIGHT)) return;
+	if (!map.load("src/img/test_map_1.png", sf::Vector2u(16, 16), save->getLevel(), WIDTH, HEIGHT)) return;
 
-	if (save.getPlayer()->getMapPosition() == sf::Vector2i(-1,-1))
+	if (save->getPlayer()->getMapPosition() == sf::Vector2i(-1,-1))
 	{
-		save.getPlayer()->setMapPosition(save.getPath()[0]);
-		save.write();
+		save->getPlayer()->setMapPosition(save->getPath()[0]);
+		save->write();
 	}
-	player = save.getPlayer();
+	player = save->getPlayer();
 
 	if (!vhsShader.loadFromFile("libraries/vhs_effect.frag", sf::Shader::Fragment)) return;
 	shaderClock.restart();
@@ -55,17 +55,17 @@ void GameBoardState::handleInput(sf::RenderWindow& window, EventManager& eventMa
 		// Example: if (event.type == sf::Event::MouseButtonPressed) { ... }
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
 		{
-			game->changeState(std::make_unique<TransitionState>(game, ABILITY_TREE, std::make_unique<GameBoardState>(game)));
+			game->changeState(std::make_unique<TransitionState>(game, GAME_BOARD, ABILITY_TREE));
 			soundManager.playSound("Transition");
 		}
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
 		{
+			int move = rand() % 6 + 1; // Random move between 1 and 6
+			std::cout << "Player rolled a " << color("ff7aa2", std::to_string(move)) << ", ";
+
 			soundManager.playSound("DiceThrow");
 
-			int move = rand() % 6 + 1; // Random move between 1 and 6
-			std::cout << "Player rolled a " << color("ff7aa2", std::to_string(move)) << "\n";
-
-			auto temp = save.getPath();
+			auto temp = save->getPath();
 			int i = 0;
 
 			// Find the player's current position in the path
@@ -78,10 +78,10 @@ void GameBoardState::handleInput(sf::RenderWindow& window, EventManager& eventMa
 			int newIndex = (i + move) % temp.size();
 
 			// Update the player's position
-			player->setMapPosition(save.getPath()[newIndex]);
+			player->setMapPosition(save->getPath()[newIndex]);
 
-			save.setPlayer(player);
-			save.write();
+			save->setPlayer(player);
+			save->write();
 			game->setSave(save);
 		}
 	}
@@ -130,7 +130,7 @@ void GameBoardState::render(sf::RenderWindow& window)
 	//draw elements
 	renderTexture.draw(map);
 
-	if (save.getPlayer()->getMapPosition() != sf::Vector2i(-1, -1))
+	if (save->getPlayer()->getMapPosition() != sf::Vector2i(-1, -1))
 	{
 		renderTexture.draw(player->getSprite());
 	}
@@ -158,8 +158,8 @@ void GameBoardState::renderToTexture(sf::RenderTexture& texture)
 	texture.draw(map);
 
 	// Draw the player sprite if their position is valid
-	save.getPlayer()->load("src/img/walk.png");
-	if (save.getPlayer()->getMapPosition() != sf::Vector2i(-1, -1))
+	save->getPlayer()->load("src/img/walk.png");
+	if (save->getPlayer()->getMapPosition() != sf::Vector2i(-1, -1))
 	{
 		texture.draw(player->getSprite());
 	}

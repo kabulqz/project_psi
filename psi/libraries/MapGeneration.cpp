@@ -252,6 +252,7 @@ void MapGeneration::generatePath(std::vector<std::vector<int>>& level2D, std::ve
 
 void MapGeneration::generate(uint_least32_t seed, int* level, std::vector<sf::Vector2i>& path)
 {
+	std::cout << gradient("FF70A6", "70D6FF" , "Generating new map with seed: " +  std::to_string(seed)) << "\n";
 	// Tworzymy mapê 2D, która bêdzie u¿ywana do generowania
 	std::vector<std::vector<int>> level2D(WIDTH, std::vector<int>(HEIGHT, 0));
 

@@ -165,9 +165,10 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 				int mostRecentSave = MainMenuState::getMostRecentSaveSlot();
 				if (mostRecentSave != -1)
 				{
-					Save save;
-					this->game->setSave(save.load(mostRecentSave));
-					game->changeState(std::make_unique<TransitionState>(game, GAME_BOARD,std::make_unique<MainMenuState>(game)));
+					Save* save = new Save();
+					save->load(mostRecentSave);
+					this->game->setSave(save);
+					game->changeState(std::make_unique<TransitionState>(game, MAIN_MENU, GAME_BOARD));
 					soundManager.playSound("Continue");
 					soundManager.playSound("Transition");
 				}
@@ -261,10 +262,10 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 						if (saveButtons[i]->isHovered(mousePos) && saveButtons[i]->isClickable())
 						{
 							//new save
-							Save save;
-							save.write(i + 1);
+							Save* save = new Save();
+							save->write(i + 1);
 							game->setSave(save);
-							game->changeState(std::make_unique<TransitionState>(game, GAME_BOARD, std::make_unique<MainMenuState>(game)));
+							game->changeState(std::make_unique<TransitionState>(game, MAIN_MENU, GAME_BOARD));
 							soundManager.playSound("Continue");
 							soundManager.playSound("Transition");
 							std::cout << color("3993DD", "created new save on slot " + std::to_string(i + 1) + "\n");
@@ -272,10 +273,10 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 						else if (saveButtons[i]->isHovered(mousePos) && saveButtons[i]->isClickable())
 						{
 							//overwrite
-							Save save;
-							save.write(i + 1);
+							Save* save = new Save();
+							save->write(i + 1);
 							game->setSave(save);
-							game->changeState(std::make_unique<TransitionState>(game, GAME_BOARD, std::make_unique<MainMenuState>(game)));
+							game->changeState(std::make_unique<TransitionState>(game, MAIN_MENU, GAME_BOARD));
 							soundManager.playSound("Continue");
 							soundManager.playSound("Transition");
 							std::cout << color("3993DD", "overwritten save nr " + std::to_string(i + 1) + "\n");
@@ -287,9 +288,10 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 						{
 							if (saveButtons[i]->isHovered(mousePos) && saveButtons[i]->isClickable())
 							{
-								Save save;
-								this->game->setSave(save.load(i + 1));
-								game->changeState(std::make_unique<TransitionState>(game, GAME_BOARD, std::make_unique<MainMenuState>(game)));
+								Save* save = new Save();
+								save->load(i + 1);
+								this->game->setSave(save);
+								game->changeState(std::make_unique<TransitionState>(game, MAIN_MENU, GAME_BOARD));
 								soundManager.playSound("Continue");
 								soundManager.playSound("Transition");
 							}

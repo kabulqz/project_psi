@@ -8,6 +8,7 @@ class AbilityTreeState : public State
 {
 private:
 	Game* game;
+	Save* save;
 	sf::Vector2i mousePos;
 	sf::Cursor defaultCursor;
 	sf::Cursor buyableCursor;

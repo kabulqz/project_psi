@@ -8,7 +8,7 @@ class GameBoardState : public State
 {
 private:
 	Game* game;
-	Save save;
+	Save* save;
 	BoardGamePlayer* player;
 	TileMap map;
 

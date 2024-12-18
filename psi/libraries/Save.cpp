@@ -204,6 +204,7 @@ int* Save::deserializeLevel(const std::string& data)
 
 Save::Save()
 {
+	std::cout << gradient("ccff33", "38b000", "Creating new save.\n");
 #ifdef DEBUG
 	const std::string keyFilePath = "x64/Debug/encryption.key";
 #else
@@ -223,10 +224,8 @@ Save::Save()
 		throw std::runtime_error("Failed to load encryption key.");
 	}
 
-	using u32 = uint_least32_t;
-	using engine = std::mt19937;
 	std::random_device os_seed;
-	const u32 seed = os_seed();
+	const uint_least32_t seed = os_seed();
 	this->seed = seed;
 
 	level = new int[WIDTH * HEIGHT];
@@ -239,9 +238,9 @@ Save::Save()
 	catch (const std::exception& e)
 	{
 		// Handle any exceptions thrown by MapGeneration::generate
-		std::cerr << "Error during map generation: " << e.what() << std::endl;
+		std::cerr << "Error during map generation: " << e.what() << "\n";
 		// Optionally, rethrow or handle the error in a way that makes sense for your program
-		throw std::runtime_error("Failed to generate the map.");
+		throw std::runtime_error("Failed to generate the map.\n");
 	}
 
 	// Create the ability tree

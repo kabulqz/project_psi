@@ -14,8 +14,8 @@ enum State_enum
 class TransitionState : public State
 {
 	Game* game;
+	State_enum previousState;
 	State_enum targetState;
-	std::unique_ptr<State> previousState;
 
 	sf::Cursor defaultCursor;
 	sf::Cursor loadingCursor;
@@ -26,7 +26,7 @@ class TransitionState : public State
 	sf::Shader transitionShader;
 	sf::Clock transitionClock;
 public:
-	TransitionState(Game* game, State_enum targetState, std::unique_ptr<State> previousState);
+	TransitionState(Game* game, State_enum previousState, State_enum targetState);
 	void handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager, sqlite3*& database) override;
 	void update() override;
 	void render(sf::RenderWindow& window) override;

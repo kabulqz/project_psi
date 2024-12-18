@@ -7,7 +7,7 @@
 
 constexpr float TRANSITION_DURATION = 2.0f;
 
-TransitionState::TransitionState(Game* game, State_enum targetState, std::unique_ptr<State> previousState) : game(game), targetState(targetState), previousState(std::move(previousState))
+TransitionState::TransitionState(Game* game, State_enum previousState, State_enum targetState) : game(game), targetState(targetState), previousState(previousState)
 {
 	sf::Image cursorDefault;
 	sf::Image cursorLoading;
@@ -35,17 +35,36 @@ TransitionState::TransitionState(Game* game, State_enum targetState, std::unique
 		std::cerr << "Cannot load shader\n";
 	}
 
+	std::unique_ptr<State> tempState;
 	// Create the render texture for the "from" state
 	if (!fromTexture.create(game->getWindow().getSize().x, game->getWindow().getSize().y)) return;
-	this->previousState->renderToTexture(fromTexture);  // Render the previous state to texture
+	switch (previousState)
+	{
+	case MAIN_MENU:
+		tempState = std::make_unique<MainMenuState>(game);
+		break;
+	case GAME_BOARD:
+		tempState = std::make_unique<GameBoardState>(game);
+		break;
+	case GAME_CARD:
+		tempState = std::make_unique<GameCardState>(game);
+		break;
+	case ABILITY_TREE:
+		tempState = std::make_unique<AbilityTreeState>(game);
+		break;
+	default:
+		tempState = std::make_unique<MainMenuState>(game);
+		break;
+	}
+	tempState->renderToTexture(fromTexture);  // Render the previous state to texture
 
-
+	tempState.release();
 	// Create the render texture for the "to" state
 	if (!toTexture.create(game->getWindow().getSize().x, game->getWindow().getSize().y)) return;
 
 	// Render the target state to texture
-	std::unique_ptr<State> tempState;
-	switch (targetState) {
+	switch (targetState)
+	{
 	case MAIN_MENU:
 		tempState = std::make_unique<MainMenuState>(game);
 		break;

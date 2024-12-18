@@ -5,6 +5,9 @@
 
 void BoardGamePlayer::onLevelUp()
 {
+	std::cout << gradient("ffb700", "ffea00", "Level up! You are now level ")
+		<< color("52b788", std::to_string(level)) << "\n";
+	level++;
 	abilityPoints += 1;
 }
 
@@ -76,7 +79,6 @@ void BoardGamePlayer::addExperience(const int value)
 	while (experience >= getRequiredXPForNextLevel())
 	{
 		experience -= getRequiredXPForNextLevel();
-		level++;
 		onLevelUp();
 	}
 }
