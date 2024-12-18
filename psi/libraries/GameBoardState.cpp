@@ -9,8 +9,6 @@ GameBoardState::GameBoardState(Game* game) : game(game)
 
 	game->changeViewZoom(0.4f);
 
-	save.getPlayer()->load("src/img/walk.png");
-
 	//Loading map
 	if (!map.load("src/img/test_map_1.png", sf::Vector2u(16, 16), save.getLevel(), WIDTH, HEIGHT)) return;
 
@@ -158,6 +156,7 @@ void GameBoardState::renderToTexture(sf::RenderTexture& texture)
 	texture.draw(map);
 
 	// Draw the player sprite if their position is valid
+	save.getPlayer()->load("src/img/walk.png");
 	if (save.getPlayer()->getMapPosition() != sf::Vector2i(-1, -1))
 	{
 		texture.draw(player->getSprite());

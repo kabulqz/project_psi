@@ -231,7 +231,18 @@ Save::Save()
 
 	level = new int[WIDTH * HEIGHT];
 
-	generate(this->seed, level, path);
+	try
+	{
+		// Attempt to generate the map using the seed
+		MapGeneration::generate(this->seed, level, path);
+	}
+	catch (const std::exception& e)
+	{
+		// Handle any exceptions thrown by MapGeneration::generate
+		std::cerr << "Error during map generation: " << e.what() << std::endl;
+		// Optionally, rethrow or handle the error in a way that makes sense for your program
+		throw std::runtime_error("Failed to generate the map.");
+	}
 
 	// Create the ability tree
 	abilityTree = AbilityTree::createAbilityTree();

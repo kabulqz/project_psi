@@ -33,6 +33,7 @@ BoardGamePlayer::BoardGamePlayer()
 	experience = 0;
 	money = 0;
 
+	load("src/img/walk.png");
 	setMapPosition(sf::Vector2i(-1, -1));
 }
 

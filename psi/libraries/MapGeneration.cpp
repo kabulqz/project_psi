@@ -11,17 +11,6 @@ constexpr int startY = 5;
 constexpr int rectMin = 5;
 constexpr int rectMax = 11;
 
-//Number of iterated rectangles
-constexpr int numberOfRect = 5;
-
-enum Direction
-{
-	UP,
-	DOWN,
-	LEFT,
-	RIGHT
-};
-
 //Generates map from seed
 //Tiles:
 // 0 - background
@@ -29,50 +18,204 @@ enum Direction
 // 2 - path
 //TODO: rozne typy generowania sie mapy
 
-void generate(uint_least32_t seed, int* level, std::vector<sf::Vector2i>& p)
+void MapGeneration::resetLevel(std::vector<std::vector<int>>& level2D)
 {
-	//Map reset
+	// Resetowanie poziomu
 	for (int i = 0; i < WIDTH; i++)
 	{
 		for (int j = 0; j < HEIGHT; j++)
 		{
-			level[i * WIDTH + j] = 0;
+			level2D[i][j] = 0;
 		}
 	}
+}
 
-	//Setup for RNG
-	using u32 = uint_least32_t;
-	using engine = std::mt19937;
+void MapGeneration::generateRectangle(std::vector<std::vector<int>>& level2D, int x, int y, int width, int height)
+{
+	for (int i = x; i < x + width; ++i)
+	{
+		for (int j = y; j < y + height; ++j)
+		{
+			if (i < WIDTH && j < HEIGHT)  // Sprawdzenie granic mapy
+			{
+				level2D[i][j] = 1;
+			}
+		}
+	}
+}
 
-	engine generator(seed);
+void MapGeneration::fillGaps(std::vector<std::vector<int>>& level2D)
+{
+	for (int i = 1; i < WIDTH - 1; ++i)
+	{
+		for (int j = 1; j < HEIGHT - 1; ++j)
+		{
+			if (level2D[i][j] == 0)
+			{
+				if (level2D[i - 1][j] == 1 && level2D[i + 1][j] == 1)
+				{
+					level2D[i][j] = 1;
+				}
+				if (level2D[i][j - 1] == 1 && level2D[i][j + 1] == 1)
+				{
+					level2D[i][j] = 1;
+				}
+			}
+		}
+	}
+}
 
-	std::uniform_int_distribution< u32 > startpoint(startX, startY);
-	std::uniform_int_distribution< u32 > dimentions(rectMin, rectMax);
+void MapGeneration::pathHelper(std::vector<std::vector<int>>& level2D)
+{
+	for (int x = 0; x < WIDTH; ++x)
+	{
+		for (int y = 0; y < HEIGHT; ++y)
+		{
+			// Sprawdzamy, czy pole jest puste (0)
+			if (level2D[x][y] == 0)
+			{
+				bool hasNeighbor = false;
 
-	//Generating shapes
+				// Sprawdzamy s¹siadów (8 kierunków)
+				for (int dx = -1; dx <= 1; ++dx)
+				{
+					for (int dy = -1; dy <= 1; ++dy)
+					{
+						// Pomijamy siebie (s¹siad - 0,0)
+						if (dx == 0 && dy == 0)
+							continue;
+
+						// Obliczamy wspó³rzêdne s¹siada
+						int nx = x + dx;
+						int ny = y + dy;
+
+						// Sprawdzamy, czy s¹siad znajduje siê w granicach mapy
+						if (nx >= 0 && nx < WIDTH && ny >= 0 && ny < HEIGHT)
+						{
+							// Jeœli s¹siad ma wartoœæ 1, zmieniamy bie¿¹ce pole na 2
+							if (level2D[nx][ny] == 1)
+							{
+								hasNeighbor = true;
+								break;
+							}
+						}
+					}
+					if (hasNeighbor)
+						break;
+				}
+
+				// Jeœli mamy s¹siada o wartoœci 1, zmieniamy pole na 2
+				if (hasNeighbor)
+				{
+					level2D[x][y] = 2;
+				}
+			}
+		}
+	}
+}
+
+void MapGeneration::collectPathPositions(std::vector<std::vector<int>>& level2D, std::vector<sf::Vector2i>& positions)
+{
+	for (int x = 0; x < WIDTH; ++x)
+	{
+		for (int y = 0; y < HEIGHT; ++y)
+		{
+			if (level2D[x][y] == 2) // Jeœli pole jest oznaczone jako œcie¿ka
+			{
+				positions.emplace_back(x, y);
+			}
+		}
+	}
+}
+
+void MapGeneration::generatePath(std::vector<std::vector<int>>& level2D, std::vector<sf::Vector2i>& path, std::mt19937& generator)
+{
+	// Wype³nienie mapy œcie¿k¹
+	pathHelper(level2D);
+
+	// Zbieranie pozycji œcie¿ki
+	std::vector<sf::Vector2i> pathPositions;
+	collectPathPositions(level2D, pathPositions);
+
+	// Jeœli mamy dostêpne pozycje, losujemy jedn¹ z nich
+	if (!pathPositions.empty())
+	{
+		std::uniform_int_distribution<int> distribution(0, pathPositions.size() - 1);
+		int randomIndex = distribution(generator);
+
+		// Dodajemy losowy punkt do œcie¿ki
+		path.push_back(pathPositions[randomIndex]);
+	}
+
+	sf::Vector2i currentPos = path[0];
+	sf::Vector2i previousPos = currentPos;
+
+	// Definicja kierunków: Dó³, Góra, Prawo, Lewo
+	std::vector<sf::Vector2i> directions = {
+		{0, 1},  // Dó³
+		{0, -1}, // Góra
+		{1, 0},  // Prawo
+		{-1, 0}  // Lewo
+	};
+
+	// Tworzymy œcie¿kê
+	do
+	{
+		// Sprawdzamy dostêpne kierunki
+		for (const auto& direction : directions)
+		{
+			// Nowa pozycja
+			sf::Vector2i nextPos = currentPos + direction;
+
+			// Sprawdzamy, czy ruch nie wykracza poza mapê i czy pole jest oznaczone jako œcie¿ka (2)
+			if (nextPos.x >= 0 && nextPos.x < WIDTH && nextPos.y >= 0 && nextPos.y < HEIGHT && level2D[nextPos.x][nextPos.y] == 2)
+			{
+				// Jeœli to nie jest ta sama pozycja, z której przyszliœmy (unikamy cofania)
+				if (nextPos != previousPos)
+				{
+					path.push_back(nextPos);  // Dodajemy now¹ pozycjê do œcie¿ki
+					previousPos = currentPos; // Ustawiamy poprzedni¹ pozycjê
+					currentPos = nextPos;     // Aktualizujemy bie¿¹c¹ pozycjê
+					break;                    // Przechodzimy do nastêpnego kroku
+				}
+			}
+		}
+	} while (currentPos != path[0]); // Powtarzamy, dopóki nie wrócimy do pocz¹tku œcie¿ki
+
+}
+
+void MapGeneration::generate(uint_least32_t seed, int* level, std::vector<sf::Vector2i>& p)
+{
+	// Tworzymy mapê 2D, która bêdzie u¿ywana do generowania
+	std::vector<std::vector<int>> level2D(WIDTH, std::vector<int>(HEIGHT, 0));
+
+	// Resetowanie poziomu
+	resetLevel(level2D);
+
+	// Inicjalizacja generatora losowego
+	std::mt19937 generator(seed);
+
+	std::uniform_int_distribution<uint_least32_t> dimentions(rectMin, rectMax);
+	std::uniform_int_distribution<uint_least32_t> startpoint(startX, startY);
+
+	//Number of iterated rectangles
+	std::uniform_int_distribution<uint_least32_t> numberOfRectDist(4, 7);
+	int numberOfRect = numberOfRectDist(generator);
+
+
+	// Tworzenie pocz¹tkowego prostok¹ta
 	int x = startpoint(generator);
 	int y = startpoint(generator);
-
 	int xx = dimentions(generator);
 	int yy = dimentions(generator);
 
-	p.emplace_back(x, y - 1); 
-	level[p[0].x * WIDTH + p[0].y] = 2;
+	generateRectangle(level2D, x, y, xx, yy);
 
-	//Starting shape
-	for (int i = x; i < x + xx; i++)
+	// Tworzenie kolejnych prostok¹tów
+	for (int k = 0; k < numberOfRect; ++k)
 	{
-		for (int j = y; j < y + yy; j++)
-		{
-			level[i * WIDTH + j] = 1;
-		}
-	}
-
-	//Next shapes
-	for (int k = 0; k < numberOfRect; k++)
-	{
-		std::uniform_int_distribution< u32 > newpointX(x + 1, x + xx);
-		std::uniform_int_distribution< u32 > newpointY(y + 1, y + yy);
+		std::uniform_int_distribution<uint_least32_t> newpointX(x + 1, x + xx);
+		std::uniform_int_distribution<uint_least32_t> newpointY(y + 1, y + yy);
 
 		x = newpointX(generator);
 		y = newpointY(generator);
@@ -80,162 +223,21 @@ void generate(uint_least32_t seed, int* level, std::vector<sf::Vector2i>& p)
 		xx = dimentions(generator);
 		yy = dimentions(generator);
 
-		for (int i = x; i < x + xx; i++)
-		{
-			for (int j = y; j < y + yy; j++)
-			{
-				level[i * WIDTH + j] = 1;
-			}
-		}
+		generateRectangle(level2D, x, y, xx, yy);
 	}
 
-	//Checks for one tile gaps between shapes
-	//Needs some optimalization, but thats problem for future me
-	for (int i = 2; i < WIDTH; i++)
+	// Wype³nianie luk miêdzy prostok¹tami
+	fillGaps(level2D);
+
+	// Generowanie œcie¿ki
+	generatePath(level2D, p, generator);
+
+	// Na koniec zapisujemy z powrotem mapê 2D do 1D tablicy
+	for (int i = 0; i < WIDTH; ++i)
 	{
-		for (int j = 2; j < HEIGHT; j++)
+		for (int j = 0; j < HEIGHT; ++j)
 		{
-			if (level[i * WIDTH + j] == 0)
-			{
-				if (level[(i - 1) * WIDTH + j] == 1 && level[(i + 1) * WIDTH + j] == 1)
-				{
-					level[i * WIDTH + j] = 1;
-				}
-				if (level[i * WIDTH + (j - 1)] == 1 && level[i * WIDTH + (j + 1)] == 1)
-				{
-					level[i * WIDTH + j] = 1;
-				}
-			}
+			level[i * HEIGHT + j] = level2D[i][j];
 		}
-	}
-
-	//Generating path
-	//Finally, this is not near as retarted as last version
-	//And it also fills path vector correctly :)
-
-	Direction dir = UP;
-	sf::Vector2i current = p.back();
-	int i = 0;
-	int max = 1000;
-
-	do
-	{
-		switch (dir)
-		{
-		case UP:
-			//std::cout << "Checking UP\n";
-			if (level[(current.x - 1) * WIDTH + current.y] == 1)
-			{
-				level[(current.x) * WIDTH + current.y] = 2;
-				p.emplace_back(current.x, current.y - 1);
-				dir = LEFT;
-				//std::cout << "DIR LEFT\n";
-			}
-			else
-			{
-				if (level[current.x * WIDTH + (current.y + 1)] == 1)
-				{
-					level[(current.x) * WIDTH + current.y] = 2;
-					p.emplace_back(current.x - 1, current.y);
-					//std::cout << "DIR STRAIGHT\n";
-				}
-				else
-				{
-					level[(current.x) * WIDTH + current.y] = 2;
-					p.emplace_back(current.x, current.y + 1);
-					dir = RIGHT;
-					//std::cout << "DIR RIGHT\n";
-				}
-			}
-			break;
-		case DOWN:
-			//std::cout << "Checking DOWN\n";
-			if (level[(current.x + 1) * WIDTH + current.y] == 1)
-			{
-				level[(current.x) * WIDTH + current.y] = 2;
-				p.emplace_back(current.x, current.y + 1);
-				dir = RIGHT;
-				//std::cout << "DIR RIGHT\n";
-			}
-			else
-			{
-				if (level[current.x * WIDTH + (current.y - 1)] == 1)
-				{
-					level[(current.x) * WIDTH + current.y] = 2;
-					p.emplace_back(current.x + 1, current.y);
-					//std::cout << "DIR STRAIGHT\n";
-				}
-				else
-				{
-					level[(current.x) * WIDTH + current.y] = 2;
-					p.emplace_back(current.x, current.y - 1);
-					dir = LEFT;
-					//std::cout << "DIR LEFT\n";
-				}
-			}
-			break;
-		case LEFT:
-			//std::cout << "Checking LEFT\n";
-			if (level[current.x * WIDTH + (current.y - 1)] == 1)
-			{
-				level[(current.x) * WIDTH + current.y] = 2;
-				p.emplace_back(current.x + 1, current.y);
-				dir = DOWN;
-				//std::cout << "DIR DOWN\n";
-			}
-			else
-			{
-				if (level[(current.x - 1) * WIDTH + current.y] == 1)
-				{
-					level[(current.x) * WIDTH + current.y] = 2;
-					p.emplace_back(current.x, current.y - 1);
-					//std::cout << "DIR STRAIGHT\n";
-				}
-				else
-				{
-					level[(current.x) * WIDTH + current.y] = 2;
-					p.emplace_back(current.x - 1, current.y);
-					dir = UP;
-					//std::cout << "DIR UP\n";
-				}
-			}
-			break;
-		case RIGHT:
-			//std::cout << "Checking UP\n";
-			if (level[current.x * WIDTH + (current.y + 1)] == 1)
-			{
-				level[(current.x) * WIDTH + current.y] = 2;
-				p.emplace_back(current.x - 1, current.y);
-				dir = UP;
-				//std::cout << "DIR UP\n";
-			}
-
-			else
-			{
-				if (level[(current.x + 1)* WIDTH + current.y] == 1)
-				{
-					level[(current.x) * WIDTH + current.y] = 2;
-					p.emplace_back(current.x, current.y + 1);
-					//std::cout << "DIR STRAIGHT\n";
-				}
-				else
-				{
-					level[(current.x) * WIDTH + current.y] = 2;
-					p.emplace_back(current.x + 1, current.y);
-					dir = DOWN;
-					//std::cout << "DIR DOWN\n";
-				}
-			}
-			break;
-		default:
-			std::cout << "\n-ERROR-\n";
-		}
-		current = p.back();
-		//jesli to czytasz, to pamietaj: jesli ktos zaproponuje zabawe na takich tablicach, pierdolnij mu w leb
-	} while (++i < max &&p.back() != p[0]);
-
-	for (auto& path : p)
-	{
-		std::swap(path.x, path.y);
 	}
 }
