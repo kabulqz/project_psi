@@ -65,6 +65,72 @@ void MapGeneration::fillGaps(std::vector<std::vector<int>>& level2D)
 	}
 }
 
+void MapGeneration::randomFlipAndRotateMap(std::vector<std::vector<int>>& level2D, std::mt19937& generator)
+{
+	// Losowanie, czy wykonujemy flip horyzontalny, wertykalny, czy obie operacje
+	std::uniform_int_distribution<int> flipDist(0, 3); // 0 - brak flipu, 1 - flip horyzontalny, 2 - flip wertykalny, 3 - oba flipy
+	int flipOption = flipDist(generator);
+
+	// Flip horyzontalny
+	if (flipOption == 1 || flipOption == 3)
+	{
+		for (int x = 0; x < WIDTH; ++x)
+		{
+			for (int y = 0; y < HEIGHT / 2; ++y)
+			{
+				std::swap(level2D[x][y], level2D[x][HEIGHT - y - 1]);
+			}
+		}
+	}
+
+	// Flip wertykalny
+	if (flipOption == 2 || flipOption == 3)
+	{
+		for (int x = 0; x < WIDTH / 2; ++x)
+		{
+			for (int y = 0; y < HEIGHT; ++y)
+			{
+				std::swap(level2D[x][y], level2D[WIDTH - x - 1][y]);
+			}
+		}
+	}
+
+	// Losowy obrót o 90, 180 lub 270 stopni
+	std::uniform_int_distribution<int> rotationDist(0, 3); // 0 - 0°, 1 - 90°, 2 - 180°, 3 - 270°
+	int degrees = rotationDist(generator);
+
+	// Zmieniamy mapê na obrócon¹ o 90, 180 lub 270 stopni
+	std::vector<std::vector<int>> tempMap = level2D;
+
+	switch (degrees)
+	{
+	case 1: // 90°
+		for (int x = 0; x < WIDTH; ++x)
+		{
+			for (int y = 0; y < HEIGHT; ++y)
+			{
+				level2D[y][WIDTH - x - 1] = tempMap[x][y];
+			}
+		} break;
+	case  2: // 180°
+		for (int x = 0; x < WIDTH; ++x)
+		{
+			for (int y = 0; y < HEIGHT; ++y)
+			{
+				level2D[WIDTH - x - 1][HEIGHT - y - 1] = tempMap[x][y];
+			}
+		} break;
+	case 3: // 270°
+		for (int x = 0; x < WIDTH; ++x)
+		{
+			for (int y = 0; y < HEIGHT; ++y)
+			{
+				level2D[HEIGHT - y - 1][x] = tempMap[x][y];
+			}
+		} break;
+	}
+}
+
 void MapGeneration::pathHelper(std::vector<std::vector<int>>& level2D)
 {
 	for (int x = 0; x < WIDTH; ++x)
@@ -184,13 +250,14 @@ void MapGeneration::generatePath(std::vector<std::vector<int>>& level2D, std::ve
 
 }
 
-void MapGeneration::generate(uint_least32_t seed, int* level, std::vector<sf::Vector2i>& p)
+void MapGeneration::generate(uint_least32_t seed, int* level, std::vector<sf::Vector2i>& path)
 {
 	// Tworzymy mapê 2D, która bêdzie u¿ywana do generowania
 	std::vector<std::vector<int>> level2D(WIDTH, std::vector<int>(HEIGHT, 0));
 
 	// Resetowanie poziomu
 	resetLevel(level2D);
+	path.clear();
 
 	// Inicjalizacja generatora losowego
 	std::mt19937 generator(seed);
@@ -201,7 +268,6 @@ void MapGeneration::generate(uint_least32_t seed, int* level, std::vector<sf::Ve
 	//Number of iterated rectangles
 	std::uniform_int_distribution<uint_least32_t> numberOfRectDist(4, 7);
 	int numberOfRect = numberOfRectDist(generator);
-
 
 	// Tworzenie pocz¹tkowego prostok¹ta
 	int x = startpoint(generator);
@@ -229,8 +295,11 @@ void MapGeneration::generate(uint_least32_t seed, int* level, std::vector<sf::Ve
 	// Wype³nianie luk miêdzy prostok¹tami
 	fillGaps(level2D);
 
+	// Losowe obracanie i odbijanie mapy
+	randomFlipAndRotateMap(level2D, generator);
+
 	// Generowanie œcie¿ki
-	generatePath(level2D, p, generator);
+	generatePath(level2D, path, generator);
 
 	// Na koniec zapisujemy z powrotem mapê 2D do 1D tablicy
 	for (int i = 0; i < WIDTH; ++i)

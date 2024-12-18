@@ -34,6 +34,7 @@ public:
 
 	BoardGamePlayer();
 	BoardGamePlayer(const BoardGamePlayer& player);
+	BoardGamePlayer& operator= (const BoardGamePlayer& player);
 
 	void addExperience(int value);
 

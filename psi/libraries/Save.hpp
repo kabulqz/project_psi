@@ -63,7 +63,7 @@ public:
 	uint_least32_t getSeed() const { return seed; }
 	void setSeed(uint_least32_t seed) { this->seed = seed; }
 	int* getLevel() const { return level; }
-	std::vector<sf::Vector2i> getPath() const { return path; }
+	std::vector<sf::Vector2i>& getPath() { return path; }
 	std::shared_ptr<AbilityTree> getAbilityTree() { return abilityTree; }
 	void setAbilityTree(const std::shared_ptr<AbilityTree>& abilityTree) { this->abilityTree = abilityTree; }
 

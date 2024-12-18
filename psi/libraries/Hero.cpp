@@ -53,6 +53,23 @@ BoardGamePlayer::BoardGamePlayer(const BoardGamePlayer& player) : BoardGameMovab
 	}
 }
 
+BoardGamePlayer& BoardGamePlayer::operator=(const BoardGamePlayer& player)
+{
+	if (this == &player) return *this;
+	level = player.level;
+	abilityPoints = player.abilityPoints;
+	experience = player.experience;
+	money = player.money;
+	if (player.m_playerTexture.getSize().x > 0 && player.m_playerTexture.getSize().y > 0)
+	{
+		m_playerTexture = player.m_playerTexture;
+		m_playerSprite.setTexture(m_playerTexture);
+		m_playerSprite.setTextureRect(player.m_playerSprite.getTextureRect());
+		m_playerSprite.setPosition(player.m_playerSprite.getPosition());
+	}
+	return *this;
+}
+
 void BoardGamePlayer::addExperience(const int value)
 {
 	experience += value;

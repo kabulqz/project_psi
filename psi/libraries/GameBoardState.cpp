@@ -4,6 +4,7 @@
 //Width and height of a map
 GameBoardState::GameBoardState(Game* game) : game(game)
 {
+	srand(static_cast<unsigned>(time(nullptr)));
 	save = game->getSave();
 	//std::cout << std::dec << "Level seed: " << save.getSeed() << "\n";
 
@@ -61,8 +62,8 @@ void GameBoardState::handleInput(sf::RenderWindow& window, EventManager& eventMa
 		{
 			soundManager.playSound("DiceThrow");
 
-			srand(static_cast<unsigned>(time(nullptr)));
 			int move = rand() % 6 + 1; // Random move between 1 and 6
+			std::cout << "Player rolled a " << color("ff7aa2", std::to_string(move)) << "\n";
 
 			auto temp = save.getPath();
 			int i = 0;
@@ -81,6 +82,7 @@ void GameBoardState::handleInput(sf::RenderWindow& window, EventManager& eventMa
 
 			save.setPlayer(player);
 			save.write();
+			game->setSave(save);
 		}
 	}
 }

@@ -1,9 +1,4 @@
-﻿  MapGeneration.cpp
-C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\psi\libraries\MapGeneration.cpp(143,75): warning C4267: "argument": konwersja z "size_t" do "_Ty", możliwa utrata danych
-C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\psi\libraries\MapGeneration.cpp(143,75): warning C4267:         with
-C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\psi\libraries\MapGeneration.cpp(143,75): warning C4267:         [
-C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\psi\libraries\MapGeneration.cpp(143,75): warning C4267:             _Ty=int
-C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\psi\libraries\MapGeneration.cpp(143,75): warning C4267:         ]
+﻿  GameBoardState.cpp
   psi.vcxproj -> C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\x64\Debug\psi.exe
   C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\psi\src\OpenSSL\libcrypto-3-x64.dll
   1 File(s) copied
