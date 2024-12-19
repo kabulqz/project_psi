@@ -30,6 +30,14 @@
 constexpr int WIDTH = 60;
 constexpr int HEIGHT = 60;
 
+const std::string PATH_TO_BORDERS_FOLDER = "src/img/borders/";
+const std::string PATH_TO_ABILITIES_FOLDER = "src/img/";
+
+const std::string font = "src/img/antiquity-print.ttf";
+//const std::string font = "src/img/easvhs.ttf";
+constexpr int fontSize = 21;
+//constexpr int fontSize = 24;
+
 inline std::string color(const std::string& hex_color, const std::string& data)
 {
 	int r = std::stoi(hex_color.substr(0, 2), nullptr, 16);

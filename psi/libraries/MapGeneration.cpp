@@ -5,7 +5,7 @@
 
 //Starting point for first rectangle
 constexpr int startX = 3;
-constexpr int startY = 5;
+constexpr int startY = 3;
 
 //Min and max width/height of rectangles
 constexpr int rectMin = 5;
@@ -206,7 +206,7 @@ void MapGeneration::generatePath(std::vector<std::vector<int>>& level2D, std::ve
 	// Jeœli mamy dostêpne pozycje, losujemy jedn¹ z nich
 	if (!pathPositions.empty())
 	{
-		std::uniform_int_distribution<int> distribution(0, pathPositions.size() - 1);
+		std::uniform_int_distribution<int> distribution(0, static_cast<int>(pathPositions.size() - 1));
 		int randomIndex = distribution(generator);
 
 		// Dodajemy losowy punkt do œcie¿ki

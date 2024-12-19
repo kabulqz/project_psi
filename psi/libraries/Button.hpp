@@ -6,6 +6,7 @@ class Button
 {
 private:
 	sf::Texture buttonTexture;
+	sf::RectangleShape buttonBackground;
 	//size values
 	int width;
 	int height;
@@ -54,6 +55,8 @@ public:
 	void updateAppearance(const std::string& hexColor);
 	void updateAppearanceWithBaseColor(const std::string& baseHexColor, const std::string& targetHexColor);
 	void display(sf::RenderTarget& window);
+	void setBackgroundColor(const sf::Color& color);
+	void setBackgroundColor(const std::string& hexColor);
 	void setColor(const sf::Color& color);
 	void setColor(const std::string& hexColor);
 	void handleHoverState(sf::Vector2i mousePosition);

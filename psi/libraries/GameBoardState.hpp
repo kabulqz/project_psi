@@ -12,6 +12,11 @@ private:
 	BoardGamePlayer* player;
 	TileMap map;
 
+	sf::Vector2i mousePos;
+	Button currentLevel;
+	Button requiredXP;
+	Button goToAbilityTree;
+
 	sf::Shader vhsShader;
 	sf::Clock shaderClock;
 public:

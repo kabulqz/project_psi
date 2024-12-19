@@ -37,6 +37,7 @@ public:
 	BoardGamePlayer& operator= (const BoardGamePlayer& player);
 
 	void addExperience(int value);
+	bool hasAvailableAbilityPoints() const;
 
 	// Getters and setters
 	int getLevel() const { return level; }

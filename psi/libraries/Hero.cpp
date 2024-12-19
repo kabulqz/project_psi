@@ -83,6 +83,11 @@ void BoardGamePlayer::addExperience(const int value)
 	}
 }
 
+bool BoardGamePlayer::hasAvailableAbilityPoints() const
+{
+	return abilityPoints > 0;
+}
+
 bool BoardGamePlayer::load(const std::string& tileset)
 {
 	// load the tileset texture

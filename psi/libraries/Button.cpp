@@ -10,6 +10,11 @@ Button::Button(const int& pos_x, const int& pos_y, int buttonWidth, int buttonHe
 		return;
 	}
 
+	//setting up the background
+	buttonBackground.setSize(sf::Vector2f(static_cast<float>(width), static_cast<float>(height)));
+	buttonBackground.setPosition(static_cast<float>(pos_x), static_cast<float>(pos_y));
+	buttonBackground.setFillColor(sf::Color::Transparent);
+
 	//setting up the sprites from .png file
 	setUpCornerSprites(pos_x, pos_y);
 	setUpBorderSprites(pos_x, pos_y);
@@ -245,6 +250,9 @@ void Button::display(sf::RenderTarget& window)
 			sf::Color disabledColor(52, 58, 64);
 			setColor(disabledColor);
 		}
+		//Draw background color
+		window.draw(buttonBackground);
+
 		//Draw corner sprites
 		window.draw(topLeft);
 		window.draw(topRight);
@@ -260,6 +268,20 @@ void Button::display(sf::RenderTarget& window)
 		//Draw the button text
 		window.draw(buttonText);
 	}
+}
+
+void Button::setBackgroundColor(const sf::Color& color)
+{
+	buttonBackground.setFillColor(color);
+}
+
+void Button::setBackgroundColor(const std::string& hexColor)
+{
+	int R = std::stoi(hexColor.substr(0, 2), nullptr, 16);
+	int G = std::stoi(hexColor.substr(2, 2), nullptr, 16);
+	int B = std::stoi(hexColor.substr(4, 2), nullptr, 16);
+
+	buttonBackground.setFillColor(sf::Color(static_cast<sf::Uint8>(R), static_cast<sf::Uint8>(G), static_cast<sf::Uint8>(B)));
 }
 
 //Method to apply a given color to all button sprites

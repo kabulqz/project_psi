@@ -17,6 +17,8 @@ private:
 	sf::Texture abilityTreeTexture;
 	sf::Sprite abilityTreeSprite;
 
+	Button backButton;
+
 	sf::Shader vhsShader;
 	sf::Clock shaderClock;
 

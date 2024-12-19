@@ -4,18 +4,20 @@
 #include "AbilityTree.hpp"
 #include "Game.hpp"
 
-const std::string PATH_TO_BORDERS_FOLDER = "src/img/borders/";
-const std::string PATH_TO_ABILITIES_FOLDER = "src/img/";
 const std::string border = "panel-border-013.png";
 const std::string abilities = "abilities.png";
 const std::string borderFile = PATH_TO_BORDERS_FOLDER + border;
 const std::string abilitiesFile = PATH_TO_ABILITIES_FOLDER + abilities;
 
-AbilityTreeState::AbilityTreeState(Game* game) : game(game)
+AbilityTreeState::AbilityTreeState(Game* game) : game(game),
+backButton(10, 10, 90, 60, PATH_TO_BORDERS_FOLDER + "panel-border-027.png")
 {
 	save = game->getSave();
 
 	game->changeViewZoom(1.f);
+
+	backButton.setText("Back", font, fontSize);
+	backButton.setBackgroundColor("000000");
 
 	if (!abilityTreeTexture.loadFromFile("src/img/yggdrasil.png")) return;
 
@@ -63,14 +65,15 @@ void AbilityTreeState::handleInput(sf::RenderWindow& window, EventManager& event
 	while (eventManager.hasEvents())
 	{
 		sf::Event event = eventManager.popEvent();
-		// Handle other events, such as changing the state or closing the window
-		// Example: if (event.type == sf::Event::MouseButtonPressed) { ... }
-		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+		if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
 		{
-			save->write();
-			game->setSave(save);
-			game->changeState(std::make_unique<TransitionState>(game, ABILITY_TREE, GAME_BOARD));
-			soundManager.playSound("Transition");
+			if (backButton.isHovered(mousePos) && backButton.isClickable())
+			{
+				save->write();
+				game->setSave(save);
+				game->changeState(std::make_unique<TransitionState>(game, ABILITY_TREE, GAME_BOARD));
+				soundManager.playSound("Transition");
+			}
 		}
 	}
 }
@@ -78,6 +81,9 @@ void AbilityTreeState::handleInput(sf::RenderWindow& window, EventManager& event
 //updater for elements corresponding to specific screen
 void AbilityTreeState::update()
 {
+	backButton.handleHoverState(mousePos);
+	backButton.updateAppearance("EF233C");
+
 	float elapsedTime = shaderClock.getElapsedTime().asSeconds();
 	vhsShader.setUniform("time", elapsedTime);
 	vhsShader.setUniform("resolution", sf::Vector2f(1280, 720));
@@ -165,6 +171,8 @@ void AbilityTreeState::render(sf::RenderWindow& window)
 		window.setMouseCursor(defaultCursor);
 	}
 
+	backButton.display(renderTexture);
+
 	// Display the render texture onto the window
 	renderTexture.display();
 	sf::Sprite screenSprite(renderTexture.getTexture());
@@ -198,6 +206,8 @@ void AbilityTreeState::renderToTexture(sf::RenderTexture& texture)
 		bool isHoveredOverAnyAbility = false;
 		renderAbilities(texture, dummyWindow, abilityTree->getRoot(), isHoveredOverAnyAbility, currentCursorState, abilityTree->getShader());
 	}
+
+	backButton.display(texture);
 
 	// Finalize the render texture
 	texture.display();

@@ -79,8 +79,6 @@ int MainMenuState::getMostRecentSaveSlot()
 	return mostRecentSlot;
 }
 
-const std::string PATH_TO_BORDERS_FOLDER = "src/img/borders/";
-
 MainMenuState::MainMenuState(Game* game) : game(game),
 continueButton(20, 20, 250, 100, PATH_TO_BORDERS_FOLDER + "panel-border-027.png"),
 newGameButton(20, 140, 250, 100, PATH_TO_BORDERS_FOLDER + "panel-border-019.png"),
@@ -97,17 +95,6 @@ sav6Button(895, 225, 330, 130, PATH_TO_BORDERS_FOLDER + "panel-border-019.png"),
 sav7Button(895, 365, 330, 130, PATH_TO_BORDERS_FOLDER + "panel-border-019.png"),
 sav8Button(895, 505, 330, 130, PATH_TO_BORDERS_FOLDER + "panel-border-019.png")
 {
-	// font that we had before
-	const std::string font = "src/img/antiquity-print.ttf";
-	constexpr int fontSize = 21;
-
-	// probably better looking font or at least easier to read
-	//const std::string font = "src/img/easvhs.ttf";
-	//constexpr int fontSize = 24;
-
-	// This is the problem to be solved - when to use the new font and when to use the old one
-	// Settings is probably the best place to store the fonts and something like "readFriendly" bool
-
 	bool hasSaves = this->hasSaves();
 	this->options = Options::LOGO;
 	continueButton.setText("Continue", font, fontSize);

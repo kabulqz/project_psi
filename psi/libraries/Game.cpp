@@ -21,9 +21,6 @@ Game::Game() : soundManager(settings.general_audio, settings.ui_audio, settings.
 	const char* version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
 	std::cout << "OpenGL version: " << version << "\n";
 
-	settings.initialize();
-	soundManager.loadSounds();
-
 	//SFML window icon
 	sf::Image icon;
 	if (!icon.loadFromFile("src/img/icon.png")) return;
@@ -35,6 +32,9 @@ Game::Game() : soundManager(settings.general_audio, settings.ui_audio, settings.
 	sf::Cursor cursor;
 	if (!cursor.loadFromPixels(cursorImage.getPixelsPtr(), sf::Vector2u(32, 32), sf::Vector2u(0, 0))) return;
 	window.setMouseCursor(cursor);
+
+	settings.initialize();
+	soundManager.loadSounds();
 
 	soundManager.playSound("Intro");
 	soundManager.playSound("Ambience_crt");

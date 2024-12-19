@@ -29,7 +29,7 @@ public:
 	//main function
 	int run();
 
-	Save* getSave() { return this->save; }
+	Save* getSave() const { return this->save; }
 	void setSave(Save* save)
 	{
 		this->save = save;
@@ -47,5 +47,4 @@ public:
 
 	State* getCurrentState() const { return currentState.get(); }
 	sf::RenderWindow& getWindow() { return window; }
-	SoundManager& getSoundManager() { return soundManager; }
 };
