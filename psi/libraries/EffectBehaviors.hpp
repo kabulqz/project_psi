@@ -5,138 +5,106 @@
 
 class IEffectBehavior
 {
+protected:
+	// must include all the possible triggers and durations for the effect
+	std::optional<EffectTrigger> trigger;
+	std::optional<EffectDuration> duration;
+
+	//general value
+	std::optional<int> value;
+
+	//statType for buff/debuff
+	std::optional<StatType> statType;
+
+	// to track number of targets
+	std::optional<int> numberOfTargets;
+
+	//for duration: TURN_BASED
+	std::optional<int> numberOfTurns;
+
+	// If trigger is ON_GAME_EVENT
+	std::optional<GameEvent> triggerEvent;
+	// If duratiion is EVENT_BASED
+	std::optional<GameEvent> endEvent;
+
+	// If category of the effect is STATUS_APPLY, STATUS_REMOVE
+	std::optional<Status> status;
+	// If category of the effect is KEYWORD_ADD
+	std::optional<Keyword> keyword;
 public:
-	virtual void Execute(Target& target) = 0;
+	// Tracking the owner of the effect
+	Card* effectTarget = nullptr;
+
+	IEffectBehavior() = default;
 	virtual ~IEffectBehavior() = default;
+
+	virtual void execute(Target& target) = 0;
+	virtual void decrementTurn() = 0;
+	virtual void checkForEndEvent(GameEvent event) = 0;
 };
 
-// Cards
 class BuffBehavior : public IEffectBehavior
 {
-	StatType statType;
-	int value;
+	std::optional<uint_least32_t> securityKey;
 public:
-	BuffBehavior(StatType statType, int value) : statType(statType), value(value) {}
-	void Execute(Target& target) override;
+	void execute(Target& target) override;
+	void decrementTurn() override;
+	void checkForEndEvent(GameEvent event) override;
+	void removeBuff() const;
+
+	// BuffBehavior for Effect class
+	BuffBehavior(
+		EffectTrigger trigger,
+		EffectDuration duration,
+		int value,
+		StatType statType,
+		int numberOfTargets,
+		std::optional<int> numberOfTurns = std::nullopt,
+		std::optional<GameEvent> triggerEvent = std::nullopt,
+		std::optional<GameEvent> endEvent = std::nullopt
+	);
+
+	// BuffBehavior for Card class
+	BuffBehavior(
+		Card* targetOfEffect,
+		uint_least32_t securityKey,
+		EffectDuration duration,
+		int value,
+		StatType statType,
+		std::optional<int> numberOfTurns = std::nullopt,
+		std::optional<GameEvent> endEvent = std::nullopt
+	);
 };
 
-// Cards
 class DebuffBehavior : public IEffectBehavior
 {
-	StatType statType;
-	int value;
+	std::optional<uint_least32_t> securityKey;
 public:
-	DebuffBehavior(StatType statType, int value) : statType(statType), value(value) {}
-	void Execute(Target& target) override;
-};
+	void execute(Target& target) override;
+	void decrementTurn() override;
+	void checkForEndEvent(GameEvent event) override;
+	void removeDebuff();
 
-// Unit on the battlefield and Hero
-class DamageBehavior : public IEffectBehavior 
-{
-	int damageAmount;
-public:
-	DamageBehavior(int value) : damageAmount(value) {}
-	void Execute(Target& target) override;
-};
+	// DebuffBehavior for Effect class
+	DebuffBehavior(
+		EffectTrigger trigger,
+		EffectDuration duration,
+		int value,
+		StatType statType,
+		int numberOfTargets,
+		std::optional<int> numberOfTurns = std::nullopt,
+		std::optional<GameEvent> triggerEvent = std::nullopt,
+		std::optional<GameEvent> endEvent = std::nullopt
+	);
 
-// Unit on the battlefield and Hero
-class HealBehavior : public IEffectBehavior
-{
-	int healAmount;
-public:
-	HealBehavior(int value) : healAmount(value) {}
-	void Execute(Target& target) override;
-};
-
-// Unit on the battlefield
-class StatusApplyBehavior : public IEffectBehavior
-{
-public:
-	StatusApplyBehavior() {}
-	void Execute(Target& target) override;
-};
-
-// Unit on the battlefield
-class StatusRemoveBehavior : public IEffectBehavior
-{
-public:
-	StatusRemoveBehavior() {}
-	void Execute(Target& target) override;
-};
-
-// Unit on the battlefield
-class KeywordAddBehavior : public IEffectBehavior
-{
-public:
-	KeywordAddBehavior() {}
-	void Execute(Target& target) override;
-};
-
-class SummonBehavior : public IEffectBehavior
-{
-public:
-	SummonBehavior() {}
-	void Execute(Target& target) override;
-};
-
-class CastBehavior : public IEffectBehavior
-{
-public:
-	CastBehavior() {}
-	void Execute(Target& target) override;
-};
-
-class EquipBehavior : public IEffectBehavior
-{
-public:
-	EquipBehavior() {}
-	void Execute(Target& target) override;
-};
-
-// Cards from deck
-class DrawBehavior : public IEffectBehavior
-{
-public:
-	DrawBehavior() {}
-	void Execute(Target& target) override;
-};
-
-// Cards from hand
-class DiscardBehavior : public IEffectBehavior
-{
-public:
-	DiscardBehavior() {}
-	void Execute(Target& target) override;
-};
-
-// Hero
-class EnergyModifyBehavior : public IEffectBehavior
-{
-public:
-	EnergyModifyBehavior() {}
-	void Execute(Target& target) override;
-};
-
-// Unit on the battlefield
-class SilenceBehavior : public IEffectBehavior
-{
-public:
-	SilenceBehavior() {}
-	void Execute(Target& target) override;
-};
-
-// Battlefield and hand cards
-class ShuffleBehavior : public IEffectBehavior
-{
-public:
-	ShuffleBehavior() {}
-	void Execute(Target& target) override;
-};
-
-// Cards from hand or deck
-class StealBehavior : public IEffectBehavior
-{
-public:
-	StealBehavior() {}
-	void Execute(Target& target) override;
+	// DebuffBehavior for Card class
+	DebuffBehavior(
+		Card* targetOfEffect,
+		uint_least32_t securityKey,
+		EffectDuration duration,
+		int value,
+		StatType statType,
+		std::optional<int> numberOfTurns = std::nullopt,
+		std::optional<GameEvent> endEvent = std::nullopt
+	);
 };

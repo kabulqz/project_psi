@@ -47,7 +47,7 @@ BoardGamePlayer::BoardGamePlayer(const BoardGamePlayer& player) : BoardGameMovab
 	experience = player.experience;
 	money = player.money;
 
-	if (player.m_playerTexture.getSize().x > 0 && player.m_playerTexture.getSize().y > 0) 
+	if (player.m_playerTexture.getSize().x > 0 && player.m_playerTexture.getSize().y > 0)
 	{
 		m_playerTexture = player.m_playerTexture;
 		m_playerSprite.setTexture(m_playerTexture);
@@ -220,11 +220,10 @@ void Hero::drawCard()
 	Card* card = deck.top();
 	deck.pop();
 
-	if (hand.size()<10)
+	if (hand.size() < 10)
 	{
-
 		hand.push_back(card);
-		card->setZone(TargetZone::HAND);
+		//card->setZone(TargetZone::HAND);
 	}
 }
 

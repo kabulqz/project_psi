@@ -14,8 +14,8 @@ private:
 
 	sf::Vector2i mousePos;
 	Button currentLevel;
+	Button avaibleUpgrade;
 	Button requiredXP;
-	Button goToAbilityTree;
 
 	sf::Shader vhsShader;
 	sf::Clock shaderClock;

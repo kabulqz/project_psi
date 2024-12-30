@@ -3,9 +3,9 @@
 
 //Width and height of a map
 GameBoardState::GameBoardState(Game* game) : game(game),
-currentLevel(605 ,10, 70, 60, PATH_TO_BORDERS_FOLDER + "panel-border-031.png"),
-requiredXP(540, 80, 200, 40, PATH_TO_BORDERS_FOLDER + "panel-border-030.png"),
-goToAbilityTree(10, 10, 160, 60, PATH_TO_BORDERS_FOLDER + "panel-border-027.png")
+currentLevel(10 ,10, 70, 60, PATH_TO_BORDERS_FOLDER + "panel-border-031.png"),
+avaibleUpgrade(85, 20, 40, 40, PATH_TO_BORDERS_FOLDER + "panel-border-030.png"),
+requiredXP(10, 75, 200, 40, PATH_TO_BORDERS_FOLDER + "panel-border-030.png")
 {
 	srand(static_cast<unsigned>(time(nullptr)));
 	save = game->getSave();
@@ -19,17 +19,15 @@ goToAbilityTree(10, 10, 160, 60, PATH_TO_BORDERS_FOLDER + "panel-border-027.png"
 
 	currentLevel.setText(std::to_string(player->getLevel()), font, fontSize + 4);
 	currentLevel.setBackgroundColor("000000");
-	if (player->hasAvailableAbilityPoints())
-	{
-		currentLevel.setColor("F5B700");
-	}
 
-	requiredXP.setText(std::to_string(player->getExperience()) + " / " + std::to_string(player->getTotalXPRequiredForNextLevel()), font, fontSize - 2);
+	avaibleUpgrade.setVisible(player->hasAvailableAbilityPoints());
+	avaibleUpgrade.setText("+", font, fontSize + 10);
+	avaibleUpgrade.setBackgroundColor("000000");
+	avaibleUpgrade.setColor("F5B700");
+
+	requiredXP.setText(std::to_string(player->getExperience()) + " / " + std::to_string(player->getTotalXPRequiredForNextLevel()), font, fontSize - 1);
 	requiredXP.setBackgroundColor("000000");
 	requiredXP.setVisible(false);
-
-	goToAbilityTree.setText("Skill Tree", font, fontSize - 2);
-	goToAbilityTree.setBackgroundColor("000000");
 	
 	game->changeViewZoom(0.4f);
 
@@ -71,7 +69,7 @@ void GameBoardState::handleInput(sf::RenderWindow& window, EventManager& eventMa
 		sf::Event event = eventManager.popEvent();
 		if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
 		{
-			if (goToAbilityTree.isHovered(mousePos) && goToAbilityTree.isClickable())
+			if (currentLevel.isHovered(mousePos) && currentLevel.isClickable())
 			{
 				game->changeState(std::make_unique<TransitionState>(game, GAME_BOARD, ABILITY_TREE));
 				soundManager.playSound("Transition");
@@ -110,17 +108,8 @@ void GameBoardState::handleInput(sf::RenderWindow& window, EventManager& eventMa
 //updater for elements corresponding to specific screen
 void GameBoardState::update()
 {
-	goToAbilityTree.handleHoverState(mousePos);
-	goToAbilityTree.updateAppearance("C47AC0");
-
-	if (currentLevel.isHovered(mousePos))
-	{
-		requiredXP.setVisible(true);
-	}
-	else
-	{
-		requiredXP.setVisible(false);
-	}
+	requiredXP.setVisible(currentLevel.isHovered(mousePos));
+	avaibleUpgrade.setVisible(player->hasAvailableAbilityPoints());
 
 	auto sprite = player->getSprite();
 	sprite.setPosition(player->getMapPosition().x * 16, player->getMapPosition().y * 16);
@@ -171,8 +160,8 @@ void GameBoardState::render(sf::RenderWindow& window)
 	renderTexture.setView(UI);
 
 	currentLevel.display(renderTexture);
+	avaibleUpgrade.display(renderTexture);
 	requiredXP.display(renderTexture);
-	goToAbilityTree.display(renderTexture);
 
 	renderTexture.display();
 
@@ -208,7 +197,7 @@ void GameBoardState::renderToTexture(sf::RenderTexture& texture)
 	texture.setView(UI);
 
 	currentLevel.display(texture);
-	goToAbilityTree.display(texture);
+	avaibleUpgrade.display(texture);
 
 	// Finalize rendering
 	texture.display();

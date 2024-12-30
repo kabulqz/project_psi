@@ -6,6 +6,8 @@
 
 class Card : public Target
 {
+	CardType cardType;
+
 	//Visual elements of the card
 	std::string back;
 	std::string background;
@@ -13,64 +15,95 @@ class Card : public Target
 	std::string frame;
 
 	// Common attributes of the card
-	TargetZone zone;									// Where the card is located
-	int energyCost = 0;									// Mana cost of the card
+	int baseEnergyCost;								// Mana cost of the card
+	int currentEnergyCost;							// Current mana cost of the card
 
-	std::vector<std::shared_ptr<Effect>> effects;		// List of effects
-	bool isOnBoard = false;								// Flag	to track if the card is on the board
-	Hero& owner;										// Owner of the card
+	bool isOnBoard = false;							// Flag	to track if the card is on the board
+
+	TargetZone zone;								// Where the card is located
+	Hero* owner = nullptr;							// Owner of the card
+	Hero* enemy = nullptr;							// Enemy of the card
+
+	std::vector<std::unique_ptr<Effect>> effects;	// List of effects
+
+	std::vector<std::unique_ptr<IEffectBehavior>> activeEffects;	// List of active effects
 public:
-	Card() = default;
-	~Card() = default;
-	void triggerEffects(const GameEvent& gameEvent, const EffectTrigger& effectTrigger) const;
-	bool isEventTriggered(const GameEvent& gameEvent) const;
-	TargetZone getZone() const;
-	void setZone(const TargetZone& zone);
-	bool getIsOnBoard() const;
-	void setIsOnBoard(bool value);
-	Hero* getOwner() const;
-	void reduceEnergyCost(int value);
-	void increaseEnergyCost(int value);
+	std::vector<std::unique_ptr<EffectValue>> extraEnergyCost = {}; // Extra mana cost from effects
+
+	Card(const uint_least32_t& cardSeed);
+	~Card() override = default;
+
+	TargetZone getZone() const { return zone; }
+	void setZone(const TargetZone& zone) {this->zone = zone;}
+
+	bool getIsOnBoard() const { return isOnBoard; }
+	void setIsOnBoard(bool value) { isOnBoard = value; }
+
+	void setOwnerAndEnemy(Hero* owner, Hero* enemy) { this->owner = owner; this->enemy = enemy; }
+	Hero* getOwner() const { return owner; }
+	Hero* getEnemy() const { return enemy; }
+
+	void reduceEnergyCost(int value, uint_least32_t key);
+	void increaseEnergyCost(int value, uint_least32_t key);
+
+	void applyEffect(std::unique_ptr<IEffectBehavior> effectBehavior);
+	void removeEffect(IEffectBehavior* effectBehavior);
 };
 
 class UnitCard : public Card // If 0 health, card is destroyed
 {
 	int baseHealth;
 	int currentHealth;
-	int extraHealth = 0;
+
 	int baseAttack;
 	int currentAttack;
-	int extraAttack = 0;
 
 	std::unordered_set<Keyword> keywords;				// List of keywords
 	std::map<Status, int> statuses;						// List of statuses
 public:
-	void restoreHealth(int value);
-	void increaseHealth(int value);
-	void dealDamage(int value);
-	void decreaseHealth(int value);
-	void increaseAttack(int value);
-	void decreaseAttack(int value);
+	std::vector<std::unique_ptr<EffectValue>> extraHealth = {}; // Extra health from effects
+	std::vector<std::unique_ptr<EffectValue>> extraAttack = {}; // Extra attack from effects
 
+	void increaseHealth(int value, uint_least32_t key);
+	void reduceHealth(int value, uint_least32_t key);
+	void increaseAttack(int value, uint_least32_t key);
+	void reduceAttack(int value, uint_least32_t key);
+
+	void destroy();
 };
 
-class ItemCard : public Card 
+class ItemCard : public Card
 {
 	int baseDamage;
 	int currentDamage;
-	int extraDamage = 0;
+
 	int baseDefense;
 	int currentDefense;
-	int extraDefense = 0;
+
+	int baseDurability;
+	int currentDurability;
 public:
-	void increaseDamage(int value);
-	void decreaseDamage(int value);
-	void increaseDefense(int value);
-	void decreaseDefense(int value);
+	std::vector<std::unique_ptr<EffectValue>> extraDamage = {}; // Extra damage from effects
+	std::vector<std::unique_ptr<EffectValue>> extraDefense = {}; // Extra defense from effects
+	std::vector<std::unique_ptr<EffectValue>> extraDurability = {}; // Extra durability from effects
+
+	void increaseDamage(int value, uint_least32_t key);
+	void reduceDamage(int value, uint_least32_t key);
+	void increaseDefense(int value, uint_least32_t key);
+	void reduceDefense(int value, uint_least32_t key);
+	void increaseDurability(int value, uint_least32_t key);
+	void reduceDurability(int value, uint_least32_t key);
+
+	void destroy();
 };
 
 class SpellCard : public Card
 {
+	int baseValue;
+	int currentValue;
 public:
+	std::vector<std::unique_ptr<EffectValue>> extraValue = {}; // Extra value from effects
 
+	void increaseValue(int value, uint_least32_t key);
+	void reduceValue(int value, uint_least32_t key);
 };

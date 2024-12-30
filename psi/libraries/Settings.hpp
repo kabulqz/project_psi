@@ -15,6 +15,7 @@
 #include <fstream>
 #include <sstream>
 #include <iomanip>
+#include <numeric>
 #include <chrono>
 #include <memory>
 #include <cctype>

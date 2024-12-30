@@ -10,11 +10,13 @@ enum class GameEvent
 { // TODO: Add more events to track
 	TURN_START,         // Start of a turn
 	TURN_END,           // End of a turn
+
 	CARD_PLAYED,        // Card has been played
 	CARD_DRAWN,         // Card has been drawn
 	CARD_DISCARDED,     // Card has been discarded
 	CARD_SHUFFLED,      // Card has been shuffled into the deck
 	CARD_STOLEN,        // Card has been stolen
+
 	UNIT_ATTACK,        // Unit attacked
 	UNIT_DAMAGED,       // Unit has been damaged
 	UNIT_HEALED,        // Unit has been healed
@@ -23,8 +25,15 @@ enum class GameEvent
 	UNIT_STATUS_APPLY,  // Unit has status applied
 	UNIT_STATUS_REMOVE, // Unit has status removed
 	UNIT_KEYWORD_ADD,   // Unit has keyword added
+
 	SPELL_CASTED,       // Spell has been cast
+
 	ITEM_EQUIPPED,      // Item has been equipped
+	ITEM_DESTROYED,     // Item has been destroyed
+
+	HERO_ATTACKED,      // Hero has been attacked
+	HERO_DAMAGED,       // Hero has been damaged
+	HERO_HEALED         // Hero has been healed
 };
 
 enum class Keyword // In alphabetical order
@@ -44,22 +53,24 @@ enum class Keyword // In alphabetical order
 	UNSTOPPABLE		// Ignores defenders, being frozen and stunned
 };
 
-enum Status // In alphabetical order
+enum class Status // In alphabetical order
 {
 	BLEEDING,       // Loses health at the start of the turn
 	BURNING,        // Loses health when attacking
 	CONFUSED,       // When attacking, target is random, even friendly
 	CURSED,         // Cannot be healed or gain buffs while active
-	DAMAGED,        //		=> Status to track damage over time, no other interactions
 	ENRAGED,        // When damaged, gains attack
 	FROZEN,         // Cannot attack
-	HEALING,        //		=> Status to track healing over time, no other interactions
 	HEXED,          // Cannot use effects from this unit
 	MARKED,         // Takes extra damage
 	POISONED,       // Loses health at the end of the turn
 	ROCK_SKINNED,   // Takes reduced damage for example maximum of 1 or 50%
-	SILENCED,       //		=> Status to track silencing, no other interactions
-	STUNNED			// Cannot add items to this unit, if unit has already items, they are removed
+	STUNNED,		// Cannot add items to this unit, if unit has already items, they are removed
+
+	// For tracking purposes, cant be applied nor removed
+	DAMAGED,
+	HEALING,
+	SILENCED
 };
 
 enum class EffectCategory
@@ -96,18 +107,9 @@ enum class EffectCategory
 	//														   must validate that the target has cards in the source zone
 };
 
-enum class StatType // Type of stat to buff/debuff
-{
-	ENERGY_COST,	// Energy cost - cards
-	DAMAGE,			// Damage points - items
-	DEFENSE,		// Defense points - items
-	HEALTH,			// Health points - units
-	ATTACK,			// Attack points - units
-};
-
 enum class EffectTrigger
 {
-	IMMEDIATE,		// Triggered immediately when the card is played
+	WHEN_PLAYED,	// Triggered immediately when the card is played
 	ON_GAME_EVENT,	// Triggered when a specific GameEvent occurs
 	ON_DRAW,		// Triggered when the card with this effect is drawn		=> check for this effect when drawing a card
 	ON_DISCARD,		// Triggered when the card with this effect is discarded	=> check for this effect when discarding a card
@@ -120,8 +122,7 @@ enum class EffectDuration
 	INSTANT, 		// Effect applies immediately and then is resolved (e.g. deal damage)
 	PERMANENT,		// Effect lasts forever (e.g. buff stats)
 	TURN_BASED,		// Effect lasts for a fixed number of turns (e.g. debuff stats)
-	EVENT_BASED,	// Effect lasts until a specific event occurs (e.g. until the unit dies)
-	OVER_TIME		// Effect applies over time (e.g. heal over time)
+	EVENT_BASED		// Effect lasts until a specific event occurs (e.g. until the unit dies)
 };
 
 enum class TargetMode
@@ -149,8 +150,36 @@ enum class TargetGroup
 	BOTH			// Targets both allies and enemies
 };
 
+enum class StatType // Type of stat to buff/debuff
+{
+	ENERGY_COST,	// Energy cost - cards
+	VALUE,			// value points - spells
+	DAMAGE,			// Damage points - items
+	DEFENSE,		// Defense points - items
+	DURABILITY,		// Durability points - items
+	HEALTH,			// Health points - units
+	ATTACK,			// Attack points - units
+};
+
+enum class CardType
+{
+	UNIT,	// Unit card
+	ITEM,	// Item card
+	SPELL	// Spell card
+};
+
+class EffectValue
+{
+public:
+	int value;
+	StatType statType;
+	uint_least32_t securityKey;
+
+	EffectValue(const int value, const uint_least32_t securityKey, const StatType statType) : value(value), statType(statType), securityKey(securityKey){}
+};
+
 class Target
 {
 public:
-	virtual ~Target() {}
+	virtual ~Target() = default;
 };

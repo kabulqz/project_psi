@@ -1,139 +1,170 @@
 #include "Card.hpp"
 
-void Card::triggerEffects(const GameEvent& gameEvent, const EffectTrigger& effectTrigger) const
+void Card::reduceEnergyCost(int value, uint_least32_t key)
 {
-	for (const auto& effect : effects)
-	{
-		if (effect->getTrigger() == effectTrigger)
+	extraEnergyCost.push_back(std::make_unique<EffectValue>(-value, key, StatType::ENERGY_COST));
+	currentEnergyCost = std::max(0, baseEnergyCost + std::accumulate(extraEnergyCost.begin(), extraEnergyCost.end(), 0, [](int sum, const std::unique_ptr<EffectValue>& effect)
 		{
-			if (effect->getTrigger() == EffectTrigger::IMMEDIATE)
-			{
-				
-			}
-			else if (effect->getTrigger() == EffectTrigger::ON_DRAW)
-			{
-				
-			}
-			else if (effect->getTrigger() == EffectTrigger::ON_GAME_EVENT)
-			{
-				if (isEventTriggered(gameEvent))
-				{
-					
-				}
-			}
-		}
-	}
+			return sum + effect->value;
+		}));
 }
 
-bool Card::isEventTriggered(const GameEvent& gameEvent) const
+void Card::increaseEnergyCost(int value, uint_least32_t key)
 {
-	for (const auto& effect : effects)
-	{
-		if (effect->getGameEventTrigger() == gameEvent)
+	extraEnergyCost.push_back(std::make_unique<EffectValue>(value, key, StatType::ENERGY_COST));
+	currentEnergyCost = std::max(0, baseEnergyCost + std::accumulate(extraEnergyCost.begin(), extraEnergyCost.end(), 0, [](int sum, const std::unique_ptr<EffectValue>& effect)
 		{
-			return true;
-		}
-	}
-	return false;
+			return sum + effect->value;
+		}));
 }
 
-TargetZone Card::getZone() const
+void Card::applyEffect(std::unique_ptr<IEffectBehavior> effectBehavior)
 {
-	return zone;
+	activeEffects.push_back(std::move(effectBehavior));
 }
 
-void Card::setZone(const TargetZone& zone)
+void Card::removeEffect(IEffectBehavior* effectBehavior)
 {
-	this->zone = zone;
-}
-
-bool Card::getIsOnBoard() const
-{
-	return isOnBoard;
-}
-
-void Card::setIsOnBoard(bool value)
-{
-	isOnBoard = value;
-}
-
-Hero* Card::getOwner() const
-{
-	return &owner;
-}
-
-void Card::reduceEnergyCost(int value)
-{
-	energyCost -= value;
-	energyCost = std::max(0, energyCost);
-}
-
-void Card::increaseEnergyCost(int value)
-{
-	energyCost += value;
-}
-
-void UnitCard::restoreHealth(int value)
-{
-	currentHealth += value;
-	currentHealth = std::min(currentHealth, baseHealth + extraHealth);
-}
-
-
-void UnitCard::increaseHealth(int value)
-{
-	extraHealth += value;
-}
-
-void UnitCard::dealDamage(int value)
-{
-	currentHealth -= value;
-	currentHealth = std::max(currentHealth, 0);
-	if (currentHealth == 0)
+	if (auto* buffBehavior = dynamic_cast<BuffBehavior*>(effectBehavior))
 	{
-		// Destroy card
+		buffBehavior->removeBuff();
 	}
-}
-
-void UnitCard::decreaseHealth(int value)
-{
-	currentHealth -= value;
-	currentHealth = std::max(currentHealth, 0);
-	if (currentHealth == 0)
+	else if (auto* debuffBehavior = dynamic_cast<DebuffBehavior*>(effectBehavior))
 	{
-		// Destroy card
+		debuffBehavior->removeDebuff();
+	}
+
+	// Remove the effect from the active effects list
+	std::erase_if(activeEffects, [effectBehavior](const std::unique_ptr<IEffectBehavior>& effect)
+		{
+			return effect.get() == effectBehavior;
+		});
+}
+
+void UnitCard::increaseHealth(int value, uint_least32_t key)
+{
+	extraHealth.push_back(std::make_unique<EffectValue>(value, key, StatType::HEALTH));
+	currentHealth = std::min(currentHealth + value, std::accumulate(extraHealth.begin(), extraHealth.end(), 0, [](int sum, const std::unique_ptr<EffectValue>& effect)
+		{
+			return sum + effect->value;
+		}));
+}
+
+void UnitCard::reduceHealth(int value, uint_least32_t key)
+{
+	extraHealth.push_back(std::make_unique<EffectValue>(-value, key, StatType::HEALTH));
+	currentHealth = std::min(currentHealth, baseHealth + std::accumulate(extraHealth.begin(), extraHealth.end(), 0, [](int sum, const std::unique_ptr<EffectValue>& effect)
+		{
+			return sum + effect->value;
+		}));
+
+	if (currentHealth <= 0)
+	{
+		destroy();
 	}
 }
 
-void UnitCard::increaseAttack(int value)
+void UnitCard::increaseAttack(int value, uint_least32_t key)
 {
-	extraAttack += value;
+	extraAttack.push_back(std::make_unique<EffectValue>(value, key, StatType::ATTACK));
+	currentAttack = std::min(currentAttack + value, std::accumulate(extraAttack.begin(), extraAttack.end(), 0, [](int sum, const std::unique_ptr<EffectValue>& effect)
+		{
+			return sum + effect->value;
+		}));
 }
 
-void UnitCard::decreaseAttack(int value)
+void UnitCard::reduceAttack(int value, uint_least32_t key)
 {
-	currentAttack -= value;
-	currentAttack = std::max(currentAttack, 0);
+	extraAttack.push_back(std::make_unique<EffectValue>(-value, key, StatType::ATTACK));
+	currentAttack = std::min(currentAttack, baseAttack + std::accumulate(extraAttack.begin(), extraAttack.end(), 0, [](int sum, const std::unique_ptr<EffectValue>& effect)
+		{
+			return sum + effect->value;
+		}));
 }
 
-void ItemCard::increaseDamage(int value)
-{
-	extraDamage += value;
+void UnitCard::destroy()
+{// Destroy the unit card
+
 }
 
-void ItemCard::decreaseDamage(int value)
+void ItemCard::increaseDamage(int value, uint_least32_t key)
 {
-	currentDamage -= value;
-	currentDamage = std::max(currentDamage, 0);
+	extraDamage.push_back(std::make_unique<EffectValue>(value, key, StatType::DAMAGE));
+	currentDamage = std::min(currentDamage + value, std::accumulate(extraDamage.begin(), extraDamage.end(), 0, [](int sum, const std::unique_ptr<EffectValue>& effect)
+		{
+			return sum + effect->value;
+		}));
 }
 
-void ItemCard::increaseDefense(int value)
+void ItemCard::reduceDamage(int value, uint_least32_t key)
 {
-	extraDefense += value;
+	extraDamage.push_back(std::make_unique<EffectValue>(-value, key, StatType::DAMAGE));
+	currentDamage = std::min(currentDamage, baseDamage + std::accumulate(extraDamage.begin(), extraDamage.end(), 0, [](int sum, const std::unique_ptr<EffectValue>& effect)
+		{
+			return sum + effect->value;
+		}));
 }
 
-void ItemCard::decreaseDefense(int value)
+void ItemCard::increaseDefense(int value, uint_least32_t key)
 {
-	currentDefense -= value;
-	currentDefense = std::max(currentDefense, 0);
+	extraDefense.push_back(std::make_unique<EffectValue>(value, key, StatType::DEFENSE));
+	currentDefense = std::min(currentDefense + value, std::accumulate(extraDefense.begin(), extraDefense.end(), 0, [](int sum, const std::unique_ptr<EffectValue>& effect)
+		{
+			return sum + effect->value;
+		}));
+}
+
+void ItemCard::reduceDefense(int value, uint_least32_t key)
+{
+	extraDefense.push_back(std::make_unique<EffectValue>(-value, key, StatType::DEFENSE));
+	currentDefense = std::min(currentDefense, baseDefense + std::accumulate(extraDefense.begin(), extraDefense.end(), 0, [](int sum, const std::unique_ptr<EffectValue>& effect)
+		{
+			return sum + effect->value;
+		}));
+}
+
+void ItemCard::increaseDurability(int value, uint_least32_t key)
+{
+	extraDurability.push_back(std::make_unique<EffectValue>(value, key, StatType::DURABILITY));
+	currentDurability = std::min(currentDurability + value, std::accumulate(extraDurability.begin(), extraDurability.end(), 0, [](int sum, const std::unique_ptr<EffectValue>& effect)
+		{
+			return sum + effect->value;
+		}));
+}
+
+void ItemCard::reduceDurability(int value, uint_least32_t key)
+{
+	extraDurability.push_back(std::make_unique<EffectValue>(-value, key, StatType::DURABILITY));
+	currentDurability = std::min(currentDurability, baseDurability + std::accumulate(extraDurability.begin(), extraDurability.end(), 0, [](int sum, const std::unique_ptr<EffectValue>& effect)
+		{
+			return sum + effect->value;
+		}));
+
+	if (currentDurability <= 0)
+	{
+		destroy();
+	}
+}
+
+void ItemCard::destroy()
+{// Destroy the item card
+
+}
+
+void SpellCard::increaseValue(int value, uint_least32_t key)
+{
+	extraValue.push_back(std::make_unique<EffectValue>(value, key, StatType::VALUE));
+	currentValue = std::min(currentValue + value, std::accumulate(extraValue.begin(), extraValue.end(), 0, [](int sum, const std::unique_ptr<EffectValue>& effect)
+		{
+			return sum + effect->value;
+		}));
+}
+
+void SpellCard::reduceValue(int value, uint_least32_t key)
+{
+	extraValue.push_back(std::make_unique<EffectValue>(-value, key, StatType::VALUE));
+	currentValue = std::min(currentValue, baseValue + std::accumulate(extraValue.begin(), extraValue.end(), 0, [](int sum, const std::unique_ptr<EffectValue>& effect)
+		{
+			return sum + effect->value;
+		}));
 }
