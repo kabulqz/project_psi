@@ -1,4 +1,7 @@
 #include "EffectBehaviors.hpp"
+
+#include <openssl/asn1.h>
+
 #include "Card.hpp"
 #include "Hero.hpp"
 
@@ -20,16 +23,12 @@ void BuffBehavior::execute(Target& target)
 	uint_least32_t securityKey = rd();
 
 	auto* card = dynamic_cast<Card*>(&target);
-	if (statType.value() == StatType::ENERGY_COST)
-	{
+	if (statType.value() == StatType::ENERGY_COST) {
 		card->reduceEnergyCost(value.value(), securityKey);
 	}
-	else
-	{
-		if (auto* unit = dynamic_cast<UnitCard*>(card))
-		{
-			switch (statType.value())
-			{
+	else {
+		if (auto* unit = dynamic_cast<UnitCard*>(card)) {
+			switch (statType.value()) {
 				case StatType::HEALTH:
 					unit->increaseHealth(value.value(), securityKey);
 					break;
@@ -38,10 +37,8 @@ void BuffBehavior::execute(Target& target)
 					break;
 			}
 		}
-		else if (auto* item = dynamic_cast<ItemCard*>(card))
-		{
-			switch (statType.value())
-			{
+		else if (auto* item = dynamic_cast<ItemCard*>(card)) {
+			switch (statType.value()) {
 			case StatType::DAMAGE:
 				item->increaseDamage(value.value(), securityKey);
 				break;
@@ -53,8 +50,7 @@ void BuffBehavior::execute(Target& target)
 				break;
 			}
 		}
-		else if (auto* spell = dynamic_cast<SpellCard*>(card))
-		{
+		else if (auto* spell = dynamic_cast<SpellCard*>(card)) {
 			spell->increaseValue(value.value(), securityKey);
 		}
 	}
@@ -63,119 +59,95 @@ void BuffBehavior::execute(Target& target)
 
 void BuffBehavior::decrementTurn()
 {
-	if (securityKey.has_value() && numberOfTurns.has_value() && numberOfTurns.value() > 0)
-	{
+	if (securityKey.has_value() && numberOfTurns.has_value() && numberOfTurns.value() > 0) {
 		numberOfTurns.value() = numberOfTurns.value() - 1;
 
-		if (numberOfTurns.value() == 0)
-		{
-			effectTarget->removeEffect(this);
+		if (numberOfTurns.value() == 0) {
+			auto* card = dynamic_cast<Card*>(effectTarget);
+			card->removeEffect(this);
 		}
 	}
 }
 
 void BuffBehavior::checkForEndEvent(GameEvent event)
 {
-	if (securityKey.has_value() && endEvent.has_value() && endEvent.value() == event)
-	{
-		effectTarget->removeEffect(this);
+	if (securityKey.has_value() && endEvent.has_value() && endEvent.value() == event) {
+		auto* card = dynamic_cast<Card*>(effectTarget);
+		card->removeEffect(this);
 	}
 }
 
 void BuffBehavior::removeBuff() const
 {
-	if (statType.value() == StatType::ENERGY_COST)
-	{// Card
+	if (statType.value() == StatType::ENERGY_COST) {// Card
 		auto* card = dynamic_cast<Card*>(effectTarget);
 
-		auto it = std::ranges::find_if(card->extraEnergyCost, [this](const std::unique_ptr<EffectValue>& effect)
-			{
+		auto it = std::ranges::find_if(card->extraEnergyCost, [this](const std::unique_ptr<EffectValue>& effect) {
 				return effect->value == -value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
 			});
 
-		if (it!=card->extraEnergyCost.end())
-		{
+		if (it!=card->extraEnergyCost.end()) {
 			card->extraEnergyCost.erase(it);
 		}
 	}
-	else if (statType.value() == StatType::VALUE)
-	{// Spell
+	else if (statType.value() == StatType::VALUE) {// Spell
 		auto* spell = dynamic_cast<SpellCard*>(effectTarget);
 
-		auto it = std::ranges::find_if(spell->extraValue, [this](const std::unique_ptr<EffectValue>& effect)
-			{
+		auto it = std::ranges::find_if(spell->extraValue, [this](const std::unique_ptr<EffectValue>& effect) {
 				return effect->value == value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
 			});
 
-		if (it != spell->extraValue.end())
-		{
+		if (it != spell->extraValue.end()) {
 			spell->extraValue.erase(it);
 		}
 	}
-	else if (statType.value() == StatType::HEALTH || statType.value() == StatType::ATTACK)
-	{// Unit
+	else if (statType.value() == StatType::HEALTH || statType.value() == StatType::ATTACK) {// Unit
 		auto* unit = dynamic_cast<UnitCard*>(effectTarget);
-		if (statType.value() == StatType::HEALTH)
-		{
-			auto it = std::ranges::find_if(unit->extraHealth, [this](const std::unique_ptr<EffectValue>& effect)
-			{
+		if (statType.value() == StatType::HEALTH) {
+			auto it = std::ranges::find_if(unit->extraHealth, [this](const std::unique_ptr<EffectValue>& effect) {
 					return effect->value == value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
 			});
 
-			if (it != unit->extraHealth.end())
-			{
+			if (it != unit->extraHealth.end()) {
 				unit->extraHealth.erase(it);
 			}
 		}
-		else if (statType.value() == StatType::ATTACK)
-		{
-			auto it = std::ranges::find_if(unit->extraAttack, [this](const std::unique_ptr<EffectValue>& effect)
-				{
+		else if (statType.value() == StatType::ATTACK) {
+			auto it = std::ranges::find_if(unit->extraAttack, [this](const std::unique_ptr<EffectValue>& effect) {
 					return effect->value == value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
 				});
 
-			if (it != unit->extraAttack.end())
-			{
+			if (it != unit->extraAttack.end()) {
 				unit->extraAttack.erase(it);
 			}
 		}
 	}
-	else if (statType.value() == StatType::DAMAGE || statType.value() == StatType::DEFENSE || statType.value() == StatType::DURABILITY)
-	{// Item
+	else if (statType.value() == StatType::DAMAGE || statType.value() == StatType::DEFENSE || statType.value() == StatType::DURABILITY) {// Item
 		auto* item = dynamic_cast<ItemCard*>(effectTarget);
-		if (statType.value() == StatType::DAMAGE)
-		{
-			auto it = std::ranges::find_if(item->extraDamage, [this](const std::unique_ptr<EffectValue>& effect)
-				{
+		if (statType.value() == StatType::DAMAGE) {
+			auto it = std::ranges::find_if(item->extraDamage, [this](const std::unique_ptr<EffectValue>& effect) {
 					return effect->value == value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
 				});
 
-			if (it != item->extraDamage.end())
-			{
+			if (it != item->extraDamage.end()) {
 				item->extraDamage.erase(it);
 			}
 		}
-		else if (statType.value() == StatType::DEFENSE)
-		{
-			auto it = std::ranges::find_if(item->extraDefense, [this](const std::unique_ptr<EffectValue>& effect)
-				{
+		else if (statType.value() == StatType::DEFENSE) {
+			auto it = std::ranges::find_if(item->extraDefense, [this](const std::unique_ptr<EffectValue>& effect) {
 					return effect->value == value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
 				});
 
-			if (it != item->extraDefense.end())
-			{
+			if (it != item->extraDefense.end()) {
 				item->extraDefense.erase(it);
 			}
 		}
-		else if (statType.value() == StatType::DURABILITY)
-		{
-			auto it = std::ranges::find_if(item->extraDurability, [this](const std::unique_ptr<EffectValue>& effect)
-				{
+		else if (statType.value() == StatType::DURABILITY) {
+			auto it = std::ranges::find_if(item->extraDurability, [this](const std::unique_ptr<EffectValue>& effect) {
 					return effect->value == value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
 				});
 
-			if (it != item->extraDurability.end())
-			{
+			if (it != item->extraDurability.end()) {
 				item->extraDurability.erase(it);
 			}
 		}
@@ -211,16 +183,12 @@ void DebuffBehavior::execute(Target& target)
 	uint_least32_t securityKey = rd();
 
 	auto* card = dynamic_cast<Card*>(&target);
-	if (statType.value() == StatType::ENERGY_COST)
-	{
+	if (statType.value() == StatType::ENERGY_COST) {
 		card->increaseEnergyCost(value.value(), securityKey);
 	}
-	else
-	{
-		if (auto* unit = dynamic_cast<UnitCard*>(card))
-		{
-			switch (statType.value())
-			{
+	else {
+		if (auto* unit = dynamic_cast<UnitCard*>(card)) {
+			switch (statType.value()) {
 			case StatType::HEALTH:
 				unit->reduceHealth(value.value(), securityKey);
 				break;
@@ -229,10 +197,8 @@ void DebuffBehavior::execute(Target& target)
 				break;
 			}
 		}
-		else if (auto* item = dynamic_cast<ItemCard*>(card))
-		{
-			switch (statType.value())
-			{
+		else if (auto* item = dynamic_cast<ItemCard*>(card)) {
+			switch (statType.value()) {
 				case StatType::DAMAGE:
 					item->reduceDamage(value.value(), securityKey);
 					break;
@@ -244,8 +210,7 @@ void DebuffBehavior::execute(Target& target)
 					break;
 			}
 		}
-		else if (auto* spell = dynamic_cast<SpellCard*>(card))
-		{
+		else if (auto* spell = dynamic_cast<SpellCard*>(card)) {
 			spell->reduceValue(value.value(), securityKey);
 		}
 	}
@@ -254,120 +219,96 @@ void DebuffBehavior::execute(Target& target)
 
 void DebuffBehavior::decrementTurn()
 {
-	if (securityKey.has_value() && numberOfTurns.has_value() && numberOfTurns.value() > 0)
-	{
+	if (securityKey.has_value() && numberOfTurns.has_value() && numberOfTurns.value() > 0) {
 		numberOfTurns.value() = numberOfTurns.value() - 1;
 
-		if (numberOfTurns.value() == 0)
-		{
-			effectTarget->removeEffect(this);
+		if (numberOfTurns.value() == 0) {
+			auto* card = dynamic_cast<Card*>(effectTarget);
+			card->removeEffect(this);
 		}
 	}
 }
 
 void DebuffBehavior::checkForEndEvent(GameEvent event)
 {
-	if (securityKey.has_value() && endEvent.has_value() && endEvent.value() == event)
-	{
-		effectTarget->removeEffect(this);
+	if (securityKey.has_value() && endEvent.has_value() && endEvent.value() == event) {
+		auto* card = dynamic_cast<Card*>(effectTarget);
+		card->removeEffect(this);
 	}
 }
 
-void DebuffBehavior::removeDebuff()
+void DebuffBehavior::removeDebuff() const
 {
-	if (statType.value() == StatType::ENERGY_COST)
-	{// Card
+	if (statType.value() == StatType::ENERGY_COST) {// Card
 		auto* card = dynamic_cast<Card*>(effectTarget);
 
-		auto it = std::ranges::find_if(card->extraEnergyCost, [this](const std::unique_ptr<EffectValue>& effect)
-			{
+		auto it = std::ranges::find_if(card->extraEnergyCost, [this](const std::unique_ptr<EffectValue>& effect) {
 				return effect->value == value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
 			});
 
-		if (it != card->extraEnergyCost.end())
-		{
+		if (it != card->extraEnergyCost.end()) {
 			card->extraEnergyCost.erase(it);
 		}
 	}
-	else if (statType.value() == StatType::VALUE)
-	{// Spell
+	else if (statType.value() == StatType::VALUE) {// Spell
 		auto* spell = dynamic_cast<SpellCard*>(effectTarget);
 
-		auto it = std::ranges::find_if(spell->extraValue, [this](const std::unique_ptr<EffectValue>& effect)
-			{
+		auto it = std::ranges::find_if(spell->extraValue, [this](const std::unique_ptr<EffectValue>& effect) {
 				return effect->value == -value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
 			});
 
-		if (it != spell->extraValue.end())
-		{
+		if (it != spell->extraValue.end()) {
 			spell->extraValue.erase(it);
 		}
 	}
-	else if (statType.value() == StatType::HEALTH || statType.value() == StatType::ATTACK)
-	{// Unit
+	else if (statType.value() == StatType::HEALTH || statType.value() == StatType::ATTACK) {// Unit
 		auto* unit = dynamic_cast<UnitCard*>(effectTarget);
-		if (statType.value() == StatType::HEALTH)
-		{
-			auto it = std::ranges::find_if(unit->extraHealth, [this](const std::unique_ptr<EffectValue>& effect)
-				{
+		if (statType.value() == StatType::HEALTH) {
+			auto it = std::ranges::find_if(unit->extraHealth, [this](const std::unique_ptr<EffectValue>& effect) {
 					return effect->value == -value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
 				});
 
-			if (it != unit->extraHealth.end())
-			{
+			if (it != unit->extraHealth.end()) {
 				unit->extraHealth.erase(it);
 			}
 		}
-		else if (statType.value() == StatType::ATTACK)
-		{
-			auto it = std::ranges::find_if(unit->extraAttack, [this](const std::unique_ptr<EffectValue>& effect)
-				{
+		else if (statType.value() == StatType::ATTACK) {
+			auto it = std::ranges::find_if(unit->extraAttack, [this](const std::unique_ptr<EffectValue>& effect) {
 					return effect->value == -value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
 				});
 
-			if (it != unit->extraAttack.end())
-			{
+			if (it != unit->extraAttack.end()) {
 				unit->extraAttack.erase(it);
 			}
 		}
 	}
-	else if (statType.value() == StatType::DAMAGE || statType.value() == StatType::DEFENSE || statType.value() == StatType::DURABILITY)
-	{// Item
+	else if (statType.value() == StatType::DAMAGE || statType.value() == StatType::DEFENSE || statType.value() == StatType::DURABILITY) {// Item
 		auto* item = dynamic_cast<ItemCard*>(effectTarget);
 
-		if (statType.value() == StatType::DAMAGE)
-		{
-			auto it = std::ranges::find_if(item->extraDamage, [this](const std::unique_ptr<EffectValue>& effect)
-				{
+		if (statType.value() == StatType::DAMAGE) {
+			auto it = std::ranges::find_if(item->extraDamage, [this](const std::unique_ptr<EffectValue>& effect) {
 					return effect->value == -value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
 				});
 
-			if (it != item->extraDamage.end())
-			{
+			if (it != item->extraDamage.end()) {
 				item->extraDamage.erase(it);
 			}
 		}
-		else if (statType.value() == StatType::DEFENSE)
-		{
-			auto it = std::ranges::find_if(item->extraDefense, [this](const std::unique_ptr<EffectValue>& effect)
-				{
+		else if (statType.value() == StatType::DEFENSE) {
+			auto it = std::ranges::find_if(item->extraDefense, [this](const std::unique_ptr<EffectValue>& effect) {
 					return effect->value == -value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
 				});
 
-			if (it != item->extraDefense.end())
-			{
+			if (it != item->extraDefense.end()) {
 				item->extraDefense.erase(it);
 			}
 		}
-		else if (statType.value() == StatType::DURABILITY)
-		{
-			auto it = std::ranges::find_if(item->extraDurability, [this](const std::unique_ptr<EffectValue>& effect)
-				{
+		else if (statType.value() == StatType::DURABILITY) {
+			auto it = std::ranges::find_if(item->extraDurability, [this](const std::unique_ptr<EffectValue>& effect) {
 					return effect->value == -value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
 				});
 
-			if (it != item->extraDurability.end())
-			{
+			if (it != item->extraDurability.end()) {
 				item->extraDurability.erase(it);
 			}
 		}
@@ -383,4 +324,127 @@ DebuffBehavior::DebuffBehavior(Card* targetOfEffect, uint_least32_t securityKey,
 	this->statType = statType;
 	this->numberOfTurns = numberOfTurns;
 	this->endEvent = endEvent;
+}
+
+HealBehavior::HealBehavior(EffectTrigger trigger, EffectDuration duration, int value, int numberOfTargets, std::optional<int> numberOfTurns, std::optional<GameEvent> triggerEvent)
+{
+	this->trigger = trigger;
+	this->duration = duration;
+	this->value = value;
+	this->numberOfTargets = numberOfTargets;
+	this->numberOfTurns = numberOfTurns;
+	this->triggerEvent = triggerEvent;
+}
+
+void HealBehavior::execute(Target& target)
+{
+	if (duration == EffectDuration::INSTANT) {
+		if (auto* unit = dynamic_cast<UnitCard*>(&target)) {
+			unit->heal(value.value());
+		}
+		else if (auto* hero = dynamic_cast<Hero*>(&target)) {
+			hero->restoreHealth(value.value());
+		}
+	}
+	else if (duration == EffectDuration::TURN_BASED) {
+		std::random_device rd;
+		uint_least32_t securityKey = rd();
+
+		if (auto* unit = dynamic_cast<UnitCard*>(&target)) {
+			unit->applyEffect(std::make_unique<HealBehavior>(unit, securityKey, duration.value(), value.value(), numberOfTurns));
+		}
+		else if (auto* hero = dynamic_cast<Hero*>(&target)) {
+			hero->applyEffect(std::make_unique<HealBehavior>(hero, securityKey, duration.value(), value.value(), numberOfTurns));
+		}
+	}
+}
+
+void HealBehavior::decrementTurn()
+{
+	if (duration == EffectDuration::TURN_BASED && numberOfTurns.has_value()) {
+		numberOfTurns.value() = numberOfTurns.value() - 1;
+		if (numberOfTurns.value() == 0) {
+			if (auto* unit = dynamic_cast<UnitCard*>(effectTarget)) {
+				unit->removeEffect(this);
+			}
+			else if (auto* hero = dynamic_cast<Hero*>(effectTarget)) {
+				hero->removeEffect(this);
+			}
+		}
+	}
+}
+
+void HealBehavior::checkForEndEvent(GameEvent event)
+{
+	// Not used
+}
+
+HealBehavior::HealBehavior(Target* targetOfEffect, uint_least32_t securityKey, EffectDuration duration, int value, std::optional<int> numberOfTurns)
+{
+	this->effectTarget = targetOfEffect;
+	this->securityKey = securityKey;
+	this->duration = duration;
+	this->value = value;
+	this->numberOfTurns = numberOfTurns;
+}
+
+DamageBehavior::DamageBehavior(EffectTrigger trigger, EffectDuration duration, int value, int numberOfTargets, std::optional<int> numberOfTurns, std::optional<GameEvent> triggerEvent)
+{
+	this->trigger = trigger;
+	this->duration = duration;
+	this->value = value;
+	this->numberOfTargets = numberOfTargets;
+	this->numberOfTurns = numberOfTurns;
+	this->triggerEvent = triggerEvent;
+}
+
+void DamageBehavior::execute(Target& target)
+{
+	if (duration == EffectDuration::INSTANT) {
+		if (auto* unit = dynamic_cast<UnitCard*>(&target)) {
+			unit->dealDamage(value.value());
+		}
+		else if (auto* hero = dynamic_cast<Hero*>(&target)) {
+			hero->dealDamage(value.value());
+		}
+	}
+	else if (duration == EffectDuration::TURN_BASED) {
+		std::random_device rd;
+		uint_least32_t securityKey = rd();
+		if (auto* unit = dynamic_cast<UnitCard*>(&target)) {
+			unit->applyEffect(std::make_unique<DamageBehavior>(unit, securityKey, duration.value(), value.value(), numberOfTurns));
+		}
+		else if (auto* hero = dynamic_cast<Hero*>(&target)) {
+			hero->applyEffect(std::make_unique<DamageBehavior>(hero, securityKey, duration.value(), value.value(), numberOfTurns));
+		}
+	}
+}
+
+void DamageBehavior::decrementTurn()
+{
+	if (duration == EffectDuration::TURN_BASED && numberOfTurns.has_value()) {
+		numberOfTurns.value() = numberOfTurns.value() - 1;
+		if (numberOfTurns.value() == 0) {
+			if (auto* unit = dynamic_cast<UnitCard*>(effectTarget)) {
+				unit->removeEffect(this);
+			}
+			else if (auto* hero = dynamic_cast<Hero*>(effectTarget)) {
+				hero->removeEffect(this);
+			}
+		}
+	}
+}
+
+void DamageBehavior::checkForEndEvent(GameEvent event)
+{
+	// Not used
+}
+
+DamageBehavior::DamageBehavior(Target* targetOfEffect, uint_least32_t securityKey, EffectDuration duration, int value, std::optional<int> numberOfTurns)
+{
+	this->effectTarget = targetOfEffect;
+	this->securityKey = securityKey;
+	this->duration = duration;
+	this->value = value;
+	this->numberOfTurns = numberOfTurns;
 }

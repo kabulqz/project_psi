@@ -39,14 +39,14 @@ static std::unordered_map<EffectCategory, std::vector<EffectDuration>> durationM
 	{EffectCategory::ENERGY_MODIFY, {EffectDuration::PERMANENT}}
 };
 static std::unordered_map<EffectCategory, std::vector<TargetMode>> targetModeMap = {
-	{EffectCategory::BUFF,{TargetMode::SELF, TargetMode::SINGLE, TargetMode::MULTIPLE, TargetMode::RANDOM_SINGLE, TargetMode::RANDOM_MULTIPLE}},
-	{EffectCategory::DEBUFF,{TargetMode::SELF, TargetMode::SINGLE, TargetMode::MULTIPLE, TargetMode::RANDOM_SINGLE, TargetMode::RANDOM_MULTIPLE}},
-	{EffectCategory::HEAL,{TargetMode::SELF, TargetMode::SINGLE, TargetMode::MULTIPLE, TargetMode::RANDOM_SINGLE, TargetMode::RANDOM_MULTIPLE}},
-	{EffectCategory::DAMAGE,{TargetMode::SELF, TargetMode::SINGLE, TargetMode::MULTIPLE, TargetMode::RANDOM_SINGLE, TargetMode::RANDOM_MULTIPLE}},
-	{EffectCategory::STATUS_APPLY,{TargetMode::SELF, TargetMode::SINGLE, TargetMode::MULTIPLE, TargetMode::RANDOM_SINGLE, TargetMode::RANDOM_MULTIPLE}},
-	{EffectCategory::KEYWORD_ADD,{TargetMode::SELF, TargetMode::SINGLE, TargetMode::MULTIPLE, TargetMode::RANDOM_SINGLE, TargetMode::RANDOM_MULTIPLE}},
-	{EffectCategory::SILENCE,{TargetMode::SELF, TargetMode::SINGLE, TargetMode::MULTIPLE, TargetMode::RANDOM_SINGLE, TargetMode::RANDOM_MULTIPLE}},
-	{EffectCategory::STATUS_REMOVE,{TargetMode::SELF, TargetMode::SINGLE, TargetMode::MULTIPLE, TargetMode::RANDOM_SINGLE, TargetMode::RANDOM_MULTIPLE}},
+	{EffectCategory::BUFF,{TargetMode::SELF, TargetMode::RANDOM_SINGLE, TargetMode::RANDOM_MULTIPLE}},
+	{EffectCategory::DEBUFF,{TargetMode::SELF, TargetMode::RANDOM_SINGLE, TargetMode::RANDOM_MULTIPLE}},
+	{EffectCategory::HEAL,{TargetMode::SELF, TargetMode::RANDOM_SINGLE, TargetMode::RANDOM_MULTIPLE}},
+	{EffectCategory::DAMAGE,{TargetMode::SELF, TargetMode::RANDOM_SINGLE, TargetMode::RANDOM_MULTIPLE}},
+	{EffectCategory::STATUS_APPLY,{TargetMode::SELF, TargetMode::RANDOM_SINGLE, TargetMode::RANDOM_MULTIPLE}},
+	{EffectCategory::KEYWORD_ADD,{TargetMode::SELF, TargetMode::RANDOM_SINGLE, TargetMode::RANDOM_MULTIPLE}},
+	{EffectCategory::SILENCE,{TargetMode::SELF, TargetMode::RANDOM_SINGLE, TargetMode::RANDOM_MULTIPLE}},
+	{EffectCategory::STATUS_REMOVE,{TargetMode::SELF, TargetMode::RANDOM_SINGLE, TargetMode::RANDOM_MULTIPLE}},
 	{EffectCategory::SUMMON,{TargetMode::NONE}},
 	{EffectCategory::CAST,{TargetMode::SELF, TargetMode::RANDOM_SINGLE, TargetMode::RANDOM_MULTIPLE}},
 	{EffectCategory::EQUIP,{TargetMode::SELF, TargetMode::RANDOM_SINGLE, TargetMode::RANDOM_MULTIPLE}},
@@ -133,7 +133,7 @@ Effect::Effect(const uint_least32_t& effectSeed, const CardType cardType)
 };
 
 void Effect::setBuffBehavior()
-{
+{// target - card(unit. item, spell)
 	if (cardType == CardType::SPELL)
 	{
 		if (trigger == EffectTrigger::ON_GAME_EVENT) trigger = EffectTrigger::WHEN_PLAYED;
@@ -183,29 +183,17 @@ void Effect::setBuffBehavior()
 	if (trigger == EffectTrigger::ON_GAME_EVENT || trigger == EffectTrigger::ON_DRAW || trigger == EffectTrigger::ON_DISCARD || trigger == EffectTrigger::ON_ATTACK || trigger == EffectTrigger::ON_EQUIP)
 	{
 		if (trigger == EffectTrigger::ON_DISCARD)
-		{// RANDOM_SINGLE, RANDOM_MULTIPLE
-			if (targetMode == TargetMode::SELF || targetMode == TargetMode::SINGLE || targetMode == TargetMode::MULTIPLE)
-			{
-				if (targetMode == TargetMode::MULTIPLE) targetMode = TargetMode::RANDOM_MULTIPLE;
-				else targetMode = TargetMode::RANDOM_SINGLE;
-			}
-		}
-		else
-		{// SELF, RANDOM_SINGLE, RANDOM-MULTIPLE
-			if (targetMode == TargetMode::SINGLE || targetMode == TargetMode::MULTIPLE)
-			{
-				if (targetMode == TargetMode::SINGLE) targetMode = TargetMode::RANDOM_SINGLE;
-				else targetMode = TargetMode::RANDOM_MULTIPLE;
-			}
+		{
+			if (targetMode == TargetMode::SELF) targetMode = TargetMode::RANDOM_SINGLE;
 		}
 	}
 
 	// Losowanie liczby celów
 	int numberOfTargets;
-	if (targetMode == TargetMode::SELF || targetMode == TargetMode::SINGLE || targetMode == TargetMode::RANDOM_SINGLE) {
+	if (targetMode == TargetMode::SELF || targetMode == TargetMode::RANDOM_SINGLE) {
 		numberOfTargets = 1;
 	}
-	else if (targetMode == TargetMode::MULTIPLE || targetMode == TargetMode::RANDOM_MULTIPLE) {
+	else if (targetMode == TargetMode::RANDOM_MULTIPLE) {
 		std::uniform_int_distribution<int> numberOfTargetsDistribution(2, 3);
 		numberOfTargets = numberOfTargetsDistribution(generator);
 	}
@@ -243,7 +231,7 @@ void Effect::setBuffBehavior()
 }
 
 void Effect::setDebuffBehavior()
-{
+{// target - card(unit. item, spell)
 	if (cardType == CardType::SPELL)
 	{
 		if (trigger == EffectTrigger::ON_GAME_EVENT) trigger = EffectTrigger::WHEN_PLAYED;
@@ -293,29 +281,17 @@ void Effect::setDebuffBehavior()
 	if (trigger == EffectTrigger::ON_GAME_EVENT || trigger == EffectTrigger::ON_DRAW || trigger == EffectTrigger::ON_DISCARD || trigger == EffectTrigger::ON_ATTACK || trigger == EffectTrigger::ON_EQUIP)
 	{
 		if (trigger == EffectTrigger::ON_DISCARD)
-		{// RANDOM_SINGLE, RANDOM_MULTIPLE
-			if (targetMode == TargetMode::SELF || targetMode == TargetMode::SINGLE || targetMode == TargetMode::MULTIPLE)
-			{
-				if (targetMode == TargetMode::MULTIPLE) targetMode = TargetMode::RANDOM_MULTIPLE;
-				else targetMode = TargetMode::RANDOM_SINGLE;
-			}
-		}
-		else
-		{// SELF, RANDOM_SINGLE, RANDOM-MULTIPLE
-			if (targetMode == TargetMode::SINGLE || targetMode == TargetMode::MULTIPLE)
-			{
-				if (targetMode == TargetMode::SINGLE) targetMode = TargetMode::RANDOM_SINGLE;
-				else targetMode = TargetMode::RANDOM_MULTIPLE;
-			}
+		{
+			if (targetMode == TargetMode::SELF) targetMode = TargetMode::RANDOM_SINGLE;
 		}
 	}
 
 	// Losowanie liczby celów
 	int numberOfTargets;
-	if (targetMode == TargetMode::SELF || targetMode == TargetMode::SINGLE || targetMode == TargetMode::RANDOM_SINGLE) {
+	if (targetMode == TargetMode::SELF || targetMode == TargetMode::RANDOM_SINGLE) {
 		numberOfTargets = 1;
 	}
-	else if (targetMode == TargetMode::MULTIPLE || targetMode == TargetMode::RANDOM_MULTIPLE) {
+	else if (targetMode == TargetMode::RANDOM_MULTIPLE) {
 		std::uniform_int_distribution<int> numberOfTargetsDistribution(2, 3);
 		numberOfTargets = numberOfTargetsDistribution(generator);
 	}
@@ -353,57 +329,127 @@ void Effect::setDebuffBehavior()
 }
 
 void Effect::setHealBehavior()
-{
+{// target - card(unit) or hero
+	std::uniform_int_distribution<int> valueDistribution(1, 7);
+	int value = valueDistribution(generator);
+
+	int numberOfTargets;
+	if (targetMode == TargetMode::SELF || targetMode == TargetMode::RANDOM_SINGLE) {
+		numberOfTargets = 1;
+	}
+	else if (targetMode == TargetMode::RANDOM_MULTIPLE) {
+		std::uniform_int_distribution<int> numberOfTargetsDistribution(2, 3);
+		numberOfTargets = numberOfTargetsDistribution(generator);
+	}
+
+	std::optional<int> numberOfTurns = std::nullopt;
+	if (durationType == EffectDuration::TURN_BASED){
+		std::uniform_int_distribution<int> numberOfTurnsDistribution(2, 5);
+		numberOfTurns = numberOfTurnsDistribution(generator);
+	}
+
+	std::optional<GameEvent> triggerEvent = std::nullopt;
+	if (trigger == EffectTrigger::ON_GAME_EVENT) {
+		targetZone = TargetZone::BATTLEFIELD;
+		std::uniform_int_distribution<int> triggerEventDistribution(
+			static_cast<int>(GameEvent::TURN_START),
+			static_cast<int>(GameEvent::HERO_HEALED)
+		);
+		triggerEvent = static_cast<GameEvent>(triggerEventDistribution(generator));
+	}
+
+	behavior = std::make_unique<HealBehavior>(trigger, durationType, value, numberOfTargets, numberOfTurns, triggerEvent);
 }
 
 void Effect::setDamageBehavior()
-{
+{// target - card(unit) or hero
+	std::uniform_int_distribution<int> valueDistribution(1, 7);
+	int value = valueDistribution(generator);
+
+	int numberOfTargets;
+	if (targetMode == TargetMode::SELF || targetMode == TargetMode::RANDOM_SINGLE) {
+		numberOfTargets = 1;
+	}
+	else if (targetMode == TargetMode::RANDOM_MULTIPLE) {
+		std::uniform_int_distribution<int> numberOfTargetsDistribution(2, 3);
+		numberOfTargets = numberOfTargetsDistribution(generator);
+	}
+
+	std::optional<int> numberOfTurns = std::nullopt;
+	if (durationType == EffectDuration::TURN_BASED) {
+		std::uniform_int_distribution<int> numberOfTurnsDistribution(2, 5);
+		numberOfTurns = numberOfTurnsDistribution(generator);
+	}
+
+	std::optional<GameEvent> triggerEvent = std::nullopt;
+	if (trigger == EffectTrigger::ON_GAME_EVENT) {
+		targetZone = TargetZone::BATTLEFIELD;
+		std::uniform_int_distribution<int> triggerEventDistribution(
+			static_cast<int>(GameEvent::TURN_START),
+			static_cast<int>(GameEvent::HERO_HEALED)
+		);
+		triggerEvent = static_cast<GameEvent>(triggerEventDistribution(generator));
+	}
+
+	behavior = std::make_unique<DamageBehavior>(trigger, durationType, value, numberOfTargets, numberOfTurns, triggerEvent);
 }
 
 void Effect::setStatusApplyBehavior()
-{
-}
+{// target - card(unit)
 
-void Effect::setStatusRemoveBehavior()
-{
 }
 
 void Effect::setKeywordAddBehavior()
-{
-}
+{// target - card(unit)
 
-void Effect::setSummonBehavior()
-{
-}
-
-void Effect::setCastBehavior()
-{
-}
-
-void Effect::setEquipBehavior()
-{
-}
-
-void Effect::setDrawBehavior()
-{
-}
-
-void Effect::setDiscardBehavior()
-{
-}
-
-void Effect::setShuffleBehavior()
-{
-}
-
-void Effect::setStealBehavior()
-{
-}
-
-void Effect::setEnergyModifyBehavior()
-{
 }
 
 void Effect::setSilenceBehavior()
-{
+{// target - card(unit)
+
+}
+
+void Effect::setStatusRemoveBehavior()
+{// target - card(unit)
+
+}
+
+void Effect::setSummonBehavior()
+{// target - no target, summons on battlefield
+
+}
+
+void Effect::setCastBehavior()
+{// target - no target, casts spell
+
+}
+
+void Effect::setEquipBehavior()
+{// target - card(unit)
+
+}
+
+void Effect::setDrawBehavior()
+{// target - no target, draws card
+
+}
+
+void Effect::setDiscardBehavior()
+{// target - card(unit, item, spell)
+
+}
+
+void Effect::setShuffleBehavior()
+{// target - card(unit, item, spell) to shuffle into deck
+
+}
+
+void Effect::setStealBehavior()
+{// target - card(unit, item, spell) to steal from opponent
+
+}
+
+void Effect::setEnergyModifyBehavior()
+{// target - hero, modifies energy of player
+
 }

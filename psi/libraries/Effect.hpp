@@ -21,8 +21,9 @@ class Effect
 	void setHealBehavior();
 	void setDamageBehavior();
 	void setStatusApplyBehavior();
-	void setStatusRemoveBehavior();
 	void setKeywordAddBehavior();
+	void setSilenceBehavior();
+	void setStatusRemoveBehavior();
 	void setSummonBehavior();
 	void setCastBehavior();
 	void setEquipBehavior();
@@ -31,7 +32,6 @@ class Effect
 	void setShuffleBehavior();
 	void setStealBehavior();
 	void setEnergyModifyBehavior();
-	void setSilenceBehavior();
 public:
 	Effect(const uint_least32_t& effectSeed, const CardType cardType);
 };

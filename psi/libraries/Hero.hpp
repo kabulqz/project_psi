@@ -3,6 +3,8 @@
 #include "Settings.hpp"
 #include "Definitions.hpp"
 
+class IEffectBehavior;
+
 // Specifically for Board Game
 class BoardGameMovable
 {
@@ -63,7 +65,7 @@ public:
 // Specifically for Card Game
 class Hero : public Target
 {
-private:
+protected:
 	int maxHealth = 25;				// Max value of health
 	int currentHealth;				// Current health that is updated constantly
 
@@ -74,19 +76,24 @@ private:
 	std::vector<Card*> hand;		// Hand that player has during turns
 	std::vector<Card*> battlefield;	// Battlefield corresponding to player
 	int fatigue = 1;				// Fatigue that player will draw when there are no cards in deck
+
+	std::vector<std::unique_ptr<IEffectBehavior>> activeEffects;	// List of active effects(heal / damage )
 public:
 	Hero();
 	Hero(const Hero& hero);
 	Hero& operator=(const Hero& hero);
 
-	std::stack<Card*> getDeck() const;
-	std::vector<Card*> getHand() const;
-	std::vector<Card*> getBattlefield() const;
+	std::stack<Card*> getDeck() const { return deck; }
+	std::vector<Card*> getHand() const { return hand; }
+	std::vector<Card*> getBattlefield() const { return battlefield; }
 
 	void dealDamage(int value);
 	void restoreHealth(int value);
 	void drawCard();
 	void shuffleCardIntoTheDeck(Card* card);
+
+	void applyEffect(std::unique_ptr<IEffectBehavior> effectBehavior);
+	void removeEffect(IEffectBehavior* effectBehavior);
 };
 
 // Specifically for Card Game

@@ -69,6 +69,9 @@ public:
 	void increaseAttack(int value, uint_least32_t key);
 	void reduceAttack(int value, uint_least32_t key);
 
+	void heal(int value);
+	void dealDamage(int value);
+
 	void destroy();
 };
 

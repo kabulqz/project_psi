@@ -176,22 +176,7 @@ Hero& Hero::operator=(const Hero& hero)
 	return *this;
 }
 
-std::stack<Card*> Hero::getDeck() const
-{
-	return deck;
-}
-
-std::vector<Card*> Hero::getHand() const
-{
-	return hand;
-}
-
-std::vector<Card*> Hero::getBattlefield() const
-{
-	return battlefield;
-}
-
-void Hero::dealDamage(int value)
+void Hero::dealDamage(const int value)
 {
 	currentHealth -= value;
 	currentHealth = std::max(0, currentHealth);
@@ -201,7 +186,7 @@ void Hero::dealDamage(int value)
 	}
 }
 
-void Hero::restoreHealth(int value)
+void Hero::restoreHealth(const int value)
 {
 	currentHealth += value;
 	currentHealth = std::min(currentHealth, maxHealth);
@@ -235,7 +220,7 @@ void Hero::shuffleCardIntoTheDeck(Card* card)
 	std::mt19937 generator(rd());
 	std::uniform_int_distribution<int> distribution(0, static_cast<int>(deck.size())); // Uniform distribution to get random position
 
-	int randomIndex = distribution(generator); // Get a random index	within the deck size
+	const int randomIndex = distribution(generator); // Get a random index within the deck size
 
 	// Step 1: Convert the deck from a stack to a vector temporarily to allow random access
 	std::vector<Card*> tempDeck;
@@ -253,6 +238,20 @@ void Hero::shuffleCardIntoTheDeck(Card* card)
 	{
 		deck.push(it);
 	}
+}
+
+void Hero::applyEffect(std::unique_ptr<IEffectBehavior> effectBehavior)
+{
+	activeEffects.push_back(std::move(effectBehavior));
+}
+
+void Hero::removeEffect(IEffectBehavior* effectBehavior)
+{
+	// Remove the effect from the active effects list
+	std::erase_if(activeEffects, [effectBehavior](const std::unique_ptr<IEffectBehavior>& effect)
+		{
+			return effect.get() == effectBehavior;
+		});
 }
 
 Player::Player()

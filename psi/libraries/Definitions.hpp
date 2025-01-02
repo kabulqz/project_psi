@@ -129,8 +129,6 @@ enum class TargetMode
 {
 	NONE,			// No specific target, so a global effect
 	SELF,			// Targets the card/unit itself
-	SINGLE,			// Targets a single other unit or player
-	MULTIPLE,		// Targets multiple other units or/and player
 	RANDOM_SINGLE,	// Targets a random single other unit or player
 	RANDOM_MULTIPLE	// Targets a random multiple other units or/and player
 };

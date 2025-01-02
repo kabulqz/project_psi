@@ -10,13 +10,13 @@ const std::string borderFile = PATH_TO_BORDERS_FOLDER + border;
 const std::string abilitiesFile = PATH_TO_ABILITIES_FOLDER + abilities;
 
 AbilityTreeState::AbilityTreeState(Game* game) : game(game),
-backButton(10, 10, 90, 60, PATH_TO_BORDERS_FOLDER + "panel-border-027.png")
+backButton(10, 10, 60, 60, PATH_TO_BORDERS_FOLDER + "panel-border-027.png")
 {
 	save = game->getSave();
 
 	game->changeViewZoom(1.f);
 
-	backButton.setText("Back", font, fontSize);
+	backButton.setText("<", font, fontSize + 10);
 	backButton.setBackgroundColor("000000");
 
 	if (!abilityTreeTexture.loadFromFile("src/img/yggdrasil.png")) return;

@@ -33,7 +33,7 @@ protected:
 	std::optional<Keyword> keyword;
 public:
 	// Tracking the owner of the effect
-	Card* effectTarget = nullptr;
+	Target* effectTarget = nullptr;
 
 	IEffectBehavior() = default;
 	virtual ~IEffectBehavior() = default;
@@ -48,7 +48,7 @@ class BuffBehavior : public IEffectBehavior
 	std::optional<uint_least32_t> securityKey;
 public:
 	void execute(Target& target) override;
-	void decrementTurn() override;
+	void decrementTurn() override;						// If duration is TURN_BASED
 	void checkForEndEvent(GameEvent event) override;
 	void removeBuff() const;
 
@@ -81,9 +81,9 @@ class DebuffBehavior : public IEffectBehavior
 	std::optional<uint_least32_t> securityKey;
 public:
 	void execute(Target& target) override;
-	void decrementTurn() override;
+	void decrementTurn() override;						// If duration is TURN_BASED
 	void checkForEndEvent(GameEvent event) override;
-	void removeDebuff();
+	void removeDebuff() const;
 
 	// DebuffBehavior for Effect class
 	DebuffBehavior(
@@ -106,5 +106,61 @@ public:
 		StatType statType,
 		std::optional<int> numberOfTurns = std::nullopt,
 		std::optional<GameEvent> endEvent = std::nullopt
+	);
+};
+
+class HealBehavior : public IEffectBehavior
+{
+	std::optional<uint_least32_t> securityKey;
+public:
+	void execute(Target& target) override;				// INSTANT - heal target, TURN_BASED - add lasting heal effect
+	void decrementTurn() override;						// If duration is TURN_BASED
+	void checkForEndEvent(GameEvent event) override;	// Not used
+
+	// HealBehavior for Effect class
+	HealBehavior(
+		EffectTrigger trigger,
+		EffectDuration duration,
+		int value,
+		int numberOfTargets,
+		std::optional<int> numberOfTurns = std::nullopt,
+		std::optional<GameEvent> triggerEvent = std::nullopt
+	);
+
+	// HealBehavior for Card/Hero class
+	HealBehavior(
+		Target* targetOfEffect,
+		uint_least32_t securityKey,
+		EffectDuration duration,
+		int value,
+		std::optional<int> numberOfTurns = std::nullopt
+	);
+};
+
+class DamageBehavior : public IEffectBehavior
+{
+	std::optional<uint_least32_t> securityKey;
+public:
+	void execute(Target& target) override;				// INSTANT - deal damage, TURN_BASED - add lasting damage effect
+	void decrementTurn() override;						// If duration is TURN_BASED
+	void checkForEndEvent(GameEvent event) override;	// Not used
+
+	// DamageBehavior for Effect class
+	DamageBehavior(
+		EffectTrigger trigger,
+		EffectDuration duration,
+		int value,
+		int numberOfTargets,
+		std::optional<int> numberOfTurns = std::nullopt,
+		std::optional<GameEvent> triggerEvent = std::nullopt
+	);
+
+	// DamageBehavior for Card/Hero class
+	DamageBehavior(
+		Target* targetOfEffect,
+		uint_least32_t securityKey,
+		EffectDuration duration,
+		int value,
+		std::optional<int> numberOfTurns = std::nullopt
 	);
 };
