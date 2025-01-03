@@ -281,11 +281,11 @@ void MapGeneration::generate(uint_least32_t seed, int* level, std::vector<sf::Ve
 	// Tworzenie kolejnych prostok¹tów
 	for (int k = 0; k < numberOfRect; ++k)
 	{
-		std::uniform_int_distribution<uint_least32_t> newpointX(x + 1, x + xx);
-		std::uniform_int_distribution<uint_least32_t> newpointY(y + 1, y + yy);
+		std::uniform_int_distribution<uint_least32_t> newPointX(x + 2, x + xx);
+		std::uniform_int_distribution<uint_least32_t> newPointY(y + 2, y + yy);
 
-		x = newpointX(generator);
-		y = newpointY(generator);
+		x = newPointX(generator);
+		y = newPointY(generator);
 
 		xx = dimentions(generator);
 		yy = dimentions(generator);

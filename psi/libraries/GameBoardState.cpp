@@ -4,7 +4,7 @@
 //Width and height of a map
 GameBoardState::GameBoardState(Game* game) : game(game),
 currentLevel(10 ,10, 70, 60, PATH_TO_BORDERS_FOLDER + "panel-border-031.png"),
-avaibleUpgrade(85, 20, 40, 40, PATH_TO_BORDERS_FOLDER + "panel-border-030.png"),
+availableUpgrade(85, 20, 40, 40, PATH_TO_BORDERS_FOLDER + "panel-border-030.png"),
 requiredXP(10, 75, 200, 40, PATH_TO_BORDERS_FOLDER + "panel-border-030.png")
 {
 	srand(static_cast<unsigned>(time(nullptr)));
@@ -20,10 +20,10 @@ requiredXP(10, 75, 200, 40, PATH_TO_BORDERS_FOLDER + "panel-border-030.png")
 	currentLevel.setText(std::to_string(player->getLevel()), font, fontSize + 4);
 	currentLevel.setBackgroundColor("000000");
 
-	avaibleUpgrade.setVisible(player->hasAvailableAbilityPoints());
-	avaibleUpgrade.setText("+", font, fontSize + 10);
-	avaibleUpgrade.setBackgroundColor("000000");
-	avaibleUpgrade.setColor("F5B700");
+	availableUpgrade.setVisible(player->hasAvailableAbilityPoints());
+	availableUpgrade.setText("+", font, fontSize + 10);
+	availableUpgrade.setBackgroundColor("000000");
+	availableUpgrade.setColor("F5B700");
 
 	requiredXP.setText(std::to_string(player->getExperience()) + " / " + std::to_string(player->getTotalXPRequiredForNextLevel()), font, fontSize - 1);
 	requiredXP.setBackgroundColor("000000");
@@ -109,7 +109,7 @@ void GameBoardState::handleInput(sf::RenderWindow& window, EventManager& eventMa
 void GameBoardState::update()
 {
 	requiredXP.setVisible(currentLevel.isHovered(mousePos));
-	avaibleUpgrade.setVisible(player->hasAvailableAbilityPoints());
+	availableUpgrade.setVisible(player->hasAvailableAbilityPoints());
 
 	auto sprite = player->getSprite();
 	sprite.setPosition(player->getMapPosition().x * 16, player->getMapPosition().y * 16);
@@ -160,7 +160,7 @@ void GameBoardState::render(sf::RenderWindow& window)
 	renderTexture.setView(UI);
 
 	currentLevel.display(renderTexture);
-	avaibleUpgrade.display(renderTexture);
+	availableUpgrade.display(renderTexture);
 	requiredXP.display(renderTexture);
 
 	renderTexture.display();
@@ -197,7 +197,7 @@ void GameBoardState::renderToTexture(sf::RenderTexture& texture)
 	texture.setView(UI);
 
 	currentLevel.display(texture);
-	avaibleUpgrade.display(texture);
+	availableUpgrade.display(texture);
 
 	// Finalize rendering
 	texture.display();

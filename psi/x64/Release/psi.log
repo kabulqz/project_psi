@@ -1,28 +1,22 @@
-﻿  Trwa generowanie kodu
-  0 of 5592 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+﻿  AbilityTree.cpp
+  AbilityTreeState.cpp
+  Card.cpp
+  Effect.cpp
+  EffectBehaviors.cpp
+  Game.cpp
+  GameBoardState.cpp
+  GameCardState.cpp
+  Hero.cpp
+  MainMenuState.cpp
+  MapGeneration.cpp
+  Save.cpp
+  TransitionState.cpp
+  main.cpp
+  Trwa generowanie kodu
+  6 of 5666 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    85 functions had inline decision re-evaluated but remain unchanged
   Zakończono generowanie kodu
-AbilityTreeState.obj : warning LNK4020: rekord typu w elemencie „” jest uszkodzony; niektóre symbole i typy mogą być niedostępne z debugera
-Button.obj : warning LNK4020: rekord typu w elemencie „” jest uszkodzony; niektóre symbole i typy mogą być niedostępne z debugera
-Card.obj : warning LNK4020: rekord typu w elemencie „” jest uszkodzony; niektóre symbole i typy mogą być niedostępne z debugera
-EffectBehaviors.obj : warning LNK4020: rekord typu w elemencie „” jest uszkodzony; niektóre symbole i typy mogą być niedostępne z debugera
-EventManager.obj : warning LNK4020: rekord typu w elemencie „” jest uszkodzony; niektóre symbole i typy mogą być niedostępne z debugera
-Game.obj : warning LNK4020: rekord typu w elemencie „” jest uszkodzony; niektóre symbole i typy mogą być niedostępne z debugera
-GameCardState.obj : warning LNK4020: rekord typu w elemencie „” jest uszkodzony; niektóre symbole i typy mogą być niedostępne z debugera
-Hero.obj : warning LNK4020: rekord typu w elemencie „” jest uszkodzony; niektóre symbole i typy mogą być niedostępne z debugera
-AbilityTree.obj : warning LNK4020: rekord typu w elemencie „” jest uszkodzony; niektóre symbole i typy mogą być niedostępne z debugera
-MainMenuState.obj : warning LNK4020: rekord typu w elemencie „” jest uszkodzony; niektóre symbole i typy mogą być niedostępne z debugera
-Settings.obj : warning LNK4020: rekord typu w elemencie „” jest uszkodzony; niektóre symbole i typy mogą być niedostępne z debugera
-Effect.obj : warning LNK4020: rekord typu w elemencie „” jest uszkodzony; niektóre symbole i typy mogą być niedostępne z debugera
-main.obj : warning LNK4020: rekord typu w elemencie „” jest uszkodzony; niektóre symbole i typy mogą być niedostępne z debugera
-Save.obj : warning LNK4020: rekord typu w elemencie „” jest uszkodzony; niektóre symbole i typy mogą być niedostępne z debugera
-SoundManager.obj : warning LNK4020: rekord typu w elemencie „” jest uszkodzony; niektóre symbole i typy mogą być niedostępne z debugera
-GameBoardState.obj : warning LNK4020: rekord typu w elemencie „” jest uszkodzony; niektóre symbole i typy mogą być niedostępne z debugera
-TransitionState.obj : warning LNK4020: rekord typu w elemencie „” jest uszkodzony; niektóre symbole i typy mogą być niedostępne z debugera
-MapGeneration.obj : warning LNK4020: rekord typu w elemencie „” jest uszkodzony; niektóre symbole i typy mogą być niedostępne z debugera
-State.obj : warning LNK4020: rekord typu w elemencie „” jest uszkodzony; niektóre symbole i typy mogą być niedostępne z debugera
-sqlite3.obj : warning LNK4020: rekord typu w elemencie „” jest uszkodzony; niektóre symbole i typy mogą być niedostępne z debugera
   psi.vcxproj -> C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\x64\Release\psi.exe
   C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\psi\src\OpenSSL\libcrypto-3-x64.dll
   1 File(s) copied

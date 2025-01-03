@@ -55,15 +55,18 @@ enum class Keyword // In alphabetical order
 
 enum class Status // In alphabetical order
 {
+	// Statuses that can be added or removed (also below)
 	BLEEDING,       // Loses health at the start of the turn
 	BURNING,        // Loses health when attacking
+	POISONED,       // Loses health at the end of the turn
+
+	// Starting statuses that we can add when generating card
 	CONFUSED,       // When attacking, target is random, even friendly
 	CURSED,         // Cannot be healed or gain buffs while active
 	ENRAGED,        // When damaged, gains attack
 	FROZEN,         // Cannot attack
 	HEXED,          // Cannot use effects from this unit
 	MARKED,         // Takes extra damage
-	POISONED,       // Loses health at the end of the turn
 	ROCK_SKINNED,   // Takes reduced damage for example maximum of 1 or 50%
 	STUNNED,		// Cannot add items to this unit, if unit has already items, they are removed
 

@@ -6,7 +6,9 @@
 
 class Card : public Target
 {
+protected:
 	CardType cardType;
+	void setCardType(const CardType cardType) { this->cardType = cardType; }
 
 	//Visual elements of the card
 	std::string back;
@@ -27,10 +29,12 @@ class Card : public Target
 	std::vector<std::unique_ptr<Effect>> effects;	// List of effects
 
 	std::vector<std::unique_ptr<IEffectBehavior>> activeEffects;	// List of active effects
+
+	Card(const CardType& cardType) : cardType(cardType) {}
 public:
 	std::vector<std::unique_ptr<EffectValue>> extraEnergyCost = {}; // Extra mana cost from effects
 
-	Card(const uint_least32_t& cardSeed);
+	static std::unique_ptr<Card> createCard(const uint_least32_t& cardSeed);
 	~Card() override = default;
 
 	TargetZone getZone() const { return zone; }
@@ -72,6 +76,8 @@ public:
 	void heal(int value);
 	void dealDamage(int value);
 
+	explicit UnitCard(std::mt19937& cardGenerator);
+	~UnitCard() override = default;
 	void destroy();
 };
 
@@ -97,6 +103,8 @@ public:
 	void increaseDurability(int value, uint_least32_t key);
 	void reduceDurability(int value, uint_least32_t key);
 
+	explicit ItemCard(std::mt19937& cardGenerator);
+	~ItemCard() override = default;
 	void destroy();
 };
 
@@ -109,4 +117,7 @@ public:
 
 	void increaseValue(int value, uint_least32_t key);
 	void reduceValue(int value, uint_least32_t key);
+
+	explicit SpellCard(std::mt19937& cardGenerator);
+	~SpellCard() override = default;
 };
