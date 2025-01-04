@@ -41,9 +41,9 @@ constexpr int fontSize = 21;
 
 inline std::string color(const std::string& hex_color, const std::string& data)
 {
-	int r = std::stoi(hex_color.substr(0, 2), nullptr, 16);
-	int g = std::stoi(hex_color.substr(2, 2), nullptr, 16);
-	int b = std::stoi(hex_color.substr(4, 2), nullptr, 16);
+	const int r = std::stoi(hex_color.substr(0, 2), nullptr, 16);
+	const int g = std::stoi(hex_color.substr(2, 2), nullptr, 16);
+	const int b = std::stoi(hex_color.substr(4, 2), nullptr, 16);
 	std::string out = "\033[38;2;" + std::to_string(r) + ";" + std::to_string(g) + ";" + std::to_string(b) + "m" + data
 		+ "\033[0m";
 	return out;
@@ -51,13 +51,13 @@ inline std::string color(const std::string& hex_color, const std::string& data)
 
 inline std::string gradient(const std::string& start_hex_color, const std::string& end_hex_color, const std::string& text)
 {
-	int r1 = std::stoi(start_hex_color.substr(0, 2), nullptr, 16);
-	int g1 = std::stoi(start_hex_color.substr(2, 2), nullptr, 16);
-	int b1 = std::stoi(start_hex_color.substr(4, 2), nullptr, 16);
+	const int r1 = std::stoi(start_hex_color.substr(0, 2), nullptr, 16);
+	const int g1 = std::stoi(start_hex_color.substr(2, 2), nullptr, 16);
+	const int b1 = std::stoi(start_hex_color.substr(4, 2), nullptr, 16);
 
-	int r2 = std::stoi(end_hex_color.substr(0, 2), nullptr, 16);
-	int g2 = std::stoi(end_hex_color.substr(2, 2), nullptr, 16);
-	int b2 = std::stoi(end_hex_color.substr(4, 2), nullptr, 16);
+	const int r2 = std::stoi(end_hex_color.substr(0, 2), nullptr, 16);
+	const int g2 = std::stoi(end_hex_color.substr(2, 2), nullptr, 16);
+	const int b2 = std::stoi(end_hex_color.substr(4, 2), nullptr, 16);
 
 	// Generate gradient
 	size_t length = text.size();

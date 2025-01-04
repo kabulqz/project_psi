@@ -43,7 +43,7 @@ public:
 	virtual void checkForEndEvent(GameEvent event) = 0;
 };
 
-class BuffBehavior : public IEffectBehavior
+class BuffBehavior final : public IEffectBehavior
 {
 	std::optional<uint_least32_t> securityKey;
 public:
@@ -76,7 +76,7 @@ public:
 	);
 };
 
-class DebuffBehavior : public IEffectBehavior
+class DebuffBehavior final : public IEffectBehavior
 {
 	std::optional<uint_least32_t> securityKey;
 public:
@@ -109,7 +109,7 @@ public:
 	);
 };
 
-class HealBehavior : public IEffectBehavior
+class HealBehavior final : public IEffectBehavior
 {
 	std::optional<uint_least32_t> securityKey;
 public:
@@ -137,7 +137,7 @@ public:
 	);
 };
 
-class DamageBehavior : public IEffectBehavior
+class DamageBehavior final : public IEffectBehavior
 {
 	std::optional<uint_least32_t> securityKey;
 public:
@@ -162,5 +162,78 @@ public:
 		EffectDuration duration,
 		int value,
 		std::optional<int> numberOfTurns = std::nullopt
+	);
+};
+
+class StatusApplyBehavior final : public IEffectBehavior
+{
+public:
+	void execute(Target& target) override;				// Apply status effect to target
+	void decrementTurn() override;						// If duration is TURN_BASED
+	void checkForEndEvent(GameEvent event) override;	// If duration is EVENT_BASED
+	void removeStatus() const;
+
+	// Apply status effect to target
+	StatusApplyBehavior(
+		EffectTrigger trigger,
+		EffectDuration duration,
+		Status status,
+		int numberOfTargets,
+		std::optional<int> numberOfTurns = std::nullopt,
+		std::optional<GameEvent> triggerEvent = std::nullopt,
+		std::optional<GameEvent> endEvent = std::nullopt
+	);
+
+	// Apply status effect to target
+	StatusApplyBehavior(
+		Target* targetOfEffect,
+		EffectDuration duration,
+		Status status,
+		std::optional<int> numberOfTurns = std::nullopt,
+		std::optional<GameEvent> endEvent = std::nullopt
+	);
+};
+
+class SilenceBehavior final : public IEffectBehavior
+{
+public:
+	void execute(Target& target) override;				// Apply silence effect to target
+	void decrementTurn() override;						// If duration is TURN_BASED
+	void checkForEndEvent(GameEvent event) override;	// If duration is EVENT_BASED
+	void removeSilence() const;
+
+	// Apply status effect to target
+	SilenceBehavior(
+		EffectTrigger trigger,
+		EffectDuration duration,
+		int numberOfTargets,
+		std::optional<int> numberOfTurns = std::nullopt,
+		std::optional<GameEvent> triggerEvent = std::nullopt,
+		std::optional<GameEvent> endEvent = std::nullopt
+	);
+
+	// Apply status effect to target
+	SilenceBehavior(
+		Target* targetOfEffect,
+		EffectDuration duration,
+		std::optional<int> numberOfTurns = std::nullopt,
+		std::optional<GameEvent> endEvent = std::nullopt
+	);
+};
+
+class StatusRemoveBehavior final : public IEffectBehavior
+{
+public:
+	void execute(Target& target) override;				// Remove status effect from target
+	void decrementTurn() override;						// Not used
+	void checkForEndEvent(GameEvent event) override;	// Not used
+
+	// Remove status effect from target
+	StatusRemoveBehavior(
+		EffectTrigger trigger,
+		EffectDuration duration,
+		Status status,
+		int numberOfTargets,
+		std::optional<GameEvent> triggerEvent = std::nullopt
 	);
 };

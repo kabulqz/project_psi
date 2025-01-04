@@ -54,34 +54,7 @@ public:
 	void removeEffect(IEffectBehavior* effectBehavior);
 };
 
-class UnitCard : public Card // If 0 health, card is destroyed
-{
-	int baseHealth;
-	int currentHealth;
-
-	int baseAttack;
-	int currentAttack;
-
-	std::unordered_set<Keyword> keywords;				// List of keywords
-	std::map<Status, int> statuses;						// List of statuses
-public:
-	std::vector<std::unique_ptr<EffectValue>> extraHealth = {}; // Extra health from effects
-	std::vector<std::unique_ptr<EffectValue>> extraAttack = {}; // Extra attack from effects
-
-	void increaseHealth(int value, uint_least32_t key);
-	void reduceHealth(int value, uint_least32_t key);
-	void increaseAttack(int value, uint_least32_t key);
-	void reduceAttack(int value, uint_least32_t key);
-
-	void heal(int value);
-	void dealDamage(int value);
-
-	explicit UnitCard(std::mt19937& cardGenerator);
-	~UnitCard() override = default;
-	void destroy();
-};
-
-class ItemCard : public Card
+class ItemCard final : public Card // If 0 durability, card is destroyed
 {
 	int baseDamage;
 	int currentDamage;
@@ -108,7 +81,38 @@ public:
 	void destroy();
 };
 
-class SpellCard : public Card
+class UnitCard final : public Card // If 0 health, card is destroyed
+{
+	int baseHealth;
+	int currentHealth;
+
+	int baseAttack;
+	int currentAttack;
+
+	std::unordered_set<Keyword> keywords;				// List of keywords
+	std::map<Status, int> statuses;						// List of statuses
+	std::unique_ptr<ItemCard> item = nullptr;			// Item card attached to the unit
+public:
+	std::vector<std::unique_ptr<EffectValue>> extraHealth = {}; // Extra health from effects
+	std::vector<std::unique_ptr<EffectValue>> extraAttack = {}; // Extra attack from effects
+
+	void increaseHealth(int value, uint_least32_t key);
+	void reduceHealth(int value, uint_least32_t key);
+	void increaseAttack(int value, uint_least32_t key);
+	void reduceAttack(int value, uint_least32_t key);
+
+	void heal(int value);
+	void dealDamage(int value);
+
+	void applyStatus(const Status& status, int numberOfTurns);
+	void removeStatus(const Status& status);
+
+	explicit UnitCard(std::mt19937& cardGenerator);
+	~UnitCard() override = default;
+	void destroy();
+};
+
+class SpellCard final : public Card
 {
 	int baseValue;
 	int currentValue;

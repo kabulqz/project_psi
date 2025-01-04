@@ -1,9 +1,8 @@
 #include "EffectBehaviors.hpp"
-
-#include <openssl/asn1.h>
-
 #include "Card.hpp"
 #include "Hero.hpp"
+
+#include <openssl/asn1.h>
 
 BuffBehavior::BuffBehavior(EffectTrigger trigger, EffectDuration duration, int value, StatType statType, int numberOfTargets, std::optional<int> numberOfTurns, std::optional<GameEvent> triggerEvent, std::optional<GameEvent> endEvent)
 {
@@ -229,7 +228,7 @@ void DebuffBehavior::decrementTurn()
 	}
 }
 
-void DebuffBehavior::checkForEndEvent(GameEvent event)
+void DebuffBehavior::checkForEndEvent(const GameEvent event)
 {
 	if (securityKey.has_value() && endEvent.has_value() && endEvent.value() == event) {
 		auto* card = dynamic_cast<Card*>(effectTarget);
@@ -352,6 +351,7 @@ void HealBehavior::execute(Target& target)
 
 		if (auto* unit = dynamic_cast<UnitCard*>(&target)) {
 			unit->applyEffect(std::make_unique<HealBehavior>(unit, securityKey, duration.value(), value.value(), numberOfTurns));
+			unit->applyStatus(Status::HEALING, numberOfTurns.value());
 		}
 		else if (auto* hero = dynamic_cast<Hero*>(&target)) {
 			hero->applyEffect(std::make_unique<HealBehavior>(hero, securityKey, duration.value(), value.value(), numberOfTurns));
@@ -366,6 +366,7 @@ void HealBehavior::decrementTurn()
 		if (numberOfTurns.value() == 0) {
 			if (auto* unit = dynamic_cast<UnitCard*>(effectTarget)) {
 				unit->removeEffect(this);
+				unit->removeStatus(Status::HEALING);
 			}
 			else if (auto* hero = dynamic_cast<Hero*>(effectTarget)) {
 				hero->removeEffect(this);
@@ -374,7 +375,7 @@ void HealBehavior::decrementTurn()
 	}
 }
 
-void HealBehavior::checkForEndEvent(GameEvent event)
+void HealBehavior::checkForEndEvent(const GameEvent event)
 {
 	// Not used
 }
@@ -413,6 +414,7 @@ void DamageBehavior::execute(Target& target)
 		uint_least32_t securityKey = rd();
 		if (auto* unit = dynamic_cast<UnitCard*>(&target)) {
 			unit->applyEffect(std::make_unique<DamageBehavior>(unit, securityKey, duration.value(), value.value(), numberOfTurns));
+			unit->applyStatus(Status::DAMAGED, numberOfTurns.value());
 		}
 		else if (auto* hero = dynamic_cast<Hero*>(&target)) {
 			hero->applyEffect(std::make_unique<DamageBehavior>(hero, securityKey, duration.value(), value.value(), numberOfTurns));
@@ -427,6 +429,7 @@ void DamageBehavior::decrementTurn()
 		if (numberOfTurns.value() == 0) {
 			if (auto* unit = dynamic_cast<UnitCard*>(effectTarget)) {
 				unit->removeEffect(this);
+				unit->removeStatus(Status::DAMAGED);
 			}
 			else if (auto* hero = dynamic_cast<Hero*>(effectTarget)) {
 				hero->removeEffect(this);
@@ -435,7 +438,7 @@ void DamageBehavior::decrementTurn()
 	}
 }
 
-void DamageBehavior::checkForEndEvent(GameEvent event)
+void DamageBehavior::checkForEndEvent(const GameEvent event)
 {
 	// Not used
 }
@@ -447,4 +450,142 @@ DamageBehavior::DamageBehavior(Target* targetOfEffect, uint_least32_t securityKe
 	this->duration = duration;
 	this->value = value;
 	this->numberOfTurns = numberOfTurns;
+}
+
+StatusApplyBehavior::StatusApplyBehavior(EffectTrigger trigger, EffectDuration duration, Status status,
+	int numberOfTargets, std::optional<int> numberOfTurns,
+	std::optional<GameEvent> triggerEvent, std::optional<GameEvent> endEvent)
+{
+	this->trigger = trigger;
+	this->duration = duration;
+	this->status = status;
+	this->numberOfTargets = numberOfTargets;
+	this->numberOfTurns = numberOfTurns;
+	this->triggerEvent = triggerEvent;
+	this->endEvent = endEvent;
+}
+
+void StatusApplyBehavior::execute(Target& target)
+{
+	if (auto* unit = dynamic_cast<UnitCard*>(&target)) {
+		unit->applyStatus(status.value(), numberOfTurns.value());
+		unit->applyEffect(std::make_unique<StatusApplyBehavior>(unit, duration.value(), status.value(), numberOfTurns.value(), endEvent.value()));
+	}
+}
+
+void StatusApplyBehavior::decrementTurn()
+{
+	if (duration == EffectDuration::TURN_BASED && numberOfTurns.has_value()) {
+		numberOfTurns.value() = numberOfTurns.value() - 1;
+		if (numberOfTurns.value() == 0) {
+			if (auto* unit = dynamic_cast<UnitCard*>(effectTarget)) {
+				unit->removeEffect(this);
+			}
+		}
+	}
+}
+
+void StatusApplyBehavior::checkForEndEvent(const GameEvent event)
+{
+	if (duration == EffectDuration::EVENT_BASED && endEvent.has_value() && endEvent.value() == event) {
+		if (auto* unit = dynamic_cast<UnitCard*>(effectTarget)) {
+			unit->removeEffect(this);
+		}
+	}
+}
+
+void StatusApplyBehavior::removeStatus() const
+{
+	auto* unit = dynamic_cast<UnitCard*>(effectTarget);
+	unit->removeStatus(status.value());
+}
+
+StatusApplyBehavior::StatusApplyBehavior(Target* targetOfEffect, EffectDuration duration,
+	Status status, std::optional<int> numberOfTurns, std::optional<GameEvent> endEvent)
+{
+	this->effectTarget = targetOfEffect;
+	this->duration = duration;
+	this->status = status;
+	this->numberOfTurns = numberOfTurns;
+	this->endEvent = endEvent;
+}
+
+SilenceBehavior::SilenceBehavior(EffectTrigger trigger, EffectDuration duration, int numberOfTargets, std::optional<int> numberOfTurns, std::optional<GameEvent> triggerEvent, std::optional<GameEvent> endEvent)
+{
+	this->trigger = trigger;
+	this->duration = duration;
+	this->numberOfTargets = numberOfTargets;
+	this->numberOfTurns = numberOfTurns;
+	this->triggerEvent = triggerEvent;
+	this->endEvent = endEvent;
+}
+
+void SilenceBehavior::execute(Target& target)
+{
+	if (auto* unit = dynamic_cast<UnitCard*>(&target)) {
+		unit->applyStatus(Status::SILENCED, numberOfTurns.value());
+		unit->applyEffect(std::make_unique<SilenceBehavior>(unit, duration.value(), numberOfTurns.value(), endEvent.value()));
+	}
+}
+
+void SilenceBehavior::decrementTurn()
+{
+	if (duration == EffectDuration::TURN_BASED && numberOfTurns.has_value()) {
+		numberOfTurns.value() = numberOfTurns.value() - 1;
+		if (numberOfTurns.value() == 0) {
+			if (auto* unit = dynamic_cast<UnitCard*>(effectTarget)) {
+				unit->removeEffect(this);
+			}
+		}
+	}
+}
+
+void SilenceBehavior::checkForEndEvent(GameEvent event)
+{
+	if (duration == EffectDuration::EVENT_BASED && endEvent.has_value() && endEvent.value() == event) {
+		if (auto* unit = dynamic_cast<UnitCard*>(effectTarget)) {
+			unit->removeEffect(this);
+		}
+	}
+}
+
+void SilenceBehavior::removeSilence() const
+{
+	auto* unit = dynamic_cast<UnitCard*>(effectTarget);
+	unit->removeStatus(Status::SILENCED);
+}
+
+SilenceBehavior::SilenceBehavior(Target* targetOfEffect, EffectDuration duration, std::optional<int> numberOfTurns,
+	std::optional<GameEvent> endEvent)
+{
+	this->effectTarget = targetOfEffect;
+	this->duration = duration;
+	this->numberOfTurns = numberOfTurns;
+	this->endEvent = endEvent;
+}
+
+StatusRemoveBehavior::StatusRemoveBehavior(EffectTrigger trigger, EffectDuration duration, Status status, int numberOfTargets, std::optional<GameEvent> triggerEvent)
+{
+	this->trigger = trigger;
+	this->duration = duration;
+	this->status = status;
+	this->numberOfTargets = numberOfTargets;
+	this->triggerEvent = triggerEvent;
+}
+
+void StatusRemoveBehavior::execute(Target& target)
+{
+	if (auto* unit = dynamic_cast<UnitCard*>(&target)) {
+		unit->removeStatus(status.value());
+	}
+}
+
+void StatusRemoveBehavior::decrementTurn()
+{
+	// Not used
+}
+
+void StatusRemoveBehavior::checkForEndEvent(GameEvent event)
+{
+	// Not used
 }

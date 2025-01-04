@@ -11,9 +11,6 @@ static std::unordered_map<EffectCategory, std::vector<EffectTrigger>> triggerMap
 	{EffectCategory::KEYWORD_ADD,{EffectTrigger::WHEN_PLAYED, EffectTrigger::ON_GAME_EVENT, EffectTrigger::ON_DRAW, EffectTrigger::ON_DISCARD, EffectTrigger::ON_ATTACK, EffectTrigger::ON_EQUIP}},
 	{EffectCategory::SILENCE,{EffectTrigger::WHEN_PLAYED, EffectTrigger::ON_GAME_EVENT, EffectTrigger::ON_DRAW, EffectTrigger::ON_DISCARD, EffectTrigger::ON_ATTACK, EffectTrigger::ON_EQUIP}},
 	{EffectCategory::STATUS_REMOVE,{EffectTrigger::WHEN_PLAYED, EffectTrigger::ON_GAME_EVENT, EffectTrigger::ON_DRAW, EffectTrigger::ON_DISCARD, EffectTrigger::ON_ATTACK, EffectTrigger::ON_EQUIP}},
-	{EffectCategory::SUMMON,{EffectTrigger::WHEN_PLAYED, EffectTrigger::ON_GAME_EVENT, EffectTrigger::ON_DRAW, EffectTrigger::ON_DISCARD, EffectTrigger::ON_ATTACK, EffectTrigger::ON_EQUIP}},
-	{EffectCategory::CAST,{EffectTrigger::WHEN_PLAYED, EffectTrigger::ON_GAME_EVENT, EffectTrigger::ON_DRAW, EffectTrigger::ON_DISCARD, EffectTrigger::ON_ATTACK, EffectTrigger::ON_EQUIP}},
-	{EffectCategory::EQUIP,{EffectTrigger::WHEN_PLAYED, EffectTrigger::ON_GAME_EVENT, EffectTrigger::ON_DRAW, EffectTrigger::ON_DISCARD, EffectTrigger::ON_ATTACK}},
 	{EffectCategory::DRAW,{EffectTrigger::WHEN_PLAYED, EffectTrigger::ON_GAME_EVENT, EffectTrigger::ON_DRAW, EffectTrigger::ON_DISCARD, EffectTrigger::ON_ATTACK, EffectTrigger::ON_EQUIP}},
 	{EffectCategory::DISCARD,{EffectTrigger::WHEN_PLAYED, EffectTrigger::ON_GAME_EVENT, EffectTrigger::ON_DRAW, EffectTrigger::ON_ATTACK, EffectTrigger::ON_EQUIP}},
 	{EffectCategory::SHUFFLE,{EffectTrigger::WHEN_PLAYED, EffectTrigger::ON_GAME_EVENT, EffectTrigger::ON_DRAW, EffectTrigger::ON_DISCARD, EffectTrigger::ON_ATTACK, EffectTrigger::ON_EQUIP}},
@@ -29,9 +26,6 @@ static std::unordered_map<EffectCategory, std::vector<EffectDuration>> durationM
 	{EffectCategory::KEYWORD_ADD, {EffectDuration::PERMANENT, EffectDuration::TURN_BASED, EffectDuration::EVENT_BASED}},
 	{EffectCategory::SILENCE, {EffectDuration::PERMANENT, EffectDuration::TURN_BASED, EffectDuration::EVENT_BASED}},
 	{EffectCategory::STATUS_REMOVE, {EffectDuration::INSTANT}},
-	{EffectCategory::SUMMON, {EffectDuration::INSTANT}},
-	{EffectCategory::CAST, {EffectDuration::INSTANT}},
-	{EffectCategory::EQUIP, {EffectDuration::INSTANT}},
 	{EffectCategory::DRAW, {EffectDuration::INSTANT}},
 	{EffectCategory::DISCARD, {EffectDuration::INSTANT}},
 	{EffectCategory::SHUFFLE, {EffectDuration::INSTANT}},
@@ -47,9 +41,6 @@ static std::unordered_map<EffectCategory, std::vector<TargetMode>> targetModeMap
 	{EffectCategory::KEYWORD_ADD,{TargetMode::SELF, TargetMode::RANDOM_SINGLE, TargetMode::RANDOM_MULTIPLE}},
 	{EffectCategory::SILENCE,{TargetMode::SELF, TargetMode::RANDOM_SINGLE, TargetMode::RANDOM_MULTIPLE}},
 	{EffectCategory::STATUS_REMOVE,{TargetMode::SELF, TargetMode::RANDOM_SINGLE, TargetMode::RANDOM_MULTIPLE}},
-	{EffectCategory::SUMMON,{TargetMode::NONE}},
-	{EffectCategory::CAST,{TargetMode::SELF, TargetMode::RANDOM_SINGLE, TargetMode::RANDOM_MULTIPLE}},
-	{EffectCategory::EQUIP,{TargetMode::SELF, TargetMode::RANDOM_SINGLE, TargetMode::RANDOM_MULTIPLE}},
 	{EffectCategory::DRAW,{TargetMode::NONE}},
 	{EffectCategory::DISCARD,{TargetMode::RANDOM_SINGLE, TargetMode::RANDOM_MULTIPLE}},
 	{EffectCategory::SHUFFLE,{TargetMode::SELF, TargetMode::RANDOM_SINGLE, TargetMode::RANDOM_MULTIPLE}},
@@ -65,9 +56,6 @@ static std::unordered_map<EffectCategory, std::vector<TargetZone>> targetZoneMap
 		{EffectCategory::KEYWORD_ADD,{TargetZone::HAND, TargetZone::DECK, TargetZone::BATTLEFIELD}},
 		{EffectCategory::SILENCE,{TargetZone::BATTLEFIELD}},
 		{EffectCategory::STATUS_REMOVE,{TargetZone::BATTLEFIELD}},
-		{EffectCategory::SUMMON,{TargetZone::BATTLEFIELD}},
-		{EffectCategory::CAST,{TargetZone::NONE}},
-		{EffectCategory::EQUIP,{TargetZone::BATTLEFIELD}},
 		{EffectCategory::DRAW,{TargetZone::NONE}},
 		{EffectCategory::DISCARD,{TargetZone::NONE}},
 		{EffectCategory::SHUFFLE,{TargetZone::HAND, TargetZone::DECK, TargetZone::BATTLEFIELD}},
@@ -86,6 +74,24 @@ Effect::Effect(const uint_least32_t& effectSeed, const CardType cardType)
 	const auto& triggers = triggerMap[category];
 	std::uniform_int_distribution triggerDistribution(0, static_cast<int>(triggers.size() - 1));
 	trigger = triggers[triggerDistribution(generator)];
+
+	// Jeœli karta jest zaklêciem, zmieñ trigger na odpowiedni
+	if (cardType == CardType::SPELL)
+	{
+		if (trigger == EffectTrigger::ON_GAME_EVENT) trigger = EffectTrigger::WHEN_PLAYED;
+		else if (trigger == EffectTrigger::ON_ATTACK) trigger = EffectTrigger::ON_DRAW;
+		else if (trigger == EffectTrigger::ON_EQUIP) trigger = EffectTrigger::ON_DISCARD;
+	}
+	// Jeœli karta jest przedmiotem oraz jeœli trigger jest ON_ATTACK, zmieñ go na ON_EQUIP
+	if (cardType == CardType::ITEM)
+	{
+		if (trigger == EffectTrigger::ON_ATTACK) trigger = EffectTrigger::ON_EQUIP;
+	}
+	// Jeœli karta jest jednostk¹ oraz jeœli trigger jest ON_EQUIP, zmieñ go na ON_ATTACK
+	if (cardType == CardType::UNIT)
+	{
+		if (trigger == EffectTrigger::ON_EQUIP) trigger = EffectTrigger::ON_ATTACK;
+	}
 
 	// Losowanie typu duration
 	const auto& durations = durationMap[category];
@@ -115,9 +121,6 @@ Effect::Effect(const uint_least32_t& effectSeed, const CardType cardType)
 		{EffectCategory::STATUS_APPLY, &Effect::setStatusApplyBehavior},
 		{EffectCategory::STATUS_REMOVE, &Effect::setStatusRemoveBehavior},
 		{EffectCategory::KEYWORD_ADD, &Effect::setKeywordAddBehavior},
-		{EffectCategory::SUMMON, &Effect::setSummonBehavior},
-		{EffectCategory::CAST, &Effect::setCastBehavior},
-		{EffectCategory::EQUIP, &Effect::setEquipBehavior},
 		{EffectCategory::DRAW, &Effect::setDrawBehavior},
 		{EffectCategory::DISCARD, &Effect::setDiscardBehavior},
 		{EffectCategory::ENERGY_MODIFY, &Effect::setEnergyModifyBehavior},
@@ -134,13 +137,6 @@ Effect::Effect(const uint_least32_t& effectSeed, const CardType cardType)
 
 void Effect::setBuffBehavior()
 {// target - card(unit. item, spell)
-	if (cardType == CardType::SPELL)
-	{
-		if (trigger == EffectTrigger::ON_GAME_EVENT) trigger = EffectTrigger::WHEN_PLAYED;
-		else if (trigger == EffectTrigger::ON_ATTACK) trigger = EffectTrigger::ON_DRAW;
-		else if (trigger == EffectTrigger::ON_EQUIP) trigger = EffectTrigger::ON_DISCARD;
-	}
-
 	std::uniform_int_distribution<int> valueDistribution(2, 5);
 	int value = valueDistribution(generator);
 
@@ -232,13 +228,6 @@ void Effect::setBuffBehavior()
 
 void Effect::setDebuffBehavior()
 {// target - card(unit. item, spell)
-	if (cardType == CardType::SPELL)
-	{
-		if (trigger == EffectTrigger::ON_GAME_EVENT) trigger = EffectTrigger::WHEN_PLAYED;
-		else if (trigger == EffectTrigger::ON_ATTACK) trigger = EffectTrigger::ON_DRAW;
-		else if (trigger == EffectTrigger::ON_EQUIP) trigger = EffectTrigger::ON_DISCARD;
-	}
-
 	std::uniform_int_distribution<int> valueDistribution(2, 5);
 	int value = valueDistribution(generator);
 
@@ -396,7 +385,52 @@ void Effect::setDamageBehavior()
 
 void Effect::setStatusApplyBehavior()
 {// target - card(unit)
+	// Najpierw - jaki status ma byæ na³o¿ony
+	std::uniform_int_distribution<int> statusDistribution(
+		static_cast<int>(Status::BLEEDING),
+		static_cast<int>(Status::STUNNED)
+	);
+	Status status = static_cast<Status>(statusDistribution(generator));
 
+	// Losowanie liczby celów
+	int numberOfTargets;
+	if (targetMode == TargetMode::SELF || targetMode == TargetMode::RANDOM_SINGLE) {
+		numberOfTargets = 1;
+	}
+	else if (targetMode == TargetMode::RANDOM_MULTIPLE) {
+		std::uniform_int_distribution<int> numberOfTargetsDistribution(2, 3);
+		numberOfTargets = numberOfTargetsDistribution(generator);
+	}
+
+	// Losowanie liczby tur
+	std::optional<int> numberOfTurns = std::nullopt;
+	if (durationType == EffectDuration::TURN_BASED) {
+		std::uniform_int_distribution<int> numberOfTurnsDistribution(2, 5);
+		numberOfTurns = numberOfTurnsDistribution(generator);
+	}
+
+	// Ustalanie triggerEvent
+	std::optional<GameEvent> triggerEvent = std::nullopt;
+	if (trigger == EffectTrigger::ON_GAME_EVENT) {
+		targetZone = TargetZone::BATTLEFIELD;
+		std::uniform_int_distribution<int> triggerEventDistribution(
+			static_cast<int>(GameEvent::TURN_START),
+			static_cast<int>(GameEvent::HERO_HEALED)
+		);
+		triggerEvent = static_cast<GameEvent>(triggerEventDistribution(generator));
+	}
+
+	// Ustalanie endEvent
+	std::optional<GameEvent> endEvent = std::nullopt;
+	if (durationType == EffectDuration::EVENT_BASED) {
+		std::uniform_int_distribution<int> endEventDistribution(
+			static_cast<int>(GameEvent::TURN_START),
+			static_cast<int>(GameEvent::HERO_HEALED)
+		);
+		endEvent = static_cast<GameEvent>(endEventDistribution(generator));
+	}
+
+	behavior = std::make_unique<StatusApplyBehavior>(trigger, durationType, status, numberOfTargets, numberOfTurns, triggerEvent, endEvent);
 }
 
 void Effect::setKeywordAddBehavior()
@@ -405,28 +439,82 @@ void Effect::setKeywordAddBehavior()
 }
 
 void Effect::setSilenceBehavior()
-{// target - card(unit)
+{// target - card(unit, item)
+	auto status = Status::SILENCED;
 
+	// Losowanie liczby celów
+	int numberOfTargets;
+	if (targetMode == TargetMode::SELF || targetMode == TargetMode::RANDOM_SINGLE) {
+		numberOfTargets = 1;
+	}
+	else if (targetMode == TargetMode::RANDOM_MULTIPLE) {
+		std::uniform_int_distribution<int> numberOfTargetsDistribution(2, 3);
+		numberOfTargets = numberOfTargetsDistribution(generator);
+	}
+
+	// Losowanie liczby tur
+	std::optional<int> numberOfTurns = std::nullopt;
+	if (durationType == EffectDuration::TURN_BASED) {
+		std::uniform_int_distribution<int> numberOfTurnsDistribution(2, 5);
+		numberOfTurns = numberOfTurnsDistribution(generator);
+	}
+
+	// Ustalanie triggerEvent
+	std::optional<GameEvent> triggerEvent = std::nullopt;
+	if (trigger == EffectTrigger::ON_GAME_EVENT) {
+		targetZone = TargetZone::BATTLEFIELD;
+		std::uniform_int_distribution<int> triggerEventDistribution(
+			static_cast<int>(GameEvent::TURN_START),
+			static_cast<int>(GameEvent::HERO_HEALED)
+		);
+		triggerEvent = static_cast<GameEvent>(triggerEventDistribution(generator));
+	}
+
+	// Ustalanie endEvent
+	std::optional<GameEvent> endEvent = std::nullopt;
+	if (durationType == EffectDuration::EVENT_BASED) {
+		std::uniform_int_distribution<int> endEventDistribution(
+			static_cast<int>(GameEvent::TURN_START),
+			static_cast<int>(GameEvent::HERO_HEALED)
+		);
+		endEvent = static_cast<GameEvent>(endEventDistribution(generator));
+	}
+
+	behavior = std::make_unique<SilenceBehavior>(trigger, durationType, numberOfTargets, numberOfTurns, triggerEvent, endEvent);
 }
 
 void Effect::setStatusRemoveBehavior()
 {// target - card(unit)
 
-}
+	// Najpierw - jaki status ma byæ usuwany
+	std::uniform_int_distribution<int> statusDistribution(
+		static_cast<int>(Status::BLEEDING),
+		static_cast<int>(Status::STUNNED)
+	);
+	Status status = static_cast<Status>(statusDistribution(generator));
 
-void Effect::setSummonBehavior()
-{// target - no target, summons on battlefield
+	// Losowanie liczby celów
+	int numberOfTargets;
+	if (targetMode == TargetMode::SELF || targetMode == TargetMode::RANDOM_SINGLE) {
+		numberOfTargets = 1;
+	}
+	else if (targetMode == TargetMode::RANDOM_MULTIPLE) {
+		std::uniform_int_distribution<int> numberOfTargetsDistribution(2, 3);
+		numberOfTargets = numberOfTargetsDistribution(generator);
+	}
 
-}
+	// Ustalanie triggerEvent
+	std::optional<GameEvent> triggerEvent = std::nullopt;
+	if (trigger == EffectTrigger::ON_GAME_EVENT) {
+		targetZone = TargetZone::BATTLEFIELD;
+		std::uniform_int_distribution<int> triggerEventDistribution(
+			static_cast<int>(GameEvent::TURN_START),
+			static_cast<int>(GameEvent::HERO_HEALED)
+		);
+		triggerEvent = static_cast<GameEvent>(triggerEventDistribution(generator));
+	}
 
-void Effect::setCastBehavior()
-{// target - no target, casts spell
-
-}
-
-void Effect::setEquipBehavior()
-{// target - card(unit)
-
+	behavior = std::make_unique<StatusRemoveBehavior>(trigger, durationType, status, numberOfTargets, triggerEvent);
 }
 
 void Effect::setDrawBehavior()
@@ -435,7 +523,7 @@ void Effect::setDrawBehavior()
 }
 
 void Effect::setDiscardBehavior()
-{// target - card(unit, item, spell)
+{// target - card(unit, item, spell) in hand
 
 }
 

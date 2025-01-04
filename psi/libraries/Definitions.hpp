@@ -66,14 +66,14 @@ enum class Status // In alphabetical order
 	ENRAGED,        // When damaged, gains attack
 	FROZEN,         // Cannot attack
 	HEXED,          // Cannot use effects from this unit
-	MARKED,         // Takes extra damage
+	MARKED,         // Takes extra damage for example 50% more
 	ROCK_SKINNED,   // Takes reduced damage for example maximum of 1 or 50%
 	STUNNED,		// Cannot add items to this unit, if unit has already items, they are removed
 
 	// For tracking purposes, cant be applied nor removed
-	DAMAGED,
-	HEALING,
-	SILENCED
+	DAMAGED,		// Is being damaged
+	HEALING,		// Is being healed
+	SILENCED		// Is being silenced, 
 };
 
 enum class EffectCategory
@@ -89,11 +89,6 @@ enum class EffectCategory
 	//														   target must have at least one applicable statuses
 	KEYWORD_ADD,	// Adds a keyword to the unit			=> requires keyword identifier, target must support the keyword system
 	//														   cannot apply the same keyword multiple times to the same unit
-	SUMMON,			// Summons a unit						=> requires a card identifier or specifications for the summoned unit
-	//														   must validate space validity in the target zone
-	CAST,			// Casts a spell						=> requires a card identifier or specifications for the casted spell
-	EQUIP,			// Equips an item						=> requires a card identifier or specifications for the equipped item,
-	//														   must validate that the target can equip the item
 	DRAW,			// Draws a card							=> requires a numerical value or a condition
 	//														   must validate that the deck is not empty
 	//														   specify who draws the card/s, optionally restrict to specific card types

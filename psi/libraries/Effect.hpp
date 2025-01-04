@@ -24,9 +24,6 @@ class Effect
 	void setKeywordAddBehavior();
 	void setSilenceBehavior();
 	void setStatusRemoveBehavior();
-	void setSummonBehavior();
-	void setCastBehavior();
-	void setEquipBehavior();
 	void setDrawBehavior();
 	void setDiscardBehavior();
 	void setShuffleBehavior();
