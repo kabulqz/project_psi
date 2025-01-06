@@ -861,3 +861,41 @@ void StealBehavior::checkForEndEvent(GameEvent event)
 {
 	// Not used
 }
+
+EnergyModifyBehavior::EnergyModifyBehavior(EffectTrigger trigger, EffectDuration duration, TargetGroup who, int value,
+	std::optional<GameEvent> triggerEvent)
+{
+	this->trigger = trigger;
+	this->duration = duration;
+	this->who = who;
+	this->value = value;
+	this->triggerEvent = triggerEvent;
+}
+
+void EnergyModifyBehavior::execute(Target& target)
+{// by target we pass the card that initiated the effect
+	auto* card = dynamic_cast<Card*>(&target);
+
+	auto* allyHero = card->getOwner();
+	auto* enemyHero = card->getEnemy();
+
+	const int numberOfEnergy = value.value();
+	if (who == TargetGroup::ALLY || who == TargetGroup::BOTH)
+	{
+		allyHero->modifyEnergy(numberOfEnergy);
+	}
+	if (who == TargetGroup::ENEMY || who == TargetGroup::BOTH)
+	{
+		enemyHero->modifyEnergy(numberOfEnergy);
+	}
+}
+
+void EnergyModifyBehavior::decrementTurn()
+{
+	// Not used
+}
+
+void EnergyModifyBehavior::checkForEndEvent(GameEvent event)
+{
+	// Not used
+}

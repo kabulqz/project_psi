@@ -218,6 +218,18 @@ void Hero::shuffleCardIntoTheDeck(Card* card)
 	}
 }
 
+void Hero::modifyEnergy(int value)
+{
+	// increase max energy by value
+	maxEnergy += value;
+	// increase current energy by value
+	currentEnergy += value;
+	// if current energy is greater than max energy, set current energy to max energy
+	currentEnergy = std::min(currentEnergy, maxEnergy);
+	// if current energy is less than 0, set current energy to 0
+	currentEnergy = std::max(currentEnergy, 0);
+}
+
 void Hero::applyEffect(std::unique_ptr<IEffectBehavior> effectBehavior)
 {
 	activeEffects.push_back(std::move(effectBehavior));

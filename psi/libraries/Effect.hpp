@@ -31,4 +31,9 @@ class Effect
 	void setEnergyModifyBehavior();
 public:
 	Effect(const uint_least32_t& effectSeed, const CardType cardType);
+
+	// Execute effect, card - card that initiated the effect
+	// trigger - which trigger activated the effect
+	// event - optional event that triggered the effect, used for ON_GAME_EVENT trigger
+	void executeEffect(Card* card, EffectTrigger trigger, std::optional<GameEvent> event);
 };

@@ -91,6 +91,8 @@ public:
 	void discardCard();
 	void shuffleCardIntoTheDeck(Card* card);
 
+	void modifyEnergy(int value);
+
 	void applyEffect(std::unique_ptr<IEffectBehavior> effectBehavior);
 	void removeEffect(IEffectBehavior* effectBehavior);
 };

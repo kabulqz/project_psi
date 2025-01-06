@@ -336,3 +336,20 @@ public:
 		std::optional<GameEvent> triggerEvent = std::nullopt
 	);
 };
+
+class EnergyModifyBehavior final : public IEffectBehavior
+{
+	TargetGroup who;
+public:
+	void execute(Target& target) override;				// Modify energy
+	void decrementTurn() override;						// Not used
+	void checkForEndEvent(GameEvent event) override;	// Not used
+	// Modify energy
+	EnergyModifyBehavior(
+		EffectTrigger trigger,
+		EffectDuration duration,
+		TargetGroup who,
+		int value,
+		std::optional<GameEvent> triggerEvent = std::nullopt
+	);
+};

@@ -74,25 +74,26 @@ void Card::removeEffect(IEffectBehavior* effectBehavior)
 
 void Card::draw()
 {
-	for (int e = 0; e < effects.size(); ++e)
-	{
-		// check for the effects that have trigger on draw
-	}
+	this->triggerEffect(EffectTrigger::ON_DRAW);
 }
 
 void Card::play()
 {
-	for (int e = 0; e < effects.size(); ++e)
-	{
-		// check for the effects that have trigger on play
-	}
+	this->triggerEffect(EffectTrigger::WHEN_PLAYED);
 }
 
 void Card::discard()
 {
-	for (int e = 0; e < effects.size(); ++e)
+	this->triggerEffect(EffectTrigger::ON_DISCARD);
+}
+
+void Card::triggerEffect(EffectTrigger trigger, std::optional<GameEvent> event)
+{
+	for (const auto& effect : effects)
 	{
-		// check for the effects that have trigger on discard
+		// Execute the effect
+		effect->executeEffect(this, trigger, event);
+		// Inside this method we will check for potential activations of ON_GAME_EVENT effects from ally cards on battlefield
 	}
 }
 

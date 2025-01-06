@@ -21,12 +21,9 @@ enum class GameEvent
 	UNIT_DAMAGED,       // Unit has been damaged
 	UNIT_HEALED,        // Unit has been healed
 	UNIT_DEATH,         // Unit has died
-	UNIT_SUMMONED,      // Unit has been summoned
 	UNIT_STATUS_APPLY,  // Unit has status applied
 	UNIT_STATUS_REMOVE, // Unit has status removed
 	UNIT_KEYWORD_ADD,   // Unit has keyword added
-
-	SPELL_CASTED,       // Spell has been cast
 
 	ITEM_EQUIPPED,      // Item has been equipped
 	ITEM_DESTROYED,     // Item has been destroyed

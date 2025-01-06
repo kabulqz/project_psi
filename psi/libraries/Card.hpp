@@ -22,7 +22,6 @@ protected:
 
 	bool isOnBoard = false;							// Flag	to track if the card is on the board
 
-	TargetZone zone;								// Where the card is located
 	Hero* owner = nullptr;							// Owner of the card
 	Hero* enemy = nullptr;							// Enemy of the card
 
@@ -36,9 +35,6 @@ public:
 
 	static Card* createCard(const uint_least32_t& cardSeed);
 	~Card() override = default;
-
-	TargetZone getZone() const { return zone; }
-	void setZone(const TargetZone& zone) {this->zone = zone;}
 
 	bool getIsOnBoard() const { return isOnBoard; }
 	void setIsOnBoard(bool value) { isOnBoard = value; }
@@ -56,6 +52,8 @@ public:
 	void draw();
 	void play();
 	void discard();
+
+	void triggerEffect(EffectTrigger trigger, std::optional<GameEvent> event = std::nullopt);
 };
 
 class ItemCard final : public Card // If 0 durability, card is destroyed
@@ -113,6 +111,9 @@ public:
 
 	void addKeyword(const Keyword& keyword);
 	void removeKeyword(const Keyword& keyword);
+
+	bool hasItem() const { return item != nullptr; }
+	ItemCard* getItem() const { return item.get(); }
 
 	explicit UnitCard(std::mt19937& cardGenerator);
 	~UnitCard() override = default;
