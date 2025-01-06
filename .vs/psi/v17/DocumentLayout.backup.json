@@ -15,6 +15,14 @@
       "RelativeMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|solutionrelative:psi\\libraries\\EffectBehaviors.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Hero.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|solutionrelative:psi\\libraries\\Hero.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Hero.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|solutionrelative:psi\\libraries\\Hero.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Card.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|solutionrelative:psi\\libraries\\Card.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
@@ -23,28 +31,20 @@
       "RelativeMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|solutionrelative:psi\\libraries\\Effect.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Definitions.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|solutionrelative:psi\\libraries\\Definitions.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Card.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|solutionrelative:psi\\libraries\\Card.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Definitions.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|solutionrelative:psi\\libraries\\Definitions.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Settings.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|solutionrelative:psi\\libraries\\Settings.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Hero.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|solutionrelative:psi\\libraries\\Hero.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\GameCardState.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|solutionrelative:psi\\libraries\\GameCardState.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Hero.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|solutionrelative:psi\\libraries\\Hero.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Game.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -74,7 +74,7 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 9,
               "Title": "Settings.hpp",
               "DocumentMoniker": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Settings.hpp",
               "RelativeDocumentMoniker": "psi\\libraries\\Settings.hpp",
@@ -113,16 +113,17 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 3,
               "Title": "Hero.hpp",
               "DocumentMoniker": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Hero.hpp",
               "RelativeDocumentMoniker": "psi\\libraries\\Hero.hpp",
               "ToolTip": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Hero.hpp",
               "RelativeToolTip": "psi\\libraries\\Hero.hpp",
-              "ViewState": "AgIAAEUAAAAAAAAAAAAowF8AAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAEQAAAAAAAAAAAAAAEEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-01-02T15:34:36.427Z",
-              "IsPinned": true
+              "IsPinned": true,
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -132,14 +133,15 @@
               "RelativeDocumentMoniker": "psi\\libraries\\EffectBehaviors.hpp",
               "ToolTip": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\EffectBehaviors.hpp",
               "RelativeToolTip": "psi\\libraries\\EffectBehaviors.hpp",
-              "ViewState": "AgIAACUAAAAAAAAAAAAtwN8AAAAgAAAAAAAAAA==",
+              "ViewState": "AgIAAKcAAAAAAAAAAAASwEgBAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-12-30T11:34:20.413Z",
-              "IsPinned": true
+              "IsPinned": true,
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "Effect.hpp",
               "DocumentMoniker": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Effect.hpp",
               "RelativeDocumentMoniker": "psi\\libraries\\Effect.hpp",
@@ -148,24 +150,25 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-12-30T11:34:17.09Z",
-              "IsPinned": true
+              "IsPinned": true,
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "Card.hpp",
               "DocumentMoniker": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Card.hpp",
               "RelativeDocumentMoniker": "psi\\libraries\\Card.hpp",
               "ToolTip": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Card.hpp",
               "RelativeToolTip": "psi\\libraries\\Card.hpp",
-              "ViewState": "AgIAAFsAAAAAAAAAAAASwA4AAAAYAAAAAAAAAA==",
+              "ViewState": "AgIAAGIAAAAAAAAAAADgv3EAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-12-30T11:34:06.049Z",
               "IsPinned": true
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 8,
               "Title": "Definitions.hpp",
               "DocumentMoniker": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Definitions.hpp",
               "RelativeDocumentMoniker": "psi\\libraries\\Definitions.hpp",
@@ -214,7 +217,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "GameCardState.cpp",
               "DocumentMoniker": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\GameCardState.cpp",
               "RelativeDocumentMoniker": "psi\\libraries\\GameCardState.cpp",
@@ -226,15 +229,16 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 4,
               "Title": "Hero.cpp",
               "DocumentMoniker": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Hero.cpp",
               "RelativeDocumentMoniker": "psi\\libraries\\Hero.cpp",
               "ToolTip": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Hero.cpp",
               "RelativeToolTip": "psi\\libraries\\Hero.cpp",
-              "ViewState": "AgIAANgAAAAAAAAAAAAiwPkAAAAyAAAAAAAAAA==",
+              "ViewState": "AgIAALMAAAAAAAAAAAAqwNQAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-01-02T15:34:33.26Z"
+              "WhenOpened": "2025-01-02T15:34:33.26Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -244,9 +248,10 @@
               "RelativeDocumentMoniker": "psi\\libraries\\EffectBehaviors.cpp",
               "ToolTip": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\EffectBehaviors.cpp",
               "RelativeToolTip": "psi\\libraries\\EffectBehaviors.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAZAAAAAAAAAA==",
+              "ViewState": "AgIAANwCAAAAAAAAAADwvzYDAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-12-30T11:34:29.571Z"
+              "WhenOpened": "2024-12-30T11:34:29.571Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -256,22 +261,23 @@
               "RelativeDocumentMoniker": "psi\\libraries\\Effect.cpp",
               "ToolTip": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Effect.cpp",
               "RelativeToolTip": "psi\\libraries\\Effect.cpp",
-              "ViewState": "AgIAAAEAAAAAAAAAAAAQwLQBAAAXAAAAAAAAAA==",
+              "ViewState": "AgIAAO4AAAAAAAAAAAAAAJ8CAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-12-30T11:34:28.728Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "Card.cpp",
               "DocumentMoniker": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Card.cpp",
               "RelativeDocumentMoniker": "psi\\libraries\\Card.cpp",
               "ToolTip": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Card.cpp",
               "RelativeToolTip": "psi\\libraries\\Card.cpp",
-              "ViewState": "AgIAACYAAAAAAAAAAAAIwDwAAAAbAAAAAAAAAA==",
+              "ViewState": "AgIAABwBAAAAAAAAAAAEwC4BAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-12-30T11:34:03.953Z"
+              "WhenOpened": "2024-12-30T11:34:03.953Z",
+              "EditorCaption": ""
             }
           ]
         },

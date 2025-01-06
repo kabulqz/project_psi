@@ -34,7 +34,7 @@ protected:
 public:
 	std::vector<std::unique_ptr<EffectValue>> extraEnergyCost = {}; // Extra mana cost from effects
 
-	static std::unique_ptr<Card> createCard(const uint_least32_t& cardSeed);
+	static Card* createCard(const uint_least32_t& cardSeed);
 	~Card() override = default;
 
 	TargetZone getZone() const { return zone; }
@@ -52,6 +52,10 @@ public:
 
 	void applyEffect(std::unique_ptr<IEffectBehavior> effectBehavior);
 	void removeEffect(IEffectBehavior* effectBehavior);
+
+	void draw();
+	void play();
+	void discard();
 };
 
 class ItemCard final : public Card // If 0 durability, card is destroyed
@@ -106,6 +110,9 @@ public:
 
 	void applyStatus(const Status& status, int numberOfTurns);
 	void removeStatus(const Status& status);
+
+	void addKeyword(const Keyword& keyword);
+	void removeKeyword(const Keyword& keyword);
 
 	explicit UnitCard(std::mt19937& cardGenerator);
 	~UnitCard() override = default;

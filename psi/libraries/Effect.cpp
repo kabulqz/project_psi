@@ -1,4 +1,4 @@
-#include "Effect.hpp"
+ï»¿#include "Effect.hpp"
 #include "Card.hpp"
 #include "Hero.hpp"
 
@@ -43,7 +43,7 @@ static std::unordered_map<EffectCategory, std::vector<TargetMode>> targetModeMap
 	{EffectCategory::STATUS_REMOVE,{TargetMode::SELF, TargetMode::RANDOM_SINGLE, TargetMode::RANDOM_MULTIPLE}},
 	{EffectCategory::DRAW,{TargetMode::NONE}},
 	{EffectCategory::DISCARD,{TargetMode::RANDOM_SINGLE, TargetMode::RANDOM_MULTIPLE}},
-	{EffectCategory::SHUFFLE,{TargetMode::SELF, TargetMode::RANDOM_SINGLE, TargetMode::RANDOM_MULTIPLE}},
+	{EffectCategory::SHUFFLE,{TargetMode::RANDOM_SINGLE, TargetMode::RANDOM_MULTIPLE}},
 	{EffectCategory::STEAL,{TargetMode::RANDOM_SINGLE, TargetMode::RANDOM_MULTIPLE}},
 	{EffectCategory::ENERGY_MODIFY,{TargetMode::NONE}}
 };
@@ -57,8 +57,8 @@ static std::unordered_map<EffectCategory, std::vector<TargetZone>> targetZoneMap
 		{EffectCategory::SILENCE,{TargetZone::BATTLEFIELD}},
 		{EffectCategory::STATUS_REMOVE,{TargetZone::BATTLEFIELD}},
 		{EffectCategory::DRAW,{TargetZone::NONE}},
-		{EffectCategory::DISCARD,{TargetZone::NONE}},
-		{EffectCategory::SHUFFLE,{TargetZone::HAND, TargetZone::DECK, TargetZone::BATTLEFIELD}},
+		{EffectCategory::DISCARD,{TargetZone::HAND}},
+		{EffectCategory::SHUFFLE,{TargetZone::HAND, TargetZone::BATTLEFIELD}},
 		{EffectCategory::STEAL,{TargetZone::HAND, TargetZone::DECK}},
 		{EffectCategory::ENERGY_MODIFY,{TargetZone::NONE}}
 };
@@ -70,24 +70,24 @@ Effect::Effect(const uint_least32_t& effectSeed, const CardType cardType)
 	std::uniform_int_distribution categoryDistribution(0, static_cast<int>(EffectCategory::STEAL));
 	category = static_cast<EffectCategory>(categoryDistribution(generator));
 
-	// Losowanie triggera z mapy triggerów dla danej kategorii
+	// Losowanie triggera z mapy triggerÃ³w dla danej kategorii
 	const auto& triggers = triggerMap[category];
 	std::uniform_int_distribution triggerDistribution(0, static_cast<int>(triggers.size() - 1));
 	trigger = triggers[triggerDistribution(generator)];
 
-	// Jeœli karta jest zaklêciem, zmieñ trigger na odpowiedni
+	// JeÅ›li karta jest zaklÄ™ciem, zmieÅ„ trigger na odpowiedni
 	if (cardType == CardType::SPELL)
 	{
 		if (trigger == EffectTrigger::ON_GAME_EVENT) trigger = EffectTrigger::WHEN_PLAYED;
 		else if (trigger == EffectTrigger::ON_ATTACK) trigger = EffectTrigger::ON_DRAW;
 		else if (trigger == EffectTrigger::ON_EQUIP) trigger = EffectTrigger::ON_DISCARD;
 	}
-	// Jeœli karta jest przedmiotem oraz jeœli trigger jest ON_ATTACK, zmieñ go na ON_EQUIP
+	// JeÅ›li karta jest przedmiotem oraz jeÅ›li trigger jest ON_ATTACK, zmieÅ„ go na ON_EQUIP
 	if (cardType == CardType::ITEM)
 	{
 		if (trigger == EffectTrigger::ON_ATTACK) trigger = EffectTrigger::ON_EQUIP;
 	}
-	// Jeœli karta jest jednostk¹ oraz jeœli trigger jest ON_EQUIP, zmieñ go na ON_ATTACK
+	// JeÅ›li karta jest jednostkÄ… oraz jeÅ›li trigger jest ON_EQUIP, zmieÅ„ go na ON_ATTACK
 	if (cardType == CardType::UNIT)
 	{
 		if (trigger == EffectTrigger::ON_EQUIP) trigger = EffectTrigger::ON_ATTACK;
@@ -111,6 +111,16 @@ Effect::Effect(const uint_least32_t& effectSeed, const CardType cardType)
 	// Losowanie grupy targeta
 	std::uniform_int_distribution targetGroupDistribution(0, 2);
 	targetGroup = static_cast<TargetGroup>(targetGroupDistribution(generator));
+
+	// Jesli kategoria to SHUFFLE lub STEAL, zmien grupe targeta na odpowiednia
+	if (targetGroup == TargetGroup::BOTH) {
+		if (category == EffectCategory::SHUFFLE) {
+			targetGroup = TargetGroup::ALLY;
+		}
+		if (category == EffectCategory::STEAL) {
+			targetGroup = TargetGroup::ENEMY;
+		}
+	}
 
 	using EffectBehaviorSetter = void (Effect::*)();
 	std::unordered_map<EffectCategory, EffectBehaviorSetter> behaviorSetters = {
@@ -148,7 +158,7 @@ void Effect::setBuffBehavior()
 	};
 
 	if (targetMode == TargetMode::SELF && trigger == EffectTrigger::ON_DRAW) {
-		// Dodaj ENERGY_COST do mapy dla SELF, jeœli chcesz, aby koszt energii móg³ byæ wybrany
+		// Dodaj ENERGY_COST do mapy dla SELF, jeÅ›li chcesz, aby koszt energii mÃ³gÅ‚ byÄ‡ wybrany
 		selfStatsMap[CardType::UNIT].push_back(StatType::ENERGY_COST);
 		selfStatsMap[CardType::ITEM].push_back(StatType::ENERGY_COST);
 		selfStatsMap[CardType::SPELL].push_back(StatType::ENERGY_COST);
@@ -164,18 +174,18 @@ void Effect::setBuffBehavior()
 	}
 
 	if (targetMode == TargetMode::SELF) {
-		// Jeœli targetMode == SELF, wybieramy statystykê z mapy selfStatsMap dla odpowiedniego CardType
+		// JeÅ›li targetMode == SELF, wybieramy statystykÄ™ z mapy selfStatsMap dla odpowiedniego CardType
 		const auto& selfStats = selfStatsMap[cardType];
 		std::uniform_int_distribution statDistribution(0, static_cast<int>(selfStats.size()) - 1);
 		statType = selfStats[statDistribution(generator)];
 	}
 	else {
-		// Jeœli targetMode != SELF, wybieramy statystykê z ogólnej puli
+		// JeÅ›li targetMode != SELF, wybieramy statystykÄ™ z ogÃ³lnej puli
 		std::uniform_int_distribution statDistribution(0, static_cast<int>(generalStats.size()) - 1);
 		statType = generalStats[statDistribution(generator)];
 	}
 
-	//Sprawdzenie Triggera i ustawienie odpowiednich wartoœci
+	//Sprawdzenie Triggera i ustawienie odpowiednich wartoÅ›ci
 	if (trigger == EffectTrigger::ON_GAME_EVENT || trigger == EffectTrigger::ON_DRAW || trigger == EffectTrigger::ON_DISCARD || trigger == EffectTrigger::ON_ATTACK || trigger == EffectTrigger::ON_EQUIP)
 	{
 		if (trigger == EffectTrigger::ON_DISCARD)
@@ -184,7 +194,7 @@ void Effect::setBuffBehavior()
 		}
 	}
 
-	// Losowanie liczby celów
+	// Losowanie liczby celÃ³w
 	int numberOfTargets;
 	if (targetMode == TargetMode::SELF || targetMode == TargetMode::RANDOM_SINGLE) {
 		numberOfTargets = 1;
@@ -239,7 +249,7 @@ void Effect::setDebuffBehavior()
 	};
 
 	if (targetMode == TargetMode::SELF && trigger == EffectTrigger::ON_DRAW) {
-		// Dodaj ENERGY_COST do mapy dla SELF, jeœli chcesz, aby koszt energii móg³ byæ wybrany
+		// Dodaj ENERGY_COST do mapy dla SELF, jeÅ›li chcesz, aby koszt energii mÃ³gÅ‚ byÄ‡ wybrany
 		selfStatsMap[CardType::UNIT].push_back(StatType::ENERGY_COST);
 		selfStatsMap[CardType::ITEM].push_back(StatType::ENERGY_COST);
 		selfStatsMap[CardType::SPELL].push_back(StatType::ENERGY_COST);
@@ -255,18 +265,18 @@ void Effect::setDebuffBehavior()
 	}
 
 	if (targetMode == TargetMode::SELF) {
-		// Jeœli targetMode == SELF, wybieramy statystykê z mapy selfStatsMap dla odpowiedniego CardType
+		// JeÅ›li targetMode == SELF, wybieramy statystykÄ™ z mapy selfStatsMap dla odpowiedniego CardType
 		const auto& selfStats = selfStatsMap[cardType];
 		std::uniform_int_distribution statDistribution(0, static_cast<int>(selfStats.size()) - 1);
 		statType = selfStats[statDistribution(generator)];
 	}
 	else {
-		// Jeœli targetMode != SELF, wybieramy statystykê z ogólnej puli
+		// JeÅ›li targetMode != SELF, wybieramy statystykÄ™ z ogÃ³lnej puli
 		std::uniform_int_distribution statDistribution(0, static_cast<int>(generalStats.size()) - 1);
 		statType = generalStats[statDistribution(generator)];
 	}
 
-	//Sprawdzenie Triggera i ustawienie odpowiednich wartoœci
+	//Sprawdzenie Triggera i ustawienie odpowiednich wartoÅ›ci
 	if (trigger == EffectTrigger::ON_GAME_EVENT || trigger == EffectTrigger::ON_DRAW || trigger == EffectTrigger::ON_DISCARD || trigger == EffectTrigger::ON_ATTACK || trigger == EffectTrigger::ON_EQUIP)
 	{
 		if (trigger == EffectTrigger::ON_DISCARD)
@@ -275,7 +285,7 @@ void Effect::setDebuffBehavior()
 		}
 	}
 
-	// Losowanie liczby celów
+	// Losowanie liczby celÃ³w
 	int numberOfTargets;
 	if (targetMode == TargetMode::SELF || targetMode == TargetMode::RANDOM_SINGLE) {
 		numberOfTargets = 1;
@@ -385,14 +395,14 @@ void Effect::setDamageBehavior()
 
 void Effect::setStatusApplyBehavior()
 {// target - card(unit)
-	// Najpierw - jaki status ma byæ na³o¿ony
+	// Najpierw - jaki status ma byÄ‡ naÅ‚oÅ¼ony
 	std::uniform_int_distribution<int> statusDistribution(
 		static_cast<int>(Status::BLEEDING),
 		static_cast<int>(Status::STUNNED)
 	);
-	Status status = static_cast<Status>(statusDistribution(generator));
+	auto status = static_cast<Status>(statusDistribution(generator));
 
-	// Losowanie liczby celów
+	// Losowanie liczby celÃ³w
 	int numberOfTargets;
 	if (targetMode == TargetMode::SELF || targetMode == TargetMode::RANDOM_SINGLE) {
 		numberOfTargets = 1;
@@ -435,14 +445,59 @@ void Effect::setStatusApplyBehavior()
 
 void Effect::setKeywordAddBehavior()
 {// target - card(unit)
+	// Najpierw - jaki keyword ma byï¿½ dodany
+	std::uniform_int_distribution<int> keywordDistribution(
+		static_cast<int>(Keyword::BERSERK),
+		static_cast<int>(Keyword::UNSTOPPABLE)
+	);
+	auto keyword = static_cast<Keyword>(keywordDistribution(generator));
 
+	// Losowanie liczby celï¿½w
+	int numberOfTargets;
+	if (targetMode == TargetMode::SELF || targetMode == TargetMode::RANDOM_SINGLE) {
+		numberOfTargets = 1;
+	}
+	else if (targetMode == TargetMode::RANDOM_MULTIPLE) {
+		std::uniform_int_distribution<int> numberOfTargetsDistribution(2, 3);
+		numberOfTargets = numberOfTargetsDistribution(generator);
+	}
+
+	// Losowanie liczby tur
+	std::optional<int> numberOfTurns = std::nullopt;
+	if (durationType == EffectDuration::TURN_BASED) {
+		std::uniform_int_distribution<int> numberOfTurnsDistribution(2, 5);
+		numberOfTurns = numberOfTurnsDistribution(generator);
+	}
+
+	// Ustalanie triggerEvent
+	std::optional<GameEvent> triggerEvent = std::nullopt;
+	if (trigger == EffectTrigger::ON_GAME_EVENT) {
+		targetZone = TargetZone::BATTLEFIELD;
+		std::uniform_int_distribution<int> triggerEventDistribution(
+			static_cast<int>(GameEvent::TURN_START),
+			static_cast<int>(GameEvent::HERO_HEALED)
+		);
+		triggerEvent = static_cast<GameEvent>(triggerEventDistribution(generator));
+	}
+
+	// Ustalanie endEvent
+	std::optional<GameEvent> endEvent = std::nullopt;
+	if (durationType == EffectDuration::EVENT_BASED) {
+		std::uniform_int_distribution<int> endEventDistribution(
+			static_cast<int>(GameEvent::TURN_START),
+			static_cast<int>(GameEvent::HERO_HEALED)
+		);
+		endEvent = static_cast<GameEvent>(endEventDistribution(generator));
+	}
+
+	behavior = std::make_unique<KeywordAddBehavior>(trigger, durationType, keyword, numberOfTargets, numberOfTurns, triggerEvent, endEvent);
 }
 
 void Effect::setSilenceBehavior()
 {// target - card(unit, item)
 	auto status = Status::SILENCED;
 
-	// Losowanie liczby celów
+	// Losowanie liczby celÃ³w
 	int numberOfTargets;
 	if (targetMode == TargetMode::SELF || targetMode == TargetMode::RANDOM_SINGLE) {
 		numberOfTargets = 1;
@@ -486,14 +541,14 @@ void Effect::setSilenceBehavior()
 void Effect::setStatusRemoveBehavior()
 {// target - card(unit)
 
-	// Najpierw - jaki status ma byæ usuwany
+	// Najpierw - jaki status ma byÄ‡ usuwany
 	std::uniform_int_distribution<int> statusDistribution(
 		static_cast<int>(Status::BLEEDING),
 		static_cast<int>(Status::STUNNED)
 	);
 	Status status = static_cast<Status>(statusDistribution(generator));
 
-	// Losowanie liczby celów
+	// Losowanie liczby celÃ³w
 	int numberOfTargets;
 	if (targetMode == TargetMode::SELF || targetMode == TargetMode::RANDOM_SINGLE) {
 		numberOfTargets = 1;
@@ -519,22 +574,96 @@ void Effect::setStatusRemoveBehavior()
 
 void Effect::setDrawBehavior()
 {// target - no target, draws card
+	std::uniform_int_distribution<int> valueDistribution(1, 3);
+	int numberOfCards = valueDistribution(generator);
+	
+	//trigger
+	std::optional<GameEvent> triggerEvent = std::nullopt;
+	if (trigger == EffectTrigger::ON_GAME_EVENT) {
+		std::uniform_int_distribution<int> triggerEventDistribution(
+			static_cast<int>(GameEvent::TURN_START),
+			static_cast<int>(GameEvent::HERO_HEALED)
+		);
+		triggerEvent = static_cast<GameEvent>(triggerEventDistribution(generator));
+	}
 
+	behavior = std::make_unique<DrawBehavior>(trigger, durationType, targetGroup, numberOfCards, triggerEvent);
 }
 
 void Effect::setDiscardBehavior()
 {// target - card(unit, item, spell) in hand
+	int numberOfCards;
+	if (targetMode == TargetMode::RANDOM_SINGLE) {
+		numberOfCards = 1;
+	}
+	else if (targetMode == TargetMode::RANDOM_MULTIPLE) {
+		std::uniform_int_distribution<int> numberOfCardsDistribution(2, 3);
+		numberOfCards = numberOfCardsDistribution(generator);
+	}
 
+	//trigger
+	std::optional<GameEvent> triggerEvent = std::nullopt;
+	if (trigger == EffectTrigger::ON_GAME_EVENT) {
+		std::uniform_int_distribution<int> triggerEventDistribution(
+			static_cast<int>(GameEvent::TURN_START),
+			static_cast<int>(GameEvent::HERO_HEALED)
+		);
+		triggerEvent = static_cast<GameEvent>(triggerEventDistribution(generator));
+	}
+
+	behavior = std::make_unique<DiscardBehavior>(trigger, durationType, targetGroup, numberOfCards, triggerEvent);
 }
 
 void Effect::setShuffleBehavior()
 {// target - card(unit, item, spell) to shuffle into deck
+	int numberOfCards;
+	if (targetMode == TargetMode::RANDOM_SINGLE) {
+		numberOfCards = 1;
+	}
+	else if (targetMode == TargetMode::RANDOM_MULTIPLE) {
+		std::uniform_int_distribution<int> numberOfCardsDistribution(2, 3);
+		numberOfCards = numberOfCardsDistribution(generator);
+	}
 
+	if (targetGroup == TargetGroup::BOTH) {
+		targetGroup = TargetGroup::ALLY;
+	}
+
+	//trigger
+	std::optional<GameEvent> triggerEvent = std::nullopt;
+	if (trigger == EffectTrigger::ON_GAME_EVENT) {
+		std::uniform_int_distribution<int> triggerEventDistribution(
+			static_cast<int>(GameEvent::TURN_START),
+			static_cast<int>(GameEvent::HERO_HEALED)
+		);
+		triggerEvent = static_cast<GameEvent>(triggerEventDistribution(generator));
+	}
+
+	behavior = std::make_unique<ShuffleBehavior>(trigger, durationType, targetGroup, numberOfCards, targetZone, triggerEvent);
 }
 
 void Effect::setStealBehavior()
 {// target - card(unit, item, spell) to steal from opponent
+	int numberOfCards;
+	if (targetMode == TargetMode::RANDOM_SINGLE) {
+		numberOfCards = 1;
+	}
+	else if (targetMode == TargetMode::RANDOM_MULTIPLE) {
+		std::uniform_int_distribution<int> numberOfCardsDistribution(2, 3);
+		numberOfCards = numberOfCardsDistribution(generator);
+	}
 
+	// trigger
+	std::optional<GameEvent> triggerEvent = std::nullopt;
+	if (trigger == EffectTrigger::ON_GAME_EVENT) {
+		std::uniform_int_distribution<int> triggerEventDistribution(
+			static_cast<int>(GameEvent::TURN_START),
+			static_cast<int>(GameEvent::HERO_HEALED)
+		);
+		triggerEvent = static_cast<GameEvent>(triggerEventDistribution(generator));
+	}
+
+	behavior = std::make_unique<StealBehavior>(trigger, durationType, numberOfCards, targetZone, triggerEvent);
 }
 
 void Effect::setEnergyModifyBehavior()

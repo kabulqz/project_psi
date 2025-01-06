@@ -1,6 +1,6 @@
-#include "Card.hpp"
+ï»¿#include "Card.hpp"
 
-std::unique_ptr<Card> Card::createCard(const uint_least32_t& cardSeed)
+Card* Card::createCard(const uint_least32_t& cardSeed)
 {
 	// Create a card based on the seed
 	std::mt19937 randomEngine(cardSeed);
@@ -9,11 +9,11 @@ std::unique_ptr<Card> Card::createCard(const uint_least32_t& cardSeed)
 	// Randomly select a card type
 	switch (static_cast<CardType>(cardTypeDistribution(randomEngine))) {
 	case CardType::UNIT:
-		return std::make_unique<UnitCard>(randomEngine);
+		return new UnitCard(randomEngine);
 	case CardType::ITEM:
-		return std::make_unique<ItemCard>(randomEngine);
+		return new ItemCard(randomEngine);
 	case CardType::SPELL:
-		return std::make_unique<SpellCard>(randomEngine);
+		return new SpellCard(randomEngine);
 	}
 
 	return nullptr;
@@ -52,13 +52,17 @@ void Card::removeEffect(IEffectBehavior* effectBehavior)
 	{
 		debuffBehavior->removeDebuff();
 	}
-	else if (auto* statusApply = dynamic_cast<StatusApplyBehavior*>(effectBehavior))
+	else if (auto* statusApplyBehavior = dynamic_cast<StatusApplyBehavior*>(effectBehavior))
 	{
-		statusApply->removeStatus();
+		statusApplyBehavior->removeStatus();
 	}
-	else if (auto* silence = dynamic_cast<SilenceBehavior*>(effectBehavior))
+	else if (auto* silenceBehavior = dynamic_cast<SilenceBehavior*>(effectBehavior))
 	{
-		silence->removeSilence();
+		silenceBehavior->removeSilence();
+	}
+	else  if (auto* keywordAddBehavior = dynamic_cast<KeywordAddBehavior*>(effectBehavior))
+	{
+		keywordAddBehavior->removeKeyword();
 	}
 
 	// Remove the effect from the active effects list
@@ -66,6 +70,30 @@ void Card::removeEffect(IEffectBehavior* effectBehavior)
 		{
 			return effect.get() == effectBehavior;
 		});
+}
+
+void Card::draw()
+{
+	for (int e = 0; e < effects.size(); ++e)
+	{
+		// check for the effects that have trigger on draw
+	}
+}
+
+void Card::play()
+{
+	for (int e = 0; e < effects.size(); ++e)
+	{
+		// check for the effects that have trigger on play
+	}
+}
+
+void Card::discard()
+{
+	for (int e = 0; e < effects.size(); ++e)
+	{
+		// check for the effects that have trigger on discard
+	}
 }
 
 void ItemCard::increaseDamage(const int value, const uint_least32_t key)
@@ -130,16 +158,16 @@ void ItemCard::reduceDurability(const int value, const uint_least32_t key)
 ItemCard::ItemCard(std::mt19937& cardGenerator) :
 Card(CardType::ITEM)
 {
-	// Wygeneruj wartoœci bazowe
+	// Wygeneruj wartoÅ›ci bazowe
 	// Koszt energii (0 - 12)
-	// (0 - 4) s³abe przedmioty, (5 - 8) œrednie przedmioty, (9 - 12) silne przedmioty
+	// (0 - 4) sÅ‚abe przedmioty, (5 - 8) Å›rednie przedmioty, (9 - 12) silne przedmioty
 	std::uniform_int_distribution<int> energyCostDistribution(0, 12);
 	baseEnergyCost = energyCostDistribution(cardGenerator);
 	currentEnergyCost = baseEnergyCost;
 
-	// Bazowe obra¿enia (1 - 6)
+	// Bazowe obraÅ¼enia (1 - 6)
 	// Bazowa obrona (1 - 6)
-	// Bazowa wytrzyma³oœæ (1 - 3)
+	// Bazowa wytrzymaÅ‚oÅ›Ä‡ (1 - 3)
 	int minValDist, maxValDist;
 	if (baseEnergyCost <= 4) {
 		minValDist = 1;
@@ -229,13 +257,13 @@ void UnitCard::heal(const int value)
 			return sum + effect->value;
 		});
 
-	// Zwiêksz zdrowie o wartoœæ, ale nie wiêcej ni¿ maxHealth
+	// ZwiÄ™ksz zdrowie o wartoÅ›Ä‡, ale nie wiÄ™cej niÅ¼ maxHealth
 	currentHealth = std::min(currentHealth + value, maxHealth);
 }
 
 void UnitCard::dealDamage(const int value)
 {
-	// Zmniejsz zdrowie o wartoœæ, ale nie mniej ni¿ 0
+	// Zmniejsz zdrowie o wartoÅ›Ä‡, ale nie mniej niÅ¼ 0
 	currentHealth = std::max(0, currentHealth - value);
 	if (currentHealth <= 0)
 	{
@@ -245,8 +273,8 @@ void UnitCard::dealDamage(const int value)
 
 void UnitCard::applyStatus(const Status& status, const int numberOfTurns)
 {
-	// Jeœli jeszcze nie ma takiego statusu, dodaj go
-	// Jeœli ju¿ jest taki status, zaktualizuj liczbê tur o numberOfTurns
+	// JeÅ›li jeszcze nie ma takiego statusu, dodaj go
+	// JeÅ›li juÅ¼ jest taki status, zaktualizuj liczbÄ™ tur o numberOfTurns
 	if (!statuses.contains(status))
 	{
 		statuses[status] = numberOfTurns;
@@ -259,26 +287,45 @@ void UnitCard::applyStatus(const Status& status, const int numberOfTurns)
 
 void UnitCard::removeStatus(const Status& status)
 {
-	// Jeœli status istnieje, usuñ go
+	// JeÅ›li status istnieje, usuÅ„ go
 	if (statuses.contains(status))
 	{
 		statuses.erase(status);
 	}
 }
 
-UnitCard::UnitCard(std::mt19937& cardGenerator) :
-	Card(CardType::UNIT) // Wywo³anie konstruktora bazowego
+void UnitCard::addKeyword(const Keyword& keyword)
 {
-	// Wygeneruj wartoœci bazowe
+	// Jeï¿½li nie istnieje, dodaj nowe sï¿½owo kluczowe do jednostki
+	// Jeï¿½li istnieje, zignoruj
+	if (!keywords.contains(keyword))
+	{
+		keywords.insert(keyword);
+	}
+}
+
+void UnitCard::removeKeyword(const Keyword& keyword)
+{
+	// Jeï¿½li sï¿½owo kluczowe istnieje, usuï¿½ je
+	if (keywords.contains(keyword))
+	{
+		keywords.erase(keyword);
+	}
+}
+
+UnitCard::UnitCard(std::mt19937& cardGenerator) :
+	Card(CardType::UNIT) // WywoÅ‚anie konstruktora bazowego
+{
+	// Wygeneruj wartoÅ›ci bazowe
 	// Koszt energii (0 - 12)
-	// (0 - 4) s³abe jednostki, (5 - 8) œrednie jednostki, (9 - 12) silne jednostki
+	// (0 - 4) sÅ‚abe jednostki, (5 - 8) Å›rednie jednostki, (9 - 12) silne jednostki
 
 	std::uniform_int_distribution<int> energyCostDistribution(0, 12);
 	baseEnergyCost = energyCostDistribution(cardGenerator);
 	currentEnergyCost = baseEnergyCost;
 
-	// Bazowe zdrowie w zale¿noœci od kosztu energii (1 - 12)
-	// Bazowy atak w zale¿noœci od kosztu energii (1 - 12)
+	// Bazowe zdrowie w zaleÅ¼noÅ›ci od kosztu energii (1 - 12)
+	// Bazowy atak w zaleÅ¼noÅ›ci od kosztu energii (1 - 12)
 	int minValDist, maxValDist;
 	if (baseEnergyCost <= 4) {
 		minValDist = 1;
@@ -299,7 +346,7 @@ UnitCard::UnitCard(std::mt19937& cardGenerator) :
 	baseAttack = attackDistribution(cardGenerator);
 	currentAttack = baseAttack;
 
-	// Liczba efektów, statusów i s³ów kluczowych
+	// Liczba efektÃ³w, statusÃ³w i sÅ‚Ã³w kluczowych
 	// Efekty
 	std::uniform_int_distribution<int> effectsDistribution(0, 3);
 	const int numEffects = effectsDistribution(cardGenerator);
@@ -327,9 +374,9 @@ UnitCard::UnitCard(std::mt19937& cardGenerator) :
 	const int numStatuses = statusesDistribution(cardGenerator);
 	for (int i = 0; i < numStatuses; i++)
 	{
-		statuses[availableStatuses[i]] = -1; // -1 oznacza, ¿e status nie ma limitu tur
+		statuses[availableStatuses[i]] = -1; // -1 oznacza, Å¼e status nie ma limitu tur
 	}
-	// S³owa kluczowe
+	// SÅ‚owa kluczowe
 	std::uniform_int_distribution<int> keywordsDistribution(0, 2);
 	std::vector<Keyword> availableKeywords = {
 		Keyword::BERSERK,		 // Gains attack after it is attacked
@@ -350,7 +397,7 @@ UnitCard::UnitCard(std::mt19937& cardGenerator) :
 	const int numKeywords = keywordsDistribution(cardGenerator);
 	for (int i = 0; i < numKeywords; i++)
 	{
-		keywords.insert(availableKeywords[i]); // Dodaj s³owo kluczowe
+		keywords.insert(availableKeywords[i]); // Dodaj sÅ‚owo kluczowe
 	}
 }
 
@@ -380,21 +427,21 @@ void SpellCard::reduceValue(const int value, const uint_least32_t key)
 SpellCard::SpellCard(std::mt19937& cardGenerator) :
 Card(CardType::SPELL)
 {
-	// Wygeneruj wartoœci bazowe
+	// Wygeneruj wartoÅ›ci bazowe
 	// Koszt energii (0 - 12)
-	// (0 - 4) s³abe zaklêcia, (5 - 8) œrednie zaklêcia, (9 - 12) silne zaklêcia
+	// (0 - 4) sÅ‚abe zaklÄ™cia, (5 - 8) Å›rednie zaklÄ™cia, (9 - 12) silne zaklÄ™cia
 	std::uniform_int_distribution<int> energyCostDistribution(0, 12);
 	baseEnergyCost = energyCostDistribution(cardGenerator);
 	currentEnergyCost = baseEnergyCost;
 
 	// Value bedzie tylko potrzebne jesli Spell card bedzie mial efekt np. heal, dealDamage etc
 	// inaczej nie bedzie potrzebne
-	// Bazowa wartoœæ (1 - 6)
+	// Bazowa wartoÅ›Ä‡ (1 - 6)
 	std::uniform_int_distribution<int> valueDistribution(1, 6);
 	baseValue = valueDistribution(cardGenerator);
 	currentValue = baseValue;
 
-	// Efekty, Spell cardy mog¹ mieæ od 2 do 6 efektów
+	// Efekty, Spell cardy mogÄ… mieÄ‡ od 2 do 6 efektÃ³w
 	std::uniform_int_distribution<int> effectsDistribution(2, 6);
 	const int numEffects = effectsDistribution(cardGenerator);
 	for (int i = 0; i < numEffects; i++)

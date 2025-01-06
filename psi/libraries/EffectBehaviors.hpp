@@ -194,6 +194,35 @@ public:
 	);
 };
 
+class KeywordAddBehavior final : public IEffectBehavior
+{
+public:
+	void execute(Target& target) override;				// Add keyword to target
+	void decrementTurn() override;						// If duration is TURN_BASED
+	void checkForEndEvent(GameEvent event) override;	// If duration is EVENT_BASED
+	void removeKeyword() const;
+
+	// Add keyword for Effect class
+	KeywordAddBehavior(
+		EffectTrigger trigger,
+		EffectDuration duration,
+		Keyword keyword,
+		int numberOfTargets,
+		std::optional<int> numberOfTurns = std::nullopt,
+		std::optional<GameEvent> triggerEvent = std::nullopt,
+		std::optional<GameEvent> endEvent = std::nullopt
+	);
+
+	// Add keyword for Card class
+	KeywordAddBehavior(
+		Target* targetOfEffect,
+		EffectDuration duration,
+		Keyword keyword,
+		std::optional<int> numberOfTurns = std::nullopt,
+		std::optional<GameEvent> endEvent = std::nullopt
+	);
+};
+
 class SilenceBehavior final : public IEffectBehavior
 {
 public:
@@ -234,6 +263,76 @@ public:
 		EffectDuration duration,
 		Status status,
 		int numberOfTargets,
+		std::optional<GameEvent> triggerEvent = std::nullopt
+	);
+};
+
+class DrawBehavior final : public IEffectBehavior
+{
+	TargetGroup who;
+public:
+	void execute(Target& target) override;				// Draw cards
+	void decrementTurn() override;						// Not used
+	void checkForEndEvent(GameEvent event) override;	// Not used
+	// Draw cards
+	DrawBehavior(
+		EffectTrigger trigger,
+		EffectDuration duration,
+		TargetGroup who,
+		int value,
+		std::optional<GameEvent> triggerEvent = std::nullopt
+	);
+};
+
+class DiscardBehavior final : public IEffectBehavior
+{
+	TargetGroup who;
+public:
+	void execute(Target& target) override;				// Discard cards
+	void decrementTurn() override;						// Not used
+	void checkForEndEvent(GameEvent event) override;	// Not used
+	// Discard cards
+	DiscardBehavior(
+		EffectTrigger trigger,
+		EffectDuration duration,
+		TargetGroup who,
+		int value,
+		std::optional<GameEvent> triggerEvent = std::nullopt
+	);
+};
+
+class ShuffleBehavior final : public IEffectBehavior
+{
+	TargetZone whichZone;
+	TargetGroup who;
+public:
+	void execute(Target& target) override;				// Shuffle cards
+	void decrementTurn() override;						// Not used
+	void checkForEndEvent(GameEvent event) override;	// Not used
+	// Shuffle cards
+	ShuffleBehavior(
+		EffectTrigger trigger,
+		EffectDuration duration,
+		TargetGroup targetGroup,
+		int value,
+		TargetZone targetZone,
+		std::optional<GameEvent> triggerEvent = std::nullopt
+	);
+};
+
+class StealBehavior final : public IEffectBehavior
+{
+	TargetZone whichZone;
+public:
+	void execute(Target& target) override;				// Steal cards
+	void decrementTurn() override;						// Not used
+	void checkForEndEvent(GameEvent event) override;	// Not used
+	// Steal cards
+	StealBehavior(
+		EffectTrigger trigger,
+		EffectDuration duration,
+		int value,
+		TargetZone targetZone,
 		std::optional<GameEvent> triggerEvent = std::nullopt
 	);
 };

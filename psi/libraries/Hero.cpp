@@ -142,38 +142,11 @@ BoardGamePlayer* BoardGamePlayer::deserialize(const std::string& data)
 	return temp;
 }
 
-Hero::Hero()
+Hero::Hero(): currentHealth(0), maxEnergy(0), currentEnergy(0)
 {
 	// Write checks for the deck, hand and battlefield
 	hand.reserve(10);
 	battlefield.reserve(5);
-}
-
-Hero::Hero(const Hero& hero)
-{
-	maxHealth = hero.maxHealth;
-	currentHealth = hero.currentHealth;
-	maxEnergy = hero.maxEnergy;
-	currentEnergy = hero.currentEnergy;
-	fatigue = hero.fatigue;
-	deck = hero.deck;
-	hand = hero.hand;
-	battlefield = hero.battlefield;
-}
-
-Hero& Hero::operator=(const Hero& hero)
-{
-	if (this == &hero) return *this;
-
-	maxHealth = hero.maxHealth;
-	currentHealth = hero.currentHealth;
-	maxEnergy = hero.maxEnergy;
-	currentEnergy = hero.currentEnergy;
-	fatigue = hero.fatigue;
-	deck = hero.deck;
-	hand = hero.hand;
-	battlefield = hero.battlefield;
-	return *this;
 }
 
 void Hero::dealDamage(const int value)
@@ -194,49 +167,54 @@ void Hero::restoreHealth(const int value)
 
 void Hero::drawCard()
 {
+	// If the deck is empty - draw fatigue, then increment it
+	// Else draw a card from the deck and call card-draw() method, then add it to the hand
 	if (deck.empty())
 	{
-		// Fatigue
+		// Draw fatigue
 		dealDamage(fatigue);
-		fatigue++;
-		return;
+		++fatigue;
 	}
-
-	Card* card = deck.top();
-	deck.pop();
-
-	if (hand.size() < 10)
+	else
 	{
-		hand.push_back(card);
-		//card->setZone(TargetZone::HAND);
+		Card* card = deck.front();
+		deck.erase(deck.begin());
+		if (hand.size() < 10) {
+			card->draw();
+			hand.push_back(card);
+		}
+		else {
+			card->discard();
+			delete card;
+		}
+	}
+}
+
+void Hero::discardCard()
+{
+	if (!hand.empty()) {
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		std::uniform_int_distribution<int> handDistribution(0, static_cast<int>(hand.size() - 1));
+		int index = handDistribution(gen);
+		Card* card = hand[index];
+		card->discard();
+		hand.erase(hand.begin() + index);
+		delete card;
 	}
 }
 
 void Hero::shuffleCardIntoTheDeck(Card* card)
 {
-	if (!card) return; // For safety
-
-	std::random_device rd;
-	std::mt19937 generator(rd());
-	std::uniform_int_distribution<int> distribution(0, static_cast<int>(deck.size())); // Uniform distribution to get random position
-
-	const int randomIndex = distribution(generator); // Get a random index within the deck size
-
-	// Step 1: Convert the deck from a stack to a vector temporarily to allow random access
-	std::vector<Card*> tempDeck;
-	while (!deck.empty())
-	{
-		tempDeck.push_back(deck.top());
-		deck.pop();
+	if (!deck.empty()) {
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		std::uniform_int_distribution<int> deckDistribution(0, static_cast<int>(deck.size() - 1));
+		int index = deckDistribution(gen);
+		deck.insert(deck.begin() + index, card);
 	}
-
-	// Step 2: Insert the card at the random position
-	tempDeck.insert(tempDeck.begin() + randomIndex, card);
-
-	// Step 3: Convert the deck back to a stack
-	for (auto& it : std::ranges::reverse_view(tempDeck))
-	{
-		deck.push(it);
+	else {
+		deck.push_back(card);
 	}
 }
 
@@ -252,10 +230,4 @@ void Hero::removeEffect(IEffectBehavior* effectBehavior)
 		{
 			return effect.get() == effectBehavior;
 		});
-}
-
-Player::Player()
-{
-	experience = 0;
-	money = 0;
 }

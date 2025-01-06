@@ -510,6 +510,63 @@ StatusApplyBehavior::StatusApplyBehavior(Target* targetOfEffect, EffectDuration 
 	this->endEvent = endEvent;
 }
 
+KeywordAddBehavior::KeywordAddBehavior(EffectTrigger trigger, EffectDuration duration, Keyword keyword,
+	int numberOfTargets, std::optional<int> numberOfTurns, std::optional<GameEvent> triggerEvent, std::optional<GameEvent> endEvent)
+{
+	this->trigger = trigger;
+	this->duration = duration;
+	this->keyword = keyword;
+	this->numberOfTargets = numberOfTargets;
+	this->numberOfTurns = numberOfTurns;
+	this->triggerEvent = triggerEvent;
+	this->endEvent = endEvent;
+}
+
+void KeywordAddBehavior::execute(Target& target)
+{
+	if (auto* unit = dynamic_cast<UnitCard*>(&target)) {
+		unit->addKeyword(keyword.value());
+		unit->applyEffect(std::make_unique<KeywordAddBehavior>(unit, duration.value(), keyword.value(), numberOfTurns.value(), endEvent.value()));
+	}
+}
+
+void KeywordAddBehavior::decrementTurn()
+{
+	if (duration == EffectDuration::TURN_BASED && numberOfTurns.has_value()) {
+		numberOfTurns.value() = numberOfTurns.value() - 1;
+		if (numberOfTurns.value() == 0) {
+			if (auto* unit = dynamic_cast<UnitCard*>(effectTarget)) {
+				unit->removeEffect(this);
+			}
+		}
+	}
+}
+
+void KeywordAddBehavior::checkForEndEvent(GameEvent event)
+{
+	if (duration == EffectDuration::EVENT_BASED && endEvent.has_value() && endEvent.value() == event) {
+		if (auto* unit = dynamic_cast<UnitCard*>(effectTarget)) {
+			unit->removeEffect(this);
+		}
+	}
+}
+
+void KeywordAddBehavior::removeKeyword() const
+{
+	auto* unit = dynamic_cast<UnitCard*>(effectTarget);
+	unit->removeKeyword(keyword.value());
+}
+
+KeywordAddBehavior::KeywordAddBehavior(Target* targetOfEffect, EffectDuration duration, Keyword keyword,
+	std::optional<int> numberOfTurns, std::optional<GameEvent> endEvent)
+{
+	this->effectTarget = targetOfEffect;
+	this->duration = duration;
+	this->keyword = keyword;
+	this->numberOfTurns = numberOfTurns;
+	this->endEvent = endEvent;
+}
+
 SilenceBehavior::SilenceBehavior(EffectTrigger trigger, EffectDuration duration, int numberOfTargets, std::optional<int> numberOfTurns, std::optional<GameEvent> triggerEvent, std::optional<GameEvent> endEvent)
 {
 	this->trigger = trigger;
@@ -586,6 +643,221 @@ void StatusRemoveBehavior::decrementTurn()
 }
 
 void StatusRemoveBehavior::checkForEndEvent(GameEvent event)
+{
+	// Not used
+}
+
+DrawBehavior::DrawBehavior(EffectTrigger trigger, EffectDuration duration, TargetGroup who, int value,
+	std::optional<GameEvent> triggerEvent)
+{
+	this->trigger = trigger;
+	this->duration = duration;
+	this->who = who;
+	this->value = value;
+	this->triggerEvent = triggerEvent;
+}
+
+void DrawBehavior::execute(Target& target)
+{// by target we pass the card that initiated the effect
+	const auto* card = dynamic_cast<Card*>(&target);
+
+	auto* allyHero = card->getOwner();
+	auto* enemyHero = card->getEnemy();
+
+	const int numberOfCards = value.value();
+	for (int i = 0; i < numberOfCards; i++) {
+		if (who == TargetGroup::ALLY) {
+			allyHero->drawCard();
+		}
+		else if (who == TargetGroup::ENEMY) {
+			enemyHero->drawCard();
+		}
+		else if (who == TargetGroup::BOTH) {
+			allyHero->drawCard();
+			enemyHero->drawCard();
+		}
+	}
+}
+
+void DrawBehavior::decrementTurn()
+{
+	// Not used
+}
+
+void DrawBehavior::checkForEndEvent(GameEvent event)
+{
+	// Not used
+}
+
+DiscardBehavior::DiscardBehavior(EffectTrigger trigger, EffectDuration duration, TargetGroup who, int value,
+	std::optional<GameEvent> triggerEvent)
+{
+	this->trigger = trigger;
+	this->duration = duration;
+	this->who = who;
+	this->value = value;
+	this->triggerEvent = triggerEvent;
+}
+
+void DiscardBehavior::execute(Target& target)
+{// by target we pass the card that initiated the effect
+	const auto* card = dynamic_cast<Card*>(&target);
+
+	auto* allyHero = card->getOwner();
+	auto* enemyHero = card->getEnemy();
+
+	const int numberOfCards = value.value();
+	for (int i = 0; i < numberOfCards; i++) {
+		if (who == TargetGroup::ALLY) {
+			allyHero->discardCard();
+		}
+		else if (who == TargetGroup::ENEMY) {
+			enemyHero->discardCard();
+		}
+		else if (who == TargetGroup::BOTH) {
+			allyHero->discardCard();
+			enemyHero->discardCard();
+		}
+	}
+}
+
+void DiscardBehavior::decrementTurn()
+{
+	// Not used
+}
+
+void DiscardBehavior::checkForEndEvent(GameEvent event)
+{
+	// Not used
+}
+
+ShuffleBehavior::ShuffleBehavior(EffectTrigger trigger, EffectDuration duration, TargetGroup targetGroup,
+	int value, TargetZone targetZone, std::optional<GameEvent> triggerEvent)
+{
+	this->trigger = trigger;
+	this->duration = duration;
+	this->who = targetGroup;
+	this->value = value;
+	this->whichZone = targetZone;
+	this->triggerEvent = triggerEvent;
+}
+
+void ShuffleBehavior::execute(Target& target)
+{// by target we pass the card that initiated the effect
+	auto* card = dynamic_cast<Card*>(&target);
+
+	auto* allyHero = card->getOwner();
+	auto* enemyHero = card->getEnemy();
+
+	const int numberOfCards = value.value();
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	if (who == TargetGroup::ALLY)
+	{
+		if (whichZone == TargetZone::HAND)
+		{
+			std::uniform_int_distribution<> dis(0, static_cast<int>(allyHero->getHand().size() - 1));
+			for (int i = 0; i < numberOfCards; i++)
+			{
+				int randomCardIndex = dis(gen);
+				allyHero->shuffleCardIntoTheDeck(allyHero->getHand()[randomCardIndex]);
+				allyHero->getHand().erase(allyHero->getHand().begin() + randomCardIndex);
+			}
+		}
+		else if (whichZone == TargetZone::BATTLEFIELD)
+		{
+			std::uniform_int_distribution<> dis(0, static_cast<int>(allyHero->getBattlefield().size() - 1));
+			for (int i = 0; i < numberOfCards; i++)
+			{
+				int randomCardIndex = dis(gen);
+				allyHero->shuffleCardIntoTheDeck(allyHero->getBattlefield()[randomCardIndex]);
+				allyHero->getBattlefield().erase(allyHero->getBattlefield().begin() + randomCardIndex);
+			}
+		}
+	}
+	else if (who == TargetGroup::ENEMY)
+	{
+		if (whichZone == TargetZone::HAND)
+		{
+			std::uniform_int_distribution<> dis(0, static_cast<int>(enemyHero->getHand().size() - 1));
+			for (int i = 0; i < numberOfCards; i++)
+			{
+				int randomCardIndex = dis(gen);
+				enemyHero->shuffleCardIntoTheDeck(enemyHero->getHand()[randomCardIndex]);
+				enemyHero->getHand().erase(enemyHero->getHand().begin() + randomCardIndex);
+			}
+		}
+		else if (whichZone == TargetZone::BATTLEFIELD)
+		{
+			std::uniform_int_distribution<> dis(0, static_cast<int>(enemyHero->getBattlefield().size() - 1));
+			for (int i = 0; i < numberOfCards; i++)
+			{
+				int randomCardIndex = dis(gen);
+				enemyHero->shuffleCardIntoTheDeck(enemyHero->getBattlefield()[randomCardIndex]);
+				enemyHero->getBattlefield().erase(enemyHero->getBattlefield().begin() + randomCardIndex);
+			}
+		}
+	}
+}
+
+void ShuffleBehavior::decrementTurn()
+{
+	// Not used
+}
+
+void ShuffleBehavior::checkForEndEvent(GameEvent event)
+{
+	// Not used
+}
+
+StealBehavior::StealBehavior(EffectTrigger trigger, EffectDuration duration, int value, TargetZone targetZone,
+	std::optional<GameEvent> triggerEvent)
+{
+	this->trigger = trigger;
+	this->duration = duration;
+	this->value = value;
+	this->whichZone = targetZone;
+	this->triggerEvent = triggerEvent;
+}
+
+void StealBehavior::execute(Target& target)
+{// by target we pass the card that initiated the effect
+	auto* card = dynamic_cast<Card*>(&target);
+
+	auto* allyHero = card->getOwner();
+	auto* enemyHero = card->getEnemy();
+	// we steal number of cards from whichZone from enemy and shuffle the cards into the deck of the ally
+	const int numberOfCards = value.value();
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	if (whichZone == TargetZone::HAND)
+	{
+		std::uniform_int_distribution<> dis(0, static_cast<int>(enemyHero->getHand().size() - 1));
+		for (int i = 0; i < numberOfCards; i++)
+		{
+			int randomCardIndex = dis(gen);
+			allyHero->shuffleCardIntoTheDeck(enemyHero->getHand()[randomCardIndex]);
+			enemyHero->getHand().erase(enemyHero->getHand().begin() + randomCardIndex);
+		}
+	}
+	else if (whichZone == TargetZone::DECK)
+	{
+		std::uniform_int_distribution<> dis(0, static_cast<int>(enemyHero->getDeck().size() - 1));
+		for (int i = 0; i < numberOfCards; i++)
+		{
+			int randomCardIndex = dis(gen);
+			allyHero->shuffleCardIntoTheDeck(enemyHero->getDeck()[randomCardIndex]);
+			enemyHero->getDeck().erase(enemyHero->getDeck().begin() + randomCardIndex);
+		}
+	}
+}
+
+void StealBehavior::decrementTurn()
+{
+	// Not used
+}
+
+void StealBehavior::checkForEndEvent(GameEvent event)
 {
 	// Not used
 }

@@ -1,4 +1,19 @@
-﻿  EffectBehaviors.cpp
+﻿  AbilityTree.cpp
+  AbilityTreeState.cpp
+  Card.cpp
+  Effect.cpp
+  EffectBehaviors.cpp
+  Game.cpp
+  GameBoardState.cpp
+  GameCardState.cpp
+  Hero.cpp
+  MainMenuState.cpp
+  Save.cpp
+  TransitionState.cpp
+  main.cpp
+  Generowanie kodu...
+sfml-graphics-s-d.lib(Image.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-graphics-s-d.lib(Image.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
+sfml-audio-s-d.lib(SoundFileReaderFlac.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-audio-s-d.lib(SoundFileReaderFlac.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
   psi.vcxproj -> C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\x64\Debug\psi.exe
   C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\psi\src\OpenSSL\libcrypto-3-x64.dll
   1 File(s) copied

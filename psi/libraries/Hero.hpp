@@ -72,7 +72,7 @@ protected:
 	int maxEnergy;					// Depending on turns
 	int currentEnergy;				// Current energy stored in turn
 
-	std::stack<Card*> deck;			// Deck that player has
+	std::vector<Card*> deck;			// Deck that player has
 	std::vector<Card*> hand;		// Hand that player has during turns
 	std::vector<Card*> battlefield;	// Battlefield corresponding to player
 	int fatigue = 1;				// Fatigue that player will draw when there are no cards in deck
@@ -80,37 +80,17 @@ protected:
 	std::vector<std::unique_ptr<IEffectBehavior>> activeEffects;	// List of active effects(heal / damage )
 public:
 	Hero();
-	Hero(const Hero& hero);
-	Hero& operator=(const Hero& hero);
 
-	std::stack<Card*> getDeck() const { return deck; }
+	std::vector<Card*> getDeck() const { return deck; }
 	std::vector<Card*> getHand() const { return hand; }
 	std::vector<Card*> getBattlefield() const { return battlefield; }
 
 	void dealDamage(int value);
 	void restoreHealth(int value);
 	void drawCard();
+	void discardCard();
 	void shuffleCardIntoTheDeck(Card* card);
 
 	void applyEffect(std::unique_ptr<IEffectBehavior> effectBehavior);
 	void removeEffect(IEffectBehavior* effectBehavior);
-};
-
-// Specifically for Card Game
-class Enemy : public Hero
-{
-private:
-
-public:
-	Enemy() = default;
-};
-
-// Specifically for Card Game
-class Player : public Hero
-{
-private:
-	int experience;
-	int money;
-public:
-	Player();
 };
