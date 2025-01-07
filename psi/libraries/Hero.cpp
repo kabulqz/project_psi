@@ -180,11 +180,11 @@ void Hero::drawCard()
 		Card* card = deck.front();
 		deck.erase(deck.begin());
 		if (hand.size() < 10) {
-			card->draw();
+			card->triggerEffect(EffectTrigger::ON_DRAW);
 			hand.push_back(card);
 		}
 		else {
-			card->discard();
+			card->triggerEffect(EffectTrigger::ON_DISCARD);
 			delete card;
 		}
 	}
@@ -198,7 +198,7 @@ void Hero::discardCard()
 		std::uniform_int_distribution<int> handDistribution(0, static_cast<int>(hand.size() - 1));
 		int index = handDistribution(gen);
 		Card* card = hand[index];
-		card->discard();
+		card->triggerEffect(EffectTrigger::ON_DISCARD);
 		hand.erase(hand.begin() + index);
 		delete card;
 	}
@@ -216,6 +216,7 @@ void Hero::shuffleCardIntoTheDeck(Card* card)
 	else {
 		deck.push_back(card);
 	}
+	card->triggerGameEvent(GameEvent::CARD_SHUFFLED);
 }
 
 void Hero::modifyEnergy(int value)

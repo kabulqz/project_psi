@@ -72,7 +72,7 @@ protected:
 	int maxEnergy;					// Depending on turns
 	int currentEnergy;				// Current energy stored in turn
 
-	std::vector<Card*> deck;			// Deck that player has
+	std::vector<Card*> deck;		// Deck that player has
 	std::vector<Card*> hand;		// Hand that player has during turns
 	std::vector<Card*> battlefield;	// Battlefield corresponding to player
 	int fatigue = 1;				// Fatigue that player will draw when there are no cards in deck

@@ -75,7 +75,7 @@ void Effect::setBuffBehavior()
 
 		std::uniform_int_distribution<int> triggerEventDistribution(
 			static_cast<int>(GameEvent::TURN_START),
-			static_cast<int>(GameEvent::HERO_HEALED)
+			static_cast<int>(GameEvent::ITEM_DESTROYED)
 		);
 		triggerEvent = static_cast<GameEvent>(triggerEventDistribution(generator));
 	}
@@ -85,7 +85,7 @@ void Effect::setBuffBehavior()
 	if (durationType == EffectDuration::EVENT_BASED) {
 		std::uniform_int_distribution<int> endEventDistribution(
 			static_cast<int>(GameEvent::TURN_START),
-			static_cast<int>(GameEvent::HERO_HEALED)
+			static_cast<int>(GameEvent::ITEM_DESTROYED)
 		);
 		endEvent = static_cast<GameEvent>(endEventDistribution(generator));
 	}
@@ -166,7 +166,7 @@ void Effect::setDebuffBehavior()
 
 		std::uniform_int_distribution<int> triggerEventDistribution(
 			static_cast<int>(GameEvent::TURN_START),
-			static_cast<int>(GameEvent::HERO_HEALED)
+			static_cast<int>(GameEvent::ITEM_DESTROYED)
 		);
 		triggerEvent = static_cast<GameEvent>(triggerEventDistribution(generator));
 	}
@@ -176,7 +176,7 @@ void Effect::setDebuffBehavior()
 	if (durationType == EffectDuration::EVENT_BASED) {
 		std::uniform_int_distribution<int> endEventDistribution(
 			static_cast<int>(GameEvent::TURN_START),
-			static_cast<int>(GameEvent::HERO_HEALED)
+			static_cast<int>(GameEvent::ITEM_DESTROYED)
 		);
 		endEvent = static_cast<GameEvent>(endEventDistribution(generator));
 	}
@@ -209,7 +209,7 @@ void Effect::setHealBehavior()
 		targetZone = TargetZone::BATTLEFIELD;
 		std::uniform_int_distribution<int> triggerEventDistribution(
 			static_cast<int>(GameEvent::TURN_START),
-			static_cast<int>(GameEvent::HERO_HEALED)
+			static_cast<int>(GameEvent::ITEM_DESTROYED)
 		);
 		triggerEvent = static_cast<GameEvent>(triggerEventDistribution(generator));
 	}
@@ -242,7 +242,7 @@ void Effect::setDamageBehavior()
 		targetZone = TargetZone::BATTLEFIELD;
 		std::uniform_int_distribution<int> triggerEventDistribution(
 			static_cast<int>(GameEvent::TURN_START),
-			static_cast<int>(GameEvent::HERO_HEALED)
+			static_cast<int>(GameEvent::ITEM_DESTROYED)
 		);
 		triggerEvent = static_cast<GameEvent>(triggerEventDistribution(generator));
 	}
@@ -282,7 +282,7 @@ void Effect::setStatusApplyBehavior()
 		targetZone = TargetZone::BATTLEFIELD;
 		std::uniform_int_distribution<int> triggerEventDistribution(
 			static_cast<int>(GameEvent::TURN_START),
-			static_cast<int>(GameEvent::HERO_HEALED)
+			static_cast<int>(GameEvent::ITEM_DESTROYED)
 		);
 		triggerEvent = static_cast<GameEvent>(triggerEventDistribution(generator));
 	}
@@ -292,7 +292,7 @@ void Effect::setStatusApplyBehavior()
 	if (durationType == EffectDuration::EVENT_BASED) {
 		std::uniform_int_distribution<int> endEventDistribution(
 			static_cast<int>(GameEvent::TURN_START),
-			static_cast<int>(GameEvent::HERO_HEALED)
+			static_cast<int>(GameEvent::ITEM_DESTROYED)
 		);
 		endEvent = static_cast<GameEvent>(endEventDistribution(generator));
 	}
@@ -332,7 +332,7 @@ void Effect::setKeywordAddBehavior()
 		targetZone = TargetZone::BATTLEFIELD;
 		std::uniform_int_distribution<int> triggerEventDistribution(
 			static_cast<int>(GameEvent::TURN_START),
-			static_cast<int>(GameEvent::HERO_HEALED)
+			static_cast<int>(GameEvent::ITEM_DESTROYED)
 		);
 		triggerEvent = static_cast<GameEvent>(triggerEventDistribution(generator));
 	}
@@ -342,7 +342,7 @@ void Effect::setKeywordAddBehavior()
 	if (durationType == EffectDuration::EVENT_BASED) {
 		std::uniform_int_distribution<int> endEventDistribution(
 			static_cast<int>(GameEvent::TURN_START),
-			static_cast<int>(GameEvent::HERO_HEALED)
+			static_cast<int>(GameEvent::ITEM_DESTROYED)
 		);
 		endEvent = static_cast<GameEvent>(endEventDistribution(generator));
 	}
@@ -377,7 +377,7 @@ void Effect::setSilenceBehavior()
 		targetZone = TargetZone::BATTLEFIELD;
 		std::uniform_int_distribution<int> triggerEventDistribution(
 			static_cast<int>(GameEvent::TURN_START),
-			static_cast<int>(GameEvent::HERO_HEALED)
+			static_cast<int>(GameEvent::ITEM_DESTROYED)
 		);
 		triggerEvent = static_cast<GameEvent>(triggerEventDistribution(generator));
 	}
@@ -387,7 +387,7 @@ void Effect::setSilenceBehavior()
 	if (durationType == EffectDuration::EVENT_BASED) {
 		std::uniform_int_distribution<int> endEventDistribution(
 			static_cast<int>(GameEvent::TURN_START),
-			static_cast<int>(GameEvent::HERO_HEALED)
+			static_cast<int>(GameEvent::ITEM_DESTROYED)
 		);
 		endEvent = static_cast<GameEvent>(endEventDistribution(generator));
 	}
@@ -421,7 +421,7 @@ void Effect::setStatusRemoveBehavior()
 		targetZone = TargetZone::BATTLEFIELD;
 		std::uniform_int_distribution<int> triggerEventDistribution(
 			static_cast<int>(GameEvent::TURN_START),
-			static_cast<int>(GameEvent::HERO_HEALED)
+			static_cast<int>(GameEvent::ITEM_DESTROYED)
 		);
 		triggerEvent = static_cast<GameEvent>(triggerEventDistribution(generator));
 	}
@@ -439,7 +439,7 @@ void Effect::setDrawBehavior()
 	if (trigger == EffectTrigger::ON_GAME_EVENT) {
 		std::uniform_int_distribution<int> triggerEventDistribution(
 			static_cast<int>(GameEvent::TURN_START),
-			static_cast<int>(GameEvent::HERO_HEALED)
+			static_cast<int>(GameEvent::ITEM_DESTROYED)
 		);
 		triggerEvent = static_cast<GameEvent>(triggerEventDistribution(generator));
 	}
@@ -463,7 +463,7 @@ void Effect::setDiscardBehavior()
 	if (trigger == EffectTrigger::ON_GAME_EVENT) {
 		std::uniform_int_distribution<int> triggerEventDistribution(
 			static_cast<int>(GameEvent::TURN_START),
-			static_cast<int>(GameEvent::HERO_HEALED)
+			static_cast<int>(GameEvent::ITEM_DESTROYED)
 		);
 		triggerEvent = static_cast<GameEvent>(triggerEventDistribution(generator));
 	}
@@ -491,7 +491,7 @@ void Effect::setShuffleBehavior()
 	if (trigger == EffectTrigger::ON_GAME_EVENT) {
 		std::uniform_int_distribution<int> triggerEventDistribution(
 			static_cast<int>(GameEvent::TURN_START),
-			static_cast<int>(GameEvent::HERO_HEALED)
+			static_cast<int>(GameEvent::ITEM_DESTROYED)
 		);
 		triggerEvent = static_cast<GameEvent>(triggerEventDistribution(generator));
 	}
@@ -515,7 +515,7 @@ void Effect::setStealBehavior()
 	if (trigger == EffectTrigger::ON_GAME_EVENT) {
 		std::uniform_int_distribution<int> triggerEventDistribution(
 			static_cast<int>(GameEvent::TURN_START),
-			static_cast<int>(GameEvent::HERO_HEALED)
+			static_cast<int>(GameEvent::ITEM_DESTROYED)
 		);
 		triggerEvent = static_cast<GameEvent>(triggerEventDistribution(generator));
 	}
@@ -537,7 +537,7 @@ void Effect::setEnergyModifyBehavior()
 	if (trigger == EffectTrigger::ON_GAME_EVENT) {
 		std::uniform_int_distribution<int> triggerEventDistribution(
 			static_cast<int>(GameEvent::TURN_START),
-			static_cast<int>(GameEvent::HERO_HEALED)
+			static_cast<int>(GameEvent::ITEM_DESTROYED)
 		);
 		triggerEvent = static_cast<GameEvent>(triggerEventDistribution(generator));
 	}
@@ -690,38 +690,780 @@ Effect::Effect(const uint_least32_t& effectSeed, const CardType cardType)
 
 void Effect::executeEffect(Card* card, EffectTrigger trigger, std::optional<GameEvent> event)
 {
-	//logic goes here
-	// for this 5 effects, we pass the card to the behavior and it will handle the rest
-	// DRAW
-	// DISCARD
-	// SHUFFLE
-	// STEAL
-	// ENERGY_MODIFY
-
-	// for the rest, we look for the targets to apply the effect
-	// BUFF
-	// DEBUFF
-	// HEAL
-	// DAMAGE
-	// STATUS_APPLY
-	// KEYWORD_ADD
-	// SILENCE
-	// STATUS_REMOVE
-
-	if (trigger != EffectTrigger::ON_GAME_EVENT)
-	{
+	if (trigger != EffectTrigger::ON_GAME_EVENT) {
 		std::optional<GameEvent> triggerEvent = std::nullopt;
+		switch (trigger) {
+		case EffectTrigger::WHEN_PLAYED: triggerEvent = GameEvent::CARD_PLAYED; break;
+		case EffectTrigger::ON_DRAW: triggerEvent = GameEvent::CARD_DRAWN; break;
+		case EffectTrigger::ON_DISCARD: triggerEvent = GameEvent::CARD_DISCARDED; break;
+		case EffectTrigger::ON_ATTACK: triggerEvent = GameEvent::UNIT_ATTACKED; break;
+		case EffectTrigger::ON_EQUIP: triggerEvent = GameEvent::ITEM_EQUIPPED; break;
+		}
+		switch (category) {
+		case EffectCategory::DRAW: behavior->execute(*card); break;
+		case EffectCategory::DISCARD: behavior->execute(*card); break;
+		case EffectCategory::SHUFFLE: behavior->execute(*card); break;
+		case EffectCategory::STEAL: behavior->execute(*card); break;
+		case EffectCategory::ENERGY_MODIFY: behavior->execute(*card); break;
+		}
+		if (behavior->getNumberOfTargets().has_value())
+		{
+			if (this->targetMode == TargetMode::SELF)
+			{
+				// if the target is self, we call the behavior on the card
+				behavior->execute(*card);
+			}
+			else if (this->targetMode == TargetMode::RANDOM_SINGLE || this->targetMode == TargetMode::RANDOM_MULTIPLE)
+			{
+				int numberOfTargets = behavior->getNumberOfTargets().value();
+				// if the target is random single, we look for 1 random target
+				// if the target is random multiple, we look for 2-3 random targets
+				// vector of possible targets
+				std::vector<Target*> possibleTargets;
+				// for HEAL and DAMAGE, we look for units and heroes
+				if (category == EffectCategory::HEAL || category == EffectCategory::DAMAGE) {
+					// we look for units on battlefield and heroes
+					// if target group ALLY we pass to possible targets all ally units and ally hero
+					// if target group ENEMY we pass to possible targets all enemy units and enemy hero
+					// if target group BOTH we pass to possible targets all units and heroes from both groups
+					if (this->targetGroup == TargetGroup::ALLY) {
+						// we pass to possible
+						for (const auto allyUnit : card->getOwner()->getBattlefield()) {
+							possibleTargets.push_back(allyUnit);
+						}
+						possibleTargets.push_back(card->getOwner());
+					}
+					else if (this->targetGroup == TargetGroup::ENEMY) {
+						for (const auto enemyUnit : card->getEnemy()->getBattlefield()) {
+							possibleTargets.push_back(enemyUnit);
+						}
+						possibleTargets.push_back(card->getEnemy());
+					}
+					else if (this->targetGroup == TargetGroup::BOTH) {
+						for (const auto allyUnit : card->getOwner()->getBattlefield()) {
+							possibleTargets.push_back(allyUnit);
+						}
+						for (const auto enemyUnit : card->getEnemy()->getBattlefield()) {
+							possibleTargets.push_back(enemyUnit);
+						}
+						possibleTargets.push_back(card->getOwner());
+						possibleTargets.push_back(card->getEnemy());
+					}
+				}
+				else if (category == EffectCategory::BUFF || category == EffectCategory::DEBUFF) {
+					// if targetGroup is ALLY we look for cards from ally hero
+					// if targetGroup is ENEMY we look for cards from enemy hero
+					// if targetGroup is BOTH we look for cards from both heroes
+					if (behavior->getStatType().has_value()) {
+						// we look for cards in all zones depending on what stat we want to buff or debuff
+						StatType statType = behavior->getStatType().value();
+						// if statType is ENERGY_COST we look for all cards in hand and deck
+						// if statType is VALUE we look for all spell cards in hand and deck
+						// if statType is HEALTH, ATTACK we look for all units in hand, deck and battlefield
+						// if statType is DURABILITY, DAMAGE, DEFENSE we look for all items in hand, deck and battlefield
+
+						if (this->targetGroup == TargetGroup::ALLY)
+						{
+							if (statType == StatType::ENERGY_COST) {
+								for (const auto card : card->getOwner()->getHand()) {
+									possibleTargets.push_back(card);
+								}
+								for (const auto card : card->getOwner()->getDeck()) {
+									possibleTargets.push_back(card);
+								}
+							}
+							else if (statType == StatType::VALUE) {
+								for (const auto card : card->getOwner()->getHand()) {
+									if (auto spell = dynamic_cast<SpellCard*>(card)) {
+										possibleTargets.push_back(spell);
+									}
+								}
+								for (const auto card : card->getOwner()->getDeck()) {
+									if (auto spell = dynamic_cast<SpellCard*>(card)) {
+										possibleTargets.push_back(spell);
+									}
+								}
+							}
+							else if (statType == StatType::HEALTH || statType == StatType::ATTACK) {
+								for (const auto card : card->getOwner()->getHand()) {
+									if (auto unit = dynamic_cast<UnitCard*>(card)) {
+										possibleTargets.push_back(unit);
+									}
+								}
+								for (const auto card : card->getOwner()->getDeck()) {
+									if (auto unit = dynamic_cast<UnitCard*>(card)) {
+										possibleTargets.push_back(unit);
+									}
+								}
+								for (const auto unit : card->getOwner()->getBattlefield()) {
+									possibleTargets.push_back(unit);
+								}
+							}
+							else if (statType == StatType::DURABILITY || statType == StatType::DAMAGE || statType == StatType::DEFENSE) {
+								for (const auto card : card->getOwner()->getHand()) {
+									if (auto item = dynamic_cast<ItemCard*>(card)) {
+										possibleTargets.push_back(item);
+									}
+								}
+								for (const auto card : card->getOwner()->getDeck()) {
+									if (auto item = dynamic_cast<ItemCard*>(card)) {
+										possibleTargets.push_back(item);
+									}
+								}
+								for (const auto card : card->getOwner()->getBattlefield()) {
+									if (const auto unit = dynamic_cast<UnitCard*>(card)) {
+										if (unit->hasItem()) {
+											possibleTargets.push_back(unit->getItem());
+										}
+									}
+								}
+							}
+						}
+						else if (this->targetGroup == TargetGroup::ENEMY)
+						{
+							if (statType == StatType::ENERGY_COST)
+							{
+								for (const auto card : card->getEnemy()->getHand()) {
+									possibleTargets.push_back(card);
+								}
+								for (const auto card : card->getEnemy()->getDeck()) {
+									possibleTargets.push_back(card);
+								}
+							}
+							else if (statType == StatType::VALUE) {
+								for (const auto card : card->getEnemy()->getHand()) {
+									if (auto spell = dynamic_cast<SpellCard*>(card)) {
+										possibleTargets.push_back(spell);
+									}
+								}
+								for (const auto card : card->getEnemy()->getDeck()) {
+									if (auto spell = dynamic_cast<SpellCard*>(card)) {
+										possibleTargets.push_back(spell);
+									}
+								}
+							}
+							else if (statType == StatType::HEALTH || statType == StatType::ATTACK) {
+								for (const auto card : card->getEnemy()->getHand()) {
+									if (auto unit = dynamic_cast<UnitCard*>(card)) {
+										possibleTargets.push_back(unit);
+									}
+								}
+								for (const auto card : card->getEnemy()->getDeck()) {
+									if (auto unit = dynamic_cast<UnitCard*>(card)) {
+										possibleTargets.push_back(unit);
+									}
+								}
+								for (const auto unit : card->getEnemy()->getBattlefield()) {
+									possibleTargets.push_back(unit);
+								}
+							}
+							else if (statType == StatType::DURABILITY || statType == StatType::DAMAGE || statType == StatType::DEFENSE) {
+								for (const auto card : card->getEnemy()->getHand()) {
+									if (auto item = dynamic_cast<ItemCard*>(card)) {
+										possibleTargets.push_back(item);
+									}
+								}
+								for (const auto card : card->getEnemy()->getDeck()) {
+									if (auto item = dynamic_cast<ItemCard*>(card)) {
+										possibleTargets.push_back(item);
+									}
+								}
+								for (const auto card : card->getEnemy()->getBattlefield()) {
+									if (const auto unit = dynamic_cast<UnitCard*>(card)) {
+										if (unit->hasItem()) {
+											possibleTargets.push_back(unit->getItem());
+										}
+									}
+								}
+							}
+						}
+						else if (this->targetGroup == TargetGroup::BOTH)
+						{
+							if (statType == StatType::ENERGY_COST) {
+								for (const auto card : card->getOwner()->getHand()) {
+									possibleTargets.push_back(card);
+								}
+								for (const auto card : card->getEnemy()->getHand()) {
+									possibleTargets.push_back(card);
+								}
+								for (const auto card : card->getOwner()->getDeck()) {
+									possibleTargets.push_back(card);
+								}
+								for (const auto card : card->getEnemy()->getDeck()) {
+									possibleTargets.push_back(card);
+								}
+							}
+							else if (statType == StatType::VALUE) {
+								for (const auto card : card->getOwner()->getHand()) {
+									if (auto spell = dynamic_cast<SpellCard*>(card)) {
+										possibleTargets.push_back(spell);
+									}
+								}
+								for (const auto card : card->getEnemy()->getHand()) {
+									if (auto spell = dynamic_cast<SpellCard*>(card)) {
+										possibleTargets.push_back(spell);
+									}
+								}
+								for (const auto card : card->getOwner()->getDeck()) {
+									if (auto spell = dynamic_cast<SpellCard*>(card)) {
+										possibleTargets.push_back(spell);
+									}
+								}
+								for (const auto card : card->getEnemy()->getDeck()) {
+									if (auto spell = dynamic_cast<SpellCard*>(card)) {
+										possibleTargets.push_back(spell);
+									}
+								}
+							}
+							else if (statType == StatType::HEALTH || statType == StatType::ATTACK) {
+								for (const auto card : card->getOwner()->getHand()) {
+									if (auto unit = dynamic_cast<UnitCard*>(card)) {
+										possibleTargets.push_back(unit);
+									}
+								}
+								for (const auto card : card->getEnemy()->getHand()) {
+									if (auto unit = dynamic_cast<UnitCard*>(card)) {
+										possibleTargets.push_back(unit);
+									}
+								}
+								for (const auto card : card->getOwner()->getDeck()) {
+									if (auto unit = dynamic_cast<UnitCard*>(card)) {
+										possibleTargets.push_back(unit);
+									}
+								}
+								for (const auto card : card->getEnemy()->getDeck()) {
+									if (auto unit = dynamic_cast<UnitCard*>(card)) {
+										possibleTargets.push_back(unit);
+									}
+								}
+								for (const auto unit : card->getOwner()->getBattlefield()) {
+									possibleTargets.push_back(unit);
+								}
+								for (const auto unit : card->getEnemy()->getBattlefield()) {
+									possibleTargets.push_back(unit);
+								}
+							}
+							else if (statType == StatType::DURABILITY || statType == StatType::DAMAGE || statType == StatType::DEFENSE) {
+								for (const auto card : card->getOwner()->getHand()) {
+									if (auto item = dynamic_cast<ItemCard*>(card)) {
+										possibleTargets.push_back(item);
+									}
+								}
+								for (const auto card : card->getEnemy()->getHand()) {
+									if (auto item = dynamic_cast<ItemCard*>(card)) {
+										possibleTargets.push_back(item);
+									}
+								}
+								for (const auto card : card->getOwner()->getDeck()) {
+									if (auto item = dynamic_cast<ItemCard*>(card)) {
+										possibleTargets.push_back(item);
+									}
+								}
+								for (const auto card : card->getEnemy()->getDeck()) {
+									if (auto item = dynamic_cast<ItemCard*>(card)) {
+										possibleTargets.push_back(item);
+									}
+								}
+								for (const auto card : card->getOwner()->getBattlefield()) {
+									if (const auto unit = dynamic_cast<UnitCard*>(card)) {
+										if (unit->hasItem()) {
+											possibleTargets.push_back(unit->getItem());
+										}
+									}
+								}
+								for (const auto card : card->getEnemy()->getBattlefield()) {
+									if (const auto unit = dynamic_cast<UnitCard*>(card)) {
+										if (unit->hasItem()) {
+											possibleTargets.push_back(unit->getItem());
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				else if (category == EffectCategory::KEYWORD_ADD) {
+					// if targetGroup is ALLY then we look for units in ally deck, hand, battlefield
+					// if targetGroup is ENEMY then we look for units in enemy deck, hand, battlefield
+					// if targetGroup is BOTH then we look for units in both decks, hands, battlefields
+					if (behavior->getKeyword().has_value()) {
+						if (targetGroup == TargetGroup::ALLY) {
+							for (const auto card : card->getOwner()->getHand()) {
+								if (auto unit = dynamic_cast<UnitCard*>(card)) {
+									possibleTargets.push_back(unit);
+								}
+							}
+							for (const auto card : card->getOwner()->getDeck()) {
+								if (auto unit = dynamic_cast<UnitCard*>(card)) {
+									possibleTargets.push_back(unit);
+								}
+							}
+							for (const auto unit : card->getOwner()->getBattlefield()) {
+								possibleTargets.push_back(unit);
+							}
+						}
+						else if (targetGroup == TargetGroup::ENEMY) {
+							for (const auto card : card->getEnemy()->getHand()) {
+								if (auto unit = dynamic_cast<UnitCard*>(card)) {
+									possibleTargets.push_back(unit);
+								}
+							}
+							for (const auto card : card->getEnemy()->getDeck()) {
+								if (auto unit = dynamic_cast<UnitCard*>(card)) {
+									possibleTargets.push_back(unit);
+								}
+							}
+							for (const auto unit : card->getEnemy()->getBattlefield()) {
+								possibleTargets.push_back(unit);
+							}
+						}
+						else if (targetGroup == TargetGroup::BOTH) {
+							for (const auto card : card->getOwner()->getHand()) {
+								if (auto unit = dynamic_cast<UnitCard*>(card)) {
+									possibleTargets.push_back(unit);
+								}
+							}
+							for (const auto card : card->getEnemy()->getHand()) {
+								if (auto unit = dynamic_cast<UnitCard*>(card)) {
+									possibleTargets.push_back(unit);
+								}
+							}
+							for (const auto card : card->getOwner()->getDeck()) {
+								if (auto unit = dynamic_cast<UnitCard*>(card)) {
+									possibleTargets.push_back(unit);
+								}
+							}
+							for (const auto card : card->getEnemy()->getDeck()) {
+								if (auto unit = dynamic_cast<UnitCard*>(card)) {
+									possibleTargets.push_back(unit);
+								}
+							}
+							for (const auto unit : card->getOwner()->getBattlefield()) {
+								possibleTargets.push_back(unit);
+							}
+							for (const auto unit : card->getEnemy()->getBattlefield()) {
+								possibleTargets.push_back(unit);
+							}
+						}
+					}
+				}
+				else if (category == EffectCategory::STATUS_APPLY || category == EffectCategory::STATUS_REMOVE || category == EffectCategory::SILENCE) {
+					// if targetGroup is ALLY then we look for units in ally battlefield
+					// if targetGroup is ENEMY then we look for units in enemy battlefield
+					// if targetGroup is BOTH then we look for units in both battlefields
+					if (targetGroup == TargetGroup::ALLY) {
+						for (const auto unit : card->getOwner()->getBattlefield()) {
+							possibleTargets.push_back(unit);
+						}
+					}
+					else if (targetGroup == TargetGroup::ENEMY) {
+						for (const auto unit : card->getEnemy()->getBattlefield()) {
+							possibleTargets.push_back(unit);
+						}
+					}
+					else if (targetGroup == TargetGroup::BOTH) {
+						for (const auto unit : card->getOwner()->getBattlefield()) {
+							possibleTargets.push_back(unit);
+						}
+						for (const auto unit : card->getEnemy()->getBattlefield()) {
+							possibleTargets.push_back(unit);
+						}
+					}
+				}
+
+				// at the end go through the possible targets and call the behavior on them
+				std::ranges::shuffle(possibleTargets, generator);
+				for (auto target : possibleTargets){
+					behavior->execute(*target);
+				}
+			}
+		}
+
 		// After everything, we check for the ally battlefield, and call OGE for the cards that are on the battlefield
 		for (const auto* allyHero = dynamic_cast<Hero*>(card); const auto& u : allyHero->getBattlefield()) {
 			const auto unit = dynamic_cast<UnitCard*>(u);
-			unit->triggerEffect(EffectTrigger::ON_GAME_EVENT, triggerEvent);
+			unit->triggerGameEvent(triggerEvent.value());
 			if (unit->hasItem()) {
-				unit->getItem()->triggerEffect(EffectTrigger::ON_GAME_EVENT, triggerEvent);
+				unit->getItem()->triggerGameEvent(triggerEvent.value());
 			}
 		}
 	}
-	else // this is situation when the trigger is OGE and we check for the event from behavior
-	{
-		
+	else { // this is situation when the trigger is OGE and we check for the event from behavior
+		if (behavior->getTriggerEvent().has_value()) {
+			if (behavior->getTriggerEvent().value() == event.value()) {
+				switch (category) {
+				case EffectCategory::DRAW: behavior->execute(*card); break;
+				case EffectCategory::DISCARD: behavior->execute(*card); break;
+				case EffectCategory::SHUFFLE: behavior->execute(*card); break;
+				case EffectCategory::STEAL: behavior->execute(*card); break;
+				case EffectCategory::ENERGY_MODIFY: behavior->execute(*card); break;
+				}
+				if (behavior->getNumberOfTargets().has_value()) {
+					if (this->targetMode == TargetMode::SELF) {
+						// if the target is self, we call the behavior on the card
+						behavior->execute(*card);
+					}
+					else if (this->targetMode == TargetMode::RANDOM_SINGLE || this->targetMode == TargetMode::RANDOM_MULTIPLE){
+						int numberOfTargets = behavior->getNumberOfTargets().value();
+						// if the target is random single, we look for 1 random target
+						// if the target is random multiple, we look for 2-3 random targets
+						// vector of possible targets
+						std::vector<Target*> possibleTargets;
+						// for HEAL and DAMAGE, we look for units and heroes
+						if (category == EffectCategory::HEAL || category == EffectCategory::DAMAGE) {
+							// we look for units on battlefield and heroes
+							// if target group ALLY we pass to possible targets all ally units and ally hero
+							// if target group ENEMY we pass to possible targets all enemy units and enemy hero
+							// if target group BOTH we pass to possible targets all units and heroes from both groups
+							if (this->targetGroup == TargetGroup::ALLY) {
+								// we pass to possible
+								for (const auto allyUnit : card->getOwner()->getBattlefield()) {
+									possibleTargets.push_back(allyUnit);
+								}
+								possibleTargets.push_back(card->getOwner());
+							}
+							else if (this->targetGroup == TargetGroup::ENEMY) {
+								for (const auto enemyUnit : card->getEnemy()->getBattlefield()) {
+									possibleTargets.push_back(enemyUnit);
+								}
+								possibleTargets.push_back(card->getEnemy());
+							}
+							else if (this->targetGroup == TargetGroup::BOTH) {
+								for (const auto allyUnit : card->getOwner()->getBattlefield()) {
+									possibleTargets.push_back(allyUnit);
+								}
+								for (const auto enemyUnit : card->getEnemy()->getBattlefield()) {
+									possibleTargets.push_back(enemyUnit);
+								}
+								possibleTargets.push_back(card->getOwner());
+								possibleTargets.push_back(card->getEnemy());
+							}
+						}
+						else if (category == EffectCategory::BUFF || category == EffectCategory::DEBUFF) {
+							// if targetGroup is ALLY we look for cards from ally hero
+							// if targetGroup is ENEMY we look for cards from enemy hero
+							// if targetGroup is BOTH we look for cards from both heroes
+							if (behavior->getStatType().has_value()) {
+								// we look for cards in all zones depending on what stat we want to buff or debuff
+								StatType statType = behavior->getStatType().value();
+								// if statType is ENERGY_COST we look for all cards in hand and deck
+								// if statType is VALUE we look for all spell cards in hand and deck
+								// if statType is HEALTH, ATTACK we look for all units in hand, deck and battlefield
+								// if statType is DURABILITY, DAMAGE, DEFENSE we look for all items in hand, deck and battlefield
+
+								if (this->targetGroup == TargetGroup::ALLY) {
+									if (statType == StatType::ENERGY_COST) {
+										for (const auto card : card->getOwner()->getHand()) {
+											possibleTargets.push_back(card);
+										}
+										for (const auto card : card->getOwner()->getDeck()) {
+											possibleTargets.push_back(card);
+										}
+									}
+									else if (statType == StatType::VALUE) {
+										for (const auto card : card->getOwner()->getHand()) {
+											if (auto spell = dynamic_cast<SpellCard*>(card)) {
+												possibleTargets.push_back(spell);
+											}
+										}
+										for (const auto card : card->getOwner()->getDeck()) {
+											if (auto spell = dynamic_cast<SpellCard*>(card)) {
+												possibleTargets.push_back(spell);
+											}
+										}
+									}
+									else if (statType == StatType::HEALTH || statType == StatType::ATTACK) {
+										for (const auto card : card->getOwner()->getHand()) {
+											if (auto unit = dynamic_cast<UnitCard*>(card)) {
+												possibleTargets.push_back(unit);
+											}
+										}
+										for (const auto card : card->getOwner()->getDeck()) {
+											if (auto unit = dynamic_cast<UnitCard*>(card)) {
+												possibleTargets.push_back(unit);
+											}
+										}
+										for (const auto unit : card->getOwner()->getBattlefield()) {
+											possibleTargets.push_back(unit);
+										}
+									}
+									else if (statType == StatType::DURABILITY || statType == StatType::DAMAGE || statType == StatType::DEFENSE) {
+										for (const auto card : card->getOwner()->getHand()) {
+											if (auto item = dynamic_cast<ItemCard*>(card)) {
+												possibleTargets.push_back(item);
+											}
+										}
+										for (const auto card : card->getOwner()->getDeck()) {
+											if (auto item = dynamic_cast<ItemCard*>(card)) {
+												possibleTargets.push_back(item);
+											}
+										}
+										for (const auto card : card->getOwner()->getBattlefield()) {
+											if (const auto unit = dynamic_cast<UnitCard*>(card)) {
+												if (unit->hasItem()) {
+													possibleTargets.push_back(unit->getItem());
+												}
+											}
+										}
+									}
+								}
+								else if (this->targetGroup == TargetGroup::ENEMY) {
+									if (statType == StatType::ENERGY_COST) {
+										for (const auto card : card->getEnemy()->getHand()) {
+											possibleTargets.push_back(card);
+										}
+										for (const auto card : card->getEnemy()->getDeck()) {
+											possibleTargets.push_back(card);
+										}
+									}
+									else if (statType == StatType::VALUE) {
+										for (const auto card : card->getEnemy()->getHand()) {
+											if (auto spell = dynamic_cast<SpellCard*>(card)) {
+												possibleTargets.push_back(spell);
+											}
+										}
+										for (const auto card : card->getEnemy()->getDeck()) {
+											if (auto spell = dynamic_cast<SpellCard*>(card)) {
+												possibleTargets.push_back(spell);
+											}
+										}
+									}
+									else if (statType == StatType::HEALTH || statType == StatType::ATTACK) {
+										for (const auto card : card->getEnemy()->getHand()) {
+											if (auto unit = dynamic_cast<UnitCard*>(card)) {
+												possibleTargets.push_back(unit);
+											}
+										}
+										for (const auto card : card->getEnemy()->getDeck()) {
+											if (auto unit = dynamic_cast<UnitCard*>(card)) {
+												possibleTargets.push_back(unit);
+											}
+										}
+										for (const auto unit : card->getEnemy()->getBattlefield()) {
+											possibleTargets.push_back(unit);
+										}
+									}
+									else if (statType == StatType::DURABILITY || statType == StatType::DAMAGE || statType == StatType::DEFENSE) {
+										for (const auto card : card->getEnemy()->getHand()) {
+											if (auto item = dynamic_cast<ItemCard*>(card)) {
+												possibleTargets.push_back(item);
+											}
+										}
+										for (const auto card : card->getEnemy()->getDeck()) {
+											if (auto item = dynamic_cast<ItemCard*>(card)) {
+												possibleTargets.push_back(item);
+											}
+										}
+										for (const auto card : card->getEnemy()->getBattlefield()) {
+											if (const auto unit = dynamic_cast<UnitCard*>(card)) {
+												if (unit->hasItem()) {
+													possibleTargets.push_back(unit->getItem());
+												}
+											}
+										}
+									}
+								}
+								else if (this->targetGroup == TargetGroup::BOTH) {
+									if (statType == StatType::ENERGY_COST) {
+										for (const auto card : card->getOwner()->getHand()) {
+											possibleTargets.push_back(card);
+										}
+										for (const auto card : card->getEnemy()->getHand()) {
+											possibleTargets.push_back(card);
+										}
+										for (const auto card : card->getOwner()->getDeck()) {
+											possibleTargets.push_back(card);
+										}
+										for (const auto card : card->getEnemy()->getDeck()) {
+											possibleTargets.push_back(card);
+										}
+									}
+									else if (statType == StatType::VALUE) {
+										for (const auto card : card->getOwner()->getHand()) {
+											if (auto spell = dynamic_cast<SpellCard*>(card)) {
+												possibleTargets.push_back(spell);
+											}
+										}
+										for (const auto card : card->getEnemy()->getHand()) {
+											if (auto spell = dynamic_cast<SpellCard*>(card)) {
+												possibleTargets.push_back(spell);
+											}
+										}
+										for (const auto card : card->getOwner()->getDeck()) {
+											if (auto spell = dynamic_cast<SpellCard*>(card)) {
+												possibleTargets.push_back(spell);
+											}
+										}
+										for (const auto card : card->getEnemy()->getDeck()) {
+											if (auto spell = dynamic_cast<SpellCard*>(card)) {
+												possibleTargets.push_back(spell);
+											}
+										}
+									}
+									else if (statType == StatType::HEALTH || statType == StatType::ATTACK) {
+										for (const auto card : card->getOwner()->getHand()) {
+											if (auto unit = dynamic_cast<UnitCard*>(card)) {
+												possibleTargets.push_back(unit);
+											}
+										}
+										for (const auto card : card->getEnemy()->getHand()) {
+											if (auto unit = dynamic_cast<UnitCard*>(card)) {
+												possibleTargets.push_back(unit);
+											}
+										}
+										for (const auto card : card->getOwner()->getDeck()) {
+											if (auto unit = dynamic_cast<UnitCard*>(card)) {
+												possibleTargets.push_back(unit);
+											}
+										}
+										for (const auto card : card->getEnemy()->getDeck()) {
+											if (auto unit = dynamic_cast<UnitCard*>(card)) {
+												possibleTargets.push_back(unit);
+											}
+										}
+										for (const auto unit : card->getOwner()->getBattlefield()) {
+											possibleTargets.push_back(unit);
+										}
+										for (const auto unit : card->getEnemy()->getBattlefield()) {
+											possibleTargets.push_back(unit);
+										}
+									}
+									else if (statType == StatType::DURABILITY || statType == StatType::DAMAGE || statType == StatType::DEFENSE) {
+										for (const auto card : card->getOwner()->getHand()) {
+											if (auto item = dynamic_cast<ItemCard*>(card)) {
+												possibleTargets.push_back(item);
+											}
+										}
+										for (const auto card : card->getEnemy()->getHand()) {
+											if (auto item = dynamic_cast<ItemCard*>(card)) {
+												possibleTargets.push_back(item);
+											}
+										}
+										for (const auto card : card->getOwner()->getDeck()) {
+											if (auto item = dynamic_cast<ItemCard*>(card)) {
+												possibleTargets.push_back(item);
+											}
+										}
+										for (const auto card : card->getEnemy()->getDeck()) {
+											if (auto item = dynamic_cast<ItemCard*>(card)) {
+												possibleTargets.push_back(item);
+											}
+										}
+										for (const auto card : card->getOwner()->getBattlefield()) {
+											if (const auto unit = dynamic_cast<UnitCard*>(card)) {
+												if (unit->hasItem()) {
+													possibleTargets.push_back(unit->getItem());
+												}
+											}
+										}
+										for (const auto card : card->getEnemy()->getBattlefield()) {
+											if (const auto unit = dynamic_cast<UnitCard*>(card)) {
+												if (unit->hasItem()) {
+													possibleTargets.push_back(unit->getItem());
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+						else if (category == EffectCategory::KEYWORD_ADD) {
+							// if targetGroup is ALLY then we look for units in ally deck, hand, battlefield
+							// if targetGroup is ENEMY then we look for units in enemy deck, hand, battlefield
+							// if targetGroup is BOTH then we look for units in both decks, hands, battlefields
+							if (behavior->getKeyword().has_value()) {
+								if (targetGroup == TargetGroup::ALLY) {
+									for (const auto card : card->getOwner()->getHand()) {
+										if (auto unit = dynamic_cast<UnitCard*>(card)) {
+											possibleTargets.push_back(unit);
+										}
+									}
+									for (const auto card : card->getOwner()->getDeck()) {
+										if (auto unit = dynamic_cast<UnitCard*>(card)) {
+											possibleTargets.push_back(unit);
+										}
+									}
+									for (const auto unit : card->getOwner()->getBattlefield()) {
+										possibleTargets.push_back(unit);
+									}
+								}
+								else if (targetGroup == TargetGroup::ENEMY) {
+									for (const auto card : card->getEnemy()->getHand()) {
+										if (auto unit = dynamic_cast<UnitCard*>(card)) {
+											possibleTargets.push_back(unit);
+										}
+									}
+									for (const auto card : card->getEnemy()->getDeck()) {
+										if (auto unit = dynamic_cast<UnitCard*>(card)) {
+											possibleTargets.push_back(unit);
+										}
+									}
+									for (const auto unit : card->getEnemy()->getBattlefield()) {
+										possibleTargets.push_back(unit);
+									}
+								}
+								else if (targetGroup == TargetGroup::BOTH) {
+									for (const auto card : card->getOwner()->getHand()) {
+										if (auto unit = dynamic_cast<UnitCard*>(card)) {
+											possibleTargets.push_back(unit);
+										}
+									}
+									for (const auto card : card->getEnemy()->getHand()) {
+										if (auto unit = dynamic_cast<UnitCard*>(card)) {
+											possibleTargets.push_back(unit);
+										}
+									}
+									for (const auto card : card->getOwner()->getDeck()) {
+										if (auto unit = dynamic_cast<UnitCard*>(card)) {
+											possibleTargets.push_back(unit);
+										}
+									}
+									for (const auto card : card->getEnemy()->getDeck()) {
+										if (auto unit = dynamic_cast<UnitCard*>(card)) {
+											possibleTargets.push_back(unit);
+										}
+									}
+									for (const auto unit : card->getOwner()->getBattlefield()) {
+										possibleTargets.push_back(unit);
+									}
+									for (const auto unit : card->getEnemy()->getBattlefield()) {
+										possibleTargets.push_back(unit);
+									}
+								}
+							}
+						}
+						else if (category == EffectCategory::STATUS_APPLY || category == EffectCategory::STATUS_REMOVE || category == EffectCategory::SILENCE) {
+							// if targetGroup is ALLY then we look for units in ally battlefield
+							// if targetGroup is ENEMY then we look for units in enemy battlefield
+							// if targetGroup is BOTH then we look for units in both battlefields
+							if (targetGroup == TargetGroup::ALLY) {
+								for (const auto unit : card->getOwner()->getBattlefield()) {
+									possibleTargets.push_back(unit);
+								}
+							}
+							else if (targetGroup == TargetGroup::ENEMY) {
+								for (const auto unit : card->getEnemy()->getBattlefield()) {
+									possibleTargets.push_back(unit);
+								}
+							}
+							else if (targetGroup == TargetGroup::BOTH) {
+								for (const auto unit : card->getOwner()->getBattlefield()) {
+									possibleTargets.push_back(unit);
+								}
+								for (const auto unit : card->getEnemy()->getBattlefield()) {
+									possibleTargets.push_back(unit);
+								}
+							}
+						}
+
+						// at the end go through the possible targets and call the behavior on them
+						std::ranges::shuffle(possibleTargets, generator);
+						for (auto target : possibleTargets) {
+							behavior->execute(*target);
+						}
+					}
+				}
+			}
+		}
 	}
 };

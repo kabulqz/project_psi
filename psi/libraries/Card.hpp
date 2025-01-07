@@ -49,11 +49,8 @@ public:
 	void applyEffect(std::unique_ptr<IEffectBehavior> effectBehavior);
 	void removeEffect(IEffectBehavior* effectBehavior);
 
-	void draw();
-	void play();
-	void discard();
-
 	void triggerEffect(EffectTrigger trigger, std::optional<GameEvent> event = std::nullopt);
+	void triggerGameEvent(GameEvent event);
 };
 
 class ItemCard final : public Card // If 0 durability, card is destroyed

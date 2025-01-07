@@ -46,23 +46,23 @@ void Card::removeEffect(IEffectBehavior* effectBehavior)
 {
 	if (auto* buffBehavior = dynamic_cast<BuffBehavior*>(effectBehavior))
 	{
-		buffBehavior->removeBuff();
+		buffBehavior->removeEffect();
 	}
 	else if (auto* debuffBehavior = dynamic_cast<DebuffBehavior*>(effectBehavior))
 	{
-		debuffBehavior->removeDebuff();
+		debuffBehavior->removeEffect();
 	}
 	else if (auto* statusApplyBehavior = dynamic_cast<StatusApplyBehavior*>(effectBehavior))
 	{
-		statusApplyBehavior->removeStatus();
+		statusApplyBehavior->removeEffect();
 	}
 	else if (auto* silenceBehavior = dynamic_cast<SilenceBehavior*>(effectBehavior))
 	{
-		silenceBehavior->removeSilence();
+		silenceBehavior->removeEffect();
 	}
 	else  if (auto* keywordAddBehavior = dynamic_cast<KeywordAddBehavior*>(effectBehavior))
 	{
-		keywordAddBehavior->removeKeyword();
+		keywordAddBehavior->removeEffect();
 	}
 
 	// Remove the effect from the active effects list
@@ -70,21 +70,6 @@ void Card::removeEffect(IEffectBehavior* effectBehavior)
 		{
 			return effect.get() == effectBehavior;
 		});
-}
-
-void Card::draw()
-{
-	this->triggerEffect(EffectTrigger::ON_DRAW);
-}
-
-void Card::play()
-{
-	this->triggerEffect(EffectTrigger::WHEN_PLAYED);
-}
-
-void Card::discard()
-{
-	this->triggerEffect(EffectTrigger::ON_DISCARD);
 }
 
 void Card::triggerEffect(EffectTrigger trigger, std::optional<GameEvent> event)
@@ -95,6 +80,12 @@ void Card::triggerEffect(EffectTrigger trigger, std::optional<GameEvent> event)
 		effect->executeEffect(this, trigger, event);
 		// Inside this method we will check for potential activations of ON_GAME_EVENT effects from ally cards on battlefield
 	}
+}
+
+void Card::triggerGameEvent(GameEvent event)
+{
+	// Trigger the effects that are set to trigger on game event
+	triggerEffect(EffectTrigger::ON_GAME_EVENT, event);
 }
 
 void ItemCard::increaseDamage(const int value, const uint_least32_t key)

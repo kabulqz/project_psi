@@ -41,6 +41,19 @@ public:
 	virtual void execute(Target& target) = 0;
 	virtual void decrementTurn() = 0;
 	virtual void checkForEndEvent(GameEvent event) = 0;
+	virtual void removeEffect() const = 0;
+
+	// Getters
+	std::optional<EffectDuration> getDuration() const { return duration; }
+	std::optional<EffectTrigger> getTrigger() const { return trigger; }
+	std::optional<GameEvent> getTriggerEvent() const { return triggerEvent; }
+	std::optional<GameEvent> getEndEvent() const { return endEvent; }
+	std::optional<StatType> getStatType() const { return statType; }
+	std::optional<Keyword> getKeyword() const { return keyword; }
+	std::optional<Status> getStatus() const { return status; }
+	std::optional<int> getValue() const { return value; }
+	std::optional<int> getNumberOfTargets() const { return numberOfTargets; }
+	std::optional<int> getNumberOfTurns() const { return numberOfTurns; }
 };
 
 class BuffBehavior final : public IEffectBehavior
@@ -50,7 +63,7 @@ public:
 	void execute(Target& target) override;
 	void decrementTurn() override;						// If duration is TURN_BASED
 	void checkForEndEvent(GameEvent event) override;
-	void removeBuff() const;
+	void removeEffect() const override;
 
 	// BuffBehavior for Effect class
 	BuffBehavior(
@@ -83,7 +96,7 @@ public:
 	void execute(Target& target) override;
 	void decrementTurn() override;						// If duration is TURN_BASED
 	void checkForEndEvent(GameEvent event) override;
-	void removeDebuff() const;
+	void removeEffect() const override;
 
 	// DebuffBehavior for Effect class
 	DebuffBehavior(
@@ -115,7 +128,8 @@ class HealBehavior final : public IEffectBehavior
 public:
 	void execute(Target& target) override;				// INSTANT - heal target, TURN_BASED - add lasting heal effect
 	void decrementTurn() override;						// If duration is TURN_BASED
-	void checkForEndEvent(GameEvent event) override;	// Not used
+	void checkForEndEvent(GameEvent event) override {}	// Not used
+	void removeEffect() const override {}				// Not used
 
 	// HealBehavior for Effect class
 	HealBehavior(
@@ -143,7 +157,8 @@ class DamageBehavior final : public IEffectBehavior
 public:
 	void execute(Target& target) override;				// INSTANT - deal damage, TURN_BASED - add lasting damage effect
 	void decrementTurn() override;						// If duration is TURN_BASED
-	void checkForEndEvent(GameEvent event) override;	// Not used
+	void checkForEndEvent(GameEvent event) override {}	// Not used
+	void removeEffect() const override {}				// Not used
 
 	// DamageBehavior for Effect class
 	DamageBehavior(
@@ -171,7 +186,7 @@ public:
 	void execute(Target& target) override;				// Apply status effect to target
 	void decrementTurn() override;						// If duration is TURN_BASED
 	void checkForEndEvent(GameEvent event) override;	// If duration is EVENT_BASED
-	void removeStatus() const;
+	void removeEffect() const override;
 
 	// Apply status effect to target
 	StatusApplyBehavior(
@@ -200,7 +215,7 @@ public:
 	void execute(Target& target) override;				// Add keyword to target
 	void decrementTurn() override;						// If duration is TURN_BASED
 	void checkForEndEvent(GameEvent event) override;	// If duration is EVENT_BASED
-	void removeKeyword() const;
+	void removeEffect() const override;
 
 	// Add keyword for Effect class
 	KeywordAddBehavior(
@@ -229,7 +244,7 @@ public:
 	void execute(Target& target) override;				// Apply silence effect to target
 	void decrementTurn() override;						// If duration is TURN_BASED
 	void checkForEndEvent(GameEvent event) override;	// If duration is EVENT_BASED
-	void removeSilence() const;
+	void removeEffect() const override;
 
 	// Apply status effect to target
 	SilenceBehavior(
@@ -254,8 +269,9 @@ class StatusRemoveBehavior final : public IEffectBehavior
 {
 public:
 	void execute(Target& target) override;				// Remove status effect from target
-	void decrementTurn() override;						// Not used
-	void checkForEndEvent(GameEvent event) override;	// Not used
+	void decrementTurn() override {}					// Not used
+	void checkForEndEvent(GameEvent event) override {}	// Not used
+	void removeEffect() const override {}				// Not used
 
 	// Remove status effect from target
 	StatusRemoveBehavior(
@@ -272,8 +288,10 @@ class DrawBehavior final : public IEffectBehavior
 	TargetGroup who;
 public:
 	void execute(Target& target) override;				// Draw cards
-	void decrementTurn() override;						// Not used
-	void checkForEndEvent(GameEvent event) override;	// Not used
+	void decrementTurn() override {}					// Not used
+	void checkForEndEvent(GameEvent event) override {}	// Not used
+	void removeEffect() const override {}				// Not used
+
 	// Draw cards
 	DrawBehavior(
 		EffectTrigger trigger,
@@ -289,8 +307,10 @@ class DiscardBehavior final : public IEffectBehavior
 	TargetGroup who;
 public:
 	void execute(Target& target) override;				// Discard cards
-	void decrementTurn() override;						// Not used
-	void checkForEndEvent(GameEvent event) override;	// Not used
+	void decrementTurn() override {}					// Not used
+	void checkForEndEvent(GameEvent event) override {}	// Not used
+	void removeEffect() const override {}				// Not used
+
 	// Discard cards
 	DiscardBehavior(
 		EffectTrigger trigger,
@@ -307,8 +327,10 @@ class ShuffleBehavior final : public IEffectBehavior
 	TargetGroup who;
 public:
 	void execute(Target& target) override;				// Shuffle cards
-	void decrementTurn() override;						// Not used
-	void checkForEndEvent(GameEvent event) override;	// Not used
+	void decrementTurn() override {}					// Not used
+	void checkForEndEvent(GameEvent event) override {}	// Not used
+	void removeEffect() const override {}				// Not used
+
 	// Shuffle cards
 	ShuffleBehavior(
 		EffectTrigger trigger,
@@ -325,8 +347,10 @@ class StealBehavior final : public IEffectBehavior
 	TargetZone whichZone;
 public:
 	void execute(Target& target) override;				// Steal cards
-	void decrementTurn() override;						// Not used
-	void checkForEndEvent(GameEvent event) override;	// Not used
+	void decrementTurn() override {}					// Not used
+	void checkForEndEvent(GameEvent event) override {}	// Not used
+	void removeEffect() const override {}				// Not used
+
 	// Steal cards
 	StealBehavior(
 		EffectTrigger trigger,
@@ -342,8 +366,10 @@ class EnergyModifyBehavior final : public IEffectBehavior
 	TargetGroup who;
 public:
 	void execute(Target& target) override;				// Modify energy
-	void decrementTurn() override;						// Not used
-	void checkForEndEvent(GameEvent event) override;	// Not used
+	void decrementTurn() override {}					// Not used
+	void checkForEndEvent(GameEvent event) override {}	// Not used
+	void removeEffect() const override {}				// Not used
+
 	// Modify energy
 	EnergyModifyBehavior(
 		EffectTrigger trigger,

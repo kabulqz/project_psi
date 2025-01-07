@@ -28,12 +28,12 @@ void BuffBehavior::execute(Target& target)
 	else {
 		if (auto* unit = dynamic_cast<UnitCard*>(card)) {
 			switch (statType.value()) {
-				case StatType::HEALTH:
-					unit->increaseHealth(value.value(), securityKey);
-					break;
-				case StatType::ATTACK:
-					unit->increaseAttack(value.value(), securityKey);
-					break;
+			case StatType::HEALTH:
+				unit->increaseHealth(value.value(), securityKey);
+				break;
+			case StatType::ATTACK:
+				unit->increaseAttack(value.value(), securityKey);
+				break;
 			}
 		}
 		else if (auto* item = dynamic_cast<ItemCard*>(card)) {
@@ -76,16 +76,16 @@ void BuffBehavior::checkForEndEvent(GameEvent event)
 	}
 }
 
-void BuffBehavior::removeBuff() const
+void BuffBehavior::removeEffect() const
 {
 	if (statType.value() == StatType::ENERGY_COST) {// Card
 		auto* card = dynamic_cast<Card*>(effectTarget);
 
 		auto it = std::ranges::find_if(card->extraEnergyCost, [this](const std::unique_ptr<EffectValue>& effect) {
-				return effect->value == -value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
+			return effect->value == -value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
 			});
 
-		if (it!=card->extraEnergyCost.end()) {
+		if (it != card->extraEnergyCost.end()) {
 			card->extraEnergyCost.erase(it);
 		}
 	}
@@ -93,7 +93,7 @@ void BuffBehavior::removeBuff() const
 		auto* spell = dynamic_cast<SpellCard*>(effectTarget);
 
 		auto it = std::ranges::find_if(spell->extraValue, [this](const std::unique_ptr<EffectValue>& effect) {
-				return effect->value == value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
+			return effect->value == value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
 			});
 
 		if (it != spell->extraValue.end()) {
@@ -104,8 +104,8 @@ void BuffBehavior::removeBuff() const
 		auto* unit = dynamic_cast<UnitCard*>(effectTarget);
 		if (statType.value() == StatType::HEALTH) {
 			auto it = std::ranges::find_if(unit->extraHealth, [this](const std::unique_ptr<EffectValue>& effect) {
-					return effect->value == value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
-			});
+				return effect->value == value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
+				});
 
 			if (it != unit->extraHealth.end()) {
 				unit->extraHealth.erase(it);
@@ -113,7 +113,7 @@ void BuffBehavior::removeBuff() const
 		}
 		else if (statType.value() == StatType::ATTACK) {
 			auto it = std::ranges::find_if(unit->extraAttack, [this](const std::unique_ptr<EffectValue>& effect) {
-					return effect->value == value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
+				return effect->value == value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
 				});
 
 			if (it != unit->extraAttack.end()) {
@@ -125,7 +125,7 @@ void BuffBehavior::removeBuff() const
 		auto* item = dynamic_cast<ItemCard*>(effectTarget);
 		if (statType.value() == StatType::DAMAGE) {
 			auto it = std::ranges::find_if(item->extraDamage, [this](const std::unique_ptr<EffectValue>& effect) {
-					return effect->value == value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
+				return effect->value == value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
 				});
 
 			if (it != item->extraDamage.end()) {
@@ -134,7 +134,7 @@ void BuffBehavior::removeBuff() const
 		}
 		else if (statType.value() == StatType::DEFENSE) {
 			auto it = std::ranges::find_if(item->extraDefense, [this](const std::unique_ptr<EffectValue>& effect) {
-					return effect->value == value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
+				return effect->value == value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
 				});
 
 			if (it != item->extraDefense.end()) {
@@ -143,7 +143,7 @@ void BuffBehavior::removeBuff() const
 		}
 		else if (statType.value() == StatType::DURABILITY) {
 			auto it = std::ranges::find_if(item->extraDurability, [this](const std::unique_ptr<EffectValue>& effect) {
-					return effect->value == value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
+				return effect->value == value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
 				});
 
 			if (it != item->extraDurability.end()) {
@@ -198,15 +198,15 @@ void DebuffBehavior::execute(Target& target)
 		}
 		else if (auto* item = dynamic_cast<ItemCard*>(card)) {
 			switch (statType.value()) {
-				case StatType::DAMAGE:
-					item->reduceDamage(value.value(), securityKey);
-					break;
-				case StatType::DEFENSE:
-					item->reduceDefense(value.value(), securityKey);
-					break;
-				case StatType::DURABILITY:
-					item->reduceDurability(value.value(), securityKey);
-					break;
+			case StatType::DAMAGE:
+				item->reduceDamage(value.value(), securityKey);
+				break;
+			case StatType::DEFENSE:
+				item->reduceDefense(value.value(), securityKey);
+				break;
+			case StatType::DURABILITY:
+				item->reduceDurability(value.value(), securityKey);
+				break;
 			}
 		}
 		else if (auto* spell = dynamic_cast<SpellCard*>(card)) {
@@ -236,13 +236,13 @@ void DebuffBehavior::checkForEndEvent(const GameEvent event)
 	}
 }
 
-void DebuffBehavior::removeDebuff() const
+void DebuffBehavior::removeEffect() const
 {
 	if (statType.value() == StatType::ENERGY_COST) {// Card
 		auto* card = dynamic_cast<Card*>(effectTarget);
 
 		auto it = std::ranges::find_if(card->extraEnergyCost, [this](const std::unique_ptr<EffectValue>& effect) {
-				return effect->value == value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
+			return effect->value == value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
 			});
 
 		if (it != card->extraEnergyCost.end()) {
@@ -253,7 +253,7 @@ void DebuffBehavior::removeDebuff() const
 		auto* spell = dynamic_cast<SpellCard*>(effectTarget);
 
 		auto it = std::ranges::find_if(spell->extraValue, [this](const std::unique_ptr<EffectValue>& effect) {
-				return effect->value == -value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
+			return effect->value == -value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
 			});
 
 		if (it != spell->extraValue.end()) {
@@ -264,7 +264,7 @@ void DebuffBehavior::removeDebuff() const
 		auto* unit = dynamic_cast<UnitCard*>(effectTarget);
 		if (statType.value() == StatType::HEALTH) {
 			auto it = std::ranges::find_if(unit->extraHealth, [this](const std::unique_ptr<EffectValue>& effect) {
-					return effect->value == -value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
+				return effect->value == -value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
 				});
 
 			if (it != unit->extraHealth.end()) {
@@ -273,7 +273,7 @@ void DebuffBehavior::removeDebuff() const
 		}
 		else if (statType.value() == StatType::ATTACK) {
 			auto it = std::ranges::find_if(unit->extraAttack, [this](const std::unique_ptr<EffectValue>& effect) {
-					return effect->value == -value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
+				return effect->value == -value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
 				});
 
 			if (it != unit->extraAttack.end()) {
@@ -286,7 +286,7 @@ void DebuffBehavior::removeDebuff() const
 
 		if (statType.value() == StatType::DAMAGE) {
 			auto it = std::ranges::find_if(item->extraDamage, [this](const std::unique_ptr<EffectValue>& effect) {
-					return effect->value == -value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
+				return effect->value == -value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
 				});
 
 			if (it != item->extraDamage.end()) {
@@ -295,7 +295,7 @@ void DebuffBehavior::removeDebuff() const
 		}
 		else if (statType.value() == StatType::DEFENSE) {
 			auto it = std::ranges::find_if(item->extraDefense, [this](const std::unique_ptr<EffectValue>& effect) {
-					return effect->value == -value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
+				return effect->value == -value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
 				});
 
 			if (it != item->extraDefense.end()) {
@@ -304,7 +304,7 @@ void DebuffBehavior::removeDebuff() const
 		}
 		else if (statType.value() == StatType::DURABILITY) {
 			auto it = std::ranges::find_if(item->extraDurability, [this](const std::unique_ptr<EffectValue>& effect) {
-					return effect->value == -value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
+				return effect->value == -value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
 				});
 
 			if (it != item->extraDurability.end()) {
@@ -340,6 +340,7 @@ void HealBehavior::execute(Target& target)
 	if (duration == EffectDuration::INSTANT) {
 		if (auto* unit = dynamic_cast<UnitCard*>(&target)) {
 			unit->heal(value.value());
+			unit->triggerGameEvent(GameEvent::UNIT_HEALED);
 		}
 		else if (auto* hero = dynamic_cast<Hero*>(&target)) {
 			hero->restoreHealth(value.value());
@@ -363,6 +364,10 @@ void HealBehavior::decrementTurn()
 {
 	if (duration == EffectDuration::TURN_BASED && numberOfTurns.has_value()) {
 		numberOfTurns.value() = numberOfTurns.value() - 1;
+		if (auto* unit = dynamic_cast<UnitCard*>(effectTarget)) {
+			unit->heal(value.value());
+			unit->triggerGameEvent(GameEvent::UNIT_HEALED);
+		}
 		if (numberOfTurns.value() == 0) {
 			if (auto* unit = dynamic_cast<UnitCard*>(effectTarget)) {
 				unit->removeEffect(this);
@@ -373,11 +378,6 @@ void HealBehavior::decrementTurn()
 			}
 		}
 	}
-}
-
-void HealBehavior::checkForEndEvent(const GameEvent event)
-{
-	// Not used
 }
 
 HealBehavior::HealBehavior(Target* targetOfEffect, uint_least32_t securityKey, EffectDuration duration, int value, std::optional<int> numberOfTurns)
@@ -404,6 +404,7 @@ void DamageBehavior::execute(Target& target)
 	if (duration == EffectDuration::INSTANT) {
 		if (auto* unit = dynamic_cast<UnitCard*>(&target)) {
 			unit->dealDamage(value.value());
+			unit->triggerGameEvent(GameEvent::UNIT_DAMAGED);
 		}
 		else if (auto* hero = dynamic_cast<Hero*>(&target)) {
 			hero->dealDamage(value.value());
@@ -426,6 +427,10 @@ void DamageBehavior::decrementTurn()
 {
 	if (duration == EffectDuration::TURN_BASED && numberOfTurns.has_value()) {
 		numberOfTurns.value() = numberOfTurns.value() - 1;
+		if (auto* unit = dynamic_cast<UnitCard*>(effectTarget)) {
+			unit->dealDamage(value.value());
+			unit->triggerGameEvent(GameEvent::UNIT_DAMAGED);
+		}
 		if (numberOfTurns.value() == 0) {
 			if (auto* unit = dynamic_cast<UnitCard*>(effectTarget)) {
 				unit->removeEffect(this);
@@ -436,11 +441,6 @@ void DamageBehavior::decrementTurn()
 			}
 		}
 	}
-}
-
-void DamageBehavior::checkForEndEvent(const GameEvent event)
-{
-	// Not used
 }
 
 DamageBehavior::DamageBehavior(Target* targetOfEffect, uint_least32_t securityKey, EffectDuration duration, int value, std::optional<int> numberOfTurns)
@@ -469,6 +469,7 @@ void StatusApplyBehavior::execute(Target& target)
 {
 	if (auto* unit = dynamic_cast<UnitCard*>(&target)) {
 		unit->applyStatus(status.value(), numberOfTurns.value());
+		unit->triggerGameEvent(GameEvent::UNIT_STATUS_APPLY);
 		unit->applyEffect(std::make_unique<StatusApplyBehavior>(unit, duration.value(), status.value(), numberOfTurns.value(), endEvent.value()));
 	}
 }
@@ -494,14 +495,15 @@ void StatusApplyBehavior::checkForEndEvent(const GameEvent event)
 	}
 }
 
-void StatusApplyBehavior::removeStatus() const
+void StatusApplyBehavior::removeEffect() const
 {
 	auto* unit = dynamic_cast<UnitCard*>(effectTarget);
 	unit->removeStatus(status.value());
+	unit->triggerGameEvent(GameEvent::UNIT_STATUS_REMOVE);
 }
 
 StatusApplyBehavior::StatusApplyBehavior(Target* targetOfEffect, EffectDuration duration,
-	Status status, std::optional<int> numberOfTurns, std::optional<GameEvent> endEvent)
+										 Status status, std::optional<int> numberOfTurns, std::optional<GameEvent> endEvent)
 {
 	this->effectTarget = targetOfEffect;
 	this->duration = duration;
@@ -526,6 +528,7 @@ void KeywordAddBehavior::execute(Target& target)
 {
 	if (auto* unit = dynamic_cast<UnitCard*>(&target)) {
 		unit->addKeyword(keyword.value());
+		unit->triggerGameEvent(GameEvent::UNIT_KEYWORD_ADD);
 		unit->applyEffect(std::make_unique<KeywordAddBehavior>(unit, duration.value(), keyword.value(), numberOfTurns.value(), endEvent.value()));
 	}
 }
@@ -551,7 +554,7 @@ void KeywordAddBehavior::checkForEndEvent(GameEvent event)
 	}
 }
 
-void KeywordAddBehavior::removeKeyword() const
+void KeywordAddBehavior::removeEffect() const
 {
 	auto* unit = dynamic_cast<UnitCard*>(effectTarget);
 	unit->removeKeyword(keyword.value());
@@ -606,7 +609,7 @@ void SilenceBehavior::checkForEndEvent(GameEvent event)
 	}
 }
 
-void SilenceBehavior::removeSilence() const
+void SilenceBehavior::removeEffect() const
 {
 	auto* unit = dynamic_cast<UnitCard*>(effectTarget);
 	unit->removeStatus(Status::SILENCED);
@@ -634,17 +637,8 @@ void StatusRemoveBehavior::execute(Target& target)
 {
 	if (auto* unit = dynamic_cast<UnitCard*>(&target)) {
 		unit->removeStatus(status.value());
+		unit->triggerGameEvent(GameEvent::UNIT_STATUS_REMOVE);
 	}
-}
-
-void StatusRemoveBehavior::decrementTurn()
-{
-	// Not used
-}
-
-void StatusRemoveBehavior::checkForEndEvent(GameEvent event)
-{
-	// Not used
 }
 
 DrawBehavior::DrawBehavior(EffectTrigger trigger, EffectDuration duration, TargetGroup who, int value,
@@ -679,16 +673,6 @@ void DrawBehavior::execute(Target& target)
 	}
 }
 
-void DrawBehavior::decrementTurn()
-{
-	// Not used
-}
-
-void DrawBehavior::checkForEndEvent(GameEvent event)
-{
-	// Not used
-}
-
 DiscardBehavior::DiscardBehavior(EffectTrigger trigger, EffectDuration duration, TargetGroup who, int value,
 	std::optional<GameEvent> triggerEvent)
 {
@@ -719,16 +703,6 @@ void DiscardBehavior::execute(Target& target)
 			enemyHero->discardCard();
 		}
 	}
-}
-
-void DiscardBehavior::decrementTurn()
-{
-	// Not used
-}
-
-void DiscardBehavior::checkForEndEvent(GameEvent event)
-{
-	// Not used
 }
 
 ShuffleBehavior::ShuffleBehavior(EffectTrigger trigger, EffectDuration duration, TargetGroup targetGroup,
@@ -800,16 +774,6 @@ void ShuffleBehavior::execute(Target& target)
 	}
 }
 
-void ShuffleBehavior::decrementTurn()
-{
-	// Not used
-}
-
-void ShuffleBehavior::checkForEndEvent(GameEvent event)
-{
-	// Not used
-}
-
 StealBehavior::StealBehavior(EffectTrigger trigger, EffectDuration duration, int value, TargetZone targetZone,
 	std::optional<GameEvent> triggerEvent)
 {
@@ -837,6 +801,7 @@ void StealBehavior::execute(Target& target)
 		{
 			int randomCardIndex = dis(gen);
 			allyHero->shuffleCardIntoTheDeck(enemyHero->getHand()[randomCardIndex]);
+			enemyHero->getHand()[randomCardIndex]->triggerGameEvent(GameEvent::CARD_STOLEN);
 			enemyHero->getHand().erase(enemyHero->getHand().begin() + randomCardIndex);
 		}
 	}
@@ -847,19 +812,10 @@ void StealBehavior::execute(Target& target)
 		{
 			int randomCardIndex = dis(gen);
 			allyHero->shuffleCardIntoTheDeck(enemyHero->getDeck()[randomCardIndex]);
+			enemyHero->getHand()[randomCardIndex]->triggerGameEvent(GameEvent::CARD_STOLEN);
 			enemyHero->getDeck().erase(enemyHero->getDeck().begin() + randomCardIndex);
 		}
 	}
-}
-
-void StealBehavior::decrementTurn()
-{
-	// Not used
-}
-
-void StealBehavior::checkForEndEvent(GameEvent event)
-{
-	// Not used
 }
 
 EnergyModifyBehavior::EnergyModifyBehavior(EffectTrigger trigger, EffectDuration duration, TargetGroup who, int value,
@@ -888,14 +844,4 @@ void EnergyModifyBehavior::execute(Target& target)
 	{
 		enemyHero->modifyEnergy(numberOfEnergy);
 	}
-}
-
-void EnergyModifyBehavior::decrementTurn()
-{
-	// Not used
-}
-
-void EnergyModifyBehavior::checkForEndEvent(GameEvent event)
-{
-	// Not used
 }

@@ -17,7 +17,7 @@ enum class GameEvent
 	CARD_SHUFFLED,      // Card has been shuffled into the deck
 	CARD_STOLEN,        // Card has been stolen
 
-	UNIT_ATTACK,        // Unit attacked
+	UNIT_ATTACKED,      // Unit attacked
 	UNIT_DAMAGED,       // Unit has been damaged
 	UNIT_HEALED,        // Unit has been healed
 	UNIT_DEATH,         // Unit has died
@@ -27,10 +27,6 @@ enum class GameEvent
 
 	ITEM_EQUIPPED,      // Item has been equipped
 	ITEM_DESTROYED,     // Item has been destroyed
-
-	HERO_ATTACKED,      // Hero has been attacked
-	HERO_DAMAGED,       // Hero has been damaged
-	HERO_HEALED         // Hero has been healed
 };
 
 enum class Keyword // In alphabetical order
