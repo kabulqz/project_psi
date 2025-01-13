@@ -34,7 +34,7 @@ protected:
 public:
 	std::vector<std::unique_ptr<EffectValue>> extraEnergyCost = {}; // Extra mana cost from effects
 
-	static Card* createCard(const uint_least32_t& cardSeed);
+	static Card* createCard(uint_least32_t& cardSeed);
 	~Card() override = default;
 
 	bool getIsOnBoard() const { return isOnBoard; }
@@ -54,7 +54,7 @@ public:
 	void triggerGameEvent(GameEvent event);
 
 	uint_least32_t serialize() const { return cardSeed; }
-	static Card* deserialize(const uint_least32_t& data);
+	static Card* deserialize(uint_least32_t& data);
 };
 
 class ItemCard final : public Card // If 0 durability, card is destroyed
@@ -83,7 +83,7 @@ public:
 	int getDurability() const { return currentDurability; }
 	void iterateDurability();
 
-	explicit ItemCard(const uint_least32_t& cardSeed, std::mt19937& cardGenerator);
+	explicit ItemCard(uint_least32_t& cardSeed, std::mt19937& cardGenerator);
 	~ItemCard() override = default;
 	void destroy();
 };
@@ -127,7 +127,7 @@ public:
 	bool hasItem() const { return item != nullptr; }
 	ItemCard* getItem() const { return item.get(); }
 
-	explicit UnitCard(const uint_least32_t& cardSeed, std::mt19937& cardGenerator);
+	explicit UnitCard(uint_least32_t& cardSeed, std::mt19937& cardGenerator);
 	~UnitCard() override = default;
 	void destroy();
 };
@@ -136,6 +136,6 @@ class SpellCard final : public Card
 {
 public:
 
-	explicit SpellCard(const uint_least32_t& cardSeed, std::mt19937& cardGenerator);
+	explicit SpellCard(uint_least32_t& cardSeed, std::mt19937& cardGenerator);
 	~SpellCard() override = default;
 };

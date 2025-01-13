@@ -110,6 +110,13 @@ void GameBoardState::update()
 {
 	requiredXP.setVisible(currentLevel.isHovered(mousePos));
 	availableUpgrade.setVisible(player->hasAvailableAbilityPoints());
+	availableUpgrade.handleHoverState(mousePos);
+	if (availableUpgrade.isHovered(mousePos)) {
+		availableUpgrade.setText(std::to_string(save->getPlayer()->getAbilityPoints()), font, fontSize - 1);
+	}
+	else {
+		availableUpgrade.setText("+", font, fontSize + 10);
+	}
 
 	auto sprite = player->getSprite();
 	sprite.setPosition(player->getMapPosition().x * 16, player->getMapPosition().y * 16);

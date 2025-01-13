@@ -88,6 +88,11 @@ bool BoardGamePlayer::hasAvailableAbilityPoints() const
 	return abilityPoints > 0;
 }
 
+void BoardGamePlayer::buyAbility(const int abilityCost)
+{
+	abilityPoints -= abilityCost;
+}
+
 bool BoardGamePlayer::load(const std::string& tileset)
 {
 	// load the tileset texture

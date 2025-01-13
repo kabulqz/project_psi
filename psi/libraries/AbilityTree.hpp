@@ -64,3 +64,35 @@ public:
 	static std::shared_ptr<AbilityTree> deserialize(const std::string& data);
 	static std::shared_ptr<AbilityTree> createAbilityTree();
 };
+
+inline void updateTree(const std::shared_ptr<AbilityTree>& tree, const int availablePoints)
+{
+	if (!tree || !tree->getRoot()) return;
+
+	std::function<void(const std::shared_ptr<Ability>&)> updateNode;
+	updateNode = [&](const std::shared_ptr<Ability>& node)
+		{
+			if (!node) return;
+
+			// Update the status of the ability
+			auto parent = node->getParent();
+			if (node->getUnlockStatus() != Ability::unlockStatus::UNLOCKED)
+			{
+				if (parent && parent->getUnlockStatus() == Ability::unlockStatus::UNLOCKED && node->getBuyCost() <= availablePoints)
+				{
+					node->setUnlockStatus(Ability::unlockStatus::BUYABLE);
+				}
+				else
+				{
+					node->setUnlockStatus(Ability::unlockStatus::LOCKED);
+				}
+			}
+
+			for (const auto& child : node->getChildren())
+			{
+				updateNode(child);
+			}
+		};
+
+	updateNode(tree->getRoot());
+}

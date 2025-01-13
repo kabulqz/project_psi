@@ -1,6 +1,6 @@
 ﻿#include "Card.hpp"
 
-Card* Card::createCard(const uint_least32_t& cardSeed)
+Card* Card::createCard(uint_least32_t& cardSeed)
 {
 	// Create a card based on the seed
 	std::mt19937 randomEngine(cardSeed);
@@ -88,7 +88,7 @@ void Card::triggerGameEvent(GameEvent event)
 	triggerEffect(EffectTrigger::ON_GAME_EVENT, event);
 }
 
-Card* Card::deserialize(const uint_least32_t& data)
+Card* Card::deserialize(uint_least32_t& data)
 {
 	return createCard(data);
 }
@@ -161,7 +161,7 @@ void ItemCard::iterateDurability()
 	}
 }
 
-ItemCard::ItemCard(const uint_least32_t& cardSeed, std::mt19937& cardGenerator) :
+ItemCard::ItemCard(uint_least32_t& cardSeed, std::mt19937& cardGenerator) :
 Card(CardType::ITEM)
 {
 	this->cardSeed = cardSeed;
@@ -332,7 +332,7 @@ void UnitCard::removeKeyword(const Keyword& keyword)
 	}
 }
 
-UnitCard::UnitCard(const uint_least32_t& cardSeed, std::mt19937& cardGenerator) :
+UnitCard::UnitCard(uint_least32_t& cardSeed, std::mt19937& cardGenerator) :
 	Card(CardType::UNIT) // Wywołanie konstruktora bazowego
 {
 	this->cardSeed = cardSeed;
@@ -426,7 +426,7 @@ void UnitCard::destroy()
 	UnitCard::~UnitCard();
 }
 
-SpellCard::SpellCard(const uint_least32_t& cardSeed, std::mt19937& cardGenerator) :
+SpellCard::SpellCard(uint_least32_t& cardSeed, std::mt19937& cardGenerator) :
 Card(CardType::SPELL)
 {
 	this->cardSeed = cardSeed;

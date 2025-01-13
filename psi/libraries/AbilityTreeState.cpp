@@ -50,6 +50,8 @@ backButton(10, 10, 60, 60, PATH_TO_BORDERS_FOLDER + "panel-border-027.png")
 
 	if (!vhsShader.loadFromFile("libraries/vhs_effect.frag", sf::Shader::Fragment)) return;
 	shaderClock.restart();
+
+	updateTree(abilityTree, save->getPlayer()->getAbilityPoints());
 }
 
 //handler for specific windows to appear in the main frame 
@@ -62,6 +64,24 @@ void AbilityTreeState::handleInput(sf::RenderWindow& window, EventManager& event
 
 	mousePos = sf::Mouse::getPosition(window);
 
+	std::function<void(const std::shared_ptr<Ability>&)> handleAbilityClick = [&](const std::shared_ptr<Ability>& ability) {
+		if (ability->isHovered(mousePos))
+		{
+			if (ability->getUnlockStatus() != Ability::unlockStatus::BUYABLE) return;
+			// Handle the click event for the ability
+			save->getPlayer()->buyAbility(ability->getBuyCost());
+			ability->setUnlockStatus(Ability::unlockStatus::UNLOCKED);
+			updateTree(abilityTree, save->getPlayer()->getAbilityPoints());
+			soundManager.playSound("AbilityUnlock");
+			std::cout << gradient("69B578", "FFD400", "Ability " + std::to_string(ability->getId()) + " has been unlocked\n");
+		}
+
+		for (const auto& child : ability->getChildren())
+		{
+			handleAbilityClick(child);
+		}
+	};
+
 	while (eventManager.hasEvents())
 	{
 		sf::Event event = eventManager.popEvent();
@@ -73,6 +93,10 @@ void AbilityTreeState::handleInput(sf::RenderWindow& window, EventManager& event
 				game->setSave(save);
 				game->changeState(std::make_unique<TransitionState>(game, ABILITY_TREE, GAME_BOARD));
 				soundManager.playSound("Transition");
+			}
+			else
+			{
+				handleAbilityClick(abilityTree->getRoot());
 			}
 		}
 	}

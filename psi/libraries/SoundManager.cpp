@@ -157,4 +157,5 @@ void SoundManager::loadSounds()
 	loadSound("Transition", path + "transition.ogg", UI);
 	loadSound("Ambience_crt", path + "ambience_crt.ogg", AMBIENCE);
 	loadSound("DiceThrow", path + "dice-throw-3.ogg", UI);
+	loadSound("AbilityUnlock", path + "ability-unlock.ogg", UI);
 }

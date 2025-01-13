@@ -40,6 +40,7 @@ public:
 
 	void addExperience(int value);
 	bool hasAvailableAbilityPoints() const;
+	void buyAbility(const int abilityCost);
 
 	// Getters and setters
 	int getLevel() const { return level; }

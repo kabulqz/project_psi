@@ -37,8 +37,6 @@ private:	// OpenSSL
 
 	bool saveKeyToFile(const std::string& keyFilePath) const;
 	bool loadKeyFromFile(const std::string& keyFilePath);
-
-	Card* tempCard;
 private:
 	int slot;
 

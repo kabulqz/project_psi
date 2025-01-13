@@ -1,19 +1,4 @@
-﻿  AbilityTree.cpp
-  AbilityTreeState.cpp
-  Card.cpp
-  Effect.cpp
-  EffectBehaviors.cpp
-  Game.cpp
-  GameBoardState.cpp
-  GameCardState.cpp
-  MainMenuState.cpp
-  MapGeneration.cpp
-  Save.cpp
-  TransitionState.cpp
-  main.cpp
-  Generowanie kodu...
-C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\psi\libraries\Effect.cpp(59,1): warning C4715: "StatusToString”: niewszystkie ścieżki kodu zwracają wartość
-C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\psi\libraries\Effect.cpp(79,1): warning C4715: "KeywordToString”: niewszystkie ścieżki kodu zwracają wartość
+﻿  Hero.cpp
   psi.vcxproj -> C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\x64\Debug\psi.exe
   C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\psi\src\OpenSSL\libcrypto-3-x64.dll
   1 File(s) copied

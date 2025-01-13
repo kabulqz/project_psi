@@ -32,7 +32,7 @@ private:
 	void renderAbilities(sf::RenderTarget& renderTarget, sf::RenderWindow& window, const std::shared_ptr<Ability>& ability,bool& isHoveredOverAnyAbility, CursorState& currentCursorState, const sf::Shader* shader);
 public:
 	//handler for specific windows to appear in the main frame 
-	void handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager, sqlite3*& databasez) override;
+	void handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager, sqlite3*& database) override;
 	//updater for elements corresponding to specific screen
 	void update() override;
 	//function rendering screen
