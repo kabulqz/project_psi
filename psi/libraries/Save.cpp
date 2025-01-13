@@ -1,5 +1,4 @@
 #include "Save.hpp"
-#include "Card.hpp"
 
 std::optional<std::filesystem::file_time_type>  Save::getLastWriteTime(int slot)
 {
@@ -250,6 +249,7 @@ Save::Save()
 	// Create the player
 	player = new BoardGamePlayer();
 
+	boardEnemies = {};
 }
 
 Save::Save(const Save& save)

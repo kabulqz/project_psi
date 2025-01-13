@@ -5,7 +5,9 @@
 GameBoardState::GameBoardState(Game* game) : game(game),
 currentLevel(10 ,10, 70, 60, PATH_TO_BORDERS_FOLDER + "panel-border-031.png"),
 availableUpgrade(85, 20, 40, 40, PATH_TO_BORDERS_FOLDER + "panel-border-030.png"),
-requiredXP(10, 75, 200, 40, PATH_TO_BORDERS_FOLDER + "panel-border-030.png")
+requiredXP(10, 75, 200, 40, PATH_TO_BORDERS_FOLDER + "panel-border-030.png"),
+statsButton(1160, 10, 110, 60, PATH_TO_BORDERS_FOLDER + "panel-border-031.png"),
+playerStats(1120, 80, 150, 120, PATH_TO_BORDERS_FOLDER + "panel-border-031.png")
 {
 	srand(static_cast<unsigned>(time(nullptr)));
 	save = game->getSave();
@@ -16,6 +18,14 @@ requiredXP(10, 75, 200, 40, PATH_TO_BORDERS_FOLDER + "panel-border-030.png")
 		save->write();
 	}
 	player = save->getPlayer();
+
+	save->setEnemies(save->getPath());
+	boardEnemies = save->getEnemies();
+
+	for (auto i : boardEnemies)
+	{
+		i.setMovementType(EntityMovement(rand() % 2));
+	}
 
 	currentLevel.setText(std::to_string(player->getLevel()), font, fontSize + 4);
 	currentLevel.setBackgroundColor("000000");
@@ -28,6 +38,13 @@ requiredXP(10, 75, 200, 40, PATH_TO_BORDERS_FOLDER + "panel-border-030.png")
 	requiredXP.setText(std::to_string(player->getExperience()) + " / " + std::to_string(player->getTotalXPRequiredForNextLevel()), font, fontSize - 1);
 	requiredXP.setBackgroundColor("000000");
 	requiredXP.setVisible(false);
+
+	statsButton.setText("Stats", font, fontSize + 4);
+	statsButton.setBackgroundColor("000000");
+
+	playerStats.setText("Money: " + std::to_string(player->getMoney()) + "\nHP: " + "\nEnergy: ", font, fontSize - 1);
+	playerStats.setBackgroundColor("000000");
+	playerStats.setVisible(false);
 	
 	game->changeViewZoom(0.4f);
 
@@ -110,6 +127,9 @@ void GameBoardState::update()
 {
 	requiredXP.setVisible(currentLevel.isHovered(mousePos));
 	availableUpgrade.setVisible(player->hasAvailableAbilityPoints());
+	//statsButton.setVisible(true);
+	playerStats.setVisible(statsButton.isHovered(mousePos));
+	
 	availableUpgrade.handleHoverState(mousePos);
 	if (availableUpgrade.isHovered(mousePos)) {
 		availableUpgrade.setText(std::to_string(save->getPlayer()->getAbilityPoints()), font, fontSize - 1);
@@ -121,6 +141,13 @@ void GameBoardState::update()
 	auto sprite = player->getSprite();
 	sprite.setPosition(player->getMapPosition().x * 16, player->getMapPosition().y * 16);
 	player->setSprite(sprite);
+
+	for (auto& enemy : boardEnemies)
+	{
+		auto sprite = enemy.getSprite();
+		sprite.setPosition(enemy.getMapPosition().x * 16, enemy.getMapPosition().y * 16);
+		enemy.setSprite(sprite);
+	}
 
 	sf::Vector2f playerPosition(
 		static_cast<float>(player->getMapPosition().x * 16 + 8),
@@ -163,12 +190,20 @@ void GameBoardState::render(sf::RenderWindow& window)
 		renderTexture.draw(player->getSprite());
 	}
 
+	for (auto& i : boardEnemies)
+	{
+		i.load("src/img/walk.png");
+		renderTexture.draw(i.getSprite());
+	}
+
 	sf::View UI(sf::FloatRect(0, 0, window.getSize().x, window.getSize().y));
 	renderTexture.setView(UI);
 
 	currentLevel.display(renderTexture);
 	availableUpgrade.display(renderTexture);
 	requiredXP.display(renderTexture);
+	statsButton.display(renderTexture);
+	playerStats.display(renderTexture);
 
 	renderTexture.display();
 
@@ -200,11 +235,18 @@ void GameBoardState::renderToTexture(sf::RenderTexture& texture)
 		texture.draw(player->getSprite());
 	}
 
+	for (auto &i : boardEnemies)
+	{
+		i.load("src/img/walk.png");
+		texture.draw(i.getSprite());
+	}
+
 	sf::View UI(sf::FloatRect(0, 0, texture.getSize().x, texture.getSize().y));
 	texture.setView(UI);
 
 	currentLevel.display(texture);
 	availableUpgrade.display(texture);
+	statsButton.display(texture);
 
 	// Finalize rendering
 	texture.display();

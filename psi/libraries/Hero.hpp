@@ -5,14 +5,31 @@
 
 class IEffectBehavior;
 
+enum class EntityMovement
+{
+	STATIC,		// Doesn't move. At all
+	LOOP,		// Does rounds around map like player
+	PATROL,		// Goes back and foward between two locations
+};
+
 // Specifically for Board Game
 class BoardGameMovable
 {
 private:
 	sf::Vector2i mapPosition;
+	sf::Sprite m_entitySprite;
+	sf::Texture m_entityTexture;
 public:
 	sf::Vector2i getMapPosition() const { return this->mapPosition; }
 	void setMapPosition(const sf::Vector2i& position) { this->mapPosition = position; }
+
+	sf::Texture getEntityTexture() const { return this->m_entityTexture; }
+	void setEntityTexture(const sf::Texture& texture) { this->m_entityTexture = texture; }
+
+	// Load the entity sprite
+	bool load(const std::string& tileset);
+	sf::Sprite getSprite() const { return this->m_entitySprite; }
+	void setSprite(const sf::Sprite& sprite) { m_entitySprite = sprite; }
 };
 // Wandering trader -> activation tiles: + 2 each side of path
 // Enemy -> activation tiles: + 3 each side of path
@@ -25,9 +42,6 @@ private:
 	int abilityPoints;
 	int experience;
 	int money;
-
-	sf::Sprite m_playerSprite;
-	sf::Texture m_playerTexture;
 
 	void onLevelUp();
 	int getRequiredXPForNextLevel() const;
@@ -53,14 +67,26 @@ public:
 	void setExperience(const int value) { experience = value; }
 	void setMoney(const int value) { money = value; }
 
-	// Load the player sprite
-	bool load(const std::string& tileset);
-	sf::Sprite getSprite() { return this->m_playerSprite; }
-	void setSprite(const sf::Sprite& sprite) { m_playerSprite = sprite; }
-
 	// Serialization and deserialization
 	std::string serialize() const;
 	static BoardGamePlayer* deserialize(const std::string& data);
+};
+
+class BoardGameEnemy : public BoardGameMovable
+{
+	EntityMovement movementType;
+public:
+	BoardGameEnemy();
+	BoardGameEnemy(sf::Vector2i pos);
+	BoardGameEnemy(const BoardGameEnemy& enemy);
+	BoardGameEnemy& operator= (const BoardGameEnemy& enemy);
+
+	EntityMovement getMovementType() const { return this->movementType; }
+	void setMovementType(const EntityMovement& em) { movementType = em; }
+
+	// Serialization and deserialization
+	std::string serialize() const;
+	static BoardGameEnemy* deserialize(const std::string& data);
 };
 
 // Specifically for Card Game

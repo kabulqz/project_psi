@@ -45,6 +45,7 @@ private:
 	std::vector<sf::Vector2i> path;
 	std::shared_ptr<AbilityTree> abilityTree;
 	BoardGamePlayer* player;
+	std::vector<BoardGameEnemy> boardEnemies;
 	// saved card deck
 	// saved card collection we have
 	//TypeOfMapGeneration mapGenerationType;
@@ -69,6 +70,28 @@ public:
 
 	BoardGamePlayer* getPlayer() const { return this->player; }
 	void setPlayer(BoardGamePlayer* player) { this->player = player; }
+
+	std::vector<BoardGameEnemy>& getEnemies() { return boardEnemies; }
+	//tak, wiem ¿e to powinno byæ w .cpp
+	void setEnemies(std::vector<sf::Vector2i>& path) 
+	{ 
+		
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		std::uniform_int_distribution<int> distribution(0, static_cast<int>(path.size() - 1));
+		// boardEnemies.insert(path[index], BoardGameEnemy());
+
+		while(boardEnemies.size() < 3)
+		{ 
+			int index = distribution(gen);
+			if (path[index] != player->getMapPosition() || std::find(boardEnemies.begin(), boardEnemies.end(), path[index]) == boardEnemies.end())
+			{
+				boardEnemies.push_back(path[index]);
+				std::cout << path[index].x << " " << path[index].y << "\n";
+			}
+		}
+	}
+	void setEnemies(std::vector<BoardGameEnemy>& enemies) { this->boardEnemies = enemies; }
 
 	void write(int slot);	// write to specific slot
 	void write() const;			// write to current slot

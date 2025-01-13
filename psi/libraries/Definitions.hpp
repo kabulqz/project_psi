@@ -60,7 +60,7 @@ enum class Status // In alphabetical order
 	FROZEN,         // Cannot attack
 	HEXED,          // Cannot use effects from this unit
 	MARKED,         // Takes extra damage for example 50% more
-	ROCK_SKINNED,   // Takes reduced damage for example maximum of 1
+	ROCK_SKINNED,   // Takes reduced damage for example maximum of 1 or 50%
 	STUNNED,		// Cannot add items to this unit, if unit has already items, they are removed
 
 	// For tracking purposes, cant be applied nor removed
@@ -142,6 +142,7 @@ enum class TargetGroup
 enum class StatType // Type of stat to buff/debuff
 {
 	ENERGY_COST,	// Energy cost - cards
+	VALUE,			// value points - spells
 	DAMAGE,			// Damage points - items
 	DEFENSE,		// Defense points - items
 	DURABILITY,		// Durability points - items
