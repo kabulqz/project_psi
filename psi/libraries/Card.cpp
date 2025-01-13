@@ -9,11 +9,11 @@ Card* Card::createCard(const uint_least32_t& cardSeed)
 	// Randomly select a card type
 	switch (static_cast<CardType>(cardTypeDistribution(randomEngine))) {
 	case CardType::UNIT:
-		return new UnitCard(randomEngine);
+		return new UnitCard(cardSeed, randomEngine);
 	case CardType::ITEM:
-		return new ItemCard(randomEngine);
+		return new ItemCard(cardSeed, randomEngine);
 	case CardType::SPELL:
-		return new SpellCard(randomEngine);
+		return new SpellCard(cardSeed, randomEngine);
 	}
 
 	return nullptr;
@@ -88,6 +88,11 @@ void Card::triggerGameEvent(GameEvent event)
 	triggerEffect(EffectTrigger::ON_GAME_EVENT, event);
 }
 
+Card* Card::deserialize(const uint_least32_t& data)
+{
+	return createCard(data);
+}
+
 void ItemCard::increaseDamage(const int value, const uint_least32_t key)
 {
 	extraDamage.push_back(std::make_unique<EffectValue>(value, key, StatType::DAMAGE));
@@ -147,9 +152,19 @@ void ItemCard::reduceDurability(const int value, const uint_least32_t key)
 	}
 }
 
-ItemCard::ItemCard(std::mt19937& cardGenerator) :
+void ItemCard::iterateDurability()
+{
+	--currentDurability;
+	if (currentDurability <= 0)
+	{
+		destroy();
+	}
+}
+
+ItemCard::ItemCard(const uint_least32_t& cardSeed, std::mt19937& cardGenerator) :
 Card(CardType::ITEM)
 {
+	this->cardSeed = cardSeed;
 	// Wygeneruj wartości bazowe
 	// Koszt energii (0 - 12)
 	// (0 - 4) słabe przedmioty, (5 - 8) średnie przedmioty, (9 - 12) silne przedmioty
@@ -255,8 +270,20 @@ void UnitCard::heal(const int value)
 
 void UnitCard::dealDamage(const int value)
 {
+	int newValue = value;
+	if (item) {
+		newValue = value - item->getDefense();
+		item->iterateDurability();
+	}
+	if (statuses.contains(Status::MARKED)) {
+		newValue = value + value / 2;
+	}
+	if (statuses.contains(Status::ROCK_SKINNED)){
+		newValue = 1;
+	}
+
 	// Zmniejsz zdrowie o wartość, ale nie mniej niż 0
-	currentHealth = std::max(0, currentHealth - value);
+	currentHealth = std::max(0, currentHealth - newValue);
 	if (currentHealth <= 0)
 	{
 		destroy();
@@ -305,9 +332,10 @@ void UnitCard::removeKeyword(const Keyword& keyword)
 	}
 }
 
-UnitCard::UnitCard(std::mt19937& cardGenerator) :
+UnitCard::UnitCard(const uint_least32_t& cardSeed, std::mt19937& cardGenerator) :
 	Card(CardType::UNIT) // Wywołanie konstruktora bazowego
 {
+	this->cardSeed = cardSeed;
 	// Wygeneruj wartości bazowe
 	// Koszt energii (0 - 12)
 	// (0 - 4) słabe jednostki, (5 - 8) średnie jednostki, (9 - 12) silne jednostki
@@ -398,40 +426,16 @@ void UnitCard::destroy()
 	UnitCard::~UnitCard();
 }
 
-void SpellCard::increaseValue(const int value, const uint_least32_t key)
-{
-	extraValue.push_back(std::make_unique<EffectValue>(value, key, StatType::VALUE));
-	currentValue = std::min(currentValue + value, std::accumulate(extraValue.begin(), extraValue.end(), 0, [](int sum, const std::unique_ptr<EffectValue>& effect)
-		{
-			return sum + effect->value;
-		}));
-}
-
-void SpellCard::reduceValue(const int value, const uint_least32_t key)
-{
-	extraValue.push_back(std::make_unique<EffectValue>(-value, key, StatType::VALUE));
-	currentValue = std::min(currentValue, baseValue + std::accumulate(extraValue.begin(), extraValue.end(), 0, [](int sum, const std::unique_ptr<EffectValue>& effect)
-		{
-			return sum + effect->value;
-		}));
-}
-
-SpellCard::SpellCard(std::mt19937& cardGenerator) :
+SpellCard::SpellCard(const uint_least32_t& cardSeed, std::mt19937& cardGenerator) :
 Card(CardType::SPELL)
 {
+	this->cardSeed = cardSeed;
 	// Wygeneruj wartości bazowe
 	// Koszt energii (0 - 12)
 	// (0 - 4) słabe zaklęcia, (5 - 8) średnie zaklęcia, (9 - 12) silne zaklęcia
 	std::uniform_int_distribution<int> energyCostDistribution(0, 12);
 	baseEnergyCost = energyCostDistribution(cardGenerator);
 	currentEnergyCost = baseEnergyCost;
-
-	// Value bedzie tylko potrzebne jesli Spell card bedzie mial efekt np. heal, dealDamage etc
-	// inaczej nie bedzie potrzebne
-	// Bazowa wartość (1 - 6)
-	std::uniform_int_distribution<int> valueDistribution(1, 6);
-	baseValue = valueDistribution(cardGenerator);
-	currentValue = baseValue;
 
 	// Efekty, Spell cardy mogą mieć od 2 do 6 efektów
 	std::uniform_int_distribution<int> effectsDistribution(2, 6);

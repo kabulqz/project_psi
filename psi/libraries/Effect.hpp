@@ -16,6 +16,8 @@ class Effect
 	std::unique_ptr<IEffectBehavior> behavior;
 	CardType cardType;
 
+	std::string description;
+
 	void setBuffBehavior();
 	void setDebuffBehavior();
 	void setHealBehavior();

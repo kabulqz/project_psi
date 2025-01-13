@@ -7,6 +7,7 @@
 class Card : public Target
 {
 protected:
+	uint_least32_t cardSeed;							// Seed of the card
 	CardType cardType;
 	void setCardType(const CardType cardType) { this->cardType = cardType; }
 
@@ -51,6 +52,9 @@ public:
 
 	void triggerEffect(EffectTrigger trigger, std::optional<GameEvent> event = std::nullopt);
 	void triggerGameEvent(GameEvent event);
+
+	uint_least32_t serialize() const { return cardSeed; }
+	static Card* deserialize(const uint_least32_t& data);
 };
 
 class ItemCard final : public Card // If 0 durability, card is destroyed
@@ -70,12 +74,16 @@ public:
 
 	void increaseDamage(int value, uint_least32_t key);
 	void reduceDamage(int value, uint_least32_t key);
+	int getDamage() const { return currentDamage; }
 	void increaseDefense(int value, uint_least32_t key);
 	void reduceDefense(int value, uint_least32_t key);
+	int getDefense() const { return currentDefense; }
 	void increaseDurability(int value, uint_least32_t key);
 	void reduceDurability(int value, uint_least32_t key);
+	int getDurability() const { return currentDurability; }
+	void iterateDurability();
 
-	explicit ItemCard(std::mt19937& cardGenerator);
+	explicit ItemCard(const uint_least32_t& cardSeed, std::mt19937& cardGenerator);
 	~ItemCard() override = default;
 	void destroy();
 };
@@ -97,8 +105,15 @@ public:
 
 	void increaseHealth(int value, uint_least32_t key);
 	void reduceHealth(int value, uint_least32_t key);
+	int getHealth() const { return currentHealth; }
 	void increaseAttack(int value, uint_least32_t key);
 	void reduceAttack(int value, uint_least32_t key);
+	int getAttack() const {
+		if (item) {
+			return currentAttack + item->getDamage();
+		}
+		return currentAttack;
+	}
 
 	void heal(int value);
 	void dealDamage(int value);
@@ -112,21 +127,15 @@ public:
 	bool hasItem() const { return item != nullptr; }
 	ItemCard* getItem() const { return item.get(); }
 
-	explicit UnitCard(std::mt19937& cardGenerator);
+	explicit UnitCard(const uint_least32_t& cardSeed, std::mt19937& cardGenerator);
 	~UnitCard() override = default;
 	void destroy();
 };
 
 class SpellCard final : public Card
 {
-	int baseValue;
-	int currentValue;
 public:
-	std::vector<std::unique_ptr<EffectValue>> extraValue = {}; // Extra value from effects
 
-	void increaseValue(int value, uint_least32_t key);
-	void reduceValue(int value, uint_least32_t key);
-
-	explicit SpellCard(std::mt19937& cardGenerator);
+	explicit SpellCard(const uint_least32_t& cardSeed, std::mt19937& cardGenerator);
 	~SpellCard() override = default;
 };

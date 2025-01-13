@@ -1,4 +1,5 @@
 #include "Save.hpp"
+#include "Card.hpp"
 
 std::optional<std::filesystem::file_time_type>  Save::getLastWriteTime(int slot)
 {
@@ -248,6 +249,9 @@ Save::Save()
 
 	// Create the player
 	player = new BoardGamePlayer();
+
+	// Create the temporary card
+	tempCard = Card::createCard(os_seed());
 }
 
 Save::Save(const Save& save)
@@ -262,6 +266,7 @@ Save::Save(const Save& save)
 	this->abilityTree = save.abilityTree;
 
 	this->player = save.player ? new BoardGamePlayer(*save.player) : new BoardGamePlayer();
+	this->tempCard = save.tempCard;
 }
 
 Save& Save::operator=(const Save& save)
@@ -281,6 +286,7 @@ Save& Save::operator=(const Save& save)
 	abilityTree = save.abilityTree;
 
 	player = save.player ? new BoardGamePlayer(*save.player) : new BoardGamePlayer();
+	tempCard = save.tempCard;
 
 	return *this;
 }
@@ -290,6 +296,7 @@ const std::string levelLine = "Level: ";
 const std::string pathLine = "Path: ";
 const std::string abilitiesLine = "Abilities: ";
 const std::string playerLine = "Player: ";
+const std::string cardLine = "Card: ";
 
 void Save::write(const int slot)
 {
@@ -309,6 +316,7 @@ void Save::write() const
 	oss << pathLine << serializePath() << "\n";
 	oss << abilitiesLine << abilityTree->serialize() << "\n";
 	oss << playerLine << player->serialize() << "\n";
+	oss << cardLine << tempCard->serialize() << "\n";
 
 	std::string plainText = oss.str();
 	//std::cout << "Saved text:\n" << color("48E5C2", plainText) << "\n";
@@ -399,6 +407,11 @@ Save& Save::load()
 		{
 			// Extract the player after "Player: "
 			player = BoardGamePlayer::deserialize(line.substr(playerLine.size()));
+		}
+		else if (line.starts_with(cardLine))
+		{
+			// Extract the card after "Card: "
+			tempCard = Card::deserialize(std::stoul(line.substr(cardLine.size())));
 		}
 	}
 
