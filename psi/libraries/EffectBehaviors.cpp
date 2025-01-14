@@ -49,9 +49,6 @@ void BuffBehavior::execute(Target& target)
 				break;
 			}
 		}
-		else if (auto* spell = dynamic_cast<SpellCard*>(card)) {
-			spell->increaseValue(value.value(), securityKey);
-		}
 	}
 	card->applyEffect(std::make_unique<BuffBehavior>(card, securityKey, duration.value(), value.value(), statType.value(), numberOfTurns, endEvent));
 }
@@ -87,17 +84,6 @@ void BuffBehavior::removeEffect() const
 
 		if (it != card->extraEnergyCost.end()) {
 			card->extraEnergyCost.erase(it);
-		}
-	}
-	else if (statType.value() == StatType::VALUE) {// Spell
-		auto* spell = dynamic_cast<SpellCard*>(effectTarget);
-
-		auto it = std::ranges::find_if(spell->extraValue, [this](const std::unique_ptr<EffectValue>& effect) {
-			return effect->value == value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
-			});
-
-		if (it != spell->extraValue.end()) {
-			spell->extraValue.erase(it);
 		}
 	}
 	else if (statType.value() == StatType::HEALTH || statType.value() == StatType::ATTACK) {// Unit
@@ -209,9 +195,6 @@ void DebuffBehavior::execute(Target& target)
 				break;
 			}
 		}
-		else if (auto* spell = dynamic_cast<SpellCard*>(card)) {
-			spell->reduceValue(value.value(), securityKey);
-		}
 	}
 	card->applyEffect(std::make_unique<DebuffBehavior>(card, securityKey, duration.value(), value.value(), statType.value(), numberOfTurns, endEvent));
 }
@@ -247,17 +230,6 @@ void DebuffBehavior::removeEffect() const
 
 		if (it != card->extraEnergyCost.end()) {
 			card->extraEnergyCost.erase(it);
-		}
-	}
-	else if (statType.value() == StatType::VALUE) {// Spell
-		auto* spell = dynamic_cast<SpellCard*>(effectTarget);
-
-		auto it = std::ranges::find_if(spell->extraValue, [this](const std::unique_ptr<EffectValue>& effect) {
-			return effect->value == -value.value() && effect->securityKey == securityKey.value() && effect->statType == statType.value();
-			});
-
-		if (it != spell->extraValue.end()) {
-			spell->extraValue.erase(it);
 		}
 	}
 	else if (statType.value() == StatType::HEALTH || statType.value() == StatType::ATTACK) {// Unit

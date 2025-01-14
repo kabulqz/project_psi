@@ -6,8 +6,7 @@ GameBoardState::GameBoardState(Game* game) : game(game),
 currentLevel(10 ,10, 70, 60, PATH_TO_BORDERS_FOLDER + "panel-border-031.png"),
 availableUpgrade(85, 20, 40, 40, PATH_TO_BORDERS_FOLDER + "panel-border-030.png"),
 requiredXP(10, 75, 200, 40, PATH_TO_BORDERS_FOLDER + "panel-border-030.png"),
-statsButton(1160, 10, 110, 60, PATH_TO_BORDERS_FOLDER + "panel-border-030.png"),
-playerStats(1120, 80, 150, 120, PATH_TO_BORDERS_FOLDER + "panel-border-030.png")
+playerStats(10, 120, 150, 120, PATH_TO_BORDERS_FOLDER + "panel-border-030.png")
 {
 	srand(static_cast<unsigned>(time(nullptr)));
 	save = game->getSave();
@@ -38,9 +37,6 @@ playerStats(1120, 80, 150, 120, PATH_TO_BORDERS_FOLDER + "panel-border-030.png")
 	requiredXP.setText(std::to_string(player->getExperience()) + " / " + std::to_string(player->getTotalXPRequiredForNextLevel()), font, fontSize - 1);
 	requiredXP.setBackgroundColor("000000");
 	requiredXP.setVisible(false);
-
-	statsButton.setText("Stats", font, fontSize + 4);
-	statsButton.setBackgroundColor("000000");
 
 	playerStats.setText("Money: " + std::to_string(player->getMoney()) + "\nHP: " + "\nEnergy: ", font, fontSize - 1);
 	playerStats.setBackgroundColor("000000");
@@ -128,8 +124,8 @@ void GameBoardState::handleInput(sf::RenderWindow& window, EventManager& eventMa
 void GameBoardState::update()
 {
 	requiredXP.setVisible(currentLevel.isHovered(mousePos));
+	playerStats.setVisible(currentLevel.isHovered(mousePos));
 	availableUpgrade.setVisible(player->hasAvailableAbilityPoints());
-	playerStats.setVisible(statsButton.isHovered(mousePos));
 	availableUpgrade.handleHoverState(mousePos);
 
 	if (availableUpgrade.isHovered(mousePos)) {
@@ -246,7 +242,6 @@ void GameBoardState::render(sf::RenderWindow& window)
 	currentLevel.display(renderTexture);
 	availableUpgrade.display(renderTexture);
 	requiredXP.display(renderTexture);
-	statsButton.display(renderTexture);
 	playerStats.display(renderTexture);
 
 	renderTexture.display();
@@ -331,7 +326,6 @@ void GameBoardState::renderToTexture(sf::RenderTexture& texture)
 
 	currentLevel.display(texture);
 	availableUpgrade.display(texture);
-	statsButton.display(texture);
 
 	// Finalize rendering
 	texture.display();

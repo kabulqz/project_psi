@@ -17,7 +17,6 @@ private:
 	Button currentLevel;
 	Button availableUpgrade;
 	Button requiredXP;
-	Button statsButton;
 	Button playerStats;
 
 	sf::Shader redScale;
