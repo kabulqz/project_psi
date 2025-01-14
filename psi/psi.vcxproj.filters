@@ -151,5 +151,8 @@
     <None Include="libraries\vhs_transition.frag">
       <Filter>Pliki zasobów</Filter>
     </None>
+    <None Include="libraries\redscale.frag">
+      <Filter>Pliki zasobów</Filter>
+    </None>
   </ItemGroup>
 </Project>

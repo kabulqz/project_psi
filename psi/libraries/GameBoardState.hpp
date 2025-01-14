@@ -20,6 +20,7 @@ private:
 	Button statsButton;
 	Button playerStats;
 
+	sf::Shader redScale;
 	sf::Shader vhsShader;
 	sf::Clock shaderClock;
 public:

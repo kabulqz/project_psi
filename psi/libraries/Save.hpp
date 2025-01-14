@@ -72,26 +72,21 @@ public:
 	void setPlayer(BoardGamePlayer* player) { this->player = player; }
 
 	std::vector<BoardGameEnemy>& getEnemies() { return boardEnemies; }
-	//tak, wiem ¿e to powinno byæ w .cpp
-	void setEnemies(std::vector<sf::Vector2i>& path) 
-	{ 
-		
+	void setEnemies(const std::vector<sf::Vector2i>& path)
+	{
 		std::random_device rd;
 		std::mt19937 gen(rd());
-		std::uniform_int_distribution<int> distribution(0, static_cast<int>(path.size() - 1));
-		// boardEnemies.insert(path[index], BoardGameEnemy());
+		std::uniform_int_distribution<int> dist(0, static_cast<int>(path.size()-1));
 
-		while(boardEnemies.size() < 3)
-		{ 
-			int index = distribution(gen);
-			if (path[index] != player->getMapPosition() || std::find(boardEnemies.begin(), boardEnemies.end(), path[index]) == boardEnemies.end())
+		while (boardEnemies.size() < 3)
+		{
+			if (const int index = dist(gen); path[index] != player->getMapPosition() && std::find(boardEnemies.begin(), boardEnemies.end(), path[index]) == boardEnemies.end())
 			{
-				boardEnemies.push_back(path[index]);
-				std::cout << path[index].x << " " << path[index].y << "\n";
+				boardEnemies.emplace_back(path[index]);
 			}
 		}
 	}
-	void setEnemies(std::vector<BoardGameEnemy>& enemies) { this->boardEnemies = enemies; }
+	void setEnemies(const std::vector<BoardGameEnemy>& enemies) { boardEnemies = enemies; }
 
 	void write(int slot);	// write to specific slot
 	void write() const;			// write to current slot

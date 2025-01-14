@@ -7,9 +7,9 @@ class IEffectBehavior;
 
 enum class EntityMovement
 {
-	STATIC,		// Doesn't move. At all
-	LOOP,		// Does rounds around map like player
-	PATROL,		// Goes back and foward between two locations
+	STATIC,
+	LOOP,
+	PATROL
 };
 
 // Specifically for Board Game
@@ -24,7 +24,7 @@ public:
 	void setMapPosition(const sf::Vector2i& position) { this->mapPosition = position; }
 
 	sf::Texture getEntityTexture() const { return this->m_entityTexture; }
-	void setEntityTexture(const sf::Texture& texture) { this->m_entityTexture = texture; }
+	void setEntityTexture(const sf::Texture& texture) { m_entityTexture = texture; }
 
 	// Load the entity sprite
 	bool load(const std::string& tileset);
@@ -67,6 +67,7 @@ public:
 	void setExperience(const int value) { experience = value; }
 	void setMoney(const int value) { money = value; }
 
+
 	// Serialization and deserialization
 	std::string serialize() const;
 	static BoardGamePlayer* deserialize(const std::string& data);
@@ -77,14 +78,15 @@ class BoardGameEnemy : public BoardGameMovable
 	EntityMovement movementType;
 public:
 	BoardGameEnemy();
-	BoardGameEnemy(sf::Vector2i pos);
+	~BoardGameEnemy() = default;
+	BoardGameEnemy(sf::Vector2i position);
 	BoardGameEnemy(const BoardGameEnemy& enemy);
 	BoardGameEnemy& operator= (const BoardGameEnemy& enemy);
+	bool operator==(const BoardGameEnemy& enemy) const { return this->getMapPosition() == enemy.getMapPosition(); }
 
-	EntityMovement getMovementType() const { return this->movementType; }
-	void setMovementType(const EntityMovement& em) { movementType = em; }
+	EntityMovement getMovementType() const { return movementType; }
+	void setMovementType(const EntityMovement type) { movementType = type; }
 
-	// Serialization and deserialization
 	std::string serialize() const;
 	static BoardGameEnemy* deserialize(const std::string& data);
 };
