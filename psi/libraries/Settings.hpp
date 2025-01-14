@@ -87,8 +87,8 @@ class Game;
 class Settings {
 public:
 	//values from 0 -1
-	float general_audio;
 	//values from 0 - 100
+	float general_audio;
 	float ui_audio;
 	float alert_audio;
 	float ambience_audio;
@@ -96,6 +96,7 @@ public:
 	//database
 	sqlite3* database;
 	//this function is meant to load database, general volume level etc.
+	void saveSettings() const;  // Save settings to the database
 	void initialize();
 	void closeDB() const;
 };

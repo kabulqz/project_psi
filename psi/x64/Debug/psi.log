@@ -1,12 +1,8 @@
-﻿  AbilityTreeState.cpp
-  Game.cpp
-  GameBoardState.cpp
-  GameCardState.cpp
-  MainMenuState.cpp
-  TransitionState.cpp
-  main.cpp
+﻿  GameBoardState.cpp
+  Hero.cpp
+  Settings.cpp
+  SoundManager.cpp
   Generowanie kodu...
-sfml-audio-s-d.lib(SoundFileWriterOgg.obj) : warning LNK4099: nie znaleziono pliku PDB „” z elementem „sfml-audio-s-d.lib(SoundFileWriterOgg.obj)” lub w pozycji „”; obiekt zostanie skonsolidowany bez informacji debugowania
   psi.vcxproj -> C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\x64\Debug\psi.exe
   C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\psi\src\OpenSSL\libcrypto-3-x64.dll
   1 File(s) copied

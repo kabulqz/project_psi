@@ -18,7 +18,9 @@ playerStats(10, 120, 150, 120, PATH_TO_BORDERS_FOLDER + "panel-border-030.png")
 	}
 	player = save->getPlayer();
 
-	save->setEnemies(save->getPath());
+	if (boardEnemies.empty()){
+		save->setEnemies(save->getPath());
+	}
 	boardEnemies = save->getEnemies();
 
 	for (auto& enemy : boardEnemies)
@@ -82,6 +84,18 @@ void GameBoardState::handleInput(sf::RenderWindow& window, EventManager& eventMa
 	while (eventManager.hasEvents())
 	{
 		sf::Event event = eventManager.popEvent();
+
+		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+		{
+			save->setPlayer(player);
+			save->setEnemies(boardEnemies);
+			save->write();
+			game->setSave(save);
+
+			game->changeState(std::make_unique<TransitionState>(game, GAME_BOARD, MAIN_MENU));
+			soundManager.playSound("Transition");
+			soundManager.playSound("Continue");
+		}
 		if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
 		{
 			if (currentLevel.isHovered(mousePos) && currentLevel.isClickable())
@@ -92,8 +106,8 @@ void GameBoardState::handleInput(sf::RenderWindow& window, EventManager& eventMa
 		}
 		if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space) || (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right))
 		{
-			int move = 1; // For testing purposes
-			//int move = rand() % 6 + 1; // Random move between 1 and 6
+			//int move = 1; // For testing purposes
+			int move = rand() % 6 + 1; // Random move between 1 and 6
 			std::cout << "Player rolled a " << color("ff7aa2", std::to_string(move)) << ", ";
 
 			soundManager.playSound("DiceThrow");
@@ -114,6 +128,7 @@ void GameBoardState::handleInput(sf::RenderWindow& window, EventManager& eventMa
 			player->setMapPosition(save->getPath()[newIndex]);
 
 			save->setPlayer(player);
+			save->setEnemies(boardEnemies);
 			save->write();
 			game->setSave(save);
 		}
