@@ -189,6 +189,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="libraries\grayscale.frag" />
+    <None Include="libraries\redscale.frag" />
     <None Include="libraries\vhs_effect.frag" />
     <None Include="libraries\vhs_transition.frag" />
   </ItemGroup>

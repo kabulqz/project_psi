@@ -3,6 +3,21 @@
 #include <ranges>
 #include "Card.hpp"
 
+bool BoardGameMovable::load(const std::string& tileset)
+{
+	// load the tileset texture
+	if (!m_entityTexture.loadFromFile(tileset))
+		return false;
+
+	m_entitySprite.setTexture(m_entityTexture);
+	m_entitySprite.setTextureRect(sf::IntRect(32, 32, 16, 16));
+
+	m_entitySprite.setPosition(static_cast<float>(getMapPosition().x * 16), static_cast<float>(getMapPosition().y * 16));
+
+	return true;
+}
+
+
 void BoardGamePlayer::onLevelUp()
 {
 	std::cout << gradient("ffb700", "ffea00", "Level up! You are now level ")
@@ -47,13 +62,12 @@ BoardGamePlayer::BoardGamePlayer(const BoardGamePlayer& player) : BoardGameMovab
 	experience = player.experience;
 	money = player.money;
 
-	if (player.m_playerTexture.getSize().x > 0 && player.m_playerTexture.getSize().y > 0)
-	{
-		m_playerTexture = player.m_playerTexture;
-		m_playerSprite.setTexture(m_playerTexture);
-		m_playerSprite.setTextureRect(player.m_playerSprite.getTextureRect());
-		m_playerSprite.setPosition(player.m_playerSprite.getPosition());
-	}
+	setEntityTexture(player.getEntityTexture());
+	sf::Sprite temp;
+	temp.setTexture(player.getEntityTexture());
+	temp.setTextureRect(player.getSprite().getTextureRect());
+	temp.setPosition(player.getSprite().getPosition());
+	setSprite(temp);
 }
 
 BoardGamePlayer& BoardGamePlayer::operator=(const BoardGamePlayer& player)
@@ -63,13 +77,12 @@ BoardGamePlayer& BoardGamePlayer::operator=(const BoardGamePlayer& player)
 	abilityPoints = player.abilityPoints;
 	experience = player.experience;
 	money = player.money;
-	if (player.m_playerTexture.getSize().x > 0 && player.m_playerTexture.getSize().y > 0)
-	{
-		m_playerTexture = player.m_playerTexture;
-		m_playerSprite.setTexture(m_playerTexture);
-		m_playerSprite.setTextureRect(player.m_playerSprite.getTextureRect());
-		m_playerSprite.setPosition(player.m_playerSprite.getPosition());
-	}
+	setEntityTexture(player.getEntityTexture());
+	sf::Sprite temp;
+	temp.setTexture(player.getEntityTexture());
+	temp.setTextureRect(player.getSprite().getTextureRect());
+	temp.setPosition(player.getSprite().getPosition());
+	setSprite(temp);
 	return *this;
 }
 
@@ -91,20 +104,6 @@ bool BoardGamePlayer::hasAvailableAbilityPoints() const
 void BoardGamePlayer::buyAbility(const int abilityCost)
 {
 	abilityPoints -= abilityCost;
-}
-
-bool BoardGamePlayer::load(const std::string& tileset)
-{
-	// load the tileset texture
-	if (!m_playerTexture.loadFromFile(tileset))
-		return false;
-
-	m_playerSprite.setTexture(m_playerTexture);
-	m_playerSprite.setTextureRect(sf::IntRect(32, 32, 16, 16));
-
-	m_playerSprite.setPosition(static_cast<float>(getMapPosition().x * 16), static_cast<float>(getMapPosition().y * 16));
-
-	return true;
 }
 
 std::string BoardGamePlayer::serialize() const
@@ -144,6 +143,66 @@ BoardGamePlayer* BoardGamePlayer::deserialize(const std::string& data)
 	std::getline(iss, token, ',');
 	temp->setMoney(std::stoi(token));
 
+	return temp;
+}
+
+BoardGameEnemy::BoardGameEnemy()
+{
+	load("src/img/walk.png");
+	setMapPosition(sf::Vector2i(-1, -1));
+	movementType = EntityMovement::STATIC;
+}
+
+BoardGameEnemy::BoardGameEnemy(const sf::Vector2i position)
+{
+	load("src/img/walk.png");
+	setMapPosition(position);
+	this->movementType = EntityMovement::STATIC;
+}
+
+BoardGameEnemy::BoardGameEnemy(const BoardGameEnemy& enemy) : BoardGameMovable(enemy)
+{
+	movementType = enemy.movementType;
+	setEntityTexture(enemy.getEntityTexture());
+	sf::Sprite temp;
+	temp.setTexture(enemy.getEntityTexture());
+	temp.setTextureRect(enemy.getSprite().getTextureRect());
+	temp.setPosition(enemy.getSprite().getPosition());
+	setSprite(temp);
+}
+
+BoardGameEnemy& BoardGameEnemy::operator=(const BoardGameEnemy& enemy)
+{
+	if (this == &enemy) return *this;
+	movementType = enemy.movementType;
+	setEntityTexture(enemy.getEntityTexture());
+	sf::Sprite temp;
+	temp.setTexture(enemy.getEntityTexture());
+	temp.setTextureRect(enemy.getSprite().getTextureRect());
+	temp.setPosition(enemy.getSprite().getPosition());
+	setSprite(temp);
+	return *this;
+}
+
+std::string BoardGameEnemy::serialize() const
+{
+	std::ostringstream oss;
+	oss << getMapPosition().x << ","
+		<< getMapPosition().y << ",";
+	//Add serialization for other attributes here
+	return oss.str();
+}
+
+BoardGameEnemy* BoardGameEnemy::deserialize(const std::string& data)
+{
+	BoardGameEnemy* temp = new BoardGameEnemy();
+	std::istringstream iss(data);
+	std::string token;
+	std::getline(iss, token, ',');
+	int x = std::stoi(token);
+	std::getline(iss, token, ',');
+	int y = std::stoi(token);
+	temp->setMapPosition(sf::Vector2i(x, y));
 	return temp;
 }
 
@@ -212,7 +271,7 @@ void Hero::discardCard()
 void Hero::shuffleCardIntoTheDeck(Card* card)
 {
 	if (!deck.empty()) {
-		std::random_device rd;
+		std::random_device rd;	
 		std::mt19937 gen(rd());
 		std::uniform_int_distribution<int> deckDistribution(0, static_cast<int>(deck.size() - 1));
 		int index = deckDistribution(gen);

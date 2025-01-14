@@ -250,6 +250,7 @@ Save::Save()
 	// Create the player
 	player = new BoardGamePlayer();
 
+	boardEnemies = {};
 }
 
 Save::Save(const Save& save)

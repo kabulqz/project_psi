@@ -5,7 +5,9 @@
 GameBoardState::GameBoardState(Game* game) : game(game),
 currentLevel(10 ,10, 70, 60, PATH_TO_BORDERS_FOLDER + "panel-border-031.png"),
 availableUpgrade(85, 20, 40, 40, PATH_TO_BORDERS_FOLDER + "panel-border-030.png"),
-requiredXP(10, 75, 200, 40, PATH_TO_BORDERS_FOLDER + "panel-border-030.png")
+requiredXP(10, 75, 200, 40, PATH_TO_BORDERS_FOLDER + "panel-border-030.png"),
+statsButton(1160, 10, 110, 60, PATH_TO_BORDERS_FOLDER + "panel-border-030.png"),
+playerStats(1120, 80, 150, 120, PATH_TO_BORDERS_FOLDER + "panel-border-030.png")
 {
 	srand(static_cast<unsigned>(time(nullptr)));
 	save = game->getSave();
@@ -16,6 +18,14 @@ requiredXP(10, 75, 200, 40, PATH_TO_BORDERS_FOLDER + "panel-border-030.png")
 		save->write();
 	}
 	player = save->getPlayer();
+
+	save->setEnemies(save->getPath());
+	boardEnemies = save->getEnemies();
+
+	for (auto& enemy : boardEnemies)
+	{
+		enemy.setMovementType(static_cast<EntityMovement>(rand() % 2));
+	}
 
 	currentLevel.setText(std::to_string(player->getLevel()), font, fontSize + 4);
 	currentLevel.setBackgroundColor("000000");
@@ -28,6 +38,13 @@ requiredXP(10, 75, 200, 40, PATH_TO_BORDERS_FOLDER + "panel-border-030.png")
 	requiredXP.setText(std::to_string(player->getExperience()) + " / " + std::to_string(player->getTotalXPRequiredForNextLevel()), font, fontSize - 1);
 	requiredXP.setBackgroundColor("000000");
 	requiredXP.setVisible(false);
+
+	statsButton.setText("Stats", font, fontSize + 4);
+	statsButton.setBackgroundColor("000000");
+
+	playerStats.setText("Money: " + std::to_string(player->getMoney()) + "\nHP: " + "\nEnergy: ", font, fontSize - 1);
+	playerStats.setBackgroundColor("000000");
+	playerStats.setVisible(false);
 	
 	game->changeViewZoom(0.4f);
 
@@ -36,6 +53,8 @@ requiredXP(10, 75, 200, 40, PATH_TO_BORDERS_FOLDER + "panel-border-030.png")
 
 	if (!vhsShader.loadFromFile("libraries/vhs_effect.frag", sf::Shader::Fragment)) return;
 	shaderClock.restart();
+
+	if (!redScale.loadFromFile("libraries/redscale.frag", sf::Shader::Fragment)) return;
 
 	sf::Vector2f playerPosition(
 		static_cast<float>(player->getMapPosition().x * 16 + 8),
@@ -110,7 +129,9 @@ void GameBoardState::update()
 {
 	requiredXP.setVisible(currentLevel.isHovered(mousePos));
 	availableUpgrade.setVisible(player->hasAvailableAbilityPoints());
+	playerStats.setVisible(statsButton.isHovered(mousePos));
 	availableUpgrade.handleHoverState(mousePos);
+
 	if (availableUpgrade.isHovered(mousePos)) {
 		availableUpgrade.setText(std::to_string(save->getPlayer()->getAbilityPoints()), font, fontSize - 1);
 	}
@@ -118,9 +139,17 @@ void GameBoardState::update()
 		availableUpgrade.setText("+", font, fontSize + 10);
 	}
 
+	for (auto& enemy : boardEnemies)
+	{
+		auto sprite = enemy.getSprite();
+		sprite.setPosition(enemy.getMapPosition().x * 16, enemy.getMapPosition().y * 16);
+		enemy.setSprite(sprite);
+	}
+
 	auto sprite = player->getSprite();
 	sprite.setPosition(player->getMapPosition().x * 16, player->getMapPosition().y * 16);
 	player->setSprite(sprite);
+
 
 	sf::Vector2f playerPosition(
 		static_cast<float>(player->getMapPosition().x * 16 + 8),
@@ -158,6 +187,54 @@ void GameBoardState::render(sf::RenderWindow& window)
 	//draw elements
 	renderTexture.draw(map);
 
+	for (auto& enemy : boardEnemies)
+	{
+		// Get the enemy's current position and its path
+		sf::Vector2i enemyPos = enemy.getMapPosition();
+		std::vector<sf::Vector2i> path = save->getPath();
+
+		// Find the current index of the enemy in the path
+		int enemyIndex = -1;
+		for (int i = 0; i < path.size(); ++i)
+		{
+			if (path[i] == enemyPos)
+			{
+				enemyIndex = i;
+				break;
+			}
+		}
+
+		if (enemyIndex != -1) // Only if the enemy is in the path
+		{
+			// Highlight the tile under the enemy (current position)
+			float tileSize = 16.f;  // Tile size in pixels
+			sf::RectangleShape highlightUnder(sf::Vector2f(tileSize, tileSize));
+			highlightUnder.setPosition(sf::Vector2f(enemyPos.x * tileSize, enemyPos.y * tileSize));
+			highlightUnder.setFillColor(sf::Color(255, 0, 0, 45));  // Semi-transparent red (adjust opacity)
+			renderTexture.draw(highlightUnder);
+
+			// Highlight tiles up to +2 ahead and -2 behind the enemy
+			for (int offset = -2; offset <= 2; ++offset)
+			{
+				if (offset == 0) continue;  // Skip the current tile where the enemy is
+
+				int index = std::clamp(enemyIndex + offset, 0, static_cast<int>(path.size()) - 1);
+				sf::Vector2i tile = path[index];
+
+				// Draw a subtle highlight for this tile
+				sf::RectangleShape highlight(sf::Vector2f(tileSize, tileSize));
+				highlight.setPosition(sf::Vector2f(tile.x * tileSize, tile.y * tileSize));
+				highlight.setFillColor(sf::Color(255, 0, 0, 45));  // Semi-transparent red (adjust opacity)
+				renderTexture.draw(highlight);
+			}
+		}
+
+		// Draw the enemy sprite on top of the highlighted tiles
+		enemy.load("src/img/walk.png");
+		renderTexture.draw(enemy.getSprite(), &redScale);
+	}
+
+
 	if (save->getPlayer()->getMapPosition() != sf::Vector2i(-1, -1))
 	{
 		renderTexture.draw(player->getSprite());
@@ -169,6 +246,8 @@ void GameBoardState::render(sf::RenderWindow& window)
 	currentLevel.display(renderTexture);
 	availableUpgrade.display(renderTexture);
 	requiredXP.display(renderTexture);
+	statsButton.display(renderTexture);
+	playerStats.display(renderTexture);
 
 	renderTexture.display();
 
@@ -193,6 +272,53 @@ void GameBoardState::renderToTexture(sf::RenderTexture& texture)
 	// Draw the map
 	texture.draw(map);
 
+	for (auto& enemy : boardEnemies)
+	{
+		// Get the enemy's current position and its path
+		sf::Vector2i enemyPos = enemy.getMapPosition();
+		std::vector<sf::Vector2i> path = save->getPath();
+
+		// Find the current index of the enemy in the path
+		int enemyIndex = -1;
+		for (int i = 0; i < path.size(); ++i)
+		{
+			if (path[i] == enemyPos)
+			{
+				enemyIndex = i;
+				break;
+			}
+		}
+
+		if (enemyIndex != -1) // Only if the enemy is in the path
+		{
+			// Highlight the tile under the enemy (current position)
+			float tileSize = 16.f;  // Tile size in pixels
+			sf::RectangleShape highlightUnder(sf::Vector2f(tileSize, tileSize));
+			highlightUnder.setPosition(sf::Vector2f(enemyPos.x * tileSize, enemyPos.y * tileSize));
+			highlightUnder.setFillColor(sf::Color(255, 0, 0, 45));  // Semi-transparent red (adjust opacity)
+			texture.draw(highlightUnder);
+
+			// Highlight tiles up to +2 ahead and -2 behind the enemy
+			for (int offset = -2; offset <= 2; ++offset)
+			{
+				if (offset == 0) continue;  // Skip the current tile where the enemy is
+
+				int index = std::clamp(enemyIndex + offset, 0, static_cast<int>(path.size()) - 1);
+				sf::Vector2i tile = path[index];
+
+				// Draw a subtle highlight for this tile
+				sf::RectangleShape highlight(sf::Vector2f(tileSize, tileSize));
+				highlight.setPosition(sf::Vector2f(tile.x * tileSize, tile.y * tileSize));
+				highlight.setFillColor(sf::Color(255, 0, 0, 45));  // Semi-transparent red (adjust opacity)
+				texture.draw(highlight);
+			}
+		}
+
+		// Draw the enemy sprite on top of the highlighted tiles
+		enemy.load("src/img/walk.png");
+		texture.draw(enemy.getSprite(), &redScale);
+	}
+
 	// Draw the player sprite if their position is valid
 	save->getPlayer()->load("src/img/walk.png");
 	if (save->getPlayer()->getMapPosition() != sf::Vector2i(-1, -1))
@@ -205,6 +331,7 @@ void GameBoardState::renderToTexture(sf::RenderTexture& texture)
 
 	currentLevel.display(texture);
 	availableUpgrade.display(texture);
+	statsButton.display(texture);
 
 	// Finalize rendering
 	texture.display();

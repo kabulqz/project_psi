@@ -10,13 +10,17 @@ private:
 	Game* game;
 	Save* save;
 	BoardGamePlayer* player;
+	std::vector<BoardGameEnemy> boardEnemies;
 	TileMap map;
 
 	sf::Vector2i mousePos;
 	Button currentLevel;
 	Button availableUpgrade;
 	Button requiredXP;
+	Button statsButton;
+	Button playerStats;
 
+	sf::Shader redScale;
 	sf::Shader vhsShader;
 	sf::Clock shaderClock;
 public:
