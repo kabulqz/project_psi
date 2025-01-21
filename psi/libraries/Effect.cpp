@@ -2,6 +2,82 @@
 #include "Card.hpp"
 #include "Hero.hpp"
 
+std::string GameEventToString(const GameEvent gameEvent)
+{
+	switch (gameEvent)
+	{
+	case GameEvent::TURN_START: return "start of a turn";
+	case GameEvent::TURN_END: return "end of a turn";
+	case GameEvent::CARD_PLAYED: return "card is played";
+	case GameEvent::CARD_DRAWN: return "card is drawn";
+	case GameEvent::CARD_DISCARDED: return "card is discarded";
+	case GameEvent::CARD_SHUFFLED: return "card is shuffled";
+	case GameEvent::CARD_STOLEN: return "card is stolen";
+	case GameEvent::UNIT_ATTACKED: return "unit has attacked";
+	case GameEvent::UNIT_DAMAGED: return "unit has been damaged";
+	case GameEvent::UNIT_HEALED: return "unit has been healed";
+	case GameEvent::UNIT_DEATH: return "unit has died";
+	case GameEvent::UNIT_STATUS_APPLY: return "unit had status applied";
+	case GameEvent::UNIT_STATUS_REMOVE: return "unit had status removed";
+	case GameEvent::UNIT_KEYWORD_ADD: return "unit had keyword added";
+	case GameEvent::ITEM_EQUIPPED: return "item is equipped";
+	case GameEvent::ITEM_DESTROYED: return "item is destroyed";
+	}
+	return "";
+}
+
+static std::string StatToString(const StatType statType)
+{
+	switch (statType)
+	{
+	case StatType::HEALTH: return "health";
+	case StatType::ATTACK: return "attack";
+	case StatType::DEFENSE: return "defense";
+	case StatType::DURABILITY: return "durability";
+	case StatType::DAMAGE: return "damage";
+	case StatType::ENERGY_COST: return "energy cost";
+	}
+	return "";
+}
+
+std::string StatusToString(Status status)
+{
+	switch (status)
+	{
+	case Status::BLEEDING: return "bleeding";
+	case Status::BURNING: return "burning";
+	case Status::POISONED: return "poisoned";
+	case Status::CONFUSED: return "confused";
+	case Status::CURSED: return "cursed";
+	case Status::ENRAGED: return "enraged";
+	case Status::FROZEN: return "frozen";
+	case Status::HEXED: return "hexed";
+	case Status::MARKED: return "marked";
+	case Status::ROCK_SKINNED: return "rock skinned";
+	case Status::STUNNED: return "stunned";
+	}
+}
+
+std::string KeywordToString(Keyword keyword)
+{
+	switch (keyword)
+	{
+	case Keyword::BERSERK: return "berserk";
+	case Keyword::BLOODTHIRSTY: return "bloodthirsty";
+	case Keyword::DEFENDER: return "defender";
+	case Keyword::DOUBLE_STRIKE: return "double strike";
+	case Keyword::ICEBREAKER: return "icebreaker";
+	case Keyword::IMMUNE: return "immune";
+	case Keyword::INSTANT_ATTACK: return "instant attack";
+	case Keyword::INSTANT_KILLER: return "instant killer";
+	case Keyword::LIFE_STEAL: return "life steal";
+	case Keyword::MASTER_OF_ARMS: return "master of arms";
+	case Keyword::PYROMANIAC: return "pyromaniac";
+	case Keyword::RANGED: return "ranged";
+	case Keyword::UNSTOPPABLE: return "unstoppable";
+	}
+}
+
 void Effect::setBuffBehavior()
 {// target - card(unit. item, spell)
 	std::uniform_int_distribution<int> valueDistribution(2, 5);
@@ -11,7 +87,7 @@ void Effect::setBuffBehavior()
 	std::unordered_map<CardType, std::vector<StatType>> selfStatsMap = {
 		{CardType::UNIT, {StatType::HEALTH, StatType::ATTACK}},
 		{CardType::ITEM, {StatType::DURABILITY, StatType::DEFENSE, StatType::DAMAGE}},
-		{CardType::SPELL, {StatType::VALUE}}
+		{CardType::SPELL, {StatType::VALUE}} // does nothing, just to be so the program compiles
 	};
 
 	if (targetMode == TargetMode::SELF && trigger == EffectTrigger::ON_DRAW) {
@@ -26,19 +102,18 @@ void Effect::setBuffBehavior()
 	};
 
 	if (targetMode != TargetMode::SELF && targetZone != TargetZone::BATTLEFIELD) {
-		generalStats.push_back(StatType::VALUE);
 		generalStats.push_back(StatType::ENERGY_COST);
 	}
 
 	if (targetMode == TargetMode::SELF) {
 		// Jeśli targetMode == SELF, wybieramy statystykę z mapy selfStatsMap dla odpowiedniego CardType
 		const auto& selfStats = selfStatsMap[cardType];
-		std::uniform_int_distribution statDistribution(0, static_cast<int>(selfStats.size()) - 1);
+		std::uniform_int_distribution statDistribution(0, static_cast<int>(selfStats.size() - 1));
 		statType = selfStats[statDistribution(generator)];
 	}
 	else {
 		// Jeśli targetMode != SELF, wybieramy statystykę z ogólnej puli
-		std::uniform_int_distribution statDistribution(0, static_cast<int>(generalStats.size()) - 1);
+		std::uniform_int_distribution statDistribution(0, static_cast<int>(generalStats.size() - 1));
 		statType = generalStats[statDistribution(generator)];
 	}
 
@@ -91,6 +166,40 @@ void Effect::setBuffBehavior()
 	}
 
 	behavior = std::make_unique<BuffBehavior>(trigger, durationType, value, statType, numberOfTargets, numberOfTurns, triggerEvent, endEvent);
+
+	switch (trigger) {
+	case EffectTrigger::WHEN_PLAYED: description += "Triggered immediately when the card is played, "; break;
+	case EffectTrigger::ON_DRAW: description += "Triggered when a card is drawn, "; break;
+	case EffectTrigger::ON_GAME_EVENT: description += "Triggered when " + GameEventToString(triggerEvent.value()) + ", "; break;
+	case EffectTrigger::ON_DISCARD: description += "Triggered when a card is discarded, "; break;
+	case EffectTrigger::ON_ATTACK: description += "Triggered when a unit attacks, "; break;
+	case EffectTrigger::ON_EQUIP: description += "Triggered when an item is equipped, "; break;
+	}
+	description += "\nbuffs " + StatToString(statType) + " by " + std::to_string(value) + ", ";
+	description += "targets ";
+
+	switch (targetMode) {
+	case TargetMode::SELF: description += "the card itself"; break;
+	case TargetMode::RANDOM_SINGLE: description += "a random single other card"; break;
+	case TargetMode::RANDOM_MULTIPLE: description += "a random" + std::to_string(numberOfTargets) + "other cards"; break;
+	}
+	description += " in ";
+
+	switch (targetZone) {
+	case TargetZone::HAND: description += "the hand"; break;
+	case TargetZone::DECK: description += "the deck"; break;
+	case TargetZone::BATTLEFIELD: description += "the battlefield"; break;
+	}
+	description += ",\n";
+
+	switch (durationType) {
+	case EffectDuration::PERMANENT: description += "effect lasts forever"; break;
+	case EffectDuration::TURN_BASED: description += "effect lasts for " + std::to_string(numberOfTurns.value()) + " turns"; break;
+	case EffectDuration::EVENT_BASED: description += "effect lasts until " + GameEventToString(endEvent.value()); break;
+	}
+	description += ".";
+
+	if (statType == StatType::VALUE) description = "";
 }
 
 void Effect::setDebuffBehavior()
@@ -102,7 +211,7 @@ void Effect::setDebuffBehavior()
 	std::unordered_map<CardType, std::vector<StatType>> selfStatsMap = {
 		{CardType::UNIT, {StatType::HEALTH, StatType::ATTACK}},
 		{CardType::ITEM, {StatType::DURABILITY, StatType::DEFENSE, StatType::DAMAGE}},
-		{CardType::SPELL, {StatType::VALUE}}
+		{CardType::SPELL, {StatType::VALUE}} // does nothing, just to be so the program compiles
 	};
 
 	if (targetMode == TargetMode::SELF && trigger == EffectTrigger::ON_DRAW) {
@@ -117,19 +226,18 @@ void Effect::setDebuffBehavior()
 	};
 
 	if (targetMode != TargetMode::SELF && targetZone != TargetZone::BATTLEFIELD) {
-		generalStats.push_back(StatType::VALUE);
 		generalStats.push_back(StatType::ENERGY_COST);
 	}
 
 	if (targetMode == TargetMode::SELF) {
 		// Jeśli targetMode == SELF, wybieramy statystykę z mapy selfStatsMap dla odpowiedniego CardType
 		const auto& selfStats = selfStatsMap[cardType];
-		std::uniform_int_distribution statDistribution(0, static_cast<int>(selfStats.size()) - 1);
+		std::uniform_int_distribution statDistribution(0, static_cast<int>(selfStats.size() - 1));
 		statType = selfStats[statDistribution(generator)];
 	}
 	else {
 		// Jeśli targetMode != SELF, wybieramy statystykę z ogólnej puli
-		std::uniform_int_distribution statDistribution(0, static_cast<int>(generalStats.size()) - 1);
+		std::uniform_int_distribution statDistribution(0, static_cast<int>(generalStats.size() - 1));
 		statType = generalStats[statDistribution(generator)];
 	}
 
@@ -182,6 +290,40 @@ void Effect::setDebuffBehavior()
 	}
 
 	behavior = std::make_unique<DebuffBehavior>(trigger, durationType, value, statType, numberOfTargets, numberOfTurns, triggerEvent, endEvent);
+
+	switch (trigger) {
+	case EffectTrigger::WHEN_PLAYED: description += "Triggered immediately when the card is played, "; break;
+	case EffectTrigger::ON_DRAW: description += "Triggered when a card is drawn, "; break;
+	case EffectTrigger::ON_GAME_EVENT: description += "Triggered when " + GameEventToString(triggerEvent.value()) + ", "; break;
+	case EffectTrigger::ON_DISCARD: description += "Triggered when a card is discarded, "; break;
+	case EffectTrigger::ON_ATTACK: description += "Triggered when a unit attacks, "; break;
+	case EffectTrigger::ON_EQUIP: description += "Triggered when an item is equipped, "; break;
+	}
+	description += "\nreduces " + StatToString(statType) + " by " + std::to_string(value) + ", ";
+	description += "targets ";
+
+	switch (targetMode) {
+	case TargetMode::SELF: description += "the card itself"; break;
+	case TargetMode::RANDOM_SINGLE: description += "a random single other card"; break;
+	case TargetMode::RANDOM_MULTIPLE: description += "a random " + std::to_string(numberOfTargets) + " other cards"; break;
+	}
+	description += " in ";
+
+	switch (targetZone) {
+	case TargetZone::HAND: description += "the hand"; break;
+	case TargetZone::DECK: description += "the deck"; break;
+	case TargetZone::BATTLEFIELD: description += "the battlefield"; break;
+	}
+	description += ",\n";
+
+	switch (durationType) {
+	case EffectDuration::PERMANENT: description += "effect lasts forever"; break;
+	case EffectDuration::TURN_BASED: description += "effect lasts for " + std::to_string(numberOfTurns.value()) + " turns"; break;
+	case EffectDuration::EVENT_BASED: description += "effect lasts until " + GameEventToString(endEvent.value()); break;
+	}
+	description += ".";
+
+	if (statType == StatType::VALUE) description = "";
 }
 
 void Effect::setHealBehavior()
@@ -215,6 +357,36 @@ void Effect::setHealBehavior()
 	}
 
 	behavior = std::make_unique<HealBehavior>(trigger, durationType, value, numberOfTargets, numberOfTurns, triggerEvent);
+
+	switch (trigger) {
+	case EffectTrigger::WHEN_PLAYED: description += "Triggered immediately when the card is played, "; break;
+	case EffectTrigger::ON_DRAW: description += "Triggered when a card is drawn, "; break;
+	case EffectTrigger::ON_GAME_EVENT: description += "Triggered when " + GameEventToString(triggerEvent.value()) + ", "; break;
+	case EffectTrigger::ON_DISCARD: description += "Triggered when a card is discarded, "; break;
+	case EffectTrigger::ON_ATTACK: description += "Triggered when a unit attacks, "; break;
+	case EffectTrigger::ON_EQUIP: description += "Triggered when an item is equipped, "; break;
+	}
+	description += "\nrestores " + std::to_string(value) + " health, ";
+
+	switch (durationType) {
+	case EffectDuration::INSTANT: description += "effect is applied instantly."; break;
+	case EffectDuration::TURN_BASED: description += "effect applies every turn for " + std::to_string(numberOfTurns.value()) + " turns. "; break;
+	}
+
+	description += "\nTargets ";
+	switch (targetMode) {
+	case TargetMode::SELF: description += "this card"; break;
+	case TargetMode::RANDOM_SINGLE: description += "a random single unit or hero"; break;
+	case TargetMode::RANDOM_MULTIPLE: description += "a random " + std::to_string(numberOfTargets) + " units or heroes"; break;
+	}
+	description += " in ";
+
+	switch (targetZone) {
+	case TargetZone::HAND: description += "the hand"; break;
+	case TargetZone::DECK: description += "the deck"; break;
+	case TargetZone::BATTLEFIELD: description += "the battlefield"; break;
+	}
+	description += ".";
 }
 
 void Effect::setDamageBehavior()
@@ -248,6 +420,36 @@ void Effect::setDamageBehavior()
 	}
 
 	behavior = std::make_unique<DamageBehavior>(trigger, durationType, value, numberOfTargets, numberOfTurns, triggerEvent);
+
+	switch (trigger) {
+	case EffectTrigger::WHEN_PLAYED: description += "Triggered immediately when the card is played, "; break;
+	case EffectTrigger::ON_DRAW: description += "Triggered when a card is drawn, "; break;
+	case EffectTrigger::ON_GAME_EVENT: description += "Triggered when " + GameEventToString(triggerEvent.value()) + ", "; break;
+	case EffectTrigger::ON_DISCARD: description += "Triggered when a card is discarded, "; break;
+	case EffectTrigger::ON_ATTACK: description += "Triggered when a unit attacks, "; break;
+	case EffectTrigger::ON_EQUIP: description += "Triggered when an item is equipped, "; break;
+	}
+	description += "\ndeals " + std::to_string(value) + " damage, ";
+
+	switch (durationType) {
+	case EffectDuration::INSTANT: description += "effect is applied instantly."; break;
+	case EffectDuration::TURN_BASED: description += "effect applies every turn for " + std::to_string(numberOfTurns.value()) + " turns. "; break;
+	}
+
+	description += "\nTargets ";
+	switch (targetMode) {
+	case TargetMode::SELF: description += "this card"; break;
+	case TargetMode::RANDOM_SINGLE: description += "a random single unit or hero"; break;
+	case TargetMode::RANDOM_MULTIPLE: description += "a random " + std::to_string(numberOfTargets) + " units or heroes"; break;
+	}
+	description += " in ";
+
+	switch (targetZone) {
+	case TargetZone::HAND: description += "the hand"; break;
+	case TargetZone::DECK: description += "the deck"; break;
+	case TargetZone::BATTLEFIELD: description += "the battlefield"; break;
+	}
+	description += ".";
 }
 
 void Effect::setStatusApplyBehavior()
@@ -298,6 +500,38 @@ void Effect::setStatusApplyBehavior()
 	}
 
 	behavior = std::make_unique<StatusApplyBehavior>(trigger, durationType, status, numberOfTargets, numberOfTurns, triggerEvent, endEvent);
+
+	switch (trigger) {
+	case EffectTrigger::WHEN_PLAYED: description += "Triggered immediately when the card is played, "; break;
+	case EffectTrigger::ON_DRAW: description += "Triggered when a card is drawn, "; break;
+	case EffectTrigger::ON_GAME_EVENT: description += "Triggered when " + GameEventToString(triggerEvent.value()) + ", "; break;
+	case EffectTrigger::ON_DISCARD: description += "Triggered when a card is discarded, "; break;
+	case EffectTrigger::ON_ATTACK: description += "Triggered when a unit attacks, "; break;
+	case EffectTrigger::ON_EQUIP: description += "Triggered when an item is equipped, "; break;
+	}
+	description += "\napplies \"" + StatusToString(status) + "\", ";
+
+	switch (durationType) {
+	case EffectDuration::INSTANT: description += "effect is applied instantly. "; break;
+	case EffectDuration::PERMANENT: description += "effect lasts forever. "; break;
+	case EffectDuration::TURN_BASED: description += "effect applies every turn for " + std::to_string(numberOfTurns.value()) + " turns. "; break;
+	case EffectDuration::EVENT_BASED: description += "effect lasts until " + GameEventToString(endEvent.value()) + ". "; break;
+	}
+
+	description += "\nTargets ";
+	switch (targetMode) {
+	case TargetMode::SELF: description += "this unit"; break;
+	case TargetMode::RANDOM_SINGLE: description += "a random single unit"; break;
+	case TargetMode::RANDOM_MULTIPLE: description += "a random " + std::to_string(numberOfTargets) + " units"; break;
+	}
+
+	description += " in ";
+	switch (targetZone) {
+	case TargetZone::HAND: description += "the hand"; break;
+	case TargetZone::DECK: description += "the deck"; break;
+	case TargetZone::BATTLEFIELD: description += "the battlefield"; break;
+	}
+	description += ".";
 }
 
 void Effect::setKeywordAddBehavior()
@@ -348,6 +582,38 @@ void Effect::setKeywordAddBehavior()
 	}
 
 	behavior = std::make_unique<KeywordAddBehavior>(trigger, durationType, keyword, numberOfTargets, numberOfTurns, triggerEvent, endEvent);
+
+	switch (trigger) {
+	case EffectTrigger::WHEN_PLAYED: description += "Triggered immediately when the card is played, "; break;
+	case EffectTrigger::ON_DRAW: description += "Triggered when a card is drawn, "; break;
+	case EffectTrigger::ON_GAME_EVENT: description += "Triggered when " + GameEventToString(triggerEvent.value()) + ", "; break;
+	case EffectTrigger::ON_DISCARD: description += "Triggered when a card is discarded, "; break;
+	case EffectTrigger::ON_ATTACK: description += "Triggered when a unit attacks, "; break;
+	case EffectTrigger::ON_EQUIP: description += "Triggered when an item is equipped, "; break;
+	}
+
+	description += "\nadds keyword \"" + KeywordToString(keyword) + "\", ";
+	switch (durationType) {
+	case EffectDuration::INSTANT: description += "effect is applied instantly. "; break;
+	case EffectDuration::PERMANENT: description += "effect lasts forever. "; break;
+	case EffectDuration::TURN_BASED: description += "effect applies every turn for " + std::to_string(numberOfTurns.value()) + " turns. "; break;
+	case EffectDuration::EVENT_BASED: description += "effect lasts until " + GameEventToString(endEvent.value()) + ". "; break;
+	}
+
+	description += "\nTargets ";
+	switch (targetMode) {
+	case TargetMode::SELF: description += "this unit"; break;
+	case TargetMode::RANDOM_SINGLE: description += "a random single unit"; break;
+	case TargetMode::RANDOM_MULTIPLE: description += "a random " + std::to_string(numberOfTargets) + " units"; break;
+	}
+
+	description += " in ";
+	switch (targetZone) {
+	case TargetZone::HAND: description += "the hand"; break;
+	case TargetZone::DECK: description += "the deck"; break;
+	case TargetZone::BATTLEFIELD: description += "the battlefield"; break;
+	}
+	description += ".";
 }
 
 void Effect::setSilenceBehavior()
@@ -393,6 +659,39 @@ void Effect::setSilenceBehavior()
 	}
 
 	behavior = std::make_unique<SilenceBehavior>(trigger, durationType, numberOfTargets, numberOfTurns, triggerEvent, endEvent);
+
+	switch (trigger) {
+	case EffectTrigger::WHEN_PLAYED: description += "Triggered immediately when the card is played, "; break;
+	case EffectTrigger::ON_DRAW: description += "Triggered when a card is drawn, "; break;
+	case EffectTrigger::ON_GAME_EVENT: description += "Triggered when " + GameEventToString(triggerEvent.value()) + ", "; break;
+	case EffectTrigger::ON_DISCARD: description += "Triggered when a card is discarded, "; break;
+	case EffectTrigger::ON_ATTACK: description += "Triggered when a unit attacks, "; break;
+	case EffectTrigger::ON_EQUIP: description += "Triggered when an item is equipped, "; break;
+	}
+
+	description += "\nsilences the card, ";
+
+	switch (durationType) {
+	case EffectDuration::INSTANT: description += "effect is applied instantly. "; break;
+	case EffectDuration::PERMANENT: description += "effect lasts forever. "; break;
+	case EffectDuration::TURN_BASED: description += "effect applies every turn for " + std::to_string(numberOfTurns.value()) + " turns. "; break;
+	case EffectDuration::EVENT_BASED: description += "effect lasts until " + GameEventToString(endEvent.value()) + ". "; break;
+	}
+
+	description += "\nTargets ";
+	switch (targetMode) {
+	case TargetMode::SELF: description += "this unit"; break;
+	case TargetMode::RANDOM_SINGLE: description += "a random single unit"; break;
+	case TargetMode::RANDOM_MULTIPLE: description += "a random " + std::to_string(numberOfTargets) + " units"; break;
+	}
+
+	description += " in ";
+	switch (targetZone) {
+	case TargetZone::HAND: description += "the hand"; break;
+	case TargetZone::DECK: description += "the deck"; break;
+	case TargetZone::BATTLEFIELD: description += "the battlefield"; break;
+	}
+	description += ".";
 }
 
 void Effect::setStatusRemoveBehavior()
@@ -427,6 +726,31 @@ void Effect::setStatusRemoveBehavior()
 	}
 
 	behavior = std::make_unique<StatusRemoveBehavior>(trigger, durationType, status, numberOfTargets, triggerEvent);
+
+	switch (trigger) {
+	case EffectTrigger::WHEN_PLAYED: description += "Triggered immediately when the card is played, "; break;
+	case EffectTrigger::ON_DRAW: description += "Triggered when a card is drawn, "; break;
+	case EffectTrigger::ON_GAME_EVENT: description += "Triggered when " + GameEventToString(triggerEvent.value()) + ", "; break;
+	case EffectTrigger::ON_DISCARD: description += "Triggered when a card is discarded, "; break;
+	case EffectTrigger::ON_ATTACK: description += "Triggered when a unit attacks, "; break;
+	case EffectTrigger::ON_EQUIP: description += "Triggered when an item is equipped, "; break;
+	}
+
+	description += "\nremoves \"" + StatusToString(status) + "\", ";
+	description += "\nTargets ";
+	switch (targetMode) {
+	case TargetMode::SELF: description += "this unit"; break;
+	case TargetMode::RANDOM_SINGLE: description += "a random single unit"; break;
+	case TargetMode::RANDOM_MULTIPLE: description += "a random " + std::to_string(numberOfTargets) + " units"; break;
+	}
+
+	description += " in ";
+	switch (targetZone) {
+	case TargetZone::HAND: description += "the hand"; break;
+	case TargetZone::DECK: description += "the deck"; break;
+	case TargetZone::BATTLEFIELD: description += "the battlefield"; break;
+	}
+	description += ".";
 }
 
 void Effect::setDrawBehavior()
@@ -445,6 +769,22 @@ void Effect::setDrawBehavior()
 	}
 
 	behavior = std::make_unique<DrawBehavior>(trigger, durationType, targetGroup, numberOfCards, triggerEvent);
+
+	switch (trigger) {
+	case EffectTrigger::WHEN_PLAYED: description += "Triggered immediately when the card is played, "; break;
+	case EffectTrigger::ON_GAME_EVENT: description += "Triggered when " + GameEventToString(triggerEvent.value()) + ", "; break;
+	case EffectTrigger::ON_DRAW: description += "Triggered when a card is drawn, "; break;
+	case EffectTrigger::ON_ATTACK: description += "Triggered when a unit attacks, "; break;
+	case EffectTrigger::ON_EQUIP: description += "Triggered when an item is equipped, "; break;
+	}
+
+	description += "\n";
+
+	switch (targetGroup) {
+	case TargetGroup::ALLY: description += "Allied hero draws " + std::to_string(numberOfCards) + " cards."; break;
+	case TargetGroup::ENEMY: description += "Enemy hero draws " + std::to_string(numberOfCards) + " cards."; break;
+	case TargetGroup::BOTH: description += "Both heroes draw " + std::to_string(numberOfCards) + " cards."; break;
+	}
 }
 
 void Effect::setDiscardBehavior()
@@ -469,6 +809,22 @@ void Effect::setDiscardBehavior()
 	}
 
 	behavior = std::make_unique<DiscardBehavior>(trigger, durationType, targetGroup, numberOfCards, triggerEvent);
+
+	switch (trigger) {
+	case EffectTrigger::WHEN_PLAYED: description += "Triggered immediately when the card is played, "; break;
+	case EffectTrigger::ON_GAME_EVENT: description += "Triggered when " + GameEventToString(triggerEvent.value()) + ", "; break;
+	case EffectTrigger::ON_DRAW: description += "Triggered when a card is drawn, "; break;
+	case EffectTrigger::ON_ATTACK: description += "Triggered when a unit attacks, "; break;
+	case EffectTrigger::ON_EQUIP: description += "Triggered when an item is equipped, "; break;
+	}
+
+	description += "\n";
+
+	switch (targetGroup) {
+	case TargetGroup::ALLY: description += "Allied hero discards " + std::to_string(numberOfCards) + " cards from hand."; break;
+	case TargetGroup::ENEMY: description += "Enemy hero discards " + std::to_string(numberOfCards) + " cards from hand."; break;
+	case TargetGroup::BOTH: description += "Both heroes discard " + std::to_string(numberOfCards) + " cards from hand."; break;
+	}
 }
 
 void Effect::setShuffleBehavior()
@@ -497,6 +853,26 @@ void Effect::setShuffleBehavior()
 	}
 
 	behavior = std::make_unique<ShuffleBehavior>(trigger, durationType, targetGroup, numberOfCards, targetZone, triggerEvent);
+
+	switch (trigger) {
+	case EffectTrigger::WHEN_PLAYED: description += "Triggered immediately when the card is played, "; break;
+	case EffectTrigger::ON_GAME_EVENT: description += "Triggered when " + GameEventToString(triggerEvent.value()) + ", "; break;
+	case EffectTrigger::ON_DRAW: description += "Triggered when a card is drawn, "; break;
+	case EffectTrigger::ON_ATTACK: description += "Triggered when a unit attacks, "; break;
+	case EffectTrigger::ON_EQUIP: description += "Triggered when an item is equipped, "; break;
+	}
+
+	description += "\n";
+
+	switch (targetGroup) {
+	case TargetGroup::ALLY: description += "Allied hero shuffles " + std::to_string(numberOfCards) + " cards into deck "; break;
+	case TargetGroup::ENEMY: description += "Enemy hero shuffles " + std::to_string(numberOfCards) + " cards into deck "; break;
+	}
+
+	switch (targetZone) {
+	case TargetZone::HAND: description += "from their hand."; break;
+	case TargetZone::BATTLEFIELD: description += "from their battlefield."; break;
+	}
 }
 
 void Effect::setStealBehavior()
@@ -521,6 +897,21 @@ void Effect::setStealBehavior()
 	}
 
 	behavior = std::make_unique<StealBehavior>(trigger, durationType, numberOfCards, targetZone, triggerEvent);
+
+	switch (trigger) {
+	case EffectTrigger::WHEN_PLAYED: description += "Triggered immediately when the card is played, "; break;
+	case EffectTrigger::ON_GAME_EVENT: description += "Triggered when " + GameEventToString(triggerEvent.value()) + ", "; break;
+	case EffectTrigger::ON_DRAW: description += "Triggered when a card is drawn, "; break;
+	case EffectTrigger::ON_ATTACK: description += "Triggered when a unit attacks, "; break;
+	case EffectTrigger::ON_EQUIP: description += "Triggered when an item is equipped, "; break;
+	}
+
+	description += "\nsteals " + std::to_string(numberOfCards) + " cards from opponents ";
+
+	switch (targetZone) {
+	case TargetZone::HAND: description += "hand."; break;
+	case TargetZone::DECK: description += "deck."; break;
+	}
 }
 
 void Effect::setEnergyModifyBehavior()
@@ -543,6 +934,17 @@ void Effect::setEnergyModifyBehavior()
 	}
 
 	behavior = std::make_unique<EnergyModifyBehavior>(trigger, durationType, targetGroup, value, triggerEvent);
+
+	switch (trigger) {
+	case EffectTrigger::WHEN_PLAYED: description += "Triggered immediately when the card is played, "; break;
+	case EffectTrigger::ON_DRAW: description += "Triggered when a card is drawn, "; break;
+	case EffectTrigger::ON_GAME_EVENT: description += "Triggered when " + GameEventToString(triggerEvent.value()) + ", "; break;
+	case EffectTrigger::ON_DISCARD: description += "Triggered when a card is discarded, "; break;
+	case EffectTrigger::ON_ATTACK: description += "Triggered when a unit attacks, "; break;
+	case EffectTrigger::ON_EQUIP: description += "Triggered when an item is equipped, "; break;
+	}
+
+	description += "\nadds " + std::to_string(value) + " to max energy.";
 }
 
 static std::unordered_map<EffectCategory, std::vector<EffectTrigger>> triggerMap = {
@@ -609,6 +1011,8 @@ static std::unordered_map<EffectCategory, std::vector<TargetZone>> targetZoneMap
 Effect::Effect(const uint_least32_t& effectSeed, const CardType cardType)
 	: generator(effectSeed), cardType(cardType)
 {
+	description = "";
+
 	// Losowanie kategorii efektu
 	std::uniform_int_distribution categoryDistribution(0, static_cast<int>(EffectCategory::STEAL));
 	category = static_cast<EffectCategory>(categoryDistribution(generator));

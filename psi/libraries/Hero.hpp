@@ -94,6 +94,8 @@ public:
 // Specifically for Card Game
 class Hero : public Target
 {
+private:
+	const int initialHandSizeToDraw = 4;
 protected:
 	int maxHealth = 25;				// Max value of health
 	int currentHealth;				// Current health that is updated constantly
@@ -114,11 +116,20 @@ public:
 	std::vector<Card*> getHand() const { return hand; }
 	std::vector<Card*> getBattlefield() const { return battlefield; }
 
+
 	void dealDamage(int value);
 	void restoreHealth(int value);
+	// used for drawing card t hand, in the game
 	void drawCard();
+	// used for discarding card from hand, in the game
 	void discardCard();
+	// used for shuffling card into the deck, in the game
 	void shuffleCardIntoTheDeck(Card* card);
+
+	// used to copy deck from save, before the game
+	void copyDeck(std::vector<uint_least32_t> deck);
+	// used to draw card from deck, before the game
+	void drawInitialHand();
 
 	void modifyEnergy(int value);
 

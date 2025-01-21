@@ -1,22 +1,38 @@
 ﻿#include "Card.hpp"
 
+static std::string cardTypeToString(const CardType cardType)
+{
+	switch (cardType)
+	{
+	case CardType::UNIT:
+		return "UNIT";
+	case CardType::ITEM:
+		return "ITEM";
+	case CardType::SPELL:
+		return "SPELL";
+	}
+	return "";
+}
+
 Card* Card::createCard(uint_least32_t& cardSeed)
 {
 	// Create a card based on the seed
 	std::mt19937 randomEngine(cardSeed);
-	std::uniform_int_distribution<int> cardTypeDistribution(0, 2);
+	std::uniform_int_distribution<int> cardTypeDistribution(static_cast<int>(CardType::UNIT), static_cast<int>(CardType::SPELL));
 
 	// Randomly select a card type
-	switch (static_cast<CardType>(cardTypeDistribution(randomEngine))) {
+	switch (const auto choice = static_cast<CardType>(cardTypeDistribution(randomEngine))) {
 	case CardType::UNIT:
 		return new UnitCard(cardSeed, randomEngine);
 	case CardType::ITEM:
 		return new ItemCard(cardSeed, randomEngine);
 	case CardType::SPELL:
 		return new SpellCard(cardSeed, randomEngine);
+	default:
+		std::cerr << "Error: Invalid card type generated: "
+			<< cardTypeToString(choice) + "\n";
+		return nullptr; // Zwróć nullptr, jeśli wystąpi błąd
 	}
-
-	return nullptr;
 }
 
 void Card::reduceEnergyCost(const int value, const uint_least32_t key)
@@ -208,6 +224,7 @@ Card(CardType::ITEM)
 		uint_least32_t effectSeed = effectSeedDistribution(cardGenerator);
 		// Dodaj efekt na podstawie seeda i typu karty
 		effects.push_back(std::make_unique<Effect>(effectSeed, cardType));
+		std::cout << "\nEffectSeed: " + std::to_string(effectSeed) + + "\n" + effects[i]->getDescription() + "\n";
 	}
 }
 
@@ -377,6 +394,7 @@ UnitCard::UnitCard(uint_least32_t& cardSeed, std::mt19937& cardGenerator) :
 		uint_least32_t effectSeed = effectSeedDistribution(cardGenerator);
 		// Dodaj efekt na podstawie seeda i typu karty
 		effects.push_back(std::make_unique<Effect>(effectSeed, cardType));
+		std::cout << "\nEffectSeed: " + std::to_string(effectSeed) + +"\n" + effects[i]->getDescription() + "\n";
 	}
 	// Statusy
 	std::uniform_int_distribution<int> statusesDistribution(0, 2);
@@ -447,5 +465,6 @@ Card(CardType::SPELL)
 		uint_least32_t effectSeed = effectSeedDistribution(cardGenerator);
 		// Dodaj efekt na podstawie seeda i typu karty
 		effects.push_back(std::make_unique<Effect>(effectSeed, cardType));
+		std::cout << "\nEffectSeed: " + std::to_string(effectSeed) + +"\n" + effects[i]->getDescription() + "\n";
 	}
 }

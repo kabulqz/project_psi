@@ -208,6 +208,7 @@ BoardGameEnemy* BoardGameEnemy::deserialize(const std::string& data)
 
 Hero::Hero(): currentHealth(0), maxEnergy(0), currentEnergy(0)
 {
+	deck.reserve(30);
 	// Write checks for the deck, hand and battlefield
 	hand.reserve(10);
 	battlefield.reserve(5);
@@ -281,6 +282,35 @@ void Hero::shuffleCardIntoTheDeck(Card* card)
 		deck.push_back(card);
 	}
 	card->triggerGameEvent(GameEvent::CARD_SHUFFLED);
+}
+
+void Hero::copyDeck(std::vector<uint_least32_t> deck)
+{
+	if (!deck.empty())
+	{
+		for (auto& cardSeed : deck)
+		{
+			auto copiedCard = Card::createCard(cardSeed);
+			if (copiedCard == nullptr) {
+				std::cerr << "Error: Failed to create card for seed " << cardSeed + "\n";
+				continue; // Pomiñ niepoprawne karty
+			}
+			this->deck.push_back(copiedCard);
+		}
+	}
+}
+
+void Hero::drawInitialHand()
+{
+	if (!deck.empty())
+	{
+		for (int i = 0; i < initialHandSizeToDraw; i++)
+		{
+			Card* card = deck.front();
+			deck.erase(deck.begin());
+			hand.push_back(card);
+		}
+	}
 }
 
 void Hero::modifyEnergy(int value)

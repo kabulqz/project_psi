@@ -46,7 +46,7 @@ private:
 	std::shared_ptr<AbilityTree> abilityTree;
 	BoardGamePlayer* player;
 	std::vector<BoardGameEnemy> boardEnemies;
-	// saved card deck
+	std::vector<uint_least32_t> deck;		// saved deck we have
 	// saved card collection we have
 	//TypeOfMapGeneration mapGenerationType;
 
@@ -76,7 +76,7 @@ public:
 	{
 		std::random_device rd;
 		std::mt19937 gen(rd());
-		std::uniform_int_distribution<int> dist(0, static_cast<int>(path.size()-1));
+		std::uniform_int_distribution<int> dist(0, static_cast<int>(path.size() - 1));
 
 		while (boardEnemies.size() < 3)
 		{
@@ -93,6 +93,8 @@ public:
 	Save& load(int slot);	// load from specific slot
 	Save& load();			// load from current slot
 	static std::optional<std::filesystem::file_time_type>  getLastWriteTime(int slot);
+
+	std::vector <uint_least32_t> getDeck() const { return deck; }
 };
 
 inline Save::~Save()

@@ -16,6 +16,8 @@ class Effect
 	std::unique_ptr<IEffectBehavior> behavior;
 	CardType cardType;
 
+	std::string description;
+
 	void setBuffBehavior();
 	void setDebuffBehavior();
 	void setHealBehavior();
@@ -36,4 +38,5 @@ public:
 	// trigger - which trigger activated the effect
 	// event - optional event that triggered the effect, used for ON_GAME_EVENT trigger
 	void executeEffect(Card* card, EffectTrigger trigger, std::optional<GameEvent> event);
+	std::string getDescription() const { return description; }
 };

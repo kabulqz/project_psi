@@ -81,7 +81,7 @@ class Game;
 
 class Settings {
 private:
-	bool readabilityMode = false;
+	bool readabilityMode;
 public:
 	//values from 0 -1
 	//values from 0 - 100

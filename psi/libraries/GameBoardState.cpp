@@ -85,6 +85,16 @@ void GameBoardState::handleInput(sf::RenderWindow& window, EventManager& eventMa
 	{
 		sf::Event event = eventManager.popEvent();
 
+		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::C)
+		{// GO TO CARD GAME
+			save->setPlayer(player);
+			save->setEnemies(boardEnemies);
+			save->write();
+			game->setSave(save);
+
+			game->changeState(std::make_unique<TransitionState>(game, GAME_BOARD, GAME_CARD));
+			soundManager.playSound("Transition");
+		}
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
 		{
 			save->setPlayer(player);

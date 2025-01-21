@@ -55,6 +55,8 @@ public:
 
 	uint_least32_t serialize() const { return cardSeed; }
 	static Card* deserialize(uint_least32_t& data);
+
+	uint_least32_t getSeed() const { return cardSeed; }
 };
 
 class ItemCard final : public Card // If 0 durability, card is destroyed

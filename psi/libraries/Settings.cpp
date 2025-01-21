@@ -12,9 +12,8 @@ void Settings::initialize()
 		return;
 	}
 	std::cout << "Opened SQLite database successfully\n";
-	std::cout << "Opened SQLite database successfully\n";
 
-
+	readabilityMode = false;
 	//initializing volume settings from save - if not on save then standard
 	//default values
 	//values from 0 - 1
@@ -32,7 +31,6 @@ void Settings::initialize()
 			setting_value REAL NOT NULL
 		);
 	)";
-	std::cout << "Opened SQLite database successfully\n";
 	char* error_message = nullptr;
 	if (sqlite3_exec(database, create_table_sql, nullptr, nullptr, &error_message) != SQLITE_OK)
 	{
