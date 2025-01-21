@@ -16,7 +16,7 @@ backButton(10, 10, 60, 60, PATH_TO_BORDERS_FOLDER + "panel-border-027.png")
 
 	game->changeViewZoom(1.f);
 
-	backButton.setText("<", font, fontSize + 10);
+	backButton.setText("<", game->getSettings().getFont(), game->getSettings().getFontSize() + 10);
 	backButton.setBackgroundColor("000000");
 
 	if (!abilityTreeTexture.loadFromFile("src/img/yggdrasil.png")) return;

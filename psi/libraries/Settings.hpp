@@ -34,11 +34,6 @@ constexpr int HEIGHT = 60;
 const std::string PATH_TO_BORDERS_FOLDER = "src/img/borders/";
 const std::string PATH_TO_ABILITIES_FOLDER = "src/img/";
 
-const std::string font = "src/img/antiquity-print.ttf";
-//const std::string font = "src/img/easvhs.ttf";
-constexpr int fontSize = 21;
-//constexpr int fontSize = 24;
-
 inline std::string color(const std::string& hex_color, const std::string& data)
 {
 	const int r = std::stoi(hex_color.substr(0, 2), nullptr, 16);
@@ -85,6 +80,8 @@ inline std::string gradient(const std::string& start_hex_color, const std::strin
 class Game;
 
 class Settings {
+private:
+	bool readabilityMode = false;
 public:
 	//values from 0 -1
 	//values from 0 - 100
@@ -99,4 +96,7 @@ public:
 	void saveSettings() const;  // Save settings to the database
 	void initialize();
 	void closeDB() const;
+
+	std::string getFont() const;
+	int getFontSize() const;
 };

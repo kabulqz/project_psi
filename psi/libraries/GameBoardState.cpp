@@ -28,19 +28,19 @@ playerStats(10, 120, 150, 120, PATH_TO_BORDERS_FOLDER + "panel-border-030.png")
 		enemy.setMovementType(static_cast<EntityMovement>(rand() % 2));
 	}
 
-	currentLevel.setText(std::to_string(player->getLevel()), font, fontSize + 4);
+	currentLevel.setText(std::to_string(player->getLevel()), game->getSettings().getFont(), game->getSettings().getFontSize() + 4);
 	currentLevel.setBackgroundColor("000000");
 
 	availableUpgrade.setVisible(player->hasAvailableAbilityPoints());
-	availableUpgrade.setText("+", font, fontSize + 10);
+	availableUpgrade.setText("+", game->getSettings().getFont(), game->getSettings().getFontSize() + 10);
 	availableUpgrade.setBackgroundColor("000000");
 	availableUpgrade.setColor("F5B700");
 
-	requiredXP.setText(std::to_string(player->getExperience()) + " / " + std::to_string(player->getTotalXPRequiredForNextLevel()), font, fontSize - 1);
+	requiredXP.setText(std::to_string(player->getExperience()) + " / " + std::to_string(player->getTotalXPRequiredForNextLevel()), game->getSettings().getFont(), game->getSettings().getFontSize() - 1);
 	requiredXP.setBackgroundColor("000000");
 	requiredXP.setVisible(false);
 
-	playerStats.setText("Money: " + std::to_string(player->getMoney()) + "\nHP: " + "\nEnergy: ", font, fontSize - 1);
+	playerStats.setText("Money: " + std::to_string(player->getMoney()) + "\nHP: " + "\nEnergy: ", game->getSettings().getFont(), game->getSettings().getFontSize() - 1);
 	playerStats.setBackgroundColor("000000");
 	playerStats.setVisible(false);
 	
@@ -144,10 +144,10 @@ void GameBoardState::update()
 	availableUpgrade.handleHoverState(mousePos);
 
 	if (availableUpgrade.isHovered(mousePos)) {
-		availableUpgrade.setText(std::to_string(save->getPlayer()->getAbilityPoints()), font, fontSize - 1);
+		availableUpgrade.setText(std::to_string(save->getPlayer()->getAbilityPoints()), game->getSettings().getFont(), game->getSettings().getFontSize() - 1);
 	}
 	else {
-		availableUpgrade.setText("+", font, fontSize + 10);
+		availableUpgrade.setText("+", game->getSettings().getFont(), game->getSettings().getFontSize() + 10);
 	}
 
 	for (auto& enemy : boardEnemies)

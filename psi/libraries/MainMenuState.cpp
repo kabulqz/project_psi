@@ -97,25 +97,25 @@ sav8Button(895, 505, 330, 130, PATH_TO_BORDERS_FOLDER + "panel-border-019.png")
 {
 	bool hasSaves = this->hasSaves();
 	this->options = Options::LOGO;
-	continueButton.setText("Continue", font, fontSize);
+	continueButton.setText("Continue", game->getSettings().getFont(), game->getSettings().getFontSize());
 	continueButton.setEnabled(hasSaves);
-	newGameButton.setText("New Game", font, fontSize);
+	newGameButton.setText("New Game", game->getSettings().getFont(), game->getSettings().getFontSize());
 	newGameButton.setEnabled(true);
-	loadGameButton.setText("Load Game", font, fontSize);
+	loadGameButton.setText("Load Game", game->getSettings().getFont(), game->getSettings().getFontSize());
 	loadGameButton.setEnabled(hasSaves);
-	settingsButton.setText("Settings", font, fontSize);
+	settingsButton.setText("Settings", game->getSettings().getFont(), game->getSettings().getFontSize());
 	settingsButton.setEnabled(true);
-	exitToDesktopButton.setText("Exit", font, fontSize);
+	exitToDesktopButton.setText("Exit", game->getSettings().getFont(), game->getSettings().getFontSize());
 	exitToDesktopButton.setEnabled(true);
 
-	sav1Button.setText("save 1", font, fontSize + 2);
-	sav2Button.setText("save 2", font, fontSize + 2);
-	sav3Button.setText("save 3", font, fontSize + 2);
-	sav4Button.setText("save 4", font, fontSize + 2);
-	sav5Button.setText("save 5", font, fontSize + 2);
-	sav6Button.setText("save 6", font, fontSize + 2);
-	sav7Button.setText("save 7", font, fontSize + 2);
-	sav8Button.setText("save 8", font, fontSize + 2);
+	sav1Button.setText("save 1", game->getSettings().getFont(), game->getSettings().getFontSize() + 2);
+	sav2Button.setText("save 2", game->getSettings().getFont(), game->getSettings().getFontSize() + 2);
+	sav3Button.setText("save 3", game->getSettings().getFont(), game->getSettings().getFontSize() + 2);
+	sav4Button.setText("save 4", game->getSettings().getFont(), game->getSettings().getFontSize() + 2);
+	sav5Button.setText("save 5", game->getSettings().getFont(), game->getSettings().getFontSize() + 2);
+	sav6Button.setText("save 6", game->getSettings().getFont(), game->getSettings().getFontSize() + 2);
+	sav7Button.setText("save 7", game->getSettings().getFont(), game->getSettings().getFontSize() + 2);
+	sav8Button.setText("save 8", game->getSettings().getFont(), game->getSettings().getFontSize() + 2);
 
 	for (int i = 0; i < 8; i++) {
 		if (saveArr[i] == 1) {

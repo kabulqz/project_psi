@@ -1,8 +1,26 @@
-﻿  GameBoardState.cpp
+﻿  AbilityTree.cpp
+  AbilityTreeState.cpp
+  Button.cpp
+  Card.cpp
+  Effect.cpp
+  EffectBehaviors.cpp
+  EventManager.cpp
+  Game.cpp
+  GameBoardState.cpp
+  GameCardState.cpp
+  Hero.cpp
+  MainMenuState.cpp
+  MapGeneration.cpp
+  Save.cpp
+  Settings.cpp
+  SoundManager.cpp
+  State.cpp
+  TransitionState.cpp
+  main.cpp
   Trwa generowanie kodu
-  1 of 5816 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+  2 of 5782 functions (<0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    85 functions had inline decision re-evaluated but remain unchanged
+    87 functions had inline decision re-evaluated but remain unchanged
   Zakończono generowanie kodu
   psi.vcxproj -> C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\x64\Release\psi.exe
   C:\Users\Maciej\Desktop\VS_my_projects\github\project_psi\psi\src\OpenSSL\libcrypto-3-x64.dll

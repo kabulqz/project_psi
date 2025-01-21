@@ -12,10 +12,10 @@ protected:
 	void setCardType(const CardType cardType) { this->cardType = cardType; }
 
 	//Visual elements of the card
-	std::string back;
-	std::string background;
-	std::string portrait;
-	std::string frame;
+	std::string back;			// string to location of the back of the card
+	std::string background;		// string to location of the background of the card
+	std::string portrait;		// string to location of the portrait of the card
+	std::string frame;			// string to location of the frame of the card
 
 	// Common attributes of the card
 	int baseEnergyCost;								// Mana cost of the card
