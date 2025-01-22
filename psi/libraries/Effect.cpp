@@ -30,12 +30,12 @@ static std::string StatToString(const StatType statType)
 {
 	switch (statType)
 	{
-	case StatType::HEALTH: return "health";
-	case StatType::ATTACK: return "attack";
-	case StatType::DEFENSE: return "defense";
-	case StatType::DURABILITY: return "durability";
-	case StatType::DAMAGE: return "damage";
-	case StatType::ENERGY_COST: return "energy cost";
+	case StatType::HEALTH: return "Health";
+	case StatType::ATTACK: return "Attack";
+	case StatType::DEFENSE: return "Defense";
+	case StatType::DURABILITY: return "Durability";
+	case StatType::DAMAGE: return "Damage";
+	case StatType::ENERGY_COST: return "Energy Cost";
 	}
 	return "";
 }
@@ -44,17 +44,17 @@ std::string StatusToString(Status status)
 {
 	switch (status)
 	{
-	case Status::BLEEDING: return "bleeding";
-	case Status::BURNING: return "burning";
-	case Status::POISONED: return "poisoned";
-	case Status::CONFUSED: return "confused";
-	case Status::CURSED: return "cursed";
-	case Status::ENRAGED: return "enraged";
-	case Status::FROZEN: return "frozen";
-	case Status::HEXED: return "hexed";
-	case Status::MARKED: return "marked";
-	case Status::ROCK_SKINNED: return "rock skinned";
-	case Status::STUNNED: return "stunned";
+	case Status::BLEEDING: return "Bleeding";
+	case Status::BURNING: return "Burning";
+	case Status::POISONED: return "Poisoned";
+	case Status::CONFUSED: return "Confused";
+	case Status::CURSED: return "Cursed";
+	case Status::ENRAGED: return "Enraged";
+	case Status::FROZEN: return "Frozen";
+	case Status::HEXED: return "Hexed";
+	case Status::MARKED: return "Marked";
+	case Status::ROCK_SKINNED: return "Rock Skinned";
+	case Status::STUNNED: return "Stunned";
 	}
 }
 
@@ -62,19 +62,19 @@ std::string KeywordToString(Keyword keyword)
 {
 	switch (keyword)
 	{
-	case Keyword::BERSERK: return "berserk";
-	case Keyword::BLOODTHIRSTY: return "bloodthirsty";
-	case Keyword::DEFENDER: return "defender";
-	case Keyword::DOUBLE_STRIKE: return "double strike";
-	case Keyword::ICEBREAKER: return "icebreaker";
-	case Keyword::IMMUNE: return "immune";
-	case Keyword::INSTANT_ATTACK: return "instant attack";
-	case Keyword::INSTANT_KILLER: return "instant killer";
-	case Keyword::LIFE_STEAL: return "life steal";
-	case Keyword::MASTER_OF_ARMS: return "master of arms";
-	case Keyword::PYROMANIAC: return "pyromaniac";
-	case Keyword::RANGED: return "ranged";
-	case Keyword::UNSTOPPABLE: return "unstoppable";
+	case Keyword::BERSERK: return "BERSERK";
+	case Keyword::BLOODTHIRSTY: return "BLOODTHIRSTY";
+	case Keyword::DEFENDER: return "DEFENDER";
+	case Keyword::DOUBLE_STRIKE: return "DOUBLE STRIKE";
+	case Keyword::ICEBREAKER: return "ICEBREAKER";
+	case Keyword::IMMUNE: return "IMMUNE";
+	case Keyword::INSTANT_ATTACK: return "INSTANT ATTACK";
+	case Keyword::INSTANT_KILLER: return "INSTANT KILLER";
+	case Keyword::LIFE_STEAL: return "LIFE STEAL";
+	case Keyword::MASTER_OF_ARMS: return "MASTER OF ARMS";
+	case Keyword::PYROMANIAC: return "PYROMANIAC";
+	case Keyword::RANGED: return "RANGED";
+	case Keyword::UNSTOPPABLE: return "UNSTOPPABLE";
 	}
 }
 
@@ -175,13 +175,18 @@ void Effect::setBuffBehavior()
 	case EffectTrigger::ON_ATTACK: description += "Triggered when a unit attacks, "; break;
 	case EffectTrigger::ON_EQUIP: description += "Triggered when an item is equipped, "; break;
 	}
-	description += "\nbuffs " + StatToString(statType) + " by " + std::to_string(value) + ", ";
-	description += "targets ";
+	if (statType == StatType::ENERGY_COST) {
+		description += "reduces " + StatToString(statType) + " by " + std::to_string(value) + ", ";
+	}
+	else {
+		description += "increases " + StatToString(statType) + " by " + std::to_string(value) + ", ";
+	}
+	description += "\ntargets ";
 
 	switch (targetMode) {
 	case TargetMode::SELF: description += "the card itself"; break;
 	case TargetMode::RANDOM_SINGLE: description += "a random single other card"; break;
-	case TargetMode::RANDOM_MULTIPLE: description += "a random" + std::to_string(numberOfTargets) + "other cards"; break;
+	case TargetMode::RANDOM_MULTIPLE: description += "a random " + std::to_string(numberOfTargets) + " other cards"; break;
 	}
 	description += " in ";
 
@@ -299,8 +304,13 @@ void Effect::setDebuffBehavior()
 	case EffectTrigger::ON_ATTACK: description += "Triggered when a unit attacks, "; break;
 	case EffectTrigger::ON_EQUIP: description += "Triggered when an item is equipped, "; break;
 	}
-	description += "\nreduces " + StatToString(statType) + " by " + std::to_string(value) + ", ";
-	description += "targets ";
+	if (statType == StatType::ENERGY_COST) {
+		description += "increases " + StatToString(statType) + " by " + std::to_string(value) + ", ";
+	}
+	else {
+		description += "reduces " + StatToString(statType) + " by " + std::to_string(value) + ", ";
+	}
+	description += "\ntargets ";
 
 	switch (targetMode) {
 	case TargetMode::SELF: description += "the card itself"; break;
@@ -737,7 +747,7 @@ void Effect::setStatusRemoveBehavior()
 	}
 
 	description += "\nremoves \"" + StatusToString(status) + "\", ";
-	description += "\nTargets ";
+	description += "targets ";
 	switch (targetMode) {
 	case TargetMode::SELF: description += "this unit"; break;
 	case TargetMode::RANDOM_SINGLE: description += "a random single unit"; break;
@@ -774,6 +784,7 @@ void Effect::setDrawBehavior()
 	case EffectTrigger::WHEN_PLAYED: description += "Triggered immediately when the card is played, "; break;
 	case EffectTrigger::ON_GAME_EVENT: description += "Triggered when " + GameEventToString(triggerEvent.value()) + ", "; break;
 	case EffectTrigger::ON_DRAW: description += "Triggered when a card is drawn, "; break;
+	case EffectTrigger::ON_DISCARD: description += "Triggered when a card is discarded, "; break;
 	case EffectTrigger::ON_ATTACK: description += "Triggered when a unit attacks, "; break;
 	case EffectTrigger::ON_EQUIP: description += "Triggered when an item is equipped, "; break;
 	}
@@ -789,6 +800,8 @@ void Effect::setDrawBehavior()
 
 void Effect::setDiscardBehavior()
 {// target - card(unit, item, spell) in hand
+	if (trigger == EffectTrigger::ON_DISCARD) trigger = EffectTrigger::WHEN_PLAYED;
+
 	int numberOfCards;
 	if (targetMode == TargetMode::RANDOM_SINGLE) {
 		numberOfCards = 1;
@@ -858,6 +871,7 @@ void Effect::setShuffleBehavior()
 	case EffectTrigger::WHEN_PLAYED: description += "Triggered immediately when the card is played, "; break;
 	case EffectTrigger::ON_GAME_EVENT: description += "Triggered when " + GameEventToString(triggerEvent.value()) + ", "; break;
 	case EffectTrigger::ON_DRAW: description += "Triggered when a card is drawn, "; break;
+	case EffectTrigger::ON_DISCARD: description += "Triggered when a card is discarded, "; break;
 	case EffectTrigger::ON_ATTACK: description += "Triggered when a unit attacks, "; break;
 	case EffectTrigger::ON_EQUIP: description += "Triggered when an item is equipped, "; break;
 	}
@@ -902,6 +916,7 @@ void Effect::setStealBehavior()
 	case EffectTrigger::WHEN_PLAYED: description += "Triggered immediately when the card is played, "; break;
 	case EffectTrigger::ON_GAME_EVENT: description += "Triggered when " + GameEventToString(triggerEvent.value()) + ", "; break;
 	case EffectTrigger::ON_DRAW: description += "Triggered when a card is drawn, "; break;
+	case EffectTrigger::ON_DISCARD: description += "Triggered when a card is discarded, "; break;
 	case EffectTrigger::ON_ATTACK: description += "Triggered when a unit attacks, "; break;
 	case EffectTrigger::ON_EQUIP: description += "Triggered when an item is equipped, "; break;
 	}

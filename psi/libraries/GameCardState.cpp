@@ -8,6 +8,8 @@ GameCardState::GameCardState(Game* game) : game(game)
 	std::cout << color("B2FFD6", "finished loading save\n");
 	const auto player = new Hero();
 	const auto enemy = new Hero();
+	player->getDeck().clear();
+	enemy->getDeck().clear();
 	std::cout << color("B2FFD6", "finished creating player and enemy\n");
 
 	// copy deck from save to player

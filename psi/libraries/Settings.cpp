@@ -80,7 +80,6 @@ void Settings::initialize()
 
 	sqlite3_finalize(stmt);
 	std::cout << "Loaded settings from the database.\n";
-	std::cout << music_audio << "\n";
 }
 
 void Settings::saveSettings() const

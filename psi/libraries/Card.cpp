@@ -223,8 +223,11 @@ Card(CardType::ITEM)
 		std::uniform_int_distribution< uint_least32_t> effectSeedDistribution(std::mt19937::min(), std::mt19937::max());
 		uint_least32_t effectSeed = effectSeedDistribution(cardGenerator);
 		// Dodaj efekt na podstawie seeda i typu karty
-		effects.push_back(std::make_unique<Effect>(effectSeed, cardType));
-		std::cout << "\nEffectSeed: " + std::to_string(effectSeed) + + "\n" + effects[i]->getDescription() + "\n";
+		auto effect = std::make_unique<Effect>(effectSeed, cardType);
+		if (!effect->getDescription().empty()) {
+			effects.push_back(std::move(effect));
+			std::cout << "\nCardType: " + cardTypeToString(cardType) + ", EffectSeed: " + std::to_string(effectSeed) + +"\n" + effects.back()->getDescription() + "\n";
+		}
 	}
 }
 
@@ -393,8 +396,11 @@ UnitCard::UnitCard(uint_least32_t& cardSeed, std::mt19937& cardGenerator) :
 		std::uniform_int_distribution< uint_least32_t> effectSeedDistribution(std::mt19937::min(), std::mt19937::max());
 		uint_least32_t effectSeed = effectSeedDistribution(cardGenerator);
 		// Dodaj efekt na podstawie seeda i typu karty
-		effects.push_back(std::make_unique<Effect>(effectSeed, cardType));
-		std::cout << "\nEffectSeed: " + std::to_string(effectSeed) + +"\n" + effects[i]->getDescription() + "\n";
+		auto effect = std::make_unique<Effect>(effectSeed, cardType);
+		if (!effect->getDescription().empty()) {
+			effects.push_back(std::move(effect));
+			std::cout << "\nCardType: " + cardTypeToString(cardType) +", EffectSeed: " + std::to_string(effectSeed) + +"\n" + effects.back()->getDescription() + "\n";
+		}
 	}
 	// Statusy
 	std::uniform_int_distribution<int> statusesDistribution(0, 2);
@@ -464,7 +470,10 @@ Card(CardType::SPELL)
 		std::uniform_int_distribution< uint_least32_t> effectSeedDistribution(std::mt19937::min(), std::mt19937::max());
 		uint_least32_t effectSeed = effectSeedDistribution(cardGenerator);
 		// Dodaj efekt na podstawie seeda i typu karty
-		effects.push_back(std::make_unique<Effect>(effectSeed, cardType));
-		std::cout << "\nEffectSeed: " + std::to_string(effectSeed) + +"\n" + effects[i]->getDescription() + "\n";
+		auto effect = std::make_unique<Effect>(effectSeed, cardType);
+		if (!effect->getDescription().empty()) {
+			effects.push_back(std::move(effect));
+			std::cout << "\nCardType: " + cardTypeToString(cardType) + ", EffectSeed: " + std::to_string(effectSeed) + +"\n" + effects.back()->getDescription() + "\n";
+		}
 	}
 }
