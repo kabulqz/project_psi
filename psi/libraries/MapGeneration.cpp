@@ -131,8 +131,10 @@ void MapGeneration::randomFlipAndRotateMap(std::vector<std::vector<int>>& level2
 	}
 }
 
-void MapGeneration::pathHelper(std::vector<std::vector<int>>& level2D)
+void MapGeneration::pathHelper(std::vector<std::vector<int>>& level2D, std::mt19937& generator)
 {
+	std::uniform_int_distribution<int> randomTile(2, 9); 
+	int tile;
 	for (int x = 0; x < WIDTH; ++x)
 	{
 		for (int y = 0; y < HEIGHT; ++y)
@@ -173,7 +175,29 @@ void MapGeneration::pathHelper(std::vector<std::vector<int>>& level2D)
 				// Jeœli mamy s¹siada o wartoœci 1, zmieniamy pole na 2
 				if (hasNeighbor)
 				{
-					level2D[x][y] = 2;
+					tile = randomTile(generator);
+					switch (tile) 
+					{
+					case 2:
+					case 7:
+					case 8:
+					case 9:
+						level2D[x][y] = 2;
+						break;
+					case 3:
+						level2D[x][y] = 3;
+						break;
+					case 4:
+						level2D[x][y] = 4;
+						break;
+					case 5:
+						level2D[x][y] = 5;
+						break;
+					case 6:
+						level2D[x][y] = 6;
+						break;
+					}
+					
 				}
 			}
 		}
@@ -186,7 +210,7 @@ void MapGeneration::collectPathPositions(std::vector<std::vector<int>>& level2D,
 	{
 		for (int y = 0; y < HEIGHT; ++y)
 		{
-			if (level2D[x][y] == 2) // Jeœli pole jest oznaczone jako œcie¿ka
+			if (level2D[x][y] >= 2) // Jeœli pole jest oznaczone jako œcie¿ka
 			{
 				positions.emplace_back(x, y);
 			}
@@ -197,7 +221,7 @@ void MapGeneration::collectPathPositions(std::vector<std::vector<int>>& level2D,
 void MapGeneration::generatePath(std::vector<std::vector<int>>& level2D, std::vector<sf::Vector2i>& path, std::mt19937& generator)
 {
 	// Wype³nienie mapy œcie¿k¹
-	pathHelper(level2D);
+	pathHelper(level2D, generator);
 
 	// Zbieranie pozycji œcie¿ki
 	std::vector<sf::Vector2i> pathPositions;
@@ -234,7 +258,7 @@ void MapGeneration::generatePath(std::vector<std::vector<int>>& level2D, std::ve
 			sf::Vector2i nextPos = currentPos + direction;
 
 			// Sprawdzamy, czy ruch nie wykracza poza mapê i czy pole jest oznaczone jako œcie¿ka (2)
-			if (nextPos.x >= 0 && nextPos.x < WIDTH && nextPos.y >= 0 && nextPos.y < HEIGHT && level2D[nextPos.x][nextPos.y] == 2)
+			if (nextPos.x >= 0 && nextPos.x < WIDTH && nextPos.y >= 0 && nextPos.y < HEIGHT && level2D[nextPos.x][nextPos.y] >= 2)
 			{
 				// Jeœli to nie jest ta sama pozycja, z której przyszliœmy (unikamy cofania)
 				if (nextPos != previousPos)

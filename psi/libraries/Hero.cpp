@@ -50,6 +50,8 @@ BoardGamePlayer::BoardGamePlayer()
 	abilityPoints = 0;
 	experience = 0;
 	money = 0;
+	rerolls = 0;
+	plusMvm = 3;
 
 	load("src/img/walk.png");
 	setMapPosition(sf::Vector2i(-1, -1));
@@ -61,6 +63,8 @@ BoardGamePlayer::BoardGamePlayer(const BoardGamePlayer& player) : BoardGameMovab
 	abilityPoints = player.abilityPoints;
 	experience = player.experience;
 	money = player.money;
+	rerolls = player.rerolls;
+	plusMvm = player.plusMvm;
 
 	setEntityTexture(player.getEntityTexture());
 	sf::Sprite temp;
@@ -77,6 +81,8 @@ BoardGamePlayer& BoardGamePlayer::operator=(const BoardGamePlayer& player)
 	abilityPoints = player.abilityPoints;
 	experience = player.experience;
 	money = player.money;
+	rerolls = player.rerolls;
+	plusMvm = player.plusMvm;
 	setEntityTexture(player.getEntityTexture());
 	sf::Sprite temp;
 	temp.setTexture(player.getEntityTexture());
@@ -114,7 +120,9 @@ std::string BoardGamePlayer::serialize() const
 		<< level << ","
 		<< abilityPoints << ","
 		<< experience << ","
-		<< money << ",";
+		<< money << ","
+		<< rerolls << ","
+		<< plusMvm << ",";
 	//Add serialization for other atributes here
 	return oss.str();
 }
@@ -142,6 +150,12 @@ BoardGamePlayer* BoardGamePlayer::deserialize(const std::string& data)
 
 	std::getline(iss, token, ',');
 	temp->setMoney(std::stoi(token));
+
+	std::getline(iss, token, ',');
+	temp->setRerolls(std::stoi(token));
+
+	std::getline(iss, token, ',');
+	temp->setPlusMvm(std::stoi(token));
 
 	return temp;
 }

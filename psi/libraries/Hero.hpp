@@ -42,6 +42,8 @@ private:
 	int abilityPoints;
 	int experience;
 	int money;
+	int rerolls;	// Wrzuci³em to, ale chyba bêdzie trzeba to olaæ, bo to wymaga³o by pauzy. A zrobienie tego wymaga³o by przeciêcia GameBoardState na dwa. Jebaæ.
+	int plusMvm;
 
 	void onLevelUp();
 	int getRequiredXPForNextLevel() const;
@@ -61,11 +63,15 @@ public:
 	int getAbilityPoints() const { return abilityPoints; }
 	int getExperience() const { return experience; }
 	int getMoney() const { return money; }
+	int getRerolls() const { return rerolls; }
+	int getPlusMvm() const { return plusMvm; }
 
 	void setLevel(const int value) { level = value; }
 	void setAbilityPoints(const int value) { abilityPoints = value; }
 	void setExperience(const int value) { experience = value; }
 	void setMoney(const int value) { money = value; }
+	void setRerolls(const int value) { rerolls = value; }
+	void setPlusMvm(const int value) { plusMvm = value; }
 
 
 	// Serialization and deserialization

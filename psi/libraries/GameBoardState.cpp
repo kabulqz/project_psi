@@ -6,7 +6,7 @@ GameBoardState::GameBoardState(Game* game) : game(game),
 currentLevel(10 ,10, 70, 60, PATH_TO_BORDERS_FOLDER + "panel-border-031.png"),
 availableUpgrade(85, 20, 40, 40, PATH_TO_BORDERS_FOLDER + "panel-border-030.png"),
 requiredXP(10, 75, 200, 40, PATH_TO_BORDERS_FOLDER + "panel-border-030.png"),
-playerStats(10, 120, 150, 120, PATH_TO_BORDERS_FOLDER + "panel-border-030.png")
+playerStats(10, 120, 200, 180, PATH_TO_BORDERS_FOLDER + "panel-border-030.png")
 {
 	srand(static_cast<unsigned>(time(nullptr)));
 	save = game->getSave();
@@ -28,6 +28,7 @@ playerStats(10, 120, 150, 120, PATH_TO_BORDERS_FOLDER + "panel-border-030.png")
 		enemy.setMovementType(static_cast<EntityMovement>(rand() % 2));
 	}
 
+	// setText should propably go to update() if we want to update it during game
 	currentLevel.setText(std::to_string(player->getLevel()), game->getSettings().getFont(), game->getSettings().getFontSize() + 4);
 	currentLevel.setBackgroundColor("000000");
 
@@ -40,14 +41,26 @@ playerStats(10, 120, 150, 120, PATH_TO_BORDERS_FOLDER + "panel-border-030.png")
 	requiredXP.setBackgroundColor("000000");
 	requiredXP.setVisible(false);
 
-	playerStats.setText("Money: " + std::to_string(player->getMoney()) + "\nHP: " + "\nEnergy: ", game->getSettings().getFont(), game->getSettings().getFontSize() - 1);
+	playerStats.setText("Money: " + std::to_string(player->getMoney()) + "\nHP: " + "\nEnergy: " + "\nRerolls: " + std::to_string(player->getRerolls()) + "\nPlus moves: " + std::to_string(player->getPlusMvm()), game->getSettings().getFont(), game->getSettings().getFontSize() - 1);
 	playerStats.setBackgroundColor("000000");
 	playerStats.setVisible(false);
 	
 	game->changeViewZoom(0.4f);
 
 	//Loading map
-	if (!map.load("src/img/test_map_1.png", sf::Vector2u(16, 16), save->getLevel(), WIDTH, HEIGHT)) return;
+	if (!map.load("src/img/board1.png", sf::Vector2u(16, 16), save->getLevel(), WIDTH, HEIGHT)) return;
+
+	int* tempLevel = save->getLevel();
+	for (int i = 0; i < WIDTH; i++)
+	{
+		for (int j = 0; j < HEIGHT; j++)
+		{
+			if (tempLevel[i * WIDTH + j] == 0)
+			{
+
+			}
+		}
+	}
 
 	if (!vhsShader.loadFromFile("libraries/vhs_effect.frag", sf::Shader::Fragment)) return;
 	shaderClock.restart();
@@ -134,6 +147,23 @@ void GameBoardState::handleInput(sf::RenderWindow& window, EventManager& eventMa
 			// Calculate the new index with wrapping
 			int newIndex = (i + move) % temp.size();
 
+			// Act accordingly to tile that player move to
+			switch (save->getLevel()[player->getMapPosition().x * HEIGHT + player->getMapPosition().y])
+			{
+			case 3:
+				player->setMoney(player->getMoney() + 50);
+				break;
+			case 4:
+				// this is where reroll should be added
+				break;
+			case 5:
+				// this is where drawing new card to player deck should be added
+				break;
+			case 6:
+				// this is where "+k to move" should be added
+				break;
+			}
+
 			// Update the player's position
 			player->setMapPosition(save->getPath()[newIndex]);
 
@@ -150,6 +180,7 @@ void GameBoardState::update()
 {
 	requiredXP.setVisible(currentLevel.isHovered(mousePos));
 	playerStats.setVisible(currentLevel.isHovered(mousePos));
+	playerStats.setText("Money: " + std::to_string(player->getMoney()) + "\nHP: " + "\nEnergy: " + "\nRerolls: " + std::to_string(player->getRerolls()) + "\nPlus moves: " + std::to_string(player->getPlusMvm()), game->getSettings().getFont(), game->getSettings().getFontSize() - 1);
 	availableUpgrade.setVisible(player->hasAvailableAbilityPoints());
 	availableUpgrade.handleHoverState(mousePos);
 
@@ -224,7 +255,7 @@ void GameBoardState::render(sf::RenderWindow& window)
 				break;
 			}
 		}
-
+		
 		if (enemyIndex != -1) // Only if the enemy is in the path
 		{
 			// Highlight the tile under the enemy (current position)

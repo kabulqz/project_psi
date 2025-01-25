@@ -12,7 +12,7 @@ class MapGeneration
 	static void generateRectangle(std::vector<std::vector<int>>& level2D, int x, int y, int width, int height);
 	static void fillGaps(std::vector<std::vector<int>>& level2D);
 	static void randomFlipAndRotateMap(std::vector<std::vector<int>>& level2D, std::mt19937& generator);
-	static void pathHelper(std::vector<std::vector<int>>& level2D);
+	static void pathHelper(std::vector<std::vector<int>>& level2D, std::mt19937& generator);
 	static void collectPathPositions(std::vector<std::vector<int>>& level2D, std::vector<sf::Vector2i>& positions);
 	static void generatePath(std::vector<std::vector<int>>& level2D, std::vector<sf::Vector2i>& path, std::mt19937& generator);
 public:
