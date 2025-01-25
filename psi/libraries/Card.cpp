@@ -1,5 +1,7 @@
 ﻿#include "Card.hpp"
 
+const std::string CardFolderPath = "src/img/card/";
+
 static std::string cardTypeToString(const CardType cardType)
 {
 	switch (cardType)
@@ -233,7 +235,77 @@ Card(CardType::ITEM)
 
 void ItemCard::destroy()
 {// Destroy the item card
+	triggerGameEvent(GameEvent::ITEM_DESTROYED);
 	ItemCard::~ItemCard();
+}
+
+void ItemCard::loadSprites()
+{
+	std::random_device rd;
+	// BACK
+	if (!backTexture.loadFromFile(CardFolderPath + "back/" + "item.png")) {
+		std::cerr << "Error: Could not load item card image\n";
+	}
+	back.setTexture(backTexture);
+
+	// BACKGROUND
+	std::uniform_int_distribution<int> backgroundDistribution(1, 21);
+	if (const int choice = backgroundDistribution(rd);  !backgroundTexture.loadFromFile(CardFolderPath + "background/" + std::to_string(choice) + ".png")) {
+		std::cerr << "Error: Could not load item background image\n";
+	}
+	background.setTexture(backgroundTexture);
+
+
+	// PORTRAIT
+	sf::Texture tempItemTexture;
+	if (!tempItemTexture.loadFromFile(CardFolderPath + "portrait/item/" + "items.png")) {
+		std::cerr << "Error: Could not load item image table\n";
+	}
+	constexpr int itemTextureSize = 16;
+	std::uniform_int_distribution<int> columnDistribution(0, tempItemTexture.getSize().x / itemTextureSize - 1);
+	std::uniform_int_distribution<int> rowDistribution(0, tempItemTexture.getSize().y / itemTextureSize - 1);
+	const int column = columnDistribution(rd);
+	const int row = rowDistribution(rd);
+	const sf::IntRect itemTextureRect(column * itemTextureSize, row * itemTextureSize, itemTextureSize, itemTextureSize);
+	tempItemTexture.setSmooth(true);
+	portrait.setTexture(tempItemTexture);
+	portrait.setTextureRect(itemTextureRect);
+	portrait.setScale(4.0f, 4.0f);	// from 16x16 to 64x64
+
+	// FRAME
+	sf::Texture tempFrameTexture;
+	if (!tempFrameTexture.loadFromFile(CardFolderPath + "frame/" + "frame.png")) {
+		std::cerr << "Error: Could not load item frame image\n";
+	}
+	frame.setTexture(tempFrameTexture);
+}
+
+sf::Sprite ItemCard::getTexture()
+{
+	sf::RenderTexture renderTexture;
+	renderTexture.create(cardWidth, cardHeight);
+	renderTexture.clear(sf::Color::Transparent);
+
+	if (!isFlipped) {
+		// draw back
+		renderTexture.draw(back);
+	}
+	else {
+		//draw background
+		renderTexture.draw(background);
+		//draw portrait
+		renderTexture.draw(portrait);
+		//draw frame
+		renderTexture.draw(frame);
+		//energy cost
+		//defense
+		//durability
+		//damage
+	}
+
+	renderTexture.display();
+	sf::Sprite outputSprite(renderTexture.getTexture());
+	return outputSprite;
 }
 
 void UnitCard::increaseHealth(const int value, const uint_least32_t key)
@@ -316,6 +388,14 @@ void UnitCard::applyStatus(const Status& status, const int numberOfTurns)
 	// Jeśli już jest taki status, zaktualizuj liczbę tur o numberOfTurns
 	if (!statuses.contains(status))
 	{
+		if (status == Status::STUNNED)
+		{
+			// Jeśli jednostka jest ogłuszona, usuń wszystkie przedmioty
+			if (item) {
+				item->destroy();
+			}
+			item = nullptr;
+		}
 		statuses[status] = numberOfTurns;
 	}
 	else
@@ -447,7 +527,76 @@ UnitCard::UnitCard(uint_least32_t& cardSeed, std::mt19937& cardGenerator) :
 
 void UnitCard::destroy()
 {// Destroy the unit card
+	triggerGameEvent(GameEvent::UNIT_DEATH);
 	UnitCard::~UnitCard();
+}
+
+void UnitCard::loadSprites()
+{
+	std::random_device rd;
+	// BACK
+	if (!backTexture.loadFromFile(CardFolderPath + "back/" + "unit.png")) {
+		std::cerr << "Error: Could not load unit card image\n";
+	}
+	back.setTexture(backTexture);
+
+	// BACKGROUND
+	std::uniform_int_distribution<int> backgroundDistribution(1, 21);
+	if (const int choice = backgroundDistribution(rd);  !backgroundTexture.loadFromFile(CardFolderPath + "background/" + std::to_string(choice) + ".png")) {
+		std::cerr << "Error: Could not load item background image\n";
+	}
+	background.setTexture(backgroundTexture);
+
+	// PORTRAIT
+	std::uniform_int_distribution<int> distribution(1, 170);
+	if (const int choice = distribution(rd); !portraitTexture.loadFromFile(CardFolderPath + "portrait/unit/" + std::to_string(choice) + ".png")) {
+		std::cerr << "Error: Could not load unit image\n";
+	}
+	portrait.setTexture(portraitTexture);
+
+	// FRAME
+	if (keywords.contains(Keyword::DEFENDER)) {
+		if (!frameTexture.loadFromFile(CardFolderPath + "frame/" + "defender.png")) {
+			std::cerr << "Error: Could not load defender frame image\n";
+		}
+	}
+	else {
+		if (!frameTexture.loadFromFile(CardFolderPath + "frame/" + "frame.png")) {
+			std::cerr << "Error: Could not load unit frame image\n";
+		}
+	}
+	frame.setTexture(frameTexture);
+}
+
+sf::Sprite UnitCard::getTexture()
+{
+	sf::RenderTexture renderTexture;
+	renderTexture.create(cardWidth, cardHeight);
+	renderTexture.clear(sf::Color::Transparent);
+
+	if (!isFlipped) {
+		// draw back
+		renderTexture.draw(back);
+	}
+	else {
+		//draw background
+		renderTexture.draw(background);
+		//draw portrait
+		renderTexture.draw(portrait);
+		//draw frame
+		renderTexture.draw(frame);
+		//energy cost
+		//health
+		//attack
+		// if (item)
+		//	defense
+		//	durability
+		//	damage
+	}
+
+	renderTexture.display();
+	sf::Sprite outputSprite(renderTexture.getTexture());
+	return outputSprite;
 }
 
 SpellCard::SpellCard(uint_least32_t& cardSeed, std::mt19937& cardGenerator) :
@@ -476,4 +625,55 @@ Card(CardType::SPELL)
 			std::cout << "\nCardType: " + cardTypeToString(cardType) + ", EffectSeed: " + std::to_string(effectSeed) + +"\n" + effects.back()->getDescription() + "\n";
 		}
 	}
+}
+
+void SpellCard::loadSprites()
+{
+	std::random_device rd;
+	// BACK
+	if (!backTexture.loadFromFile(CardFolderPath + "back/" + "spell.png")) {
+		std::cerr << "Error: Could not load spell card image\n";
+	}
+	back.setTexture(backTexture);
+
+	// BACKGROUND
+	// no need for background for spell cards
+
+	// PORTRAIT
+	std::uniform_int_distribution<int> distribution(1, 11);
+	if (const int choice = distribution(rd); !portraitTexture.loadFromFile(CardFolderPath + "portrait/spell/" + std::to_string(choice) +".png")) {
+		std::cerr << "Error: Could not load spell image\n";
+	}
+	portrait.setTexture(portraitTexture);
+
+	// FRAME
+	if (!frameTexture.loadFromFile(CardFolderPath + "frame/" + "frame.png")) {
+		std::cerr << "Error: Could not load spell frame image\n";
+	}
+	frame.setTexture(frameTexture);
+}
+
+sf::Sprite SpellCard::getTexture()
+{
+	sf::RenderTexture renderTexture;
+	renderTexture.create(cardWidth, cardHeight);
+	renderTexture.clear(sf::Color::Transparent);
+
+	if (!isFlipped) {
+		// draw back
+		renderTexture.draw(back);
+	}
+	else {
+		//draw background
+		renderTexture.draw(background);
+		//draw portrait
+		renderTexture.draw(portrait);
+		//draw frame
+		renderTexture.draw(frame);
+		//energy cost
+	}
+
+	renderTexture.display();
+	sf::Sprite outputSprite(renderTexture.getTexture());
+	return outputSprite;
 }

@@ -3,8 +3,10 @@
 
 GameCardState::GameCardState(Game* game) : game(game)
 {
+	std::random_device rd;
 	// Load the save and create the player and enemy instances
 	save = game->getSave();
+	game->changeViewZoom(1.0f);
 	std::cout << color("B2FFD6", "finished loading save\n");
 	const auto player = new Hero();
 	const auto enemy = new Hero();
@@ -16,7 +18,6 @@ GameCardState::GameCardState(Game* game) : game(game)
 	player->copyDeck(save->getDeck());
 	std::cout << color("B2FFD6", "finished copying deck to player\n");
 	// create for-loop to create enemy deck
-	std::random_device rd;
 	std::mt19937 gen(rd());
 	std::uniform_int_distribution cardSeedDistribution(std::mt19937::min(), std::mt19937::max());
 	std::vector<uint_least32_t> tempEnemyDeck;
@@ -40,6 +41,20 @@ GameCardState::GameCardState(Game* game) : game(game)
 		card->setOwnerAndEnemy(enemy, player);
 	}
 	std::cout << color("B2FFD6", "finished setting owner and enemy for enemy cards\n");
+
+	std::uniform_int_distribution<int> backgroundDistribution(1, 20);
+	const int choice = backgroundDistribution(rd);
+	if (!backgroundTexture.loadFromFile("src/img/background/" + std::to_string(choice) + ".png")) {
+		std::cerr << "Error: Could not load background image\n";
+	}
+	else {
+		std::cout << color("B2FFD6", "loaded background image, chose background nr " + std::to_string(choice) + "\n");
+		background.setTexture(backgroundTexture);
+		background.setPosition(0, 0); // Ensure it's positioned correctly
+	}
+
+	if (!vhsShader.loadFromFile("libraries/vhs_effect.frag", sf::Shader::Fragment)) return;
+	shaderClock.restart();
 }
 
 //handler for specific windows to appear in the main frame 
@@ -53,27 +68,50 @@ void GameCardState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 	while (eventManager.hasEvents())
 	{
 		sf::Event event = eventManager.popEvent();
-		// Handle other events, such as changing the state or closing the window
-		// Example: if (event.type == sf::Event::MouseButtonPressed) { ... }
+		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::C)
+		{// GO TO CARD GAME
+			save->write();
+			game->setSave(save);
+
+			game->changeState(std::make_unique<TransitionState>(game, GAME_CARD, GAME_BOARD));
+		}
+
 	}
 }
 
 //updater for elements corresponding to specific screen
 void GameCardState::update()
 {
-
+	float elapsedTime = shaderClock.getElapsedTime().asSeconds();
+	vhsShader.setUniform("time", elapsedTime);
+	vhsShader.setUniform("resolution", sf::Vector2f(1280, 720));
 }
 
 //function rendering screen
 void GameCardState::render(sf::RenderWindow& window)
 {
+	sf::RenderTexture renderTexture;
+	if (!renderTexture.create(window.getSize().x, window.getSize().y)) {
+		std::cerr << "Cannot create render texture\n";
+		return;
+	}
+	renderTexture.clear(sf::Color::Transparent);
+	renderTexture.setView(game->getView());
+
+	background.setScale(window.getSize().x / background.getLocalBounds().width,
+		window.getSize().y / background.getLocalBounds().height);
+	renderTexture.draw(background);
+
+	renderTexture.display();
 	window.clear();
-	//draw elements
+	sf::Sprite screenSprite(renderTexture.getTexture());
+
 #ifdef _DEBUG
-
+	window.draw(screenSprite);
 #else
-
+	window.draw(screenSprite, &vhsShader);
 #endif
+
 	window.display();
 }
 

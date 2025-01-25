@@ -12,10 +12,20 @@ protected:
 	void setCardType(const CardType cardType) { this->cardType = cardType; }
 
 	//Visual elements of the card
-	std::string back;			// string to location of the back of the card
-	std::string background;		// string to location of the background of the card
-	std::string portrait;		// string to location of the portrait of the card
-	std::string frame;			// string to location of the frame of the card
+	bool isFlipped = false;		// Flag to track if the card is flipped
+	sf::Texture backTexture;	// Texture of the back of the card
+	sf::Sprite back;			// string to location of the back of the card
+	sf::Texture backgroundTexture;// Texture of the background of the card
+	sf::Sprite background;		// string to location of the background of the card
+	sf::Texture portraitTexture;// Texture of the portrait of the card
+	sf::Sprite portrait;		// string to location of the portrait of the card
+	sf::Texture frameTexture;	// Texture of the frame of the card
+	sf::Sprite frame;			// string to location of the frame of the card
+
+	const int cardWidth = 96;	// size of the card
+	const int cardHeight = 128;	// size of the card
+	int posX = 0;
+	int posY = 0;
 
 	// Common attributes of the card
 	int baseEnergyCost;								// Mana cost of the card
@@ -57,6 +67,11 @@ public:
 	static Card* deserialize(uint_least32_t& data);
 
 	uint_least32_t getSeed() const { return cardSeed; }
+	void setPosition(const int& x, const int& y) { posX = x; posY = y; }
+	sf::Vector2i getPosition() const { return { posX, posY }; }
+	void flip() { isFlipped = !isFlipped; }
+	virtual void loadSprites() = 0;
+	virtual sf::Sprite getTexture() = 0;
 };
 
 class ItemCard final : public Card // If 0 durability, card is destroyed
@@ -88,6 +103,8 @@ public:
 	explicit ItemCard(uint_least32_t& cardSeed, std::mt19937& cardGenerator);
 	~ItemCard() override = default;
 	void destroy();
+	void loadSprites() override;
+	sf::Sprite getTexture() override;
 };
 
 class UnitCard final : public Card // If 0 health, card is destroyed
@@ -132,6 +149,8 @@ public:
 	explicit UnitCard(uint_least32_t& cardSeed, std::mt19937& cardGenerator);
 	~UnitCard() override = default;
 	void destroy();
+	void loadSprites() override;
+	sf::Sprite getTexture() override;
 };
 
 class SpellCard final : public Card
@@ -140,4 +159,6 @@ public:
 
 	explicit SpellCard(uint_least32_t& cardSeed, std::mt19937& cardGenerator);
 	~SpellCard() override = default;
+	void loadSprites() override;
+	sf::Sprite getTexture() override;
 };
