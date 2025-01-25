@@ -154,5 +154,8 @@
     <None Include="libraries\redscale.frag">
       <Filter>Pliki zasobów</Filter>
     </None>
+    <None Include="libraries\background.frag">
+      <Filter>Pliki zasobów</Filter>
+    </None>
   </ItemGroup>
 </Project>

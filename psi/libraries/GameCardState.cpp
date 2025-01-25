@@ -42,17 +42,12 @@ GameCardState::GameCardState(Game* game) : game(game)
 	}
 	std::cout << color("B2FFD6", "finished setting owner and enemy for enemy cards\n");
 
-	std::uniform_int_distribution<int> backgroundDistribution(1, 20);
+	std::uniform_int_distribution<int> backgroundDistribution(0, 19);
 	const int choice = backgroundDistribution(rd);
-	if (!backgroundTexture.loadFromFile("src/img/background/" + std::to_string(choice) + ".png")) {
-		std::cerr << "Error: Could not load background image\n";
-	}
-	else {
-		std::cout << color("B2FFD6", "loaded background image, chose background nr " + std::to_string(choice) + "\n");
-		background.setTexture(backgroundTexture);
-		background.setPosition(0, 0); // Ensure it's positioned correctly
-	}
+	chosenBackground = backgrounds[choice];
+	std::cout << color("B2FFD6", "chose background number " + std::to_string(choice+1) + "\n");
 
+	if (!backgroundShader.loadFromFile("libraries/background.frag", sf::Shader::Fragment)) return;
 	if (!vhsShader.loadFromFile("libraries/vhs_effect.frag", sf::Shader::Fragment)) return;
 	shaderClock.restart();
 }
@@ -75,6 +70,14 @@ void GameCardState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 
 			game->changeState(std::make_unique<TransitionState>(game, GAME_CARD, GAME_BOARD));
 		}
+		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::R) // RELOAD
+		{// GO TO CARD GAME
+			std::random_device rd;
+			std::uniform_int_distribution<int> backgroundDistribution(0, 19);
+			const int choice = backgroundDistribution(rd);
+			chosenBackground = backgrounds[choice];
+			std::cout << color("B2FFD6", "chose background number " + std::to_string(choice + 1) + "\n");
+		}
 
 	}
 }
@@ -83,8 +86,20 @@ void GameCardState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 void GameCardState::update()
 {
 	float elapsedTime = shaderClock.getElapsedTime().asSeconds();
+
+	// Update VHS shader
 	vhsShader.setUniform("time", elapsedTime);
 	vhsShader.setUniform("resolution", sf::Vector2f(1280, 720));
+
+	// Update background shader
+	backgroundShader.setUniform("time", elapsedTime);
+	backgroundShader.setUniform("spin_time", elapsedTime * 0.4f);
+	backgroundShader.setUniform("colour_1", chosenBackground.colour1); // Adjust colors as needed
+	backgroundShader.setUniform("colour_2", chosenBackground.colour2);
+	backgroundShader.setUniform("colour_3", chosenBackground.colour3);
+	backgroundShader.setUniform("contrast", 1.0f);
+	backgroundShader.setUniform("spin_amount", 0.7f);
+	backgroundShader.setUniform("screenSize", sf::Vector2f(1280.0f, 720.0f));
 }
 
 //function rendering screen
@@ -98,9 +113,9 @@ void GameCardState::render(sf::RenderWindow& window)
 	renderTexture.clear(sf::Color::Transparent);
 	renderTexture.setView(game->getView());
 
-	background.setScale(window.getSize().x / background.getLocalBounds().width,
-		window.getSize().y / background.getLocalBounds().height);
-	renderTexture.draw(background);
+	sf::RectangleShape fullScreenQuad(sf::Vector2f(window.getSize().x, window.getSize().y));
+	//renderTexture.draw(background);
+	renderTexture.draw(fullScreenQuad, &backgroundShader);
 
 	renderTexture.display();
 	window.clear();
@@ -111,7 +126,6 @@ void GameCardState::render(sf::RenderWindow& window)
 #else
 	window.draw(screenSprite, &vhsShader);
 #endif
-
 	window.display();
 }
 

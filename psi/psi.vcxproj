@@ -188,6 +188,7 @@
     <ClInclude Include="src\SQLite\include\sqlite3.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="libraries\background.frag" />
     <None Include="libraries\grayscale.frag" />
     <None Include="libraries\redscale.frag" />
     <None Include="libraries\vhs_effect.frag" />
