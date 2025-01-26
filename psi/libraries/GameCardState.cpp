@@ -1,22 +1,31 @@
 #include "GameCardState.hpp"
 #include "Game.hpp"
 
-GameCardState::GameCardState(Game* game) : game(game)
+GameCardState::GameCardState(Game* game) : game(game),
+card(100, 100, 96, 128, PATH_TO_BORDERS_FOLDER + "panel-border-030.png"),
+enemyHand(160, 10, 960, 160, PATH_TO_BORDERS_FOLDER + "panel-border-030.png"),
+playerHand(160, 550, 960, 160, PATH_TO_BORDERS_FOLDER + "panel-border-030.png"),
+enemyBattlefield(140, 175, 1000, 180, PATH_TO_BORDERS_FOLDER + "panel-border-030.png"),
+playerBattlefield(140, 365, 1000, 180, PATH_TO_BORDERS_FOLDER + "panel-border-030.png"),
+enemyDeck(1152, 154, 96, 128, PATH_TO_BORDERS_FOLDER + "panel-border-030.png"),
+playerDeck(1152, 438, 96, 128, PATH_TO_BORDERS_FOLDER + "panel-border-030.png"),
+PASS(10, 320, 120, 80, PATH_TO_BORDERS_FOLDER + "panel-border-031.png")
 {
+	PASS.setBackgroundColor("000000");
+	PASS.setText("PASS", game->getSettings().getFont(), game->getSettings().getFontSize());
+	PASS.setEnabled(false);
+
 	std::random_device rd;
 	// Load the save and create the player and enemy instances
 	save = game->getSave();
 	game->changeViewZoom(1.0f);
-	std::cout << color("B2FFD6", "finished loading save\n");
-	const auto player = new Hero();
-	const auto enemy = new Hero();
+	player = new Hero();
+	enemy = new Hero();
 	player->getDeck().clear();
 	enemy->getDeck().clear();
-	std::cout << color("B2FFD6", "finished creating player and enemy\n");
 
 	// copy deck from save to player
 	player->copyDeck(save->getDeck());
-	std::cout << color("B2FFD6", "finished copying deck to player\n");
 	// create for-loop to create enemy deck
 	std::mt19937 gen(rd());
 	std::uniform_int_distribution cardSeedDistribution(std::mt19937::min(), std::mt19937::max());
@@ -25,31 +34,31 @@ GameCardState::GameCardState(Game* game) : game(game)
 	for (int i = 0; i < 30; i++) {
 		tempEnemyDeck.push_back(cardSeedDistribution(gen));
 	}
-	std::cout << color("B2FFD6", "finished creating enemy deck\n");
 	// copy deck to enemy
 	enemy->copyDeck(tempEnemyDeck);
-	std::cout << color("B2FFD6", "finished copying deck to enemy\n");
 	// set hero cards enemy and hero by method setOwnerAndEnemy(player, enemy)
 	for (const auto card : player->getDeck())
 	{
 		card->setOwnerAndEnemy(player, enemy);
 	}
-	std::cout << color("B2FFD6", "finished setting owner and enemy for player cards\n");
 	// and the other way around but use setOwnerAndEnemy(enemy, player)
 	for (const auto card : enemy->getDeck())
 	{
 		card->setOwnerAndEnemy(enemy, player);
 	}
-	std::cout << color("B2FFD6", "finished setting owner and enemy for enemy cards\n");
 
 	std::uniform_int_distribution<int> backgroundDistribution(0, 19);
 	const int choice = backgroundDistribution(rd);
 	chosenBackground = backgrounds[choice];
-	std::cout << color("B2FFD6", "chose background number " + std::to_string(choice+1) + "\n");
 
 	if (!backgroundShader.loadFromFile("libraries/background.frag", sf::Shader::Fragment)) return;
 	if (!vhsShader.loadFromFile("libraries/vhs_effect.frag", sf::Shader::Fragment)) return;
 	shaderClock.restart();
+
+	card.setColor(sf::Color::Transparent);
+	testCard = enemy->getDeck().back();
+	testCard->setFontAndFontSize(game->getSettings().getFont(), game->getSettings().getFontSize() - 5);
+	testCard->flip();
 }
 
 //handler for specific windows to appear in the main frame 
@@ -59,6 +68,8 @@ void GameCardState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 	{
 		soundManager.playSound("Ambience_crt");
 	}
+
+	mousePos = sf::Mouse::getPosition(window);
 
 	while (eventManager.hasEvents())
 	{
@@ -70,13 +81,29 @@ void GameCardState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 
 			game->changeState(std::make_unique<TransitionState>(game, GAME_CARD, GAME_BOARD));
 		}
-		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::R) // RELOAD
-		{// GO TO CARD GAME
+		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::R) // RELOAD BACKGROUND
+		{
 			std::random_device rd;
 			std::uniform_int_distribution<int> backgroundDistribution(0, 19);
 			const int choice = backgroundDistribution(rd);
 			chosenBackground = backgrounds[choice];
 			std::cout << color("B2FFD6", "chose background number " + std::to_string(choice + 1) + "\n");
+		}
+		if (card.isClickable() && card.isHovered(mousePos))
+		{
+			if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
+			{
+				testCard->flip();
+			}
+		}
+		if (PASS.isClickable() && PASS.isHovered(mousePos))
+		{
+			if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
+			{
+				// Pass the turn
+				// logic for passing the turn
+				// simulating the enemy turn
+			}
 		}
 
 	}
@@ -117,6 +144,18 @@ void GameCardState::render(sf::RenderWindow& window)
 	//renderTexture.draw(background);
 	renderTexture.draw(fullScreenQuad, &backgroundShader);
 
+	playerHand.display(renderTexture);
+	playerBattlefield.display(renderTexture);
+	playerDeck.display(renderTexture);
+	enemyHand.display(renderTexture);
+	enemyBattlefield.display(renderTexture);
+	enemyDeck.display(renderTexture);
+	PASS.display(renderTexture);
+
+	testCard->setPosition(card.getBounds().getPosition());
+	testCard->display(renderTexture);
+	card.display(renderTexture);
+
 	renderTexture.display();
 	window.clear();
 	sf::Sprite screenSprite(renderTexture.getTexture());
@@ -133,6 +172,27 @@ void GameCardState::renderToTexture(sf::RenderTexture& texture)
 {
 	// Clear the render texture
 	texture.clear();
+	texture.setView(game->getView());
+
+	sf::RectangleShape fullScreenQuad(sf::Vector2f(1280, 720));
+	//renderTexture.draw(background);
+	backgroundShader.setUniform("time", shaderClock.getElapsedTime().asSeconds());
+	backgroundShader.setUniform("spin_time", shaderClock.getElapsedTime().asSeconds() * 0.4f);
+	backgroundShader.setUniform("colour_1", chosenBackground.colour1); // Adjust colors as needed
+	backgroundShader.setUniform("colour_2", chosenBackground.colour2);
+	backgroundShader.setUniform("colour_3", chosenBackground.colour3);
+	backgroundShader.setUniform("contrast", 1.0f);
+	backgroundShader.setUniform("spin_amount", 0.7f);
+	backgroundShader.setUniform("screenSize", sf::Vector2f(1280.0f, 720.0f));
+	texture.draw(fullScreenQuad, &backgroundShader);
+
+	playerHand.display(texture);
+	playerBattlefield.display(texture);
+	playerDeck.display(texture);
+	enemyHand.display(texture);
+	enemyBattlefield.display(texture);
+	enemyDeck.display(texture);
+	PASS.display(texture);
 	// Draw the elements
 	texture.display();
 }

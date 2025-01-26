@@ -22,10 +22,11 @@ protected:
 	sf::Texture frameTexture;	// Texture of the frame of the card
 	sf::Sprite frame;			// string to location of the frame of the card
 
+	sf::Font cardFont;
+	unsigned int characterSize;
 	const int cardWidth = 96;	// size of the card
 	const int cardHeight = 128;	// size of the card
-	int posX = 0;
-	int posY = 0;
+	sf::Vector2f position;
 
 	// Common attributes of the card
 	int baseEnergyCost;								// Mana cost of the card
@@ -41,6 +42,7 @@ protected:
 	std::vector<std::unique_ptr<IEffectBehavior>> activeEffects;	// List of active effects
 
 	Card(const CardType& cardType) : cardType(cardType) {}
+	virtual void loadSprites(std::mt19937& cardGenerator) = 0;
 public:
 	std::vector<std::unique_ptr<EffectValue>> extraEnergyCost = {}; // Extra mana cost from effects
 
@@ -67,11 +69,17 @@ public:
 	static Card* deserialize(uint_least32_t& data);
 
 	uint_least32_t getSeed() const { return cardSeed; }
-	void setPosition(const int& x, const int& y) { posX = x; posY = y; }
-	sf::Vector2i getPosition() const { return { posX, posY }; }
+	void setPosition(const sf::Vector2f pos) { position = pos; }
+	void setFontAndFontSize(const std::string& fontPath, const unsigned int characterSize)
+	{
+		if (!cardFont.loadFromFile(fontPath)) {
+			std::cerr << "Error: Could not load card font\n";
+		}
+		this->characterSize = characterSize;
+	}
+	sf::Vector2f getPosition() const { return position; }
 	void flip() { isFlipped = !isFlipped; }
-	virtual void loadSprites() = 0;
-	virtual sf::Sprite getTexture() = 0;
+	virtual void display(sf::RenderTexture& renderTexture) = 0;
 };
 
 class ItemCard final : public Card // If 0 durability, card is destroyed
@@ -84,6 +92,7 @@ class ItemCard final : public Card // If 0 durability, card is destroyed
 
 	int baseDurability;
 	int currentDurability;
+	void loadSprites(std::mt19937& cardGenerator) override;
 public:
 	std::vector<std::unique_ptr<EffectValue>> extraDamage = {}; // Extra damage from effects
 	std::vector<std::unique_ptr<EffectValue>> extraDefense = {}; // Extra defense from effects
@@ -103,8 +112,7 @@ public:
 	explicit ItemCard(uint_least32_t& cardSeed, std::mt19937& cardGenerator);
 	~ItemCard() override = default;
 	void destroy();
-	void loadSprites() override;
-	sf::Sprite getTexture() override;
+	void display(sf::RenderTexture& renderTexture) override;
 };
 
 class UnitCard final : public Card // If 0 health, card is destroyed
@@ -118,6 +126,7 @@ class UnitCard final : public Card // If 0 health, card is destroyed
 	std::unordered_set<Keyword> keywords;				// List of keywords
 	std::map<Status, int> statuses;						// List of statuses
 	std::unique_ptr<ItemCard> item = nullptr;			// Item card attached to the unit
+	void loadSprites(std::mt19937& cardGenerator) override;
 public:
 	std::vector<std::unique_ptr<EffectValue>> extraHealth = {}; // Extra health from effects
 	std::vector<std::unique_ptr<EffectValue>> extraAttack = {}; // Extra attack from effects
@@ -149,16 +158,15 @@ public:
 	explicit UnitCard(uint_least32_t& cardSeed, std::mt19937& cardGenerator);
 	~UnitCard() override = default;
 	void destroy();
-	void loadSprites() override;
-	sf::Sprite getTexture() override;
+	void display(sf::RenderTexture& renderTexture) override;
 };
 
 class SpellCard final : public Card
 {
+	void loadSprites(std::mt19937& cardGenerator) override;
 public:
 
 	explicit SpellCard(uint_least32_t& cardSeed, std::mt19937& cardGenerator);
 	~SpellCard() override = default;
-	void loadSprites() override;
-	sf::Sprite getTexture() override;
+	void display(sf::RenderTexture& renderTexture) override;
 };

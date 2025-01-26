@@ -16,6 +16,39 @@ static std::string cardTypeToString(const CardType cardType)
 	return "";
 }
 
+static void drawValueCircle(sf::RenderTexture& renderTexture, const sf::Font& cardFont, int characterSize, float circleRadius, const sf::Color circleColor, const sf::Vector2f&position, int currentValue, int baseValue)
+{
+	sf::CircleShape valueCircle(circleRadius);
+	valueCircle.setFillColor(circleColor);
+	valueCircle.setOutlineThickness(2.0f);
+	valueCircle.setOutlineColor(sf::Color::White);
+	valueCircle.setPosition(position);
+	renderTexture.draw(valueCircle);
+
+	sf::Text valueText(std::to_string(currentValue), cardFont, characterSize);
+	if (currentValue < baseValue)
+	{
+		valueText.setFillColor(sf::Color::Red);
+	}
+	else if (currentValue > baseValue)
+	{
+		valueText.setFillColor(sf::Color::Green);
+	}
+	else
+	{
+		valueText.setFillColor(sf::Color::White);
+	}
+	sf::FloatRect textBounds = valueText.getLocalBounds();
+	sf::Vector2f circleCenter = sf::Vector2f(
+		valueCircle.getPosition().x + valueCircle.getRadius(),
+		valueCircle.getPosition().y + valueCircle.getRadius()
+	);
+	valueText.setOrigin(textBounds.left + textBounds.width / 2.0f,
+		textBounds.top + textBounds.height / 2.0f);
+	valueText.setPosition(circleCenter);
+	renderTexture.draw(valueText);
+}
+
 Card* Card::createCard(uint_least32_t& cardSeed)
 {
 	// Create a card based on the seed
@@ -231,6 +264,8 @@ Card(CardType::ITEM)
 			std::cout << "\nCardType: " + cardTypeToString(cardType) + ", EffectSeed: " + std::to_string(effectSeed) + +"\n" + effects.back()->getDescription() + "\n";
 		}
 	}
+
+	loadSprites(cardGenerator);
 }
 
 void ItemCard::destroy()
@@ -239,9 +274,8 @@ void ItemCard::destroy()
 	ItemCard::~ItemCard();
 }
 
-void ItemCard::loadSprites()
+void ItemCard::loadSprites(std::mt19937& cardGenerator)
 {
-	std::random_device rd;
 	// BACK
 	if (!backTexture.loadFromFile(CardFolderPath + "back/" + "item.png")) {
 		std::cerr << "Error: Could not load item card image\n";
@@ -250,62 +284,98 @@ void ItemCard::loadSprites()
 
 	// BACKGROUND
 	std::uniform_int_distribution<int> backgroundDistribution(1, 21);
-	if (const int choice = backgroundDistribution(rd);  !backgroundTexture.loadFromFile(CardFolderPath + "background/" + std::to_string(choice) + ".png")) {
+	if (const int choice = backgroundDistribution(cardGenerator);  !backgroundTexture.loadFromFile(CardFolderPath + "background/" + std::to_string(choice) + ".png")) {
 		std::cerr << "Error: Could not load item background image\n";
 	}
 	background.setTexture(backgroundTexture);
 
 
 	// PORTRAIT
-	sf::Texture tempItemTexture;
-	if (!tempItemTexture.loadFromFile(CardFolderPath + "portrait/item/" + "items.png")) {
+	if (!portraitTexture.loadFromFile(CardFolderPath + "portrait/item/" + "items.png")) {
 		std::cerr << "Error: Could not load item image table\n";
 	}
 	constexpr int itemTextureSize = 16;
-	std::uniform_int_distribution<int> columnDistribution(0, tempItemTexture.getSize().x / itemTextureSize - 1);
-	std::uniform_int_distribution<int> rowDistribution(0, tempItemTexture.getSize().y / itemTextureSize - 1);
-	const int column = columnDistribution(rd);
-	const int row = rowDistribution(rd);
+	std::uniform_int_distribution<int> columnDistribution(0, portraitTexture.getSize().x / itemTextureSize - 1);
+	std::uniform_int_distribution<int> rowDistribution(0, portraitTexture.getSize().y / itemTextureSize - 1);
+	const int column = columnDistribution(cardGenerator);
+	const int row = rowDistribution(cardGenerator);
 	const sf::IntRect itemTextureRect(column * itemTextureSize, row * itemTextureSize, itemTextureSize, itemTextureSize);
-	tempItemTexture.setSmooth(true);
-	portrait.setTexture(tempItemTexture);
+	portrait.setTexture(portraitTexture);
 	portrait.setTextureRect(itemTextureRect);
-	portrait.setScale(4.0f, 4.0f);	// from 16x16 to 64x64
+	portrait.setScale(3.0f, 3.0f);  // from 16x16 to 48x48
 
 	// FRAME
-	sf::Texture tempFrameTexture;
-	if (!tempFrameTexture.loadFromFile(CardFolderPath + "frame/" + "frame.png")) {
+	if (!frameTexture.loadFromFile(CardFolderPath + "frame/" + "frame.png")) {
 		std::cerr << "Error: Could not load item frame image\n";
 	}
-	frame.setTexture(tempFrameTexture);
+	frame.setTexture(frameTexture);
 }
 
-sf::Sprite ItemCard::getTexture()
+void ItemCard::display(sf::RenderTexture& renderTexture)
 {
-	sf::RenderTexture renderTexture;
-	renderTexture.create(cardWidth, cardHeight);
-	renderTexture.clear(sf::Color::Transparent);
-
-	if (!isFlipped) {
-		// draw back
+	if (!isFlipped)
+	{
+		back.setPosition(position);
 		renderTexture.draw(back);
 	}
-	else {
-		//draw background
+	else
+	{
+		// draw background
+		background.setPosition(position);
 		renderTexture.draw(background);
 		//draw portrait
+		constexpr float portraitWidth = 48.0f;
+		constexpr float portraitHeight = 48.0f;
+		float portraitX = position.x + (cardWidth - portraitWidth) / 2.0f;
+		float portraitY = position.y + (cardHeight - portraitHeight) / 2.0f;
+		portrait.setPosition(portraitX, portraitY);
 		renderTexture.draw(portrait);
 		//draw frame
+		frame.setPosition(position);
 		renderTexture.draw(frame);
-		//energy cost
-		//defense
-		//durability
-		//damage
-	}
 
-	renderTexture.display();
-	sf::Sprite outputSprite(renderTexture.getTexture());
-	return outputSprite;
+		//energy cost
+		drawValueCircle(renderTexture, 
+			cardFont, 
+			characterSize, 
+			10.0f, 
+			sf::Color(255, 159, 28), 
+			sf::Vector2f((cardWidth / 2) - 10.0f + position.x, 8 + position.y), 
+			currentEnergyCost, 
+			baseEnergyCost);
+
+		// damage, durability, defense
+		constexpr float circleRadius = 10.0f;
+		const float yPosition = position.y + 105.0f;
+		const float spacing = (cardWidth - 3 * 2 * circleRadius) / 4.0f;
+
+		drawValueCircle(renderTexture,
+			cardFont,
+			characterSize,
+			circleRadius,
+			sf::Color(244, 151, 218),
+			sf::Vector2f(position.x + spacing, yPosition),
+			currentDamage,
+			baseDamage);
+
+		drawValueCircle(renderTexture,
+			cardFont,
+			characterSize,
+			circleRadius,
+			sf::Color(200, 200, 200),
+			sf::Vector2f(position.x + spacing * 2 + 2 * circleRadius, yPosition),
+			currentDurability,
+			baseDurability);
+
+		drawValueCircle(renderTexture,
+			cardFont,
+			characterSize,
+			circleRadius,
+			sf::Color(133, 199, 242),
+			sf::Vector2f(position.x + spacing * 3 + 4 * circleRadius, yPosition),
+			currentDefense,
+			baseDefense);
+	}
 }
 
 void UnitCard::increaseHealth(const int value, const uint_least32_t key)
@@ -523,6 +593,8 @@ UnitCard::UnitCard(uint_least32_t& cardSeed, std::mt19937& cardGenerator) :
 	{
 		keywords.insert(availableKeywords[i]); // Dodaj słowo kluczowe
 	}
+
+	loadSprites(cardGenerator);
 }
 
 void UnitCard::destroy()
@@ -531,9 +603,8 @@ void UnitCard::destroy()
 	UnitCard::~UnitCard();
 }
 
-void UnitCard::loadSprites()
+void UnitCard::loadSprites(std::mt19937& cardGenerator)
 {
-	std::random_device rd;
 	// BACK
 	if (!backTexture.loadFromFile(CardFolderPath + "back/" + "unit.png")) {
 		std::cerr << "Error: Could not load unit card image\n";
@@ -542,14 +613,14 @@ void UnitCard::loadSprites()
 
 	// BACKGROUND
 	std::uniform_int_distribution<int> backgroundDistribution(1, 21);
-	if (const int choice = backgroundDistribution(rd);  !backgroundTexture.loadFromFile(CardFolderPath + "background/" + std::to_string(choice) + ".png")) {
+	if (const int choice = backgroundDistribution(cardGenerator);  !backgroundTexture.loadFromFile(CardFolderPath + "background/" + std::to_string(choice) + ".png")) {
 		std::cerr << "Error: Could not load item background image\n";
 	}
 	background.setTexture(backgroundTexture);
 
 	// PORTRAIT
 	std::uniform_int_distribution<int> distribution(1, 170);
-	if (const int choice = distribution(rd); !portraitTexture.loadFromFile(CardFolderPath + "portrait/unit/" + std::to_string(choice) + ".png")) {
+	if (const int choice = distribution(cardGenerator); !portraitTexture.loadFromFile(CardFolderPath + "portrait/unit/" + std::to_string(choice) + ".png")) {
 		std::cerr << "Error: Could not load unit image\n";
 	}
 	portrait.setTexture(portraitTexture);
@@ -568,35 +639,61 @@ void UnitCard::loadSprites()
 	frame.setTexture(frameTexture);
 }
 
-sf::Sprite UnitCard::getTexture()
+void UnitCard::display(sf::RenderTexture& renderTexture)
 {
-	sf::RenderTexture renderTexture;
-	renderTexture.create(cardWidth, cardHeight);
-	renderTexture.clear(sf::Color::Transparent);
-
-	if (!isFlipped) {
-		// draw back
+	if (!isFlipped)
+	{
+		back.setPosition(position);
 		renderTexture.draw(back);
 	}
-	else {
-		//draw background
+	else
+	{
+		// draw background
+		background.setPosition(position);
 		renderTexture.draw(background);
 		//draw portrait
+		portrait.setPosition(position);
 		renderTexture.draw(portrait);
 		//draw frame
+		frame.setPosition(position);
 		renderTexture.draw(frame);
-		//energy cost
-		//health
-		//attack
-		// if (item)
-		//	defense
-		//	durability
-		//	damage
-	}
 
-	renderTexture.display();
-	sf::Sprite outputSprite(renderTexture.getTexture());
-	return outputSprite;
+		//energy cost
+		drawValueCircle(renderTexture,
+			cardFont,
+			characterSize,
+			10.0f,
+			sf::Color(255, 159, 28),
+			sf::Vector2f((cardWidth / 2) - 10.0f + position.x, 8 + position.y),
+			currentEnergyCost,
+			baseEnergyCost);
+
+		// attack, health
+		constexpr float circleRadius = 10.0f;
+		const float yPosition = position.y + 105.0f;
+		const float spacing = (cardWidth - 3 * 2 * circleRadius) / 4.0f;
+
+		drawValueCircle(renderTexture,
+			cardFont,
+			characterSize,
+			10.0f,
+			sf::Color(100, 149, 237),
+			sf::Vector2f(position.x + spacing, yPosition),
+			currentAttack,
+			baseAttack);
+		
+
+		// Health value
+		drawValueCircle(renderTexture,
+			cardFont,
+			characterSize,
+			10.0f,
+			sf::Color(255, 69, 0),
+			sf::Vector2f(position.x + spacing * 3 + 4 * circleRadius, yPosition),
+			currentHealth,
+			baseHealth);
+		
+	}
 }
 
 SpellCard::SpellCard(uint_least32_t& cardSeed, std::mt19937& cardGenerator) :
@@ -625,11 +722,12 @@ Card(CardType::SPELL)
 			std::cout << "\nCardType: " + cardTypeToString(cardType) + ", EffectSeed: " + std::to_string(effectSeed) + +"\n" + effects.back()->getDescription() + "\n";
 		}
 	}
+
+	loadSprites(cardGenerator);
 }
 
-void SpellCard::loadSprites()
+void SpellCard::loadSprites(std::mt19937& cardGenerator)
 {
-	std::random_device rd;
 	// BACK
 	if (!backTexture.loadFromFile(CardFolderPath + "back/" + "spell.png")) {
 		std::cerr << "Error: Could not load spell card image\n";
@@ -641,7 +739,7 @@ void SpellCard::loadSprites()
 
 	// PORTRAIT
 	std::uniform_int_distribution<int> distribution(1, 11);
-	if (const int choice = distribution(rd); !portraitTexture.loadFromFile(CardFolderPath + "portrait/spell/" + std::to_string(choice) +".png")) {
+	if (const int choice = distribution(cardGenerator); !portraitTexture.loadFromFile(CardFolderPath + "portrait/spell/" + std::to_string(choice) + ".png")) {
 		std::cerr << "Error: Could not load spell image\n";
 	}
 	portrait.setTexture(portraitTexture);
@@ -653,27 +751,33 @@ void SpellCard::loadSprites()
 	frame.setTexture(frameTexture);
 }
 
-sf::Sprite SpellCard::getTexture()
+void SpellCard::display(sf::RenderTexture& renderTexture)
 {
-	sf::RenderTexture renderTexture;
-	renderTexture.create(cardWidth, cardHeight);
-	renderTexture.clear(sf::Color::Transparent);
-
-	if (!isFlipped) {
-		// draw back
+	if (!isFlipped)
+	{
+		back.setPosition(position);
 		renderTexture.draw(back);
 	}
-	else {
-		//draw background
+	else
+	{
+		// draw background
+		// no need for background for spell cards
 		renderTexture.draw(background);
 		//draw portrait
+		portrait.setPosition(position);
 		renderTexture.draw(portrait);
 		//draw frame
+		frame.setPosition(position);
 		renderTexture.draw(frame);
-		//energy cost
-	}
 
-	renderTexture.display();
-	sf::Sprite outputSprite(renderTexture.getTexture());
-	return outputSprite;
+		//energy cost
+		drawValueCircle(renderTexture,
+			cardFont,
+			characterSize,
+			10.0f,
+			sf::Color(255, 159, 28),
+			sf::Vector2f((cardWidth / 2) - 10.0f + position.x, 8 + position.y),
+			currentEnergyCost,
+			baseEnergyCost);
+	}
 }

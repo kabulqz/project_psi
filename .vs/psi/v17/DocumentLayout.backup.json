@@ -130,8 +130,7 @@
               "ViewState": "AgIAAAwAAAAAAAAAAAAAwBcAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-10-22T15:41:24.461Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
@@ -241,7 +240,7 @@
               "RelativeDocumentMoniker": "psi\\libraries\\GameCardState.cpp",
               "ToolTip": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\GameCardState.cpp",
               "RelativeToolTip": "psi\\libraries\\GameCardState.cpp",
-              "ViewState": "AgIAAE0AAAAAAAAAAAAQwFoAAAArAAAAAAAAAA==",
+              "ViewState": "AgIAAE0AAAAAAAAAAAAQwGkAAAAEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-10-23T17:22:05.621Z",
               "EditorCaption": ""
@@ -292,8 +291,7 @@
               "RelativeToolTip": "psi\\libraries\\Card.cpp",
               "ViewState": "AgIAAB4CAAAAAAAAAAAUwDoCAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-01-14T12:13:18.005Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-14T12:13:18.005Z"
             },
             {
               "$type": "Document",

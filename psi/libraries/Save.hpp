@@ -10,18 +10,6 @@
 #include <openssl/evp.h>
 #include <openssl/rand.h>
 
-enum class TypeOfMapGeneration
-{
-	FUTURE,
-	CLASS,
-	FOR,
-	TYPE,
-	OF,
-	MAP,
-	GENERATION
-
-};
-
 class Ability;
 class AbilityTree;
 
@@ -48,7 +36,6 @@ private:
 	std::vector<BoardGameEnemy> boardEnemies;
 	std::vector<uint_least32_t> deck;		// saved deck we have
 	// saved card collection we have
-	//TypeOfMapGeneration mapGenerationType;
 
 	std::string serializePath() const;
 	std::string serializeLevel() const;
@@ -58,7 +45,9 @@ public:
 	Save();//default constructor, so new save
 	Save(const Save& save);
 	Save& operator=(const Save& save);
-	~Save();
+	~Save() {
+		delete[] level;
+	}
 
 	//Save(save data type from saves array in main menu state);
 	uint_least32_t getSeed() const { return seed; }
@@ -96,8 +85,3 @@ public:
 
 	std::vector <uint_least32_t> getDeck() const { return deck; }
 };
-
-inline Save::~Save()
-{
-	delete[] level;
-}
