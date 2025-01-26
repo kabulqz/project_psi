@@ -1,6 +1,7 @@
 #include "MainMenuState.hpp"
 #include "Game.hpp"
 
+
 std::string MainMenuState::formatFileTime(const std::filesystem::file_time_type& fileTime)
 {
 	auto sctp = std::chrono::time_point_cast<std::chrono::system_clock::duration>(
@@ -93,7 +94,19 @@ sav4Button(545, 505, 330, 130, PATH_TO_BORDERS_FOLDER + "panel-border-019.png"),
 sav5Button(895, 85, 330, 130, PATH_TO_BORDERS_FOLDER + "panel-border-019.png"),
 sav6Button(895, 225, 330, 130, PATH_TO_BORDERS_FOLDER + "panel-border-019.png"),
 sav7Button(895, 365, 330, 130, PATH_TO_BORDERS_FOLDER + "panel-border-019.png"),
-sav8Button(895, 505, 330, 130, PATH_TO_BORDERS_FOLDER + "panel-border-019.png")
+sav8Button(895, 505, 330, 130, PATH_TO_BORDERS_FOLDER + "panel-border-019.png"),
+volumeSlider(545, 75, 500, 50, 0.0f, 100.0f),
+sliderButton(1065, 75, 150, 50, PATH_TO_BORDERS_FOLDER + "panel-border-019.png"),
+volumeSlider0(545, 175, 500, 50, 0.0f, 100.0f),
+sliderButton0(1065, 175, 150, 50, PATH_TO_BORDERS_FOLDER + "panel-border-019.png"),
+volumeSlider1(545, 275, 500, 50, 0.0f, 100.0f),
+sliderButton1(1065, 275, 150, 50, PATH_TO_BORDERS_FOLDER + "panel-border-019.png"),
+volumeSlider2(545, 375, 500, 50, 0.0f, 100.0f),
+sliderButton2(1065, 375, 150, 50, PATH_TO_BORDERS_FOLDER + "panel-border-019.png"),
+volumeSlider3(545, 475, 500, 50, 0.0f, 100.0f),
+sliderButton3(1065, 475, 150, 50, PATH_TO_BORDERS_FOLDER + "panel-border-019.png"),
+saveoptionsButton(965, 535, 50, 50, PATH_TO_BORDERS_FOLDER + "panel-border-019.png"),
+readabilityButton(1065, 535, 50, 50, PATH_TO_BORDERS_FOLDER + "panel-border-019.png")
 {
 	bool hasSaves = this->hasSaves();
 	this->options = Options::LOGO;
@@ -107,7 +120,7 @@ sav8Button(895, 505, 330, 130, PATH_TO_BORDERS_FOLDER + "panel-border-019.png")
 	settingsButton.setEnabled(true);
 	exitToDesktopButton.setText("Exit", game->getSettings().getFont(), game->getSettings().getFontSize());
 	exitToDesktopButton.setEnabled(true);
-
+	
 	sav1Button.setText("save 1", game->getSettings().getFont(), game->getSettings().getFontSize() + 2);
 	sav2Button.setText("save 2", game->getSettings().getFont(), game->getSettings().getFontSize() + 2);
 	sav3Button.setText("save 3", game->getSettings().getFont(), game->getSettings().getFontSize() + 2);
@@ -116,7 +129,13 @@ sav8Button(895, 505, 330, 130, PATH_TO_BORDERS_FOLDER + "panel-border-019.png")
 	sav6Button.setText("save 6", game->getSettings().getFont(), game->getSettings().getFontSize() + 2);
 	sav7Button.setText("save 7", game->getSettings().getFont(), game->getSettings().getFontSize() + 2);
 	sav8Button.setText("save 8", game->getSettings().getFont(), game->getSettings().getFontSize() + 2);
-
+	sliderButton.setText("Opcje-Dzwiek", game->getSettings().getFont(), game->getSettings().getFontSize() - 8);
+	sliderButton0.setText("Opcje-Dzwiek", game->getSettings().getFont(), game->getSettings().getFontSize() - 8);
+	sliderButton1.setText("Opcje-Dzwiek", game->getSettings().getFont(), game->getSettings().getFontSize() - 8);
+	sliderButton2.setText("Opcje-Dzwiek", game->getSettings().getFont(), game->getSettings().getFontSize() - 8);
+	sliderButton3.setText("Opcje-Dzwiek", game->getSettings().getFont(), game->getSettings().getFontSize() - 8);
+	saveoptionsButton.setText("save", game->getSettings().getFont(), game->getSettings().getFontSize() - 8);
+	readabilityButton.setText("X", game->getSettings().getFont(), game->getSettings().getFontSize() - 8);
 	for (int i = 0; i < 8; i++) {
 		if (saveArr[i] == 1) {
 			saveButtons[i]->setEnabled(true);
@@ -132,26 +151,51 @@ sav8Button(895, 505, 330, 130, PATH_TO_BORDERS_FOLDER + "panel-border-019.png")
 
 
 //Handler for specific windows to appear in the main frame 
-void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager, sqlite3*& database)
-{
-	if (!soundManager.isSoundPlaying("Ambience_crt"))
-	{
+void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager, sqlite3*& database) {
+	if (!soundManager.isSoundPlaying("Ambience_crt")) {
 		soundManager.playSound("Ambience_crt");
 	}
 
 	mousePos = sf::Mouse::getPosition(window);
 
-	//Process events from the event manager
-	while (eventManager.hasEvents())
-	{
+	// Obs³uga suwaków
+	volumeSlider.handleInput(window);
+	volumeSlider0.handleInput(window);
+	volumeSlider1.handleInput(window);
+	volumeSlider2.handleInput(window);
+	volumeSlider3.handleInput(window);
+
+	// Process events from the event manager
+	while (eventManager.hasEvents()) {
 		sf::Event event = eventManager.popEvent();
-		if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
-		{
-			if (continueButton.isHovered(mousePos) && continueButton.isClickable())
-			{
+		if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+			// Obs³uga przycisku saveoptionsButton
+			if (saveoptionsButton.isHovered(mousePos) && saveoptionsButton.isClickable()) {
+				// Pobierz wartoœci z suwaków
+				float generalVolume = volumeSlider.getValue();
+				float uiVolume = volumeSlider0.getValue();
+				float alertVolume = volumeSlider1.getValue();
+				float ambienceVolume = volumeSlider2.getValue();
+				float musicVolume = volumeSlider3.getValue();
+
+				// Zapisz wartoœci do bazy danych
+				saveSoundSettingsToDatabase(database, generalVolume, uiVolume, alertVolume, ambienceVolume, musicVolume);
+				game->changeState(std::make_unique<TransitionState>(game, MAIN_MENU, MAIN_MENU));
+				std::cout << "Sound settings saved to database.\n";
+			}
+
+			// Obs³uga przycisku readabilityButton
+			if (readabilityButton.isHovered(mousePos) && readabilityButton.isClickable()) {
+				bool currentReadabilityMode = !readabilityMode;
+				std::cout << readabilityMode;
+				readabilityMode = currentReadabilityMode;
+				game->changeState(std::make_unique<TransitionState>(game, MAIN_MENU, MAIN_MENU));
+			}
+
+			// Obs³uga przycisku continueButton
+			if (continueButton.isHovered(mousePos) && continueButton.isClickable()) {
 				int mostRecentSave = MainMenuState::getMostRecentSaveSlot();
-				if (mostRecentSave != -1)
-				{
+				if (mostRecentSave != -1) {
 					Save* save = new Save();
 					save->load(mostRecentSave);
 					this->game->setSave(save);
@@ -159,96 +203,83 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 					soundManager.playSound("Continue");
 					soundManager.playSound("Transition");
 				}
-				else
-				{
+				else {
 					std::cerr << "No valid save files to continue from\n";
 				}
 			}
-			else if (newGameButton.isHovered(mousePos) && newGameButton.isClickable())
-			{
-				if (options != Options::SAVES_WRITE) // Change loadingWindow to SAVES
-				{
+
+			// Obs³uga przycisku newGameButton
+			else if (newGameButton.isHovered(mousePos) && newGameButton.isClickable()) {
+				if (options != Options::SAVES_WRITE) {
 					std::cout << "changed loadingWindow screen to " << color("F4D35E", "SAVES\n");
 					options = Options::SAVES_WRITE;
 
-					for (int i = 0; i < MAX_NUMBER_OF_SAVES; i++)
-					{
-						if (saveArr[i] == 0 && !saveButtons[i]->isEnabled())
-						{
+					for (int i = 0; i < MAX_NUMBER_OF_SAVES; i++) {
+						if (saveArr[i] == 0 && !saveButtons[i]->isEnabled()) {
 							saveButtons[i]->setEnabled(true);
 						}
 					}
 				}
-				else //options==SAVES so go back to LOGO
-				{
+				else {
 					std::cout << "changed loadingWindow screen to " << color("F4D35E", "LOGO\n");
 					options = Options::LOGO;
 
-					for (int i = 0; i < MAX_NUMBER_OF_SAVES; i++)
-					{
-						if (saveArr[i] == 0 && saveButtons[i]->isEnabled())
-						{
+					for (int i = 0; i < MAX_NUMBER_OF_SAVES; i++) {
+						if (saveArr[i] == 0 && saveButtons[i]->isEnabled()) {
 							saveButtons[i]->setEnabled(false);
 						}
 					}
 				}
 			}
-			else if (loadGameButton.isHovered(mousePos) && loadGameButton.isClickable())
-			{
-				if (options != Options::SAVES_LOAD) // Change loadingWindow to SAVES
-				{
+
+			// Obs³uga przycisku loadGameButton
+			else if (loadGameButton.isHovered(mousePos) && loadGameButton.isClickable()) {
+				if (options != Options::SAVES_LOAD) {
 					std::cout << "changed loadingWindow screen to " << color("F4D35E", "SAVES\n");
 					options = Options::SAVES_LOAD;
 
-					for (int i = 0; i < MAX_NUMBER_OF_SAVES; i++)
-					{
-						if (saveArr[i] == 0 && saveButtons[i]->isEnabled())
-						{
+					for (int i = 0; i < MAX_NUMBER_OF_SAVES; i++) {
+						if (saveArr[i] == 0 && saveButtons[i]->isEnabled()) {
 							saveButtons[i]->setEnabled(false);
 						}
 					}
 				}
-				else //options==SAVES so go back to LOGO
-				{
+				else {
 					std::cout << "changed loadingWindow screen to " << color("F4D35E", "LOGO\n");
 					options = Options::LOGO;
 				}
 			}
-			else if (settingsButton.isHovered(mousePos) && settingsButton.isClickable())
-			{
-				if (options != Options::SETTINGS) // Change loadingWindow to SETTINGS
-				{
+
+			// Obs³uga przycisku settingsButton
+			else if (settingsButton.isHovered(mousePos) && settingsButton.isClickable()) {
+				if (options != Options::SETTINGS) {
 					std::cout << "changed loadingWindow screen to " << color("F4D35E", "SETTINGS\n");
 					options = Options::SETTINGS;
 
-					for (int i = 0; i < MAX_NUMBER_OF_SAVES; i++)
-					{
-						if (saveArr[i] == 0 && saveButtons[i]->isEnabled())
-						{
+					for (int i = 0; i < MAX_NUMBER_OF_SAVES; i++) {
+						if (saveArr[i] == 0 && saveButtons[i]->isEnabled()) {
 							saveButtons[i]->setEnabled(false);
 						}
 					}
 				}
-				else //options==SETTINGS so go back to LOGO
-				{
+				else {
 					std::cout << "changed loadingWindow screen to " << color("F4D35E", "LOGO\n");
 					options = Options::LOGO;
 				}
 			}
-			else if (exitToDesktopButton.isHovered(mousePos) && exitToDesktopButton.isClickable())
-			{
+
+			// Obs³uga przycisku exitToDesktopButton
+			else if (exitToDesktopButton.isHovered(mousePos) && exitToDesktopButton.isClickable()) {
 				std::cout << gradient("641220", "e01e37", "closed window by exit to desktop button\n");
 				window.close();
 			}
-			else
-			{
-				for (int i = 0; i < MAX_NUMBER_OF_SAVES; i++)
-				{
-					if (options == Options::SAVES_WRITE)
-					{
-						if (saveButtons[i]->isHovered(mousePos) && saveButtons[i]->isClickable())
-						{
-							//new save
+
+			// Obs³uga przycisków zapisów
+			else {
+				for (int i = 0; i < MAX_NUMBER_OF_SAVES; i++) {
+					if (options == Options::SAVES_WRITE) {
+						if (saveButtons[i]->isHovered(mousePos) && saveButtons[i]->isClickable()) {
+							// Tworzenie nowego zapisu
 							Save* save = new Save();
 							save->write(i + 1);
 							game->setSave(save);
@@ -257,9 +288,8 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 							soundManager.playSound("Transition");
 							std::cout << color("3993DD", "created new save on slot " + std::to_string(i + 1) + "\n");
 						}
-						else if (saveButtons[i]->isHovered(mousePos) && saveButtons[i]->isClickable())
-						{
-							//overwrite
+						else if (saveButtons[i]->isHovered(mousePos) && saveButtons[i]->isClickable()) {
+							// Nadpisywanie istniej¹cego zapisu
 							Save* save = new Save();
 							save->write(i + 1);
 							game->setSave(save);
@@ -269,12 +299,10 @@ void MainMenuState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 							std::cout << color("3993DD", "overwritten save nr " + std::to_string(i + 1) + "\n");
 						}
 					}
-					else if (options == Options::SAVES_LOAD)
-					{
-						if (saveArr[i] == 1)
-						{
-							if (saveButtons[i]->isHovered(mousePos) && saveButtons[i]->isClickable())
-							{
+					else if (options == Options::SAVES_LOAD) {
+						if (saveArr[i] == 1) {
+							if (saveButtons[i]->isHovered(mousePos) && saveButtons[i]->isClickable()) {
+								// £adowanie zapisu
 								Save* save = new Save();
 								save->load(i + 1);
 								this->game->setSave(save);
@@ -334,36 +362,35 @@ void MainMenuState::update()
 }
 
 //Function rendering screen
-void MainMenuState::render(sf::RenderWindow& window)
-{
-	// Create a RenderTexture to draw all elements onto
+void MainMenuState::render(sf::RenderWindow& window) {
+	// Tworzenie renderTexture do rysowania wszystkich elementów
 	sf::RenderTexture renderTexture;
-	if (!renderTexture.create(window.getSize().x, window.getSize().y))
-	{
-		std::cerr << "Failed to create render texture for shader application\n";
+	if (!renderTexture.create(window.getSize().x, window.getSize().y)) {
+		std::cerr << "Failed to create render texture\n";
 		return;
 	}
 
-	// Clear the RenderTexture
+	// Czyszczenie renderTexture
 	renderTexture.clear();
 
-	// Draw UI elements onto the RenderTexture
+	// Rysowanie przycisków g³ównego menu
 	continueButton.display(renderTexture);
 	newGameButton.display(renderTexture);
 	loadGameButton.display(renderTexture);
 	settingsButton.display(renderTexture);
 	exitToDesktopButton.display(renderTexture);
-	loadWindow.display(renderTexture);
 
-	if (loadWindow.isVisible())
-	{
-		if (options == Options::LOGO)
-		{
-			// Render logo
+
+	// Rysowanie okna ³adowania (jeœli jest widoczne)
+	if (loadWindow.isVisible()) {
+		loadWindow.display(renderTexture);
+
+		// Rysowanie zawartoœci okna ³adowania w zale¿noœci od aktualnej opcji
+		if (options == Options::LOGO) {
+			// Rysowanie logo
 			sf::Texture logoTx;
-			if (!logoTx.loadFromFile("src/img/icon.png"))
-			{
-				std::cerr << "Cannot load logo img\n";
+			if (!logoTx.loadFromFile("src/img/icon.png")) {
+				std::cerr << "Cannot load logo image\n";
 				return;
 			}
 
@@ -371,6 +398,7 @@ void MainMenuState::render(sf::RenderWindow& window)
 			logoSp.setTexture(logoTx);
 			logoSp.setScale(2.0f, 2.0f);
 
+			// Pozycjonowanie logo na œrodku okna ³adowania
 			sf::FloatRect loadWindowBounds = loadWindow.getBounds();
 			sf::FloatRect logoBounds = logoSp.getLocalBounds();
 
@@ -380,8 +408,8 @@ void MainMenuState::render(sf::RenderWindow& window)
 			logoSp.setPosition(logoX, logoY);
 			renderTexture.draw(logoSp);
 		}
-		else if (options == Options::SAVES_LOAD || options == Options::SAVES_WRITE)
-		{
+		else if (options == Options::SAVES_LOAD || options == Options::SAVES_WRITE) {
+			// Rysowanie przycisków zapisów
 			sav1Button.display(renderTexture);
 			sav2Button.display(renderTexture);
 			sav3Button.display(renderTexture);
@@ -391,27 +419,74 @@ void MainMenuState::render(sf::RenderWindow& window)
 			sav7Button.display(renderTexture);
 			sav8Button.display(renderTexture);
 		}
-		else if (options == Options::SETTINGS)
-		{
-			// Add settings rendering logic here
+		else if (options == Options::SETTINGS) {
+			// Rysowanie dodatkowych elementów w ustawieniach (np. suwak g³oœnoœci)
+			volumeSlider.display(renderTexture);
+			sliderButton.display(renderTexture);
+			volumeSlider0.display(renderTexture);
+			sliderButton0.display(renderTexture);
+			volumeSlider1.display(renderTexture);
+			sliderButton1.display(renderTexture);
+			volumeSlider2.display(renderTexture);
+			sliderButton2.display(renderTexture);
+			volumeSlider3.display(renderTexture);
+			sliderButton3.display(renderTexture);
+			saveoptionsButton.display(renderTexture);
+			readabilityButton.display(renderTexture);
 		}
 	}
 
-	// Display everything on the RenderTexture
+	// Zakoñczenie rysowania na renderTexture
 	renderTexture.display();
 
-	// Get the RenderTexture as a sprite
+	// Pobranie sprite'a z renderTexture
 	sf::Sprite screenSprite(renderTexture.getTexture());
 
-
-	// Apply the shader and draw it to the main window
+	// Czyszczenie g³ównego okna
 	window.clear();
+
+	// Rysowanie sprite'a na g³ównym oknie (z shaderem lub bez)
 #ifdef _DEBUG
-	window.draw(screenSprite);
+	window.draw(screenSprite); // Bez shadera w trybie debugowania
 #else
-	window.draw(screenSprite, &vhsShader);
+	window.draw(screenSprite, &vhsShader); // Z shaderem w trybie release
 #endif
+
+	// Wyœwietlenie zawartoœci okna
 	window.display();
+}
+
+void MainMenuState::saveSoundSettingsToDatabase(sqlite3*& database, float generalVolume, float uiVolume, float alertVolume, float ambienceVolume, float musicVolume) {
+	const char* sql = "REPLACE INTO audio_settings (setting_name, setting_value) VALUES (?, ?);";
+	sqlite3_stmt* stmt;
+
+	if (sqlite3_prepare_v2(database, sql, -1, &stmt, nullptr) != SQLITE_OK) {
+		std::cerr << "Failed to prepare SQL statement: " << sqlite3_errmsg(database) << std::endl;
+		return;
+	}
+
+	auto saveSetting = [&](const std::string& name, float value) {
+		sqlite3_bind_text(stmt, 1, name.c_str(), -1, SQLITE_STATIC);
+		sqlite3_bind_double(stmt, 2, value);
+		if (sqlite3_step(stmt) != SQLITE_DONE) {
+			std::cerr << "Error saving setting: " << name << " - " << sqlite3_errmsg(database) << std::endl;
+		}
+		else {
+			std::cout << "Saved setting: " << name << " = " << value << "\n";
+		}
+		sqlite3_reset(stmt);
+	};
+	float scaledGeneralVolume = generalVolume / 100.0f;
+	// Zapisz wartoœci do bazy danych
+	saveSetting("general_audio", scaledGeneralVolume);
+	saveSetting("ui_audio", uiVolume);
+	saveSetting("alert_audio", alertVolume);
+	saveSetting("ambience_audio", ambienceVolume);
+	saveSetting("music_audio", musicVolume);
+
+	std::cout << "Applied new sound settings.\n";
+	sqlite3_finalize(stmt);
+	std::cout << "All sound settings saved to the database.\n";
 }
 
 void MainMenuState::renderToTexture(sf::RenderTexture& texture)
@@ -420,7 +495,6 @@ void MainMenuState::renderToTexture(sf::RenderTexture& texture)
 	texture.clear(sf::Color::Black);
 
 	// Draw all UI elements onto the render texture
-	continueButton.display(texture);
 	newGameButton.display(texture);
 	loadGameButton.display(texture);
 	settingsButton.display(texture);
@@ -466,6 +540,18 @@ void MainMenuState::renderToTexture(sf::RenderTexture& texture)
 		else if (options == Options::SETTINGS)
 		{
 			// Add settings rendering logic here
+			volumeSlider.display(texture);
+			sliderButton.display(texture);
+			volumeSlider0.display(texture);
+			sliderButton0.display(texture);
+			volumeSlider1.display(texture);
+			sliderButton1.display(texture);
+			volumeSlider2.display(texture);
+			sliderButton2.display(texture);
+			volumeSlider3.display(texture);
+			sliderButton3.display(texture);
+			saveoptionsButton.display(texture);
+			readabilityButton.display(texture);
 		}
 	}
 

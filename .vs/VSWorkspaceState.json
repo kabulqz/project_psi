@@ -1,9 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\psi",
+    "\\game assets",
+    "\\game assets\\zaplacone",
     "\\psi\\libraries"
   ],
-  "SelectedNode": "\\psi\\libraries\\MainMenuState.cpp",
+  "SelectedNode": "\\psi.sln",
   "PreviewInSolutionExplorer": false
 }

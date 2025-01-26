@@ -158,6 +158,7 @@
     <ClCompile Include="libraries\MapGeneration.cpp" />
     <ClCompile Include="libraries\Save.cpp" />
     <ClCompile Include="libraries\Settings.cpp" />
+    <ClCompile Include="libraries\Slider.cpp" />
     <ClCompile Include="libraries\SoundManager.cpp" />
     <ClCompile Include="libraries\State.cpp" />
     <ClCompile Include="libraries\TransitionState.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="libraries\MapGeneration.hpp" />
     <ClInclude Include="libraries\Save.hpp" />
     <ClInclude Include="libraries\Settings.hpp" />
+    <ClInclude Include="libraries\Slider.hpp" />
     <ClInclude Include="libraries\SoundManager.hpp" />
     <ClInclude Include="libraries\State.hpp" />
     <ClInclude Include="libraries\TileMap.hpp" />

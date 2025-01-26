@@ -81,8 +81,9 @@ class Game;
 
 class Settings {
 private:
-	bool readabilityMode;
+	
 public:
+	bool readabilityMode;
 	//values from 0 -1
 	//values from 0 - 100
 	float general_audio;
