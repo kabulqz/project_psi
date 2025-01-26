@@ -215,6 +215,7 @@ void ItemCard::iterateDurability()
 ItemCard::ItemCard(uint_least32_t& cardSeed, std::mt19937& cardGenerator) :
 Card(CardType::ITEM)
 {
+	this->cardGenerator = cardGenerator;
 	this->cardSeed = cardSeed;
 	// Wygeneruj wartości bazowe
 	// Koszt energii (0 - 12)
@@ -505,6 +506,7 @@ void UnitCard::removeKeyword(const Keyword& keyword)
 UnitCard::UnitCard(uint_least32_t& cardSeed, std::mt19937& cardGenerator) :
 	Card(CardType::UNIT) // Wywołanie konstruktora bazowego
 {
+	this->cardGenerator = cardGenerator;
 	this->cardSeed = cardSeed;
 	// Wygeneruj wartości bazowe
 	// Koszt energii (0 - 12)
@@ -699,6 +701,7 @@ void UnitCard::display(sf::RenderTexture& renderTexture)
 SpellCard::SpellCard(uint_least32_t& cardSeed, std::mt19937& cardGenerator) :
 Card(CardType::SPELL)
 {
+	this->cardGenerator = cardGenerator;
 	this->cardSeed = cardSeed;
 	// Wygeneruj wartości bazowe
 	// Koszt energii (0 - 12)

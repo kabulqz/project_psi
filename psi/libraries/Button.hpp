@@ -4,7 +4,7 @@
 
 class Button
 {
-private:
+protected:
 	sf::Texture buttonTexture;
 	sf::RectangleShape buttonBackground;
 	//size values
@@ -24,12 +24,7 @@ private:
 	void setUpCornerSprites(int pos_x, int pos_y);
 	void setUpBorderSprites(int pos_x, int pos_y);
 	//button position
-	struct Position
-	{
-		int x;
-		int y;
-	};
-	Position position;
+	sf::Vector2f position;
 	bool hovered;
 	//duration to change color
 	sf::Clock hoverClock;
@@ -63,4 +58,6 @@ public:
 	sf::FloatRect getBounds() const;
 	int getWidth() const { return width; }
 	int getHeight() const { return height; }
+	sf::Vector2f getPosition() const { return position; }
+	virtual void setPosition(const sf::Vector2f& pos) { position = pos; }
 };

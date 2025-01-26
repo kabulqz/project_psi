@@ -147,6 +147,7 @@
     <ClCompile Include="libraries\AbilityTreeState.cpp" />
     <ClCompile Include="libraries\Button.cpp" />
     <ClCompile Include="libraries\Card.cpp" />
+    <ClCompile Include="libraries\CardButton.cpp" />
     <ClCompile Include="libraries\Effect.cpp" />
     <ClCompile Include="libraries\EffectBehaviors.cpp" />
     <ClCompile Include="libraries\EventManager.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="libraries\AbilityTreeState.hpp" />
     <ClInclude Include="libraries\Button.hpp" />
     <ClInclude Include="libraries\Card.hpp" />
+    <ClInclude Include="libraries\CardButton.hpp" />
     <ClInclude Include="libraries\Effect.hpp" />
     <ClInclude Include="libraries\EffectBehaviors.hpp" />
     <ClInclude Include="libraries\EventManager.hpp" />

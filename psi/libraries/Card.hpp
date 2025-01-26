@@ -42,8 +42,9 @@ protected:
 	std::vector<std::unique_ptr<IEffectBehavior>> activeEffects;	// List of active effects
 
 	Card(const CardType& cardType) : cardType(cardType) {}
-	virtual void loadSprites(std::mt19937& cardGenerator) = 0;
+	std::mt19937 cardGenerator;
 public:
+	std::mt19937 getCardGenerator() const { return cardGenerator; }
 	std::vector<std::unique_ptr<EffectValue>> extraEnergyCost = {}; // Extra mana cost from effects
 
 	static Card* createCard(uint_least32_t& cardSeed);
@@ -69,7 +70,6 @@ public:
 	static Card* deserialize(uint_least32_t& data);
 
 	uint_least32_t getSeed() const { return cardSeed; }
-	void setPosition(const sf::Vector2f pos) { position = pos; }
 	void setFontAndFontSize(const std::string& fontPath, const unsigned int characterSize)
 	{
 		if (!cardFont.loadFromFile(fontPath)) {
@@ -78,12 +78,16 @@ public:
 		this->characterSize = characterSize;
 	}
 	sf::Vector2f getPosition() const { return position; }
+	void setPosition(const sf::Vector2f pos) { position = pos; }
 	void flip() { isFlipped = !isFlipped; }
 	virtual void display(sf::RenderTexture& renderTexture) = 0;
+	CardType getCardType() const { return cardType; }
+	virtual void loadSprites(std::mt19937& cardGenerator) = 0;
 };
 
 class ItemCard final : public Card // If 0 durability, card is destroyed
 {
+protected:
 	int baseDamage;
 	int currentDamage;
 
@@ -113,10 +117,12 @@ public:
 	~ItemCard() override = default;
 	void destroy();
 	void display(sf::RenderTexture& renderTexture) override;
+	void loadSprite(std::mt19937& cardGenerator) { loadSprites(cardGenerator); }
 };
 
 class UnitCard final : public Card // If 0 health, card is destroyed
 {
+protected:
 	int baseHealth;
 	int currentHealth;
 
@@ -159,14 +165,16 @@ public:
 	~UnitCard() override = default;
 	void destroy();
 	void display(sf::RenderTexture& renderTexture) override;
+	void loadSprite(std::mt19937& cardGenerator) { loadSprites(cardGenerator); }
 };
 
 class SpellCard final : public Card
 {
+protected:
 	void loadSprites(std::mt19937& cardGenerator) override;
 public:
-
 	explicit SpellCard(uint_least32_t& cardSeed, std::mt19937& cardGenerator);
 	~SpellCard() override = default;
 	void display(sf::RenderTexture& renderTexture) override;
+	void loadSprite(std::mt19937& cardGenerator) { loadSprites(cardGenerator); }
 };

@@ -1,7 +1,7 @@
 #include "Button.hpp"
 
 //Constructor for initializing the Button object without a background image
-Button::Button(const int& pos_x, const int& pos_y, int buttonWidth, int buttonHeight, const std::string& borderPath) : width(buttonWidth), height(buttonHeight), position{ pos_x, pos_y }, hovered(false), enabled(true), visible(true)
+Button::Button(const int& pos_x, const int& pos_y, int buttonWidth, int buttonHeight, const std::string& borderPath) : width(buttonWidth), height(buttonHeight), position{ static_cast<float>(pos_x), static_cast<float>(pos_y) }, hovered(false), enabled(true), visible(true)
 {
 	//loading .png file
 	if (!buttonTexture.loadFromFile(borderPath))

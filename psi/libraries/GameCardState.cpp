@@ -2,7 +2,6 @@
 #include "Game.hpp"
 
 GameCardState::GameCardState(Game* game) : game(game),
-card(100, 100, 96, 128, PATH_TO_BORDERS_FOLDER + "panel-border-030.png"),
 enemyHand(160, 10, 960, 160, PATH_TO_BORDERS_FOLDER + "panel-border-030.png"),
 playerHand(160, 550, 960, 160, PATH_TO_BORDERS_FOLDER + "panel-border-030.png"),
 enemyBattlefield(140, 175, 1000, 180, PATH_TO_BORDERS_FOLDER + "panel-border-030.png"),
@@ -55,10 +54,9 @@ PASS(10, 320, 120, 80, PATH_TO_BORDERS_FOLDER + "panel-border-031.png")
 	if (!vhsShader.loadFromFile("libraries/vhs_effect.frag", sf::Shader::Fragment)) return;
 	shaderClock.restart();
 
-	card.setColor(sf::Color::Transparent);
-	testCard = enemy->getDeck().back();
-	testCard->setFontAndFontSize(game->getSettings().getFont(), game->getSettings().getFontSize() - 5);
-	testCard->flip();
+	cardButton = new CardButton(enemy->getDeck().back());
+	cardButton->getCard()->setFontAndFontSize(game->getSettings().getFont(), game->getSettings().getFontSize() - 5);
+	cardButton->getCard()->flip();
 }
 
 //handler for specific windows to appear in the main frame 
@@ -70,6 +68,11 @@ void GameCardState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 	}
 
 	mousePos = sf::Mouse::getPosition(window);
+
+	if (cardButton->isBeingDragged())
+	{
+		cardButton->updatePosition(mousePos);
+	}
 
 	while (eventManager.hasEvents())
 	{
@@ -89,11 +92,17 @@ void GameCardState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 			chosenBackground = backgrounds[choice];
 			std::cout << color("B2FFD6", "chose background number " + std::to_string(choice + 1) + "\n");
 		}
-		if (card.isClickable() && card.isHovered(mousePos))
+		if (cardButton->isClickable() && cardButton->isHovered(mousePos))
 		{
 			if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
 			{
-				testCard->flip();
+				//cardButton->getCard()->flip();
+				cardButton->startDraggingCard(mousePos);
+			}
+			if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left)
+			{
+				//cardButton->getCard()->flip();
+				cardButton->stopDraggingCard(mousePos);
 			}
 		}
 		if (PASS.isClickable() && PASS.isHovered(mousePos))
@@ -105,7 +114,6 @@ void GameCardState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 				// simulating the enemy turn
 			}
 		}
-
 	}
 }
 
@@ -152,9 +160,7 @@ void GameCardState::render(sf::RenderWindow& window)
 	enemyDeck.display(renderTexture);
 	PASS.display(renderTexture);
 
-	testCard->setPosition(card.getBounds().getPosition());
-	testCard->display(renderTexture);
-	card.display(renderTexture);
+	cardButton->display(renderTexture);
 
 	renderTexture.display();
 	window.clear();

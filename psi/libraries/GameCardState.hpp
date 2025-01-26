@@ -2,6 +2,7 @@
 
 #include "State.hpp"
 #include "Game.hpp"
+#include "CardButton.hpp"
 
 class GameCardState : public State
 {
@@ -52,7 +53,7 @@ private:
 	sf::Clock shaderClock;
 	sf::Vector2i mousePos;
 
-	Button card;
+	CardButton* cardButton;
 	Button enemyHand;
 	Button playerHand;
 	Button enemyBattlefield;
@@ -60,7 +61,6 @@ private:
 	Button enemyDeck;
 	Button playerDeck;
 	Button PASS;
-	Card* testCard;
 public:
 	//handler for specific windows to appear in the main frame 
 	void handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager, sqlite3*& database) override;
