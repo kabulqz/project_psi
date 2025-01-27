@@ -167,10 +167,24 @@ void GameBoardState::handleInput(sf::RenderWindow& window, EventManager& eventMa
 			// Update the player's position
 			player->setMapPosition(save->getPath()[newIndex]);
 
-			save->setPlayer(player);
-			save->setEnemies(boardEnemies);
-			save->write();
-			game->setSave(save);
+			for (int i = 0; i < boardEnemies.size(); i++)
+			{
+				if (player->getMapPosition() == boardEnemies[i].getMapPosition())
+				{
+					// GO TO CARD GAME
+					if (!save)
+					{
+						std::cerr << "Error: Save object is null!" << std::endl;
+						return; // lub podejmij inne dzia?anie awaryjne
+					}
+					save->setPlayer(player);
+					save->setEnemies(boardEnemies);
+					save->write();
+					game->setSave(save);
+					game->changeState(std::make_unique<TransitionState>(game, GAME_BOARD, GAME_CARD));
+					soundManager.playSound("Transition");
+				}
+			}
 		}
 	}
 }

@@ -83,6 +83,7 @@ void GameCardState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 			game->setSave(save);
 
 			game->changeState(std::make_unique<TransitionState>(game, GAME_CARD, GAME_BOARD));
+			break;
 		}
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::R) // RELOAD BACKGROUND
 		{
