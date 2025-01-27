@@ -129,8 +129,8 @@ void GameBoardState::handleInput(sf::RenderWindow& window, EventManager& eventMa
 		}
 		if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space) || (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right))
 		{
-			//int move = 1; // For testing purposes
-			int move = rand() % 6 + 1; // Random move between 1 and 6
+			int move = 1; // For testing purposes
+			//int move = rand() % 6 + 1; // Random move between 1 and 6
 			std::cout << "Player rolled a " << color("ff7aa2", std::to_string(move)) << ", ";
 
 			soundManager.playSound("DiceThrow");
@@ -166,11 +166,30 @@ void GameBoardState::handleInput(sf::RenderWindow& window, EventManager& eventMa
 
 			// Update the player's position
 			player->setMapPosition(save->getPath()[newIndex]);
+			for (int i = 0; i < boardEnemies.size(); i++)
+			{
+				if (player->getMapPosition() == boardEnemies[i].getMapPosition())
+				{
+					// GO TO CARD GAME
+					if (!save)
+					{
+						std::cerr << "Error: Save object is null!" << std::endl;
+						return; // lub podejmij inne dzia³anie awaryjne
+					}
+  					save->setPlayer(player);
+					save->setEnemies(boardEnemies);
+					save->write();
+					game->setSave(save);
 
-			save->setPlayer(player);
-			save->setEnemies(boardEnemies);
-			save->write();
-			game->setSave(save);
+					game->changeState(std::make_unique<TransitionState>(game, GAME_BOARD, GAME_CARD));
+					soundManager.playSound("Transition");
+				}
+			}
+
+			//save->setPlayer(player);
+			//save->setEnemies(boardEnemies);
+			//save->write();
+			//game->setSave(save);
 		}
 	}
 }

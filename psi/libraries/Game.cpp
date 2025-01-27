@@ -44,6 +44,7 @@ Game::Game() : soundManager(settings.general_audio, settings.ui_audio, settings.
 //function to change between states
 void Game::changeState(std::unique_ptr<State> newState)
 {
+	std::cout<< gradient("b30000", "ff9999", "CHANGING STATE RIGHT NOW\n");
 	currentState = std::move(newState);
 }
 

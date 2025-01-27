@@ -1,4 +1,11 @@
+<<<<<<< Updated upstream
 ﻿  GameBoardState.cpp
   psi.vcxproj -> E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\x64\Debug\psi.exe
   E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\src\OpenSSL\libcrypto-3-x64.dll
   1 File(s) copied
+=======
+﻿  GameCardState.cpp
+  psi.vcxproj -> E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\x64\Debug\psi.exe
+  E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\src\OpenSSL\libcrypto-3-x64.dll
+  1 File(s) copied
+>>>>>>> Stashed changes

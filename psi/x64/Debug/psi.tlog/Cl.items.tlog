@@ -2,6 +2,10 @@ E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\libraries\AbilityTree.cpp;E:\NieMaMi
 E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\libraries\AbilityTreeState.cpp;E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\x64\Debug\AbilityTreeState.obj
 E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\libraries\Button.cpp;E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\x64\Debug\Button.obj
 E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\libraries\Card.cpp;E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\x64\Debug\Card.obj
+<<<<<<< Updated upstream
+=======
+E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\libraries\CardButton.cpp;E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\x64\Debug\CardButton.obj
+>>>>>>> Stashed changes
 E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\libraries\Effect.cpp;E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\x64\Debug\Effect.obj
 E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\libraries\EffectBehaviors.cpp;E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\x64\Debug\EffectBehaviors.obj
 E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\libraries\EventManager.cpp;E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\x64\Debug\EventManager.obj
@@ -13,6 +17,10 @@ E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\libraries\MainMenuState.cpp;E:\NieMa
 E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\libraries\MapGeneration.cpp;E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\x64\Debug\MapGeneration.obj
 E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\libraries\Save.cpp;E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\x64\Debug\Save.obj
 E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\libraries\Settings.cpp;E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\x64\Debug\Settings.obj
+<<<<<<< Updated upstream
+=======
+E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\libraries\Slider.cpp;E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\x64\Debug\Slider.obj
+>>>>>>> Stashed changes
 E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\libraries\SoundManager.cpp;E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\x64\Debug\SoundManager.obj
 E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\libraries\State.cpp;E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\x64\Debug\State.obj
 E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\libraries\TransitionState.cpp;E:\NieMaMiejscaNaDyskuC\Project_PSI\psi\psi\x64\Debug\TransitionState.obj

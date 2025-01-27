@@ -53,8 +53,49 @@ void GameCardState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 	while (eventManager.hasEvents())
 	{
 		sf::Event event = eventManager.popEvent();
+<<<<<<< Updated upstream
 		// Handle other events, such as changing the state or closing the window
 		// Example: if (event.type == sf::Event::MouseButtonPressed) { ... }
+=======
+		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::C)
+		{// GO TO CARD GAME
+			save->write();
+			game->setSave(save);
+
+			game->changeState(std::make_unique<TransitionState>(game, GAME_CARD, GAME_BOARD));
+			break;
+		}
+		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::R) // RELOAD BACKGROUND
+		{
+			std::random_device rd;
+			std::uniform_int_distribution<int> backgroundDistribution(0, 19);
+			const int choice = backgroundDistribution(rd);
+			chosenBackground = backgrounds[choice];
+			std::cout << color("B2FFD6", "chose background number " + std::to_string(choice + 1) + "\n");
+		}
+		if (cardButton->isClickable() && cardButton->isHovered(mousePos))
+		{
+			if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
+			{
+				//cardButton->getCard()->flip();
+				cardButton->startDraggingCard(mousePos);
+			}
+			if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left)
+			{
+				//cardButton->getCard()->flip();
+				cardButton->stopDraggingCard(mousePos);
+			}
+		}
+		if (PASS.isClickable() && PASS.isHovered(mousePos))
+		{
+			if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
+			{
+				// Pass the turn
+				// logic for passing the turn
+				// simulating the enemy turn
+			}
+		}
+>>>>>>> Stashed changes
 	}
 }
 

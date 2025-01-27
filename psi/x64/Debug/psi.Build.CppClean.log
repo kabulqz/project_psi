@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 c:\users\maciej\desktop\vs_my_projects\github\project_psi\psi\x64\debug\vc143.pdb
 c:\users\maciej\desktop\vs_my_projects\github\project_psi\psi\x64\debug\vc143.idb
 c:\users\maciej\desktop\vs_my_projects\github\project_psi\psi\x64\debug\main.obj
@@ -34,3 +35,41 @@ c:\users\maciej\desktop\vs_my_projects\github\project_psi\psi\x64\debug\psi.tlog
 c:\users\maciej\desktop\vs_my_projects\github\project_psi\psi\x64\debug\psi.tlog\link.read.1.tlog
 c:\users\maciej\desktop\vs_my_projects\github\project_psi\psi\x64\debug\psi.tlog\link.secondary.1.tlog
 c:\users\maciej\desktop\vs_my_projects\github\project_psi\psi\x64\debug\psi.tlog\link.write.1.tlog
+=======
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\vc143.pdb
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\vc143.idb
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\transitionstate.obj
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\state.obj
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\soundmanager.obj
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\slider.obj
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\settings.obj
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\save.obj
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\mapgeneration.obj
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\mainmenustate.obj
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\hero.obj
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\gamecardstate.obj
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\gameboardstate.obj
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\game.obj
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\eventmanager.obj
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\effectbehaviors.obj
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\effect.obj
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\cardbutton.obj
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\card.obj
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\button.obj
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\abilitytreestate.obj
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\abilitytree.obj
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\main.obj
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\sqlite3.obj
+e:\niemamiejscanadyskuc\project_psi\psi\x64\debug\psi.exe
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\psi.ilk
+e:\niemamiejscanadyskuc\project_psi\psi\x64\debug\psi.pdb
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\gameboardstate.obj.enc
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\psi.tlog\cl.command.1.tlog
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\psi.tlog\cl.items.tlog
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\psi.tlog\cl.read.1.tlog
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\psi.tlog\cl.write.1.tlog
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\psi.tlog\link.command.1.tlog
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\psi.tlog\link.read.1.tlog
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\psi.tlog\link.secondary.1.tlog
+e:\niemamiejscanadyskuc\project_psi\psi\psi\x64\debug\psi.tlog\link.write.1.tlog
+>>>>>>> Stashed changes
