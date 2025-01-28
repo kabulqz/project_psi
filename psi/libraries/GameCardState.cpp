@@ -60,9 +60,21 @@ effectDescription6(10, 10, 10, 10, PATH_TO_BORDERS_FOLDER + "panel-border-030.pn
 	sf::Image cursorClosedHand;
 	sf::Image cursorDetails;
 	const std::string cursorDefaultPath = "src/img/cursors/";
-	if (!cursorDefault.loadFromFile(cursorDefaultPath + "cursor_default.png") || !cursorOpenHand.loadFromFile(cursorDefaultPath + "cursor_open_hand.png") || cursorClosedHand.loadFromFile(cursorDefaultPath + "cursor_closed_hand.png") || cursorDetails.loadFromFile(cursorDefaultPath + "cursor_details.png"))
+	if (!cursorDefault.loadFromFile(cursorDefaultPath + "cursor_default.png"))
 	{
-		std::cerr << "Cannot load cursors png files\n";
+		std::cerr << "Cannot load cursor_default.png\n";
+	}
+	if (!cursorOpenHand.loadFromFile(cursorDefaultPath + "cursor_open_hand.png"))
+	{
+		std::cerr << "Cannot load cursor_open_hand.png\n";
+	}
+	if (!cursorClosedHand.loadFromFile(cursorDefaultPath + "cursor_closed_hand.png"))
+	{
+		std::cerr << "Cannot load cursor_closed_hand.png\n";
+	}
+	if (!cursorDetails.loadFromFile(cursorDefaultPath + "cursor_details.png"))
+	{
+		std::cerr << "Cannot load cursor_details.png\n";
 	}
 	defaultCursor.loadFromPixels(cursorDefault.getPixelsPtr(), cursorDefault.getSize(), { 0, 0 });
 	openHandCursor.loadFromPixels(cursorOpenHand.getPixelsPtr(), cursorOpenHand.getSize(), { 16, 16 });
@@ -274,13 +286,19 @@ void GameCardState::update()
 	}
 }
 
-void GameCardState::handleCursorChange(sf::RenderWindow& window, CardButton& cardButton, bool& isHoveredOverAnyCard,
+void GameCardState::handleCursorChange(
+	sf::RenderWindow& window,
+	CardButton& cardButton,
+	bool& isHoveredOverAnyCard,
 	CursorState& cursorState) const
 {
-	CursorState newCursorState = {};
+	// Sprawdź, czy przycisk karty jest najechany
 	if (cardButton.isHovered(mousePos))
 	{
 		isHoveredOverAnyCard = true;
+
+		// Ustal nowy stan kursora w oparciu o warunki
+		CursorState newCursorState = {};
 		if (cardButton.isBeingDragged() && !cardButton.checkHoverDuration())
 		{
 			newCursorState = CursorState::ClosedHand;
@@ -293,23 +311,27 @@ void GameCardState::handleCursorChange(sf::RenderWindow& window, CardButton& car
 		{
 			newCursorState = CursorState::Details;
 		}
-		switch (newCursorState)
+
+		// Zmień kursor, jeśli stan kursora uległ zmianie
+		if (newCursorState != cursorState)
 		{
-		case CursorState::ClosedHand:
-			window.setMouseCursor(closedHandCursor);
-			break;
-		case CursorState::OpenHand:
-			window.setMouseCursor(openHandCursor);
-			break;
-		case CursorState::Details:
-			window.setMouseCursor(detailsCursor);
-			break;
+			cursorState = newCursorState;
+			switch (cursorState)
+			{
+			case CursorState::ClosedHand:
+				window.setMouseCursor(closedHandCursor);
+				break;
+			case CursorState::OpenHand:
+				window.setMouseCursor(openHandCursor);
+				break;
+			case CursorState::Details:
+				window.setMouseCursor(detailsCursor);
+				break;
+			default:
+				window.setMouseCursor(defaultCursor);
+				break;
+			}
 		}
-	}
-	else
-	{
-		isHoveredOverAnyCard = false;
-		window.setMouseCursor(defaultCursor);
 	}
 }
 
@@ -349,11 +371,16 @@ void GameCardState::render(sf::RenderWindow& window)
 	}
 
 	bool isHoveredOverAnyCard = false;
-	auto currentCursorState = CursorState::Default;
+	CursorState currentCursorState = CursorState::Default;
 
 	for (auto& cardButton : playerCardButtons)
 	{
 		handleCursorChange(window, *cardButton, isHoveredOverAnyCard, currentCursorState);
+	}
+
+	if (!isHoveredOverAnyCard)
+	{
+		window.setMouseCursor(defaultCursor);
 	}
 
 	for (auto& cardButton : playerCardButtons)

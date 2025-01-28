@@ -7,16 +7,20 @@
       "RelativeMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|solutionrelative:psi\\libraries\\GameCardState.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\AbilityTreeState.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|solutionrelative:psi\\libraries\\AbilityTreeState.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\GameCardState.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|solutionrelative:psi\\libraries\\GameCardState.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\CardButton.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|solutionrelative:psi\\libraries\\CardButton.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\CardButton.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|solutionrelative:psi\\libraries\\CardButton.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\GameCardState.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|solutionrelative:psi\\libraries\\GameCardState.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{62D6E6EA-7290-4253-B988-C5CC12A9145A}|psi\\psi.vcxproj|C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Effect.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -98,7 +102,7 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 17,
               "Title": "Settings.hpp",
               "DocumentMoniker": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Settings.hpp",
               "RelativeDocumentMoniker": "psi\\libraries\\Settings.hpp",
@@ -111,7 +115,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 21,
               "Title": "Game.hpp",
               "DocumentMoniker": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Game.hpp",
               "RelativeDocumentMoniker": "psi\\libraries\\Game.hpp",
@@ -124,7 +128,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "GameBoardState.hpp",
               "DocumentMoniker": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\GameBoardState.hpp",
               "RelativeDocumentMoniker": "psi\\libraries\\GameBoardState.hpp",
@@ -137,7 +141,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 19,
               "Title": "Hero.hpp",
               "DocumentMoniker": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Hero.hpp",
               "RelativeDocumentMoniker": "psi\\libraries\\Hero.hpp",
@@ -150,7 +154,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 20,
               "Title": "Save.hpp",
               "DocumentMoniker": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Save.hpp",
               "RelativeDocumentMoniker": "psi\\libraries\\Save.hpp",
@@ -163,7 +167,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 16,
               "Title": "Effect.hpp",
               "DocumentMoniker": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Effect.hpp",
               "RelativeDocumentMoniker": "psi\\libraries\\Effect.hpp",
@@ -176,7 +180,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "Card.hpp",
               "DocumentMoniker": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Card.hpp",
               "RelativeDocumentMoniker": "psi\\libraries\\Card.hpp",
@@ -189,7 +193,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "Button.hpp",
               "DocumentMoniker": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Button.hpp",
               "RelativeDocumentMoniker": "psi\\libraries\\Button.hpp",
@@ -202,13 +206,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "GameCardState.hpp",
               "DocumentMoniker": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\GameCardState.hpp",
               "RelativeDocumentMoniker": "psi\\libraries\\GameCardState.hpp",
               "ToolTip": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\GameCardState.hpp",
               "RelativeToolTip": "psi\\libraries\\GameCardState.hpp",
-              "ViewState": "AgIAABMAAAAAAAAAAAAQwB0AAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAowB0AAACHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-10-22T15:41:24.461Z",
               "IsPinned": true,
@@ -216,7 +220,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "CardButton.hpp",
               "DocumentMoniker": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\CardButton.hpp",
               "RelativeDocumentMoniker": "psi\\libraries\\CardButton.hpp",
@@ -225,12 +229,11 @@
               "ViewState": "AgIAAAYAAAAAAAAAAAAgwB4AAABbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-01-26T20:48:15.788Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "Definitions.hpp",
               "DocumentMoniker": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Definitions.hpp",
               "RelativeDocumentMoniker": "psi\\libraries\\Definitions.hpp",
@@ -255,7 +258,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "Settings.cpp",
               "DocumentMoniker": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Settings.cpp",
               "RelativeDocumentMoniker": "psi\\libraries\\Settings.cpp",
@@ -267,7 +270,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "Game.cpp",
               "DocumentMoniker": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Game.cpp",
               "RelativeDocumentMoniker": "psi\\libraries\\Game.cpp",
@@ -279,7 +282,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "GameBoardState.cpp",
               "DocumentMoniker": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\GameBoardState.cpp",
               "RelativeDocumentMoniker": "psi\\libraries\\GameBoardState.cpp",
@@ -291,7 +294,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 18,
               "Title": "Hero.cpp",
               "DocumentMoniker": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Hero.cpp",
               "RelativeDocumentMoniker": "psi\\libraries\\Hero.cpp",
@@ -303,7 +306,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "Save.cpp",
               "DocumentMoniker": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Save.cpp",
               "RelativeDocumentMoniker": "psi\\libraries\\Save.cpp",
@@ -315,7 +318,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "Effect.cpp",
               "DocumentMoniker": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Effect.cpp",
               "RelativeDocumentMoniker": "psi\\libraries\\Effect.cpp",
@@ -327,7 +330,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "Card.cpp",
               "DocumentMoniker": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Card.cpp",
               "RelativeDocumentMoniker": "psi\\libraries\\Card.cpp",
@@ -339,7 +342,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "Button.cpp",
               "DocumentMoniker": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\Button.cpp",
               "RelativeDocumentMoniker": "psi\\libraries\\Button.cpp",
@@ -357,7 +360,7 @@
               "RelativeDocumentMoniker": "psi\\libraries\\GameCardState.cpp",
               "ToolTip": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\GameCardState.cpp",
               "RelativeToolTip": "psi\\libraries\\GameCardState.cpp",
-              "ViewState": "AgIAAFMBAAAAAAAAAAAQwGkBAAADAAAAAAAAAA==",
+              "ViewState": "AgIAAF4BAAAAAAAAAAAQwHUBAAACAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-10-23T17:22:05.621Z",
               "EditorCaption": ""
@@ -365,6 +368,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "AbilityTreeState.cpp",
+              "DocumentMoniker": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\AbilityTreeState.cpp",
+              "RelativeDocumentMoniker": "psi\\libraries\\AbilityTreeState.cpp",
+              "ToolTip": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\AbilityTreeState.cpp",
+              "RelativeToolTip": "psi\\libraries\\AbilityTreeState.cpp",
+              "ViewState": "AgIAALAAAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-01-28T09:04:26.67Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "CardButton.cpp",
               "DocumentMoniker": "C:\\Users\\Maciej\\Desktop\\VS_my_projects\\github\\project_psi\\psi\\libraries\\CardButton.cpp",
               "RelativeDocumentMoniker": "psi\\libraries\\CardButton.cpp",
