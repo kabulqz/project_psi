@@ -21,6 +21,18 @@ Button::Button(const int& pos_x, const int& pos_y, int buttonWidth, int buttonHe
 
 	//setting default properties for the button text
 	buttonText.setFillColor(sf::Color::White);//default text color
+	buttonText.setString("");//default text string
+}
+
+void Button::resizeTo(int newWidth, int newHeight)
+{
+	width = newWidth;
+	height = newHeight;
+
+	buttonBackground.setSize(sf::Vector2f(static_cast<float>(width), static_cast<float>(height)));
+	setUpCornerSprites(static_cast<int>(position.x), static_cast<int>(position.y));
+	setUpBorderSprites(static_cast<int>(position.x), static_cast<int>(position.y));
+	setText(buttonText.getString(), buttonFontFilePath, buttonText.getCharacterSize());
 }
 
 //Method to set up corner sprites using the button texture
@@ -111,6 +123,7 @@ void Button::setText(const std::string& text, const std::string& fontPath, unsig
 	}
 
 	//Set the font, text string, and character size for the text on the button
+	buttonFontFilePath = fontPath;
 	buttonText.setFont(buttonFont);
 	buttonText.setString(text);
 	buttonText.setCharacterSize(characterSize);
@@ -323,21 +336,11 @@ void Button::setColor(const std::string& hexColor)
 //Method to handle mouse on screen and hover states
 void Button::handleHoverState(sf::Vector2i mousePosition)
 {
-	if (this->isHovered(mousePosition))
+	bool currentlyHovered = this->isHovered(mousePosition);
+	if (currentlyHovered != this->getHovered())
 	{
-		if (!this->getHovered())
-		{
-			this->hoverClock.restart();
-			this->setHovered(true);
-		}
-	}
-	else
-	{
-		if (this->getHovered())
-		{
-			this->hoverClock.restart();
-			this->setHovered(false);
-		}
+		this->hoverClock.restart();
+		this->setHovered(currentlyHovered);
 	}
 }
 

@@ -44,17 +44,17 @@ std::string StatusToString(Status status)
 {
 	switch (status)
 	{
-	case Status::BLEEDING: return "Bleeding";
-	case Status::BURNING: return "Burning";
-	case Status::POISONED: return "Poisoned";
-	case Status::CONFUSED: return "Confused";
-	case Status::CURSED: return "Cursed";
-	case Status::ENRAGED: return "Enraged";
-	case Status::FROZEN: return "Frozen";
-	case Status::HEXED: return "Hexed";
-	case Status::MARKED: return "Marked";
-	case Status::ROCK_SKINNED: return "Rock Skinned";
-	case Status::STUNNED: return "Stunned";
+	case Status::BLEEDING: return "BLEEDING";
+	case Status::BURNING: return "BURNING";
+	case Status::POISONED: return "POISONED";
+	case Status::CONFUSED: return "CONFUSED";
+	case Status::CURSED: return "CURSED";
+	case Status::ENRAGED: return "ENRAGED";
+	case Status::FROZEN: return "FROZEN";
+	case Status::HEXED: return "HEXED";
+	case Status::MARKED: return "MARKED";
+	case Status::ROCK_SKINNED: return "ROCK SKINNED";
+	case Status::STUNNED: return "STUNNED";
 	}
 }
 
@@ -519,7 +519,7 @@ void Effect::setStatusApplyBehavior()
 	case EffectTrigger::ON_ATTACK: description += "Triggered when a unit attacks, "; break;
 	case EffectTrigger::ON_EQUIP: description += "Triggered when an item is equipped, "; break;
 	}
-	description += "\napplies \"" + StatusToString(status) + "\", ";
+	description += "\napplies status \"" + StatusToString(status) + "\", ";
 
 	switch (durationType) {
 	case EffectDuration::INSTANT: description += "effect is applied instantly. "; break;
@@ -746,7 +746,7 @@ void Effect::setStatusRemoveBehavior()
 	case EffectTrigger::ON_EQUIP: description += "Triggered when an item is equipped, "; break;
 	}
 
-	description += "\nremoves \"" + StatusToString(status) + "\", ";
+	description += "\nremoves \"" + StatusToString(status) + "\" status, ";
 	description += "targets ";
 	switch (targetMode) {
 	case TargetMode::SELF: description += "this unit"; break;

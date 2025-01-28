@@ -1,5 +1,7 @@
 ﻿#include "Card.hpp"
 
+#include <ranges>
+
 const std::string CardFolderPath = "src/img/card/";
 
 static std::string cardTypeToString(const CardType cardType)
@@ -262,7 +264,7 @@ Card(CardType::ITEM)
 		auto effect = std::make_unique<Effect>(effectSeed, cardType);
 		if (!effect->getDescription().empty()) {
 			effects.push_back(std::move(effect));
-			std::cout << "\nCardType: " + cardTypeToString(cardType) + ", EffectSeed: " + std::to_string(effectSeed) + +"\n" + effects.back()->getDescription() + "\n";
+			//std::cout << "\nCardType: " + cardTypeToString(cardType) + ", EffectSeed: " + std::to_string(effectSeed) + +"\n" + effects.back()->getDescription() + "\n";
 		}
 	}
 
@@ -317,12 +319,14 @@ void ItemCard::display(sf::RenderTexture& renderTexture)
 	if (!isFlipped)
 	{
 		back.setPosition(position);
+		back.setScale(1.0f, 1.0f);
 		renderTexture.draw(back);
 	}
 	else
 	{
 		// draw background
 		background.setPosition(position);
+		background.setScale(1.0f, 1.0f);
 		renderTexture.draw(background);
 		//draw portrait
 		constexpr float portraitWidth = 48.0f;
@@ -330,9 +334,11 @@ void ItemCard::display(sf::RenderTexture& renderTexture)
 		float portraitX = position.x + (cardWidth - portraitWidth) / 2.0f;
 		float portraitY = position.y + (cardHeight - portraitHeight) / 2.0f;
 		portrait.setPosition(portraitX, portraitY);
+		portrait.setScale(3.0f, 3.0f);
 		renderTexture.draw(portrait);
 		//draw frame
 		frame.setPosition(position);
+		frame.setScale(1.0f, 1.0f);
 		renderTexture.draw(frame);
 
 		//energy cost
@@ -374,6 +380,83 @@ void ItemCard::display(sf::RenderTexture& renderTexture)
 			circleRadius,
 			sf::Color(133, 199, 242),
 			sf::Vector2f(position.x + spacing * 3 + 4 * circleRadius, yPosition),
+			currentDefense,
+			baseDefense);
+	}
+}
+
+void ItemCard::displayDetails(sf::RenderTexture& renderTexture)
+{
+	// Nowe przesunięcie
+	sf::Vector2f offset(-24.f, -32.f);
+
+	if (!isFlipped)
+	{
+		back.setPosition(position + offset);
+		back.setScale(1.5f, 1.5f);
+		renderTexture.draw(back);
+	}
+	else
+	{
+		// Rysowanie tła
+		background.setPosition(position + offset);
+		background.setScale(1.5f, 1.5f);
+		renderTexture.draw(background);
+
+		// Rysowanie portretu
+		constexpr float portraitWidth = 48.0f;
+		constexpr float portraitHeight = 48.0f;
+		float portraitX = position.x + (cardWidth - portraitWidth) / 2.0f + offset.x;
+		float portraitY = position.y + (cardHeight - portraitHeight) / 2.0f + offset.y;
+		portrait.setPosition(portraitX, portraitY);
+		portrait.setScale(3.0f * 1.5f, 3.0f * 1.5f);  // Skalowanie 1.5x
+		renderTexture.draw(portrait);
+
+		// Rysowanie ramki
+		frame.setPosition(position + offset);
+		frame.setScale(1.5f, 1.5f);
+		renderTexture.draw(frame);
+
+		// Rysowanie kosztu energii
+		drawValueCircle(renderTexture,
+			cardFont,
+			characterSize * 1.5f,  // Zwiększenie rozmiaru czcionki o 1.5x
+			10.0f * 1.5f,  // Zwiększenie średnicy okręgu o 1.5x
+			sf::Color(255, 159, 28),
+			sf::Vector2f((cardWidth * 1.5f / 2) - 15.0f + position.x + offset.x, 8.0f * 1.5f + position.y + offset.y),
+			currentEnergyCost,
+			baseEnergyCost);
+
+		// Obliczanie odstępów między kołami
+		constexpr float circleRadius = 10.0f * 1.5f;  // Skalowanie promienia koła
+		const float yPosition = position.y + 105.0f * 1.5f;  // Przesunięcie Y z uwzględnieniem skalowania
+		const float spacing = (cardWidth * 1.5f - 3 * 2 * circleRadius) / 4.0f;
+
+		// Rysowanie kół z nowymi odstępami
+		drawValueCircle(renderTexture,
+			cardFont,
+			characterSize * 1.5f,  // Zwiększenie rozmiaru czcionki o 1.5x
+			circleRadius,
+			sf::Color(244, 151, 218),
+			sf::Vector2f(position.x + spacing + offset.x, yPosition + offset.y),
+			currentDamage,
+			baseDamage);
+
+		drawValueCircle(renderTexture,
+			cardFont,
+			characterSize * 1.5f,  // Zwiększenie rozmiaru czcionki o 1.5x
+			circleRadius,
+			sf::Color(200, 200, 200),
+			sf::Vector2f(position.x + spacing * 2 + 2 * circleRadius + offset.x, yPosition + offset.y),
+			currentDurability,
+			baseDurability);
+
+		drawValueCircle(renderTexture,
+			cardFont,
+			characterSize * 1.5f,  // Zwiększenie rozmiaru czcionki o 1.5x
+			circleRadius,
+			sf::Color(133, 199, 242),
+			sf::Vector2f(position.x + spacing * 3 + 4 * circleRadius + offset.x, yPosition + offset.y),
 			currentDefense,
 			baseDefense);
 	}
@@ -508,10 +591,30 @@ UnitCard::UnitCard(uint_least32_t& cardSeed, std::mt19937& cardGenerator) :
 {
 	this->cardGenerator = cardGenerator;
 	this->cardSeed = cardSeed;
+
+	for (const auto& statusPath : statusPaths)
+	{
+		auto texture = new sf::Texture();
+		if (!texture->loadFromFile(statusPath))
+		{
+			std::cerr << "Error: Could not load status image\n";
+		}
+		statusTextures.push_back(texture);
+	}
+
+	for (const auto& keywordPath : keywordPaths)
+	{
+		auto texture = new sf::Texture();
+		if (!texture->loadFromFile(keywordPath))
+		{
+			std::cerr << "Error: Could not load keyword image\n";
+		}
+		keywordTextures.push_back(texture);
+	}
+
 	// Wygeneruj wartości bazowe
 	// Koszt energii (0 - 12)
 	// (0 - 4) słabe jednostki, (5 - 8) średnie jednostki, (9 - 12) silne jednostki
-
 	std::uniform_int_distribution<int> energyCostDistribution(0, 12);
 	baseEnergyCost = energyCostDistribution(cardGenerator);
 	currentEnergyCost = baseEnergyCost;
@@ -551,7 +654,7 @@ UnitCard::UnitCard(uint_least32_t& cardSeed, std::mt19937& cardGenerator) :
 		auto effect = std::make_unique<Effect>(effectSeed, cardType);
 		if (!effect->getDescription().empty()) {
 			effects.push_back(std::move(effect));
-			std::cout << "\nCardType: " + cardTypeToString(cardType) +", EffectSeed: " + std::to_string(effectSeed) + +"\n" + effects.back()->getDescription() + "\n";
+			//std::cout << "\nCardType: " + cardTypeToString(cardType) +", EffectSeed: " + std::to_string(effectSeed) + +"\n" + effects.back()->getDescription() + "\n";
 		}
 	}
 	// Statusy
@@ -646,18 +749,22 @@ void UnitCard::display(sf::RenderTexture& renderTexture)
 	if (!isFlipped)
 	{
 		back.setPosition(position);
+		back.setScale(1.0f, 1.0f);
 		renderTexture.draw(back);
 	}
 	else
 	{
 		// draw background
 		background.setPosition(position);
+		background.setScale(1.0f, 1.0f);
 		renderTexture.draw(background);
 		//draw portrait
 		portrait.setPosition(position);
+		portrait.setScale(1.0f, 1.0f);
 		renderTexture.draw(portrait);
 		//draw frame
 		frame.setPosition(position);
+		frame.setScale(1.0f, 1.0f);
 		renderTexture.draw(frame);
 
 		//energy cost
@@ -670,31 +777,224 @@ void UnitCard::display(sf::RenderTexture& renderTexture)
 			currentEnergyCost,
 			baseEnergyCost);
 
-		// attack, health
 		constexpr float circleRadius = 10.0f;
 		const float yPosition = position.y + 105.0f;
 		const float spacing = (cardWidth - 3 * 2 * circleRadius) / 4.0f;
 
-		drawValueCircle(renderTexture,
-			cardFont,
-			characterSize,
-			10.0f,
-			sf::Color(100, 149, 237),
-			sf::Vector2f(position.x + spacing, yPosition),
-			currentAttack,
-			baseAttack);
-		
+		if (hasItem()) {// if unit has item
+			// item -> damage, durability, defense
+			drawValueCircle(renderTexture,
+				cardFont,
+				characterSize,
+				circleRadius,
+				sf::Color(244, 151, 218),
+				sf::Vector2f(position.x + spacing, yPosition),
+				item->getDamage(),
+				item->getBaseDamage());
 
-		// Health value
+			drawValueCircle(renderTexture,
+				cardFont,
+				characterSize,
+				circleRadius,
+				sf::Color(200, 200, 200),
+				sf::Vector2f(position.x + spacing * 2 + 2 * circleRadius, yPosition),
+				item->getDurability(),
+				item->getBaseDurability());
+
+			drawValueCircle(renderTexture,
+				cardFont,
+				characterSize,
+				circleRadius,
+				sf::Color(133, 199, 242),
+				sf::Vector2f(position.x + spacing * 3 + 4 * circleRadius, yPosition),
+				item->getDefense(),
+				item->getBaseDefense());
+
+			// attack, health
+			constexpr float unitStatsYOffset = -circleRadius * 2.0f - 1;
+			drawValueCircle(renderTexture,
+				cardFont,
+				characterSize,
+				10.0f,
+				sf::Color(100, 149, 237),
+				sf::Vector2f(position.x + spacing, yPosition + unitStatsYOffset),
+				currentAttack,
+				baseAttack);
+
+			drawValueCircle(renderTexture,
+				cardFont,
+				characterSize,
+				10.0f,
+				sf::Color(255, 69, 0),
+				sf::Vector2f(position.x + spacing * 3 + 4 * circleRadius, yPosition + unitStatsYOffset),
+				currentHealth,
+				baseHealth);
+		}
+		else {// unit does not have item
+			// attack, health
+			drawValueCircle(renderTexture,
+				cardFont,
+				characterSize,
+				10.0f,
+				sf::Color(100, 149, 237),
+				sf::Vector2f(position.x + spacing, yPosition),
+				currentAttack,
+				baseAttack);
+
+			drawValueCircle(renderTexture,
+				cardFont,
+				characterSize,
+				10.0f,
+				sf::Color(255, 69, 0),
+				sf::Vector2f(position.x + spacing * 3 + 4 * circleRadius, yPosition),
+				currentHealth,
+				baseHealth);
+		}
+	}
+}
+
+void UnitCard::displayDetails(sf::RenderTexture& renderTexture)
+{
+	// Nowe przesunięcie
+	sf::Vector2f offset(-24.f, -32.f);
+
+	if (!isFlipped)
+	{
+		back.setPosition(position + offset);
+		back.setScale(1.5f, 1.5f);
+		renderTexture.draw(back);
+	}
+	else
+	{
+		// Rysowanie tła
+		background.setPosition(position + offset);
+		background.setScale(1.5f, 1.5f);
+		renderTexture.draw(background);
+		// Rysowanie portretu
+		portrait.setPosition(position + offset);
+		portrait.setScale(1.5f, 1.5f);
+		renderTexture.draw(portrait);
+		// Rysowanie ramki
+		frame.setPosition(position + offset);
+		frame.setScale(1.5f, 1.5f);
+		renderTexture.draw(frame);
+
+		// Rysowanie kosztu energii
 		drawValueCircle(renderTexture,
 			cardFont,
-			characterSize,
-			10.0f,
-			sf::Color(255, 69, 0),
-			sf::Vector2f(position.x + spacing * 3 + 4 * circleRadius, yPosition),
-			currentHealth,
-			baseHealth);
-		
+			characterSize * 1.5f,  // Zwiększenie rozmiaru czcionki o 1.5x
+			10.0f * 1.5f,  // Zwiększenie średnicy okręgu o 1.5x
+			sf::Color(255, 159, 28),
+			sf::Vector2f((cardWidth * 1.5f / 2) - 15.f + position.x + offset.x, 8.f * 1.5f + position.y + offset.y),
+			currentEnergyCost,
+			baseEnergyCost);
+
+		// Obliczanie odstępów między kołami
+		constexpr float circleRadius = 10.0f * 1.5f;  // Skalowanie promienia koła
+		const float yPosition = position.y + 105.0f * 1.5f;  // Przesunięcie Y z uwzględnieniem skalowania
+		const float spacing = (cardWidth * 1.5f - 3 * 2 * circleRadius) / 4.0f;
+
+		float statusIconX = position.x - 24.0f + 144.f;  // Startujemy zaraz po szerokości karty
+		const float statusIconY = position.y - 32.f;  // Nowa wysokość dla statusów
+
+		for (const auto& key : statuses | std::views::keys)
+		{
+			if (const int statusIndex = static_cast<int>(key); statusIndex < statusTextures.size()) {
+				sf::Sprite statusSprite;
+				statusSprite.setTexture(*statusTextures[statusIndex]);
+				statusSprite.setPosition(statusIconX, statusIconY);
+				statusSprite.setScale(0.5f, 0.5f);
+				renderTexture.draw(statusSprite);
+				statusIconX += statusTextures[statusIndex]->getSize().x * 0.5f + 2.f;
+			}
+		}
+
+		float keywordIconX = position.x - 24.0f + 144.f;
+		const float keywordIconY = position.y - 32.0f + 50.0f;
+
+		for (const auto& key : keywords)
+		{
+			if (const int keywordIndex = static_cast<int>(key); keywordIndex < keywordTextures.size()) {
+				sf::Sprite keywordSprite;
+				keywordSprite.setTexture(*keywordTextures[keywordIndex]);
+				keywordSprite.setPosition(keywordIconX, keywordIconY);
+				keywordSprite.setScale(0.5f, 0.5f);
+				renderTexture.draw(keywordSprite);
+				keywordIconX += keywordTextures[keywordIndex]->getSize().x * 0.5f + 2.f;
+			}
+		}
+
+		if (hasItem()) // Jeśli jednostka ma przedmiot
+		{
+			// Przedmiot -> obrażenia, trwałość, obrona
+			drawValueCircle(renderTexture,
+				cardFont,
+				characterSize * 1.5f,  // Zwiększenie rozmiaru czcionki o 1.5x
+				circleRadius * 1.5f,  // Zwiększenie promienia okręgu o 1.5x
+				sf::Color(244, 151, 218),
+				sf::Vector2f(position.x + spacing, yPosition),
+				item->getDamage(),
+				item->getBaseDamage());
+
+			drawValueCircle(renderTexture,
+				cardFont,
+				characterSize * 1.5f,  // Zwiększenie rozmiaru czcionki o 1.5x
+				circleRadius * 1.5f,  // Zwiększenie promienia okręgu o 1.5x
+				sf::Color(200, 200, 200),
+				sf::Vector2f(position.x + spacing * 2 + 2 * circleRadius, yPosition),
+				item->getDurability(),
+				item->getBaseDurability());
+
+			drawValueCircle(renderTexture,
+				cardFont,
+				characterSize * 1.5f,  // Zwiększenie rozmiaru czcionki o 1.5x
+				circleRadius * 1.5f,  // Zwiększenie promienia okręgu o 1.5x
+				sf::Color(133, 199, 242),
+				sf::Vector2f(position.x + spacing * 3 + 4 * circleRadius, yPosition),
+				item->getDefense(),
+				item->getBaseDefense());
+
+			// Atak, zdrowie
+			const float unitStatsYOffset = -circleRadius * 3.0f - 1; // Przesunięcie dla statystyk jednostki
+			drawValueCircle(renderTexture,
+				cardFont,
+				characterSize * 1.5f,  // Zwiększenie rozmiaru czcionki o 1.5x
+				10.0f * 1.5f,  // Zwiększenie średnicy okręgu o 1.5x
+				sf::Color(100, 149, 237),
+				sf::Vector2f(position.x + spacing, yPosition + unitStatsYOffset),
+				currentAttack,
+				baseAttack);
+
+			drawValueCircle(renderTexture,
+				cardFont,
+				characterSize * 1.5f,  // Zwiększenie rozmiaru czcionki o 1.5x
+				10.0f * 1.5f,  // Zwiększenie średnicy okręgu o 1.5x
+				sf::Color(255, 69, 0),
+				sf::Vector2f(position.x + spacing * 3 + 4 * circleRadius, yPosition + unitStatsYOffset),
+				currentHealth,
+				baseHealth);
+		}
+		else // Jednostka nie ma przedmiotu
+		{
+			// Atak, zdrowie
+			drawValueCircle(renderTexture,
+				cardFont,
+				characterSize * 1.5f,  // Zwiększenie rozmiaru czcionki o 1.5x
+				10.0f * 1.5f,  // Zwiększenie średnicy okręgu o 1.5x
+				sf::Color(100, 149, 237),
+				sf::Vector2f(position.x + spacing + offset.x, yPosition + offset.y),
+				currentAttack,
+				baseAttack);
+
+			drawValueCircle(renderTexture,
+				cardFont,
+				characterSize * 1.5f,  // Zwiększenie rozmiaru czcionki o 1.5x
+				10.0f * 1.5f,  // Zwiększenie średnicy okręgu o 1.5x
+				sf::Color(255, 69, 0),
+				sf::Vector2f(position.x + spacing * 3 + 4 * circleRadius + offset.x, yPosition + offset.y),
+				currentHealth,
+				baseHealth);
+		}
 	}
 }
 
@@ -722,7 +1022,7 @@ Card(CardType::SPELL)
 		auto effect = std::make_unique<Effect>(effectSeed, cardType);
 		if (!effect->getDescription().empty()) {
 			effects.push_back(std::move(effect));
-			std::cout << "\nCardType: " + cardTypeToString(cardType) + ", EffectSeed: " + std::to_string(effectSeed) + +"\n" + effects.back()->getDescription() + "\n";
+			//std::cout << "\nCardType: " + cardTypeToString(cardType) + ", EffectSeed: " + std::to_string(effectSeed) + +"\n" + effects.back()->getDescription() + "\n";
 		}
 	}
 
@@ -759,18 +1059,22 @@ void SpellCard::display(sf::RenderTexture& renderTexture)
 	if (!isFlipped)
 	{
 		back.setPosition(position);
+		back.setScale(1.0f, 1.0f);
 		renderTexture.draw(back);
 	}
 	else
 	{
 		// draw background
 		// no need for background for spell cards
+		background.setScale(1.0f, 1.0f);
 		renderTexture.draw(background);
 		//draw portrait
 		portrait.setPosition(position);
+		portrait.setScale(1.0f, 1.0f);
 		renderTexture.draw(portrait);
 		//draw frame
 		frame.setPosition(position);
+		frame.setScale(1.0f, 1.0f);
 		renderTexture.draw(frame);
 
 		//energy cost
@@ -782,5 +1086,47 @@ void SpellCard::display(sf::RenderTexture& renderTexture)
 			sf::Vector2f((cardWidth / 2) - 10.0f + position.x, 8 + position.y),
 			currentEnergyCost,
 			baseEnergyCost);
+	}
+}
+
+void SpellCard::displayDetails(sf::RenderTexture& renderTexture)
+{
+	// Nowe przesunięcie
+	sf::Vector2f offset(-24.f, -32.f);
+
+	if (!isFlipped)
+	{
+		back.setPosition(position + offset);
+		back.setScale(1.5f, 1.5f);
+		renderTexture.draw(back);
+	}
+	else
+	{
+		// Rysowanie tła (jeśli jest potrzebne)
+		background.setPosition(position + offset);
+		background.setScale(1.5f, 1.5f);
+		renderTexture.draw(background);
+
+		// Rysowanie portretu
+		portrait.setPosition(position + offset);
+		portrait.setScale(1.5f, 1.5f);
+		renderTexture.draw(portrait);
+
+		// Rysowanie ramki
+		frame.setPosition(position + offset);
+		frame.setScale(1.5f, 1.5f);
+		renderTexture.draw(frame);
+
+		// Rysowanie kosztu energii
+		drawValueCircle(
+			renderTexture,
+			cardFont,
+			characterSize * 1.5f,  // Zwiększenie rozmiaru czcionki o 1.5x
+			10.f * 1.5f,  // Zwiększenie średnicy okręgu o 1.5x
+			sf::Color(255, 159, 28),
+			sf::Vector2f((cardWidth * 1.5f / 2) - 15.f + position.x + offset.x, 8.f * 1.5f + position.y + offset.y),
+			currentEnergyCost,
+			baseEnergyCost
+		);
 	}
 }

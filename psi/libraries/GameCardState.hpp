@@ -7,8 +7,27 @@
 class GameCardState : public State
 {
 private:
+	void adjustEffectDescriptionSize(Button& effectDescription) const;
+	void adjustEffectDescriptionsLayout() const;
+	void updateCardEffects(const CardButton* cardButton) const;
+	bool showingEffects = false;
+
 	Game* game;
 	Save* save;
+
+	sf::Cursor defaultCursor;
+	sf::Cursor openHandCursor;
+	sf::Cursor closedHandCursor;
+	sf::Cursor detailsCursor;
+
+	enum class CursorState
+	{
+		Default,
+		OpenHand,
+		ClosedHand,
+		Details
+	};
+	void handleCursorChange(sf::RenderWindow& window, CardButton& cardButton, bool& isHoveredOverAnyCard, CursorState& cursorState) const;
 
 	Hero* player;
 	Hero* enemy;
@@ -53,7 +72,9 @@ private:
 	sf::Clock shaderClock;
 	sf::Vector2i mousePos;
 
-	CardButton* cardButton;
+	std::vector<CardButton*> playerCardButtons;
+	std::vector<CardButton*> enemyCardButtons;
+
 	Button enemyHand;
 	Button playerHand;
 	Button enemyBattlefield;
@@ -61,6 +82,20 @@ private:
 	Button enemyDeck;
 	Button playerDeck;
 	Button PASS;
+
+	Button effectDescription1;
+	Button effectDescription2;
+	Button effectDescription3;
+	Button effectDescription4;
+	Button effectDescription5;
+	Button effectDescription6;
+	std::vector<Button*> effectDescriptions = {
+		&effectDescription1,
+		&effectDescription2,
+		&effectDescription3,
+		&effectDescription4,
+		&effectDescription5,
+		&effectDescription6 };
 public:
 	//handler for specific windows to appear in the main frame 
 	void handleInput(sf::RenderWindow& window, EventManager& eventManager, SoundManager& soundManager, sqlite3*& database) override;

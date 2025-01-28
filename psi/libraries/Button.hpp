@@ -32,17 +32,25 @@ protected:
 	//font and text holders
 	sf::Text buttonText;
 	sf::Font buttonFont;
+	std::string buttonFontFilePath;
 	//indicates if the button is clickable or if it is visible
 	bool enabled;
 	bool visible;
 	//background sprite
 public:
 	Button(const int& pos_x, const int& pos_y, int buttonWidth, int buttonHeight, const std::string& borderPath);
+	void resizeTo(int newWidth, int newHeight);
 	void setEnabled(bool isEnabled);
 	bool isEnabled() const;
 	void setVisible(bool isVisible);
 	bool isVisible() const;
 	void setText(const std::string& text, const std::string& fontPath, unsigned int characterSize);
+	std::string getText() const
+	{
+		if (buttonText.getString() != "") return buttonText.getString();
+		return "";
+	}
+
 	void setHovered(bool isHovered);
 	bool isHovered(const sf::Vector2i& mousePos) const;
 	bool getHovered() const { return hovered; }
@@ -59,5 +67,9 @@ public:
 	int getWidth() const { return width; }
 	int getHeight() const { return height; }
 	sf::Vector2f getPosition() const { return position; }
-	virtual void setPosition(const sf::Vector2f& pos) { position = pos; }
+	virtual void setPosition(const sf::Vector2f& pos)
+	{
+		position = pos;
+		buttonBackground.setPosition(pos);
+	}
 };

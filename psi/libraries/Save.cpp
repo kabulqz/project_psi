@@ -250,6 +250,13 @@ Save::Save()
 	player = new BoardGamePlayer();
 
 	boardEnemies = {};
+
+	std::mt19937 gen(os_seed());
+	std::uniform_int_distribution cardSeedDistribution(std::mt19937::min(), std::mt19937::max());
+	deck.reserve(30);
+	for (int i = 0; i < 30; i++) {
+		deck.push_back(cardSeedDistribution(gen));
+	}
 }
 
 Save::Save(const Save& save)
