@@ -208,6 +208,10 @@ void GameCardState::handleInput(sf::RenderWindow& window, EventManager& eventMan
 		{
 			if (cardButton->isClickable() && cardButton->isHovered(mousePos))
 			{
+				if (topCard != nullptr && event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right)
+				{
+					topCard->getCard()->flip();
+				}
 				if (topCard != nullptr && event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
 				{
 					topCard->startDraggingCard(mousePos);

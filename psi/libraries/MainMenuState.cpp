@@ -487,6 +487,9 @@ void MainMenuState::saveSoundSettingsToDatabase(sqlite3*& database, float genera
 	std::cout << "Applied new sound settings.\n";
 	sqlite3_finalize(stmt);
 	std::cout << "All sound settings saved to the database.\n";
+	game->getSettings().saveSettings();
+	game->getSettings().closeDB();
+	game->getSettings().initialize();
 }
 
 void MainMenuState::renderToTexture(sf::RenderTexture& texture)
@@ -495,6 +498,7 @@ void MainMenuState::renderToTexture(sf::RenderTexture& texture)
 	texture.clear(sf::Color::Black);
 
 	// Draw all UI elements onto the render texture
+	continueButton.display(texture);
 	newGameButton.display(texture);
 	loadGameButton.display(texture);
 	settingsButton.display(texture);
